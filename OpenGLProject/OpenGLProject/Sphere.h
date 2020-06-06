@@ -36,7 +36,7 @@ public:
 		// PHI   = ANGLE BETWEEN 2 ZONES OF ONE MERIDIAN STRIP; 
 		//-> using spherical coordinate system
 		float pi = glm::pi<float>(), theta, cosTheta, phi, zCoor;
-		int nbParalStrips = 10, nbMeridStrips = 10;
+		int nbParalStrips = 100, nbMeridStrips = 100;
 		std::vector<float> vertCoor, textCoor;
 		std::vector<int> indexes;
 

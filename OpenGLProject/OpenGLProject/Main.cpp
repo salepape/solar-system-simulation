@@ -23,8 +23,8 @@
 #include "stb_image.h"
 
 // Initial dimensions for the graphics window
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1800;
+const unsigned int SCR_HEIGHT = 1600;
 
 // Camera object initialization
 Camera camera(glm::vec3(0.0f, 0.0f, 200.0f));
@@ -223,23 +223,66 @@ int main()
 	glGenTextures(10, texTab);
 
 	// Load texture image files
-	CreateTexture(texTab[0], GL_RGB, "../Images/sun.tga");
-	CreateTexture(texTab[1], GL_RGB, "../Images/mercury.tga");
-	CreateTexture(texTab[2], GL_RGB, "../Images/venus.tga");
-	CreateTexture(texTab[3], GL_RGB, "../Images/earth.tga");
-	CreateTexture(texTab[4], GL_RGB, "../Images/mars.tga");
-	CreateTexture(texTab[5], GL_RGB, "../Images/jupiter.tga");
-	CreateTexture(texTab[6], GL_RGB, "../Images/saturn.tga");
-	CreateTexture(texTab[7], GL_RGB, "../Images/uranus.tga");
-	CreateTexture(texTab[8], GL_RGB, "../Images/neptune.tga");
+	CreateTexture(texTab[0], GL_RGB, "../Images/8k_sun.tga");
+	CreateTexture(texTab[1], GL_RGB, "../Images/8k_mercury.tga");
+	CreateTexture(texTab[2], GL_RGB, "../Images/8k_venus.tga");
+	CreateTexture(texTab[3], GL_RGB, "../Images/8k_earth.tga");
+	CreateTexture(texTab[4], GL_RGB, "../Images/8k_mars.tga");
+	CreateTexture(texTab[5], GL_RGB, "../Images/8k_jupiter.tga");
+	CreateTexture(texTab[6], GL_RGB, "../Images/8k_saturn.tga");
+	CreateTexture(texTab[7], GL_RGB, "../Images/2k_uranus.tga");
+	CreateTexture(texTab[8], GL_RGB, "../Images/2k_neptune.tga");
 	CreateTexture(texTab[9], GL_RGB, "../Images/pluto.tga");  
 
-	// Distance from sun to planets
-	glm::vec3 sunPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	//// Factors are done to be able to see planets together
+	//float factor = 10000.0f;
+	//float factor2 = 100000.0f;
+	//float million = 1000000.0f;
 
-	// Earth radius according to wiki (R + entouré)
+	//float sun_radius = 696342.0f / factor;
+	//std::vector<float> radii;
+	//float mercury_radius = 2439.7f;
+	//radii.push_back(mercury_radius / factor);
+	//float venus_radius = 6051.8f;
+	//radii.push_back(venus_radius / factor);
+	//float earth_radius = 6371.0f;
+	//radii.push_back(earth_radius / factor);
+	//float mars_radius = 3389.5f;
+	//radii.push_back(mars_radius / factor);
+	//float jupiter_radius = 69911.0f;
+	//radii.push_back(jupiter_radius / factor);
+	//float saturn_radius = 58232.0f;
+	//radii.push_back(saturn_radius / factor);
+	//float uranus_radius = 25362.0f;
+	//radii.push_back(uranus_radius / factor);
+	//float neptune_radius = 24622.0f;
+	//radii.push_back(neptune_radius / factor);
+	//float pluto_radius = 1188.3f;
+	//radii.push_back(pluto_radius / factor);
+
+	//glm::vec3 sunPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	//std::vector<float> distances;
+	//float mercury_distance = sun_radius + 5.70f * million / factor2;
+	//distances.push_back(mercury_distance);
+	//float venus_distance = mercury_distance + 10.80f * million / factor2;
+	//distances.push_back(venus_distance);
+	//float earth_distance = venus_distance + 15.00f * million / factor2;
+	//distances.push_back(earth_distance);
+	//float mars_distance = earth_distance + 22.80f * million / factor2;
+	//distances.push_back(mars_distance);
+	//float jupiter_distance = mars_distance + 77.90f * million / factor2;
+	//distances.push_back(jupiter_distance);
+	//float saturn_distance = jupiter_distance + 143.00f * million / factor2;
+	//distances.push_back(saturn_distance);
+	//float uranus_distance = saturn_distance + 288.00f * million / factor2;
+	//distances.push_back(uranus_distance);
+	//float neptune_distance = uranus_distance + 450.00f * million / factor2;
+	//distances.push_back(neptune_distance);
+	//float pluto_distance = neptune_distance + 591.00f * million / factor2;
+	//distances.push_back(pluto_distance);
+
+	// Planet diameters in relation to earth (scaled so that earth radius = 1)
 	float sun_radius = 109.3f;
-
 	std::vector<float> radii;
 	float mercury_radius = 0.383f;
 	radii.push_back(mercury_radius);
@@ -261,24 +304,27 @@ int main()
 	radii.push_back(pluto_radius);
 	//double moon_radius = 0.2724;
 
+	//Planet distances from sun in relation to earth's distance
+	glm::vec3 sunPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	float factor = 10.0f;
 	std::vector<float> distances;
-	float mercury_distance = sun_radius + 0.387f;
+	float mercury_distance = sun_radius + 0.38f * factor;
 	distances.push_back(mercury_distance);
-	float venus_distance = mercury_distance + 0.723f;
+	float venus_distance = mercury_distance + 0.72f * factor;
 	distances.push_back(venus_distance);
-	float earth_distance = venus_distance + 1.0f;
+	float earth_distance = venus_distance + 1.0f * factor;
 	distances.push_back(earth_distance);
-	float mars_distance = earth_distance + 1.52f;
+	float mars_distance = earth_distance + 1.52f * factor;
 	distances.push_back(mars_distance);
-	float jupiter_distance = mars_distance + 5.20f;
+	float jupiter_distance = mars_distance + 5.19f * factor;
 	distances.push_back(jupiter_distance);
-	float saturn_distance = jupiter_distance + 9.58f;
+	float saturn_distance = jupiter_distance + 9.53f * factor;
 	distances.push_back(saturn_distance);
-	float uranus_distance = saturn_distance + 19.20f;
+	float uranus_distance = saturn_distance + 19.20f * factor;
 	distances.push_back(uranus_distance);
-	float neptune_distance = uranus_distance + 30.05f;
+	float neptune_distance = uranus_distance + 30.05f * factor;
 	distances.push_back(neptune_distance);
-	float pluto_distance = neptune_distance + 39.24f;
+	float pluto_distance = neptune_distance + 39.24f * factor;
 	distances.push_back(pluto_distance);
 
 	// radius doesn't affect the spherical mesh...
@@ -286,8 +332,7 @@ int main()
 	Sphere * planets[9];
 	for (int i = 0; i < 9; ++i)
 	{
-		float planetRadius = radii[i];
-		planets[i] = new Sphere(planetRadius);
+		planets[i] = new Sphere(radii[i]);
 	}
 
 
@@ -335,6 +380,7 @@ int main()
 		// Calculate the MODEL matrix for the sun (with translations applied to center it) 
 		glm::mat4 modelSun = glm::mat4(1.0f);
 		modelSun = glm::translate(modelSun, sunPos);
+		modelSun = glm::rotate(modelSun, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
 		// Activate the shader to initialize projection, view then model mat4 inside
 		shaderSphere.use();
@@ -363,18 +409,21 @@ int main()
 		{
 			// Calculate the MODEL matrix for each cube (with translations applied to see them all) 
 			glm::mat4 modelPlanet = glm::mat4(1.0f);
-			//modelPlanet = glm::translate(modelPlanet, sunPos + glm::vec3(0.0f, 0.0f, -5.0f * i));
 
 			//float angle = 0.006f * i  * speed;
 			float angleSat = (float)(glfwGetTime() * (i+1));
 			float argTrigo = glm::pi<float>() * 2 * angleSat / 360;
 
+			//modelPlanet = glm::translate(modelPlanet, sunPos + glm::vec3(0.0f, 0.0f, -50.0f * i));
+
 			// Position according to distance sun - planet
 			modelPlanet = glm::translate(modelPlanet, glm::vec3(distances[i] * sin(argTrigo), 0.0f, distances[i] * cos(argTrigo)));
-			// Rotation on itself
-			modelPlanet = glm::rotate(modelPlanet, angleSat, glm::vec3(0.0f, 0.1f, 0.0f));
-			// Rotation around the sun
-			modelPlanet = glm::rotate(modelPlanet, (float)(glm::radians(60.0f) * glfwGetTime()), glm::vec3(0.0f, 0.1f, 0.0f));
+			// Rotation (permanent since the beginning) on itself to have texture seen horizontaly
+			modelPlanet = glm::rotate(modelPlanet, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			// Rotation on itself = PROGRADE MOTION (not retrograde)
+			modelPlanet = glm::rotate(modelPlanet, angleSat, glm::vec3(0.0f, 0.0f, 1.0f));
+			//// Rotation around the sun = ORBITAL MOTION
+			//modelPlanet = glm::rotate(modelPlanet, (float)(glm::radians(60.0f) * glfwGetTime()), glm::vec3(0.0f, 0.1f, 0.0f));
 
 			shaderSphere.use();
 			shaderSphere.setMat4("model", modelPlanet);
