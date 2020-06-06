@@ -21,18 +21,22 @@ private:
 	unsigned int VBO;
 	// Element Buffer Object
 	unsigned int EBO;
+	// Radius of sphere
+	float radius;
 
 
 
 public:
-	Sphere(float radius)
+	Sphere(float radiusArg)
 	{
+		radius = radiusArg;
+
 		// ZONE  = triangle or square formed by intersection of 1 meridian strip and 1 parallel strip
 		// THETA = ANGLE BETWEEN 2 ZONES OF ONE PARALLEL STRIP; 
 		// PHI   = ANGLE BETWEEN 2 ZONES OF ONE MERIDIAN STRIP; 
 		//-> using spherical coordinate system
 		float pi = glm::pi<float>(), theta, cosTheta, phi, zCoor;
-		int nbParalStrips = 100, nbMeridStrips = 100;
+		int nbParalStrips = 10, nbMeridStrips = 10;
 		std::vector<float> vertCoor, textCoor;
 		std::vector<int> indexes;
 
@@ -97,16 +101,12 @@ public:
 
 
 
-		// GENERATION VAO - Generate 1 VAO storing its ID / name in the provided array within graphics memory
-		glGenVertexArrays(1, &VAO);
-		// BINDING VAO - Bind VAO, which thus will store all following VBO calls
-		glBindVertexArray(VAO);
+
 
 		// GENERATION VBO - Generate 1 BO storing its ID / name in the provided array within graphics memory
 		glGenBuffers(1, &VBO);
 		// BINDING VBO - Bind BO to the OpenGL BO target we want (here the one of a vertex, called GL_ARRAY_BUFFER, hence VBO variable name)
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
 		// COPY - Allocate memory and store data into the currently bound BO memory
 		glBufferData(GL_ARRAY_BUFFER, sizeofVertices + sizeofTextures, NULL, GL_STATIC_DRAW);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeofVertices, &vertCoor[0]);
@@ -116,16 +116,28 @@ public:
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeofIndexes, &indexes[0], GL_STATIC_DRAW);
 
-		// INTERPRETATION - Store in the currently bound VBO how OpenGL should interpret the vertex buffer data
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)sizeofVertices);
+		// GENERATION VAO - Generate 1 VAO storing its ID / name in the provided array within graphics memory
+		glGenVertexArrays(1, &VAO);
+		// BINDING VAO - Bind VAO, which thus will store all following VBO calls
+		glBindVertexArray(VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		// PERMISSION - Enable the vertex attribute provided its location
+		glEnableVertexAttribArray(0);
+		// INTERPRETATION - Store in the currently bound VBO how OpenGL should interpret the vertex buffer data -> POSITION 0 FOR VERT COOR
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);	
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)sizeofVertices);			 // -> POSITION 1 FOR TEXT COOR
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
 	void Draw()
 	{
-		// PERMISSION - Enable the vertex attribute provided its location
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
+		glBindVertexArray(VAO);
 
 		glDrawElements(GL_TRIANGLES, nbIndexes, GL_UNSIGNED_INT, (void*)0);
 	}

@@ -1,11 +1,11 @@
 #version 330 core
 
-in vec2 tex;   
-out vec4 fragColor;             // Fragment Color
+in vec2 texCoord;   
+out vec4 fColor;             // Fragment Color
 
-uniform sampler2D texSphere;   
+uniform sampler2D texSampler;   
 
 void main()
 {
-    fragColor = texture(texSphere, tex);
+    fColor = texture(texSampler, texCoord);
 }
