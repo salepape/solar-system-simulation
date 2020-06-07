@@ -1,7 +1,7 @@
 #version 330 core
 
 in vec2 texCoord;   
-out vec4 fColor;             // Fragment Color
+out vec4 fColor;             
 
 uniform sampler2D texSampler;   
 

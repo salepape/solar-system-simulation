@@ -30,6 +30,12 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -44,6 +50,12 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="SphereShader.fs">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="CubeShader.vs">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="CubeShader.fs">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

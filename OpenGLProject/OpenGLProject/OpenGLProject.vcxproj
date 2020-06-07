@@ -128,9 +128,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Background.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
@@ -139,6 +141,8 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="CubeShader.fs" />
+    <None Include="CubeShader.vs" />
     <None Include="SphereShader.fs" />
     <None Include="SphereShader.vs" />
   </ItemGroup>
