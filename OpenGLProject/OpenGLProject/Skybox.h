@@ -11,8 +11,6 @@
 class Skybox
 {
 private:
-	// Dim
-	int sizeofVertices;
 	// Vertex Buffer Object
 	unsigned int VBO;
 	// Vertex Array Object
@@ -66,7 +64,7 @@ public:
 			 1.0f, -1.0f,  1.0f
 		};
 
-		sizeofVertices = sizeof(skyboxVertCoor);
+		int sizeofVertices = sizeof(skyboxVertCoor);
 
 		glGenBuffers(1, &VBO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -76,6 +74,7 @@ public:
 		glGenVertexArrays(1, &VAO);
 		glBindVertexArray(VAO);
 
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 

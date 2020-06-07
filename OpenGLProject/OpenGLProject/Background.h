@@ -11,8 +11,6 @@
 class Background
 {
 private:
-	// Dim
-	int sizeofVertices;
 	// Vertex Buffer Object
 	unsigned int VBO;
 	// Vertex Array Object
@@ -41,7 +39,7 @@ public:
 			0.0f, 0.0f,
 		};
 
-		sizeofVertices = sizeof(bgVertCoor);
+		int sizeofVertices = sizeof(bgVertCoor);
 		int sizeofTextures = sizeof(bgTextCoor);
 
 		glGenBuffers(1, &VBO);
@@ -54,6 +52,7 @@ public:
 		glGenVertexArrays(1, &VAO);
 		glBindVertexArray(VAO);
 
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(1);

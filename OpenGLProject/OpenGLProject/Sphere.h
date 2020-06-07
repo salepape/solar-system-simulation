@@ -11,8 +11,6 @@
 class Sphere
 {
 private:
-	// Number of bytes encoding vertCoor vector
-	int sizeofVertices;
 	// Number of double values that contains indexes vector
 	int nbIndexes;
 	// Vertex Array Object
@@ -21,7 +19,7 @@ private:
 	unsigned int VBO;
 	// Element Buffer Object
 	unsigned int EBO;
-	// Radius of sphere
+	// Radius of the planet
 	float radius;
 
 
@@ -42,13 +40,13 @@ public:
 
 		for (int i = 0; i <= nbParalStrips; ++i)
 		{
-			theta = pi * (0.5f - (float)i / nbParalStrips);
+			theta = pi * (0.5f - (float)i / (float)nbParalStrips);
 			cosTheta = glm::cos(theta);
 			zCoor = radius * glm::sin(theta);
 
 			for (int j = 0; j <= nbMeridStrips; ++j)
 			{
-				phi = 2.0f * pi * (float)j / nbMeridStrips;
+				phi = 2.0f * pi * (float)j / (float)nbMeridStrips;
 
 				// Poisition of the current vertex 
 				vertCoor.push_back(radius * cosTheta * glm::cos(phi));
@@ -91,7 +89,8 @@ public:
 			}
 		}
 
-		sizeofVertices = sizeof(float) * vertCoor.size();
+		// Number of bytes encoding vertCoor vector
+		int sizeofVertices = sizeof(float) * vertCoor.size();
 		int sizeofTextures = sizeof(float) * textCoor.size();
 		int sizeofIndexes = sizeof(unsigned int) * indexes.size();
 

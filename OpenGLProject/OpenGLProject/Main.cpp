@@ -16,10 +16,9 @@
 // Don't put the "real" path because doesn't work ! Implicitely managed by Visual Studio I suppose...
 #include "Shader.h"
 #include "Camera.h"
-#include "Background.h"
-#include "Cube.h"
 #include "Sphere.h"
 #include "Skybox.h"
+#include "Orbit.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -262,24 +261,27 @@ int main()
 	Shader shaderSkybox("CubeShader.vs", "CubeShader.fs");
 
 	// GENERATION T2O - Generate 10 TO storing its ID within texTab array (graphics memory)
-	GLuint texTab[11];
-	glGenTextures(11, texTab);
+	GLuint texTab[12];
+	glGenTextures(12, texTab);
 
 	// Load texture image files
-	CreateTexture(texTab[0], GL_RGB, "../Images/8k_sun.tga");
+	CreateTexture(texTab[0], GL_RGB, "../Images/8k_sun.jpg");
 
-	CreateTexture(texTab[1], GL_RGB, "../Images/8k_mercury.tga");
-	CreateTexture(texTab[2], GL_RGB, "../Images/8k_venus.tga");
-	CreateTexture(texTab[3], GL_RGB, "../Images/8k_earth.tga");
-	CreateTexture(texTab[4], GL_RGB, "../Images/8k_mars.tga");
-	CreateTexture(texTab[5], GL_RGB, "../Images/8k_jupiter.tga");
-	CreateTexture(texTab[6], GL_RGB, "../Images/8k_saturn.tga");
-	CreateTexture(texTab[7], GL_RGB, "../Images/2k_uranus.tga");
-	CreateTexture(texTab[8], GL_RGB, "../Images/2k_neptune.tga");
-	CreateTexture(texTab[9], GL_RGB, "../Images/pluto.tga");  
+	CreateTexture(texTab[1], GL_RGB, "../Images/8k_mercury.jpg");
+	CreateTexture(texTab[2], GL_RGB, "../Images/8k_venus.jpg");
+	CreateTexture(texTab[3], GL_RGB, "../Images/8k_earth.jpg");
+	CreateTexture(texTab[4], GL_RGB, "../Images/8k_mars.jpg");
+	CreateTexture(texTab[5], GL_RGB, "../Images/8k_jupiter.jpg");
+	CreateTexture(texTab[6], GL_RGB, "../Images/8k_saturn.jpg");
+	CreateTexture(texTab[7], GL_RGB, "../Images/2k_uranus.jpg");
+	CreateTexture(texTab[8], GL_RGB, "../Images/2k_neptune.jpg");
+	CreateTexture(texTab[9], GL_RGB, "../Images/2k_pluto.jpg");
 
-	//CreateTexture(texTab[10], GL_RGB, "../Images/8k_stars_milky_way.tga");
-	CreateCubemap(texTab[10]);
+	CreateTexture(texTab[10], GL_RGB, "../Images/Satellites/orbit.jpg");
+
+	CreateCubemap(texTab[11]);
+
+
 
 
 
@@ -331,17 +333,18 @@ int main()
 
 
 	// Milky Way background
-	//Background * bg = new Background();
 	Skybox * sb = new Skybox();
 
 	// Sun
-	Sphere * sun = new Sphere(sun_radius);
+	Sphere * sun = new Sphere(sun_radius / 2.0f);
 
-	// Planets and plutoid
+	// Planets and orbits
 	Sphere * planets[9];
+	Orbit * orbits[9];
 	for (int i = 0; i < 9; ++i)
 	{
 		planets[i] = new Sphere(radii[i]);
+		orbits[i] = new Orbit(distances[i]);
 	}
 
 
@@ -416,10 +419,10 @@ int main()
 			glm::mat4 modelPlanet = glm::mat4(1.0f);
 
 			float angleSat = (float)(glfwGetTime() * (i+1));
-			float argTrigo = glm::pi<float>() * 2 * angleSat / 360;
+			float angleSatInRad = glm::radians(angleSat);
 
 			// ORBITAL MOTION : rotation around the sun
-			modelPlanet = glm::translate(modelPlanet, glm::vec3(distances[i] * sin(argTrigo), 0.0f, distances[i] * cos(argTrigo)));
+			modelPlanet = glm::translate(modelPlanet, glm::vec3(distances[i] * sin(angleSatInRad), 0.0f, distances[i] * cos(angleSatInRad)));
 			// Rotation (permanent since the beginning) on itself to have texture seen horizontaly
 			modelPlanet = glm::rotate(modelPlanet, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			// PROGRADE MOTION (not retrograde) : rotation on itself
@@ -435,26 +438,19 @@ int main()
 			shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
 
 			planets[i]->Draw();
+
+
+
+
+
+			glm::mat4 modelOrbit = glm::mat4(1.0f);
+			shaderSphere.use();
+			shaderSphere.setMat4("model", modelOrbit);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, texTab[10]);
+			shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
+			orbits[i]->Draw();
 		}
-
-
-
-		//// Background milky way
-		//glDepthFunc(GL_LEQUAL);			
-		//glm::mat4 projectionBg = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
-		//glm::mat4 viewBg = glm::mat4(glm::mat3(camera.GetViewMatrix())); 
-		//glm::mat4 modelBg = glm::mat4(1.0f);
-		//shaderSphere.use();
-		//shaderSphere.setMat4("projection", projectionBg);
-		//shaderSphere.setMat4("view", viewBg);
-		//shaderSphere.setMat4("model", modelBg);
-		//glActiveTexture(GL_TEXTURE0);
-		//glBindTexture(GL_TEXTURE_2D, texTab[10]);
-		//shaderSphere.setInt("texSampler", 0);
-		//bg->Draw();
-		//glDepthFunc(GL_LESS);			
-
-
 
 		glDepthFunc(GL_LEQUAL);		// change depth function so depth test passes when values are equal to depth buffer's content
 		glm::mat4 projectionSb = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -463,7 +459,7 @@ int main()
 		shaderSkybox.setMat4("view", viewSb);
 		shaderSkybox.setMat4("projection", projectionSb);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, texTab[10]);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, texTab[11]);
 		shaderSkybox.setInt("texSampler", 0);
 		sb->Draw();
 		glDepthFunc(GL_LESS);			// set depth function back to default

@@ -11,8 +11,6 @@
 class Cube
 {
 private:
-	// Dim
-	int sizeofVertices;
 	// Vertex Buffer Object
 	unsigned int VBO;
 
@@ -123,7 +121,7 @@ public:
 			0.0f, 1.0f
 		};
 
-		sizeofVertices = sizeof(vertCoor);
+		int sizeofVertices = sizeof(vertCoor);
 
 		// GENERATION VBO - Generate 1 BO storing its ID / name in the provided array within graphics memory
 		glGenBuffers(1, &VBO);
