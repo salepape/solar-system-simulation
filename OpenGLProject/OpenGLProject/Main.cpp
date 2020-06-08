@@ -261,8 +261,8 @@ int main()
 	Shader shaderSkybox("CubeShader.vs", "CubeShader.fs");
 
 	// GENERATION T2O - Generate 10 TO storing its ID within texTab array (graphics memory)
-	GLuint texTab[13];
-	glGenTextures(13, texTab);
+	GLuint texTab[19];
+	glGenTextures(19, texTab);
 
 	// Load texture image files
 	CreateTexture(texTab[0], GL_RGB, "../Images/8k_sun.jpg");
@@ -282,6 +282,13 @@ int main()
 	CreateCubemap(texTab[11]);
 
 	CreateTexture(texTab[12], GL_RGB, "../Images/Satellites/8k_luna.jpg");
+
+	CreateTexture(texTab[13], GL_RGB, "../Images/Satellites/callisto.jpg");
+	CreateTexture(texTab[14], GL_RGB, "../Images/Satellites/europa.jpg");
+	CreateTexture(texTab[15], GL_RGB, "../Images/Satellites/ganymede.jpg");
+	CreateTexture(texTab[16], GL_RGB, "../Images/Satellites/io.jpg");
+	CreateTexture(texTab[17], GL_RGB, "../Images/Satellites/titan.png");
+	CreateTexture(texTab[18], GL_RGB, "../Images/Satellites/triton.jpg");
 
 
 
@@ -330,15 +337,13 @@ int main()
 	float pluto_distance = neptune_distance + 39.24f * factor;
 	distances.push_back(pluto_distance);
 
-
-
 	// Milky Way background
 	Skybox * sb = new Skybox();
 
 	// Sun
 	Sphere * sun = new Sphere(sun_radius / 2.0f);
 
-	// Planets and orbits
+	// Planets, plutoid and orbits
 	Sphere * planets[9];
 	Orbit * orbits[10];
 	for (int i = 0; i < 9; ++i)
@@ -347,13 +352,50 @@ int main()
 		orbits[i] = new Orbit(distances[i]);
 	}
 
+	// Moon of Earth
 	float luna_radius = 0.273f;
 	Sphere * luna = new Sphere(luna_radius);
-	float earth_luna_distance = 0.384f * factor;
+	float earth_luna_distance = earth_radius + 0.384f * factor;
 	float luna_distance = earth_distance + earth_luna_distance;
 	orbits[9] = new Orbit(earth_luna_distance);
 
+	// All moons > pluto size
+	std::vector<float> moonRadii;
+	float callisto_radius = 0.378f;
+	moonRadii.push_back(callisto_radius);
+	float europa_radius = 0.245f;
+	moonRadii.push_back(europa_radius);
+	float ganymede_radius = 0.413f;
+	moonRadii.push_back(ganymede_radius);
+	float io_radius = 0.286f;
+	moonRadii.push_back(io_radius);
+	float titan_radius = 0.404f;
+	moonRadii.push_back(titan_radius);
+	float triton_radius = 0.212f;
+	moonRadii.push_back(triton_radius);
 
+	// All distance moons to their corresponding planets
+	std::vector<float> moonDistances;
+	float jupiter_callisto_distance = jupiter_radius + 1.883000f * factor;
+	moonDistances.push_back(jupiter_callisto_distance);
+	float jupiter_europa_distance = jupiter_radius + 0.671000f * factor;
+	moonDistances.push_back(jupiter_europa_distance);
+	float jupiter_ganymede_distance = jupiter_radius + 1.070000f * factor;
+	moonDistances.push_back(jupiter_ganymede_distance);
+	float jupiter_io_distance = jupiter_radius + 0.422000f * factor;
+	moonDistances.push_back(jupiter_io_distance);
+	float saturn_titan_distance = saturn_radius + 1.222000f * factor;
+	moonDistances.push_back(saturn_titan_distance);
+	float neptune_triton_distance = neptune_radius + 0.354800f * factor;
+	moonDistances.push_back(neptune_triton_distance);
+
+	Sphere * moons[6];
+	Orbit * moonOrbits[6];
+	for (int i = 0; i < 6; ++i)
+	{
+		moons[i] = new Sphere(moonRadii[i]);
+		moonOrbits[i] = new Orbit(moonDistances[i]);
+	}
 
 
 
@@ -445,7 +487,7 @@ int main()
 
 			planets[i]->Draw();
 
-			// Drawing luna and its orbite
+			// Drawing Luna and its orbit
 			if (i == 2)
 			{
 				glm::mat4 modelLuna = glm::mat4(1.0f);
@@ -475,6 +517,105 @@ int main()
 				glBindTexture(GL_TEXTURE_2D, texTab[10]);
 				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
 				orbits[9]->Draw();
+			}
+
+			// Drawing galilean moons and its respective orbites
+			else if (i == 4)
+			{
+				for (unsigned int j = 0; j < 4; ++j)
+				{
+					glm::mat4 modelGalileanMoon = glm::mat4(1.0f);
+
+					float angleMoon = (float)(glfwGetTime() * (i + 10));
+					float angleMoonInRad = glm::radians(angleMoon);
+
+					modelGalileanMoon = glm::translate(modelGalileanMoon, glm::vec3(jupiter_distance * sin(anglePlInRad), 0.0f, jupiter_distance * cos(anglePlInRad)));
+					modelGalileanMoon = glm::translate(modelGalileanMoon, glm::vec3(moonDistances[j] * sin(angleMoonInRad), 0.0f, moonDistances[j] * cos(angleMoonInRad)));
+					modelGalileanMoon = glm::rotate(modelGalileanMoon, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+					modelGalileanMoon = glm::rotate(modelGalileanMoon, angleMoon, glm::vec3(0.0f, 0.0f, 1.0f));
+
+					shaderSphere.use();
+					shaderSphere.setMat4("model", modelGalileanMoon);
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, texTab[13 + j]);
+					shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
+
+					moons[j]->Draw();
+
+					// Drawing planet orbites
+					glm::mat4 modelGalileanOrbit = glm::mat4(1.0f);
+					modelGalileanOrbit = glm::translate(modelGalileanOrbit, glm::vec3(jupiter_distance * sin(anglePlInRad), 0.0f, jupiter_distance * cos(anglePlInRad)));
+					shaderSphere.use();
+					shaderSphere.setMat4("model", modelGalileanOrbit);
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, texTab[10]);
+					shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
+					moonOrbits[j]->Draw();
+				}
+			}
+
+			// Drawing Titan and its orbit
+			if (i == 5)
+			{
+				glm::mat4 modelTitan = glm::mat4(1.0f);
+
+				float angleTitan = (float)(glfwGetTime() * (i + 10));
+				float angleTitanInRad = glm::radians(angleTitan);
+
+				modelTitan = glm::translate(modelTitan, glm::vec3(saturn_distance * sin(anglePlInRad), 0.0f, saturn_distance * cos(anglePlInRad)));
+				modelTitan = glm::translate(modelTitan, glm::vec3(saturn_titan_distance * sin(angleTitanInRad), 0.0f, saturn_titan_distance * cos(angleTitanInRad)));
+				modelTitan = glm::rotate(modelTitan, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				modelTitan = glm::rotate(modelTitan, angleTitan, glm::vec3(0.0f, 0.0f, 1.0f));
+
+				shaderSphere.use();
+				shaderSphere.setMat4("model", modelTitan);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, texTab[17]);
+				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
+
+				moons[4]->Draw();
+
+				// Drawing planet orbites
+				glm::mat4 modelOrbit = glm::mat4(1.0f);
+				modelOrbit = glm::translate(modelOrbit, glm::vec3(saturn_distance * sin(anglePlInRad), 0.0f, saturn_distance * cos(anglePlInRad)));
+				shaderSphere.use();
+				shaderSphere.setMat4("model", modelOrbit);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, texTab[10]);
+				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
+				moonOrbits[4]->Draw();
+			}
+
+			// Drawing Triton and its orbit
+			if (i == 7)
+			{
+				glm::mat4 modelTriton = glm::mat4(1.0f);
+
+				float angleTriton = (float)(glfwGetTime() * (i + 10));
+				float angleTritonInRad = glm::radians(angleTriton);
+
+				modelTriton = glm::translate(modelTriton, glm::vec3(neptune_distance * sin(anglePlInRad), 0.0f, neptune_distance * cos(anglePlInRad)));
+				modelTriton = glm::translate(modelTriton, glm::vec3(neptune_triton_distance * sin(angleTritonInRad), 0.0f, neptune_triton_distance * cos(angleTritonInRad)));
+				modelTriton = glm::rotate(modelTriton, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				modelTriton = glm::rotate(modelTriton, angleTriton, glm::vec3(0.0f, 0.0f, 1.0f));
+
+				shaderSphere.use();
+				shaderSphere.setMat4("model", modelTriton);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, texTab[18]);
+				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
+
+				moons[5]->Draw();
+
+				// Drawing planet orbites
+				glm::mat4 modelOrbit = glm::mat4(1.0f);
+				modelOrbit = glm::translate(modelOrbit, glm::vec3(neptune_distance * sin(anglePlInRad), 0.0f, neptune_distance * cos(anglePlInRad)));
+				shaderSphere.use();
+				shaderSphere.setMat4("model", modelOrbit);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, texTab[10]);
+				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
+				moonOrbits[5]->Draw();
 			}
 
 			// Drawing planet orbites
