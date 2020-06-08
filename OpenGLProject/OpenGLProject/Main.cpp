@@ -4,28 +4,26 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <iostream>
+#include <unordered_map>
 /////////////////////////////////////
 ////////// END MANDATORY ////////////
 /////////////////////////////////////
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
-// Don't put the "real" path because doesn't work ! Implicitely managed by Visual Studio I suppose...
+
 #include "Shader.h"
 #include "Camera.h"
 #include "Sphere.h"
 #include "Skybox.h"
 #include "Orbit.h"
 
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 // Initial dimensions for the graphics window
-const unsigned int SCR_WIDTH = 1800;
-const unsigned int SCR_HEIGHT = 1600;
+const unsigned int SCR_WIDTH = 1000;
+const unsigned int SCR_HEIGHT = 1000;
 
 // Camera object initialization
 Camera camera(glm::vec3(0.0f, 0.0f, 200.0f));
@@ -40,10 +38,47 @@ float lastFrame = 0.0f;
 
 
 
+std::vector<std::string> sprites
+{
+	"../Images/8k_sun.tga",
+
+	"../Images/8k_mercury.tga",
+	"../Images/8k_venus.tga",
+	"../Images/8k_earth.tga",
+	"../Images/8k_mars.tga",
+	"../Images/8k_jupiter.tga",
+	"../Images/8k_saturn.tga",
+	"../Images/2k_uranus.tga",
+	"../Images/2k_neptune.tga",
+	"../Images/2k_pluto.tga",
+
+	"../Images/Satellites/8k_luna.tga",
+	"../Images/Satellites/callisto.tga",
+	"../Images/Satellites/europa.tga",
+	"../Images/Satellites/ganymede.tga",
+	"../Images/Satellites/io.tga",
+	"../Images/Satellites/titan.tga",
+	"../Images/Satellites/triton.tga"
+
+	//"../Images/Satellites/orbit.tga"
+};
+
+std::vector<std::string> faces
+{
+	"../Images/skybox/milky_way_right.tga",				// right
+	"../Images/skybox/milky_way_right.tga",				// -> left
+	"../Images/skybox/stars.tga",						// top 
+	"../Images/skybox/stars.tga",						// bottom
+	"../Images/skybox/milky_way_left.tga",				// back
+	"../Images/skybox/milky_way_left.tga"				// -> front
+};
+
+
+
 /////////////////////////////////////
 ////////// BEGIN MANDATORY //////////
 /////////////////////////////////////
-// Check whether a specific key (escape here) is pressed / released 
+// Check whether a specific key is pressed / released 
 void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -69,7 +104,7 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 
 void mouseCallback(GLFWwindow* window, double xpos, double ypos)
 {
-	// Avoid little jump 
+	// Avoid little jump
 	if (firstMouseInput)
 	{
 		lastX = xpos;
@@ -78,7 +113,7 @@ void mouseCallback(GLFWwindow* window, double xpos, double ypos)
 	}
 
 	double xoffset = xpos - lastX;
-	// Reversed since y-coordinates go from bottom to top
+	// Reverse y-coordinates since they go from bottom to top
 	double yoffset = lastY - ypos;
 	lastX = xpos;
 	lastY = ypos;
@@ -96,15 +131,14 @@ GLFWwindow* initGLFWWindow(int windowWidth, int windowHeight, const char* window
 	// Initialization of a GLFW window
 	glfwInit();
 
-	// Configuration of the GLFW window (1st arg indicates the option to configure, 2nd arg sets the value for this option)
-	// Set major and minor version of OpenGL to 3, to ensure others that have not this OpenGL version GLFW failure
+	// Set major and minor version of OpenGL to 3, to prevent others who have not this OpenGL version GLFW to fail
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
 	// Tell explicitly GLFW that we want to use core-profile 
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// Creation of a GLFW window of size windth x height, which title will appear in a top bar
+	// Creation of a GLFW window of size "width x height", its title appearing in a top bar
 	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, windowTitle, NULL, NULL);
 
 	return window;
@@ -112,61 +146,61 @@ GLFWwindow* initGLFWWindow(int windowWidth, int windowHeight, const char* window
 
 void colorationGLFWWindow()
 {
-	// Set RGB + alpha coefficients for background color
+	// Set "RGB + alpha" coefficients for background color
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-	// Clear the content of the window
+	// Clear up window content
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void CreateTexture(GLuint& textElmtID, int canals, const char * imagePath)
+void CreateTexture(GLuint texTab[])
 {
-	// BINDING T2O - Bind TO to the OpenGL TO type we want (here a 2D texture called GL_TEXTURE_2D, hence T2O variable name)
-	glBindTexture(GL_TEXTURE_2D, textElmtID);
+	glGenTextures(sprites.size(), texTab);
 
-	// Set the texture wrapping option (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	// Set the texture filtering option (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	int width, height, nrChannels;
-
-	// Load image (without alpha channel)
-	unsigned char *data = stbi_load(imagePath, &width, &height, &nrChannels, 3);
-
-	// Tell stb_image.h to flip loaded texture's on the y-axis (to see textures applied normal to outward faces directions)
-	stbi_set_flip_vertically_on_load(true);
-
-	if (data)
+	for (GLuint i = 0; i < sprites.size(); i++)
 	{
-		// Generate texture image on the currently bound TO at the active texture unit
-		glTexImage2D(GL_TEXTURE_2D, 0, canals, width, height, 0, canals, GL_UNSIGNED_BYTE, data);
+		// BINDING T2O - Bind TO to the OpenGL TO type we want (here a 2D texture called GL_TEXTURE_2D, hence T2O variable name)
+		glBindTexture(GL_TEXTURE_2D, texTab[i]);
 
-		// Generate all mipmap levels for the previous currently bound TO
-		glGenerateMipmap(GL_TEXTURE_2D);
+		// Set the texture wrapping option (on the currently bound texture object)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		// Set the texture filtering option (on the currently bound texture object)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		int width, height, nrChannels;
+		unsigned char *data;
+
+		// Tell stb_image.h to flip loaded texture's on the y-axis (to see textures applied normal to outward faces directions)
+		stbi_set_flip_vertically_on_load(true);
+
+		// Load image (without alpha channel)
+		data = stbi_load(sprites[i].c_str(), &width, &height, &nrChannels, 0);
+
+		if (data)
+		{
+			// Generate texture image on the currently bound TO at the active texture unit
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+			// Generate all mipmap levels for the previous currently bound TO
+			glGenerateMipmap(GL_TEXTURE_2D);
+
+			stbi_image_free(data);
+		}
+		else
+		{
+			std::cout << "Failed to load entity sprite at index " << i << std::endl;
+			stbi_image_free(data);
+		}
 	}
-	else
-		std::cout << "Failed to load box texture" << std::endl;
-
-	stbi_image_free(data);
 }
 
-void CreateCubemap(GLuint& textElmtID)
+void CreateSkybox(GLuint& texSkyboxID)
 {
-	std::vector<std::string> faces
-	{
-		"../Images/skybox/milky_way_right.jpg",				// right
-		"../Images/skybox/milky_way_right.jpg",				// -> left
-		"../Images/skybox/stars.jpg",						// top 
-		"../Images/skybox/stars.jpg",						// bottom
-		"../Images/skybox/milky_way_left.jpg",				// back
-		"../Images/skybox/milky_way_left.jpg"				// -> front
-	};
-
-	glBindTexture(GL_TEXTURE_CUBE_MAP, textElmtID);
+	glGenTextures(1, &texSkyboxID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, texSkyboxID);
 
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -181,8 +215,6 @@ void CreateCubemap(GLuint& textElmtID)
 	{
 		data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
 
-		//stbi_set_flip_vertically_on_load(true);
-
 		if (data)
 		{
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -190,12 +222,10 @@ void CreateCubemap(GLuint& textElmtID)
 		}
 		else
 		{
-			std::cout << "Failed to load one of the skybox texture" << std::endl;
+			std::cout << "Failed to load skybox sprite at index " << i << std::endl;
 			stbi_image_free(data);
 		}
 	}
-
-
 }
 
 
@@ -255,147 +285,73 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_DEPTH_CLAMP);
 
-
-	// Build and compile our shader program (no need text files .txt)
+	// Build and compile shader programs
 	Shader shaderSphere("SphereShader.vs", "SphereShader.fs");
 	Shader shaderSkybox("CubeShader.vs", "CubeShader.fs");
 
-	// GENERATION T2O - Generate 10 TO storing its ID within texTab array (graphics memory)
-	GLuint texTab[19];
-	glGenTextures(19, texTab);
-
-	// Load texture image files
-	CreateTexture(texTab[0], GL_RGB, "../Images/8k_sun.jpg");
-
-	CreateTexture(texTab[1], GL_RGB, "../Images/8k_mercury.jpg");
-	CreateTexture(texTab[2], GL_RGB, "../Images/8k_venus.jpg");
-	CreateTexture(texTab[3], GL_RGB, "../Images/8k_earth.jpg");
-	CreateTexture(texTab[4], GL_RGB, "../Images/8k_mars.jpg");
-	CreateTexture(texTab[5], GL_RGB, "../Images/8k_jupiter.jpg");
-	CreateTexture(texTab[6], GL_RGB, "../Images/8k_saturn.jpg");
-	CreateTexture(texTab[7], GL_RGB, "../Images/2k_uranus.jpg");
-	CreateTexture(texTab[8], GL_RGB, "../Images/2k_neptune.jpg");
-	CreateTexture(texTab[9], GL_RGB, "../Images/2k_pluto.jpg");
-
-	CreateTexture(texTab[10], GL_RGB, "../Images/Satellites/orbit.jpg");
-
-	CreateCubemap(texTab[11]);
-
-	CreateTexture(texTab[12], GL_RGB, "../Images/Satellites/8k_luna.jpg");
-
-	CreateTexture(texTab[13], GL_RGB, "../Images/Satellites/callisto.jpg");
-	CreateTexture(texTab[14], GL_RGB, "../Images/Satellites/europa.jpg");
-	CreateTexture(texTab[15], GL_RGB, "../Images/Satellites/ganymede.jpg");
-	CreateTexture(texTab[16], GL_RGB, "../Images/Satellites/io.jpg");
-	CreateTexture(texTab[17], GL_RGB, "../Images/Satellites/titan.png");
-	CreateTexture(texTab[18], GL_RGB, "../Images/Satellites/triton.jpg");
-
-
-
-	// Planet diameters in relation to earth (scaled so that earth radius = 1)
-	float sun_radius = 109.3f;
-	std::vector<float> radii;
-	float mercury_radius = 0.383f;
-	radii.push_back(mercury_radius);
-	float venus_radius = 0.95f;
-	radii.push_back(venus_radius);
-	float earth_radius = 1.0f;
-	radii.push_back(earth_radius);
-	float mars_radius = 0.532f;
-	radii.push_back(mars_radius);
-	float jupiter_radius = 10.97f;
-	radii.push_back(jupiter_radius);
-	float saturn_radius = 9.14f;
-	radii.push_back(saturn_radius);
-	float uranus_radius = 3.981f;
-	radii.push_back(uranus_radius);
-	float neptune_radius = 3.865f;
-	radii.push_back(neptune_radius);
-	float pluto_radius = 0.186f;
-	radii.push_back(pluto_radius);
-
-	//Planet distances from sun in relation to earth's distance
-	glm::vec3 sunPos = glm::vec3(0.0f, 0.0f, 0.0f);
-	float factor = 10.0f;
-	std::vector<float> distances;
-	float mercury_distance = sun_radius + 0.38f * factor;
-	distances.push_back(mercury_distance);
-	float venus_distance = mercury_distance + 0.72f * factor;
-	distances.push_back(venus_distance);
-	float earth_distance = venus_distance + 1.0f * factor;
-	distances.push_back(earth_distance);
-	float mars_distance = earth_distance + 1.52f * factor;
-	distances.push_back(mars_distance);
-	float jupiter_distance = mars_distance + 5.19f * factor;
-	distances.push_back(jupiter_distance);
-	float saturn_distance = jupiter_distance + 9.53f * factor;
-	distances.push_back(saturn_distance);
-	float uranus_distance = saturn_distance + 19.20f * factor;
-	distances.push_back(uranus_distance);
-	float neptune_distance = uranus_distance + 30.05f * factor;
-	distances.push_back(neptune_distance);
-	float pluto_distance = neptune_distance + 39.24f * factor;
-	distances.push_back(pluto_distance);
-
-	// Milky Way background
+	// Milky Way skybox
 	Skybox * sb = new Skybox();
 
-	// Sun
-	Sphere * sun = new Sphere(sun_radius / 2.0f);
+	// GENERATION TAO - Generate TOs storing its ID within texArray (within graphics memory)
+	int spritesSize = sprites.size();
+	GLuint texTab[19];
+	CreateTexture(texTab);
+	CreateSkybox(texTab[spritesSize]);
 
-	// Planets, plutoid and orbits
-	Sphere * planets[9];
-	Orbit * orbits[10];
-	for (int i = 0; i < 9; ++i)
+
+
+	struct EntityInfo
 	{
-		planets[i] = new Sphere(radii[i]);
-		orbits[i] = new Orbit(distances[i]);
+		GLuint textID;
+		float radius;
+		float dist;
+		Sphere * sphere;
+		Orbit * orbit;
+		EntityInfo * planet;
+		float anglePlanet;
+	};
+
+	// Solar System data
+	std::unordered_map<std::string, EntityInfo> data;
+	using dataElmt = std::pair<std::string, EntityInfo>;
+
+	glm::vec3 sunPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	float factor = 10.0f;
+
+	// Texture index
+	// Planet, plutoid and moons (only those > pluto radius in length) radii in relation to earth's radius (= scaled so that earth radius = 1)
+	// Distances between planets (resp. moons) and sun (resp. the planet around which they turn) in relation to earth's distance 
+	// Sphere mesh
+	// Orbit mesh
+	data.insert(dataElmt("Sun",		{ texTab[0],  109.3f, 0.0f, nullptr, nullptr }));
+	data.insert(dataElmt("Mercury", { texTab[1],  0.383f, data["Sun"].radius + 0.38f * factor, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Venus",	{ texTab[2],  0.95f, data["Mercury"].dist + 0.72f * factor, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Earth",	{ texTab[3],  1.0f,	data["Venus"].dist + 1.0f * factor, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Mars",	{ texTab[4],  0.532f, data["Earth"].dist + 1.52f * factor, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Jupiter",	{ texTab[5],  10.97f, data["Mars"].dist + 5.19f * factor, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Saturn",	{ texTab[6],  9.14f, data["Jupiter"].dist + 9.53f * factor, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Uranus",	{ texTab[7],  3.981f, data["Saturn"].dist + 19.20f * factor, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Neptune",	{ texTab[8],  3.865f, data["Uranus"].dist + 30.05f * factor, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Pluto",	{ texTab[9],  0.186f, data["Neptune"].dist + 39.24f * factor, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Luna",	{ texTab[10], 0.273f, data["Earth"].radius + 0.384f * factor, nullptr, nullptr, &data["Earth"] }));
+	data.insert(dataElmt("Callisto",{ texTab[11], 0.378f, data["Jupiter"].radius + 1.883000f * factor, nullptr, nullptr, &data["Jupiter"] }));
+	data.insert(dataElmt("Europa",	{ texTab[12], 0.245f, data["Jupiter"].radius + 0.671000f * factor, nullptr, nullptr, &data["Jupiter"] }));
+	data.insert(dataElmt("Ganymede",{ texTab[13], 0.413f, data["Jupiter"].radius + 1.070000f * factor, nullptr, nullptr, &data["Jupiter"] }));
+	data.insert(dataElmt("Io",		{ texTab[14], 0.286f, data["Jupiter"].radius + 0.422000f * factor, nullptr, nullptr, &data["Jupiter"] }));
+	data.insert(dataElmt("Titan",	{ texTab[15], 0.404f, data["Saturn"].radius + 1.222000f * factor, nullptr, nullptr, &data["Saturn"] }));
+	data.insert(dataElmt("Triton",	{ texTab[16], 0.212f, data["Neptune"].radius + 0.354800f * factor, nullptr, nullptr, &data["Neptune"] }));
+
+	for (auto it = data.begin(); it != data.end(); ++it)
+	{
+		if (it->first == "Sun")
+			it->second.sphere = new Sphere(it->second.radius / 2.0f);
+		else
+		{
+			it->second.sphere = new Sphere(it->second.radius);
+			it->second.orbit = new Orbit(it->second.dist);
+		}
 	}
 
-	// Moon of Earth
-	float luna_radius = 0.273f;
-	Sphere * luna = new Sphere(luna_radius);
-	float earth_luna_distance = earth_radius + 0.384f * factor;
-	float luna_distance = earth_distance + earth_luna_distance;
-	orbits[9] = new Orbit(earth_luna_distance);
-
-	// All moons > pluto size
-	std::vector<float> moonRadii;
-	float callisto_radius = 0.378f;
-	moonRadii.push_back(callisto_radius);
-	float europa_radius = 0.245f;
-	moonRadii.push_back(europa_radius);
-	float ganymede_radius = 0.413f;
-	moonRadii.push_back(ganymede_radius);
-	float io_radius = 0.286f;
-	moonRadii.push_back(io_radius);
-	float titan_radius = 0.404f;
-	moonRadii.push_back(titan_radius);
-	float triton_radius = 0.212f;
-	moonRadii.push_back(triton_radius);
-
-	// All distance moons to their corresponding planets
-	std::vector<float> moonDistances;
-	float jupiter_callisto_distance = jupiter_radius + 1.883000f * factor;
-	moonDistances.push_back(jupiter_callisto_distance);
-	float jupiter_europa_distance = jupiter_radius + 0.671000f * factor;
-	moonDistances.push_back(jupiter_europa_distance);
-	float jupiter_ganymede_distance = jupiter_radius + 1.070000f * factor;
-	moonDistances.push_back(jupiter_ganymede_distance);
-	float jupiter_io_distance = jupiter_radius + 0.422000f * factor;
-	moonDistances.push_back(jupiter_io_distance);
-	float saturn_titan_distance = saturn_radius + 1.222000f * factor;
-	moonDistances.push_back(saturn_titan_distance);
-	float neptune_triton_distance = neptune_radius + 0.354800f * factor;
-	moonDistances.push_back(neptune_triton_distance);
-
-	Sphere * moons[6];
-	Orbit * moonOrbits[6];
-	for (int i = 0; i < 6; ++i)
-	{
-		moons[i] = new Sphere(moonRadii[i]);
-		moonOrbits[i] = new Orbit(moonDistances[i]);
-	}
 
 
 
@@ -430,16 +386,13 @@ int main()
 
 
 
-		// Calculate the PROJECTION matrix (since it rarely changes, it's often best practice to set it once outside the main loop)
-		// Set far plane value to a sufficiently high one to be able to visualize all meshes
-		glm::mat4 projection = glm::mat4(1.0f);
-		projection = glm::perspective(glm::radians(camera.Zoom), (float)(SCR_WIDTH / SCR_HEIGHT), 0.1f, 1000.0f);
+		// Calculate the PROJECTION matrix (simulate a zoom - set far plane variable to a sufficiently high value)
+		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)(SCR_WIDTH / SCR_HEIGHT), 0.1f, 1000.0f);
 
 		// Calculate the VIEW matrix (simulate a camera circling around the scene)
-		glm::mat4 view = glm::mat4(1.0f);
-		view = camera.GetViewMatrix();
+		glm::mat4 view = camera.GetViewMatrix();
 
-		// Calculate the MODEL matrix for the sun (with translations applied to center it) 
+		// Calculate the MODEL matrix for the sun (simulate movements that affects the sun)
 		glm::mat4 modelSun = glm::mat4(1.0f);
 		modelSun = glm::translate(modelSun, sunPos);
 		modelSun = glm::rotate(modelSun, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -452,180 +405,88 @@ int main()
 
 		// Activate the texture unit before binding texture
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texTab[0]);
+		glBindTexture(GL_TEXTURE_2D, data["Sun"].textID);
 
 		shaderSphere.setInt("texSampler", 0);	// SEEM UNEFFECTIVE
 
-		sun->Draw();
+		data["Sun"].sphere->Draw();
 
 
+		int count = 1;
 
 		// Render the 10 planets orbiting around the sun and their orbits
-		for (unsigned int i = 0; i < 9; i++)
+		for (auto it = data.begin(); it != data.end(); it++)
 		{
-			// Calculate the MODEL matrix for each cube (with translations applied to see them all) 
-			glm::mat4 modelPlanet = glm::mat4(1.0f);
-
-			float anglePl = (float)(glfwGetTime() * (i+1));
-			float anglePlInRad = glm::radians(anglePl);
-
-			// ORBITAL MOTION : rotation around the sun
-			modelPlanet = glm::translate(modelPlanet, glm::vec3(distances[i] * sin(anglePlInRad), 0.0f, distances[i] * cos(anglePlInRad)));
-			// Rotation (permanent since the beginning) on itself to have texture seen horizontaly
-			modelPlanet = glm::rotate(modelPlanet, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			// PROGRADE MOTION (not retrograde) : rotation on itself
-			modelPlanet = glm::rotate(modelPlanet, anglePl, glm::vec3(0.0f, 0.0f, 1.0f));
-
-			shaderSphere.use();
-			shaderSphere.setMat4("model", modelPlanet);
-
-			// Activate the texture unit before binding texture
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, texTab[i + 1]);
-
-			shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
-
-			planets[i]->Draw();
-
-			// Drawing Luna and its orbit
-			if (i == 2)
+			if (it->first == "Sun")
+				continue;
+			else if (it->second.planet == nullptr)
 			{
-				glm::mat4 modelLuna = glm::mat4(1.0f);
+				// Calculate the MODEL matrix for each cube (with translations applied to see them all) 
+				glm::mat4 modelPlanet = glm::mat4(1.0f);
 
-				float angleLuna = (float)(glfwGetTime() * (i + 10));
-				float angleLunaInRad = glm::radians(angleLuna);
+				float anglePl = (float)(glfwGetTime() * count);
+				float anglePlInRad = glm::radians(anglePl);
+				it->second.anglePlanet = anglePlInRad;
 
-				modelLuna = glm::translate(modelLuna, glm::vec3(earth_distance * sin(anglePlInRad), 0.0f, earth_distance * cos(anglePlInRad)));
-				modelLuna = glm::translate(modelLuna, glm::vec3(earth_luna_distance * sin(angleLunaInRad), 0.0f, earth_luna_distance * cos(angleLunaInRad)));
-				modelLuna = glm::rotate(modelLuna, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				modelLuna = glm::rotate(modelLuna, angleLuna, glm::vec3(0.0f, 0.0f, 1.0f));
+				// ORBITAL MOTION : rotation around the sun
+				modelPlanet = glm::translate(modelPlanet, glm::vec3(it->second.dist * sin(anglePlInRad), 0.0f, it->second.dist * cos(anglePlInRad)));
+				// Rotation (permanent since the beginning) on itself to have texture seen horizontaly
+				modelPlanet = glm::rotate(modelPlanet, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				// PROGRADE MOTION (not retrograde) : rotation on itself
+				modelPlanet = glm::rotate(modelPlanet, anglePl, glm::vec3(0.0f, 0.0f, 1.0f));
 
 				shaderSphere.use();
-				shaderSphere.setMat4("model", modelLuna);
+				shaderSphere.setMat4("model", modelPlanet);
+
+				// Activate the texture unit before binding texture
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, texTab[12]);
+				glBindTexture(GL_TEXTURE_2D, it->second.textID);
+
 				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
 
-				luna->Draw();
+				it->second.sphere->Draw();
 
 				// Drawing planet orbites
 				glm::mat4 modelOrbit = glm::mat4(1.0f);
-				modelOrbit = glm::translate(modelOrbit, glm::vec3(earth_distance * sin(anglePlInRad), 0.0f, earth_distance * cos(anglePlInRad)));
 				shaderSphere.use();
 				shaderSphere.setMat4("model", modelOrbit);
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, texTab[10]);
+				glBindTexture(GL_TEXTURE_2D, texTab[spritesSize - 1]);
 				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
-				orbits[9]->Draw();
+				it->second.orbit->Draw();
 			}
-
-			// Drawing galilean moons and its respective orbites
-			else if (i == 4)
+			else
 			{
-				for (unsigned int j = 0; j < 4; ++j)
-				{
-					glm::mat4 modelGalileanMoon = glm::mat4(1.0f);
+				glm::mat4 modelMoon = glm::mat4(1.0f);
 
-					float angleMoon = (float)(glfwGetTime() * (i + 10));
-					float angleMoonInRad = glm::radians(angleMoon);
+				float angleMoon = (float)(glfwGetTime() * (count + 10));
+				float angleMoonInRad = glm::radians(angleMoon);
 
-					modelGalileanMoon = glm::translate(modelGalileanMoon, glm::vec3(jupiter_distance * sin(anglePlInRad), 0.0f, jupiter_distance * cos(anglePlInRad)));
-					modelGalileanMoon = glm::translate(modelGalileanMoon, glm::vec3(moonDistances[j] * sin(angleMoonInRad), 0.0f, moonDistances[j] * cos(angleMoonInRad)));
-					modelGalileanMoon = glm::rotate(modelGalileanMoon, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-					modelGalileanMoon = glm::rotate(modelGalileanMoon, angleMoon, glm::vec3(0.0f, 0.0f, 1.0f));
-
-					shaderSphere.use();
-					shaderSphere.setMat4("model", modelGalileanMoon);
-					glActiveTexture(GL_TEXTURE0);
-					glBindTexture(GL_TEXTURE_2D, texTab[13 + j]);
-					shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
-
-					moons[j]->Draw();
-
-					// Drawing planet orbites
-					glm::mat4 modelGalileanOrbit = glm::mat4(1.0f);
-					modelGalileanOrbit = glm::translate(modelGalileanOrbit, glm::vec3(jupiter_distance * sin(anglePlInRad), 0.0f, jupiter_distance * cos(anglePlInRad)));
-					shaderSphere.use();
-					shaderSphere.setMat4("model", modelGalileanOrbit);
-					glActiveTexture(GL_TEXTURE0);
-					glBindTexture(GL_TEXTURE_2D, texTab[10]);
-					shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
-					moonOrbits[j]->Draw();
-				}
-			}
-
-			// Drawing Titan and its orbit
-			if (i == 5)
-			{
-				glm::mat4 modelTitan = glm::mat4(1.0f);
-
-				float angleTitan = (float)(glfwGetTime() * (i + 10));
-				float angleTitanInRad = glm::radians(angleTitan);
-
-				modelTitan = glm::translate(modelTitan, glm::vec3(saturn_distance * sin(anglePlInRad), 0.0f, saturn_distance * cos(anglePlInRad)));
-				modelTitan = glm::translate(modelTitan, glm::vec3(saturn_titan_distance * sin(angleTitanInRad), 0.0f, saturn_titan_distance * cos(angleTitanInRad)));
-				modelTitan = glm::rotate(modelTitan, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				modelTitan = glm::rotate(modelTitan, angleTitan, glm::vec3(0.0f, 0.0f, 1.0f));
+				modelMoon = glm::translate(modelMoon, glm::vec3(it->second.planet->dist  * sin(it->second.planet->anglePlanet), 0.0f, it->second.planet->dist * cos(it->second.planet->anglePlanet)));
+				modelMoon = glm::translate(modelMoon, glm::vec3(it->second.dist * sin(angleMoonInRad), 0.0f, it->second.dist * cos(angleMoonInRad)));
+				modelMoon = glm::rotate(modelMoon, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				modelMoon = glm::rotate(modelMoon, angleMoon, glm::vec3(0.0f, 0.0f, 1.0f));
 
 				shaderSphere.use();
-				shaderSphere.setMat4("model", modelTitan);
+				shaderSphere.setMat4("model", modelMoon);
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, texTab[17]);
+				glBindTexture(GL_TEXTURE_2D, it->second.textID);
 				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
 
-				moons[4]->Draw();
+				it->second.sphere->Draw();
 
 				// Drawing planet orbites
 				glm::mat4 modelOrbit = glm::mat4(1.0f);
-				modelOrbit = glm::translate(modelOrbit, glm::vec3(saturn_distance * sin(anglePlInRad), 0.0f, saturn_distance * cos(anglePlInRad)));
+				modelOrbit = glm::translate(modelOrbit, glm::vec3(it->second.planet->dist * sin(it->second.planet->anglePlanet), 0.0f, it->second.planet->dist * cos(it->second.planet->anglePlanet)));
 				shaderSphere.use();
 				shaderSphere.setMat4("model", modelOrbit);
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, texTab[10]);
+				glBindTexture(GL_TEXTURE_2D, texTab[spritesSize - 1]);
 				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
-				moonOrbits[4]->Draw();
+				it->second.orbit->Draw();
 			}
 
-			// Drawing Triton and its orbit
-			if (i == 7)
-			{
-				glm::mat4 modelTriton = glm::mat4(1.0f);
-
-				float angleTriton = (float)(glfwGetTime() * (i + 10));
-				float angleTritonInRad = glm::radians(angleTriton);
-
-				modelTriton = glm::translate(modelTriton, glm::vec3(neptune_distance * sin(anglePlInRad), 0.0f, neptune_distance * cos(anglePlInRad)));
-				modelTriton = glm::translate(modelTriton, glm::vec3(neptune_triton_distance * sin(angleTritonInRad), 0.0f, neptune_triton_distance * cos(angleTritonInRad)));
-				modelTriton = glm::rotate(modelTriton, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				modelTriton = glm::rotate(modelTriton, angleTriton, glm::vec3(0.0f, 0.0f, 1.0f));
-
-				shaderSphere.use();
-				shaderSphere.setMat4("model", modelTriton);
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, texTab[18]);
-				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
-
-				moons[5]->Draw();
-
-				// Drawing planet orbites
-				glm::mat4 modelOrbit = glm::mat4(1.0f);
-				modelOrbit = glm::translate(modelOrbit, glm::vec3(neptune_distance * sin(anglePlInRad), 0.0f, neptune_distance * cos(anglePlInRad)));
-				shaderSphere.use();
-				shaderSphere.setMat4("model", modelOrbit);
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, texTab[10]);
-				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
-				moonOrbits[5]->Draw();
-			}
-
-			// Drawing planet orbites
-			glm::mat4 modelOrbit = glm::mat4(1.0f);
-			shaderSphere.use();
-			shaderSphere.setMat4("model", modelOrbit);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, texTab[10]);
-			shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
-			orbits[i]->Draw();
+			++count;
 		}
 
 		glDepthFunc(GL_LEQUAL);		// change depth function so depth test passes when values are equal to depth buffer's content
@@ -635,7 +496,7 @@ int main()
 		shaderSkybox.setMat4("view", viewSb);
 		shaderSkybox.setMat4("projection", projectionSb);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, texTab[11]);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, texTab[spritesSize]);
 		shaderSkybox.setInt("texSampler", 0);
 		sb->Draw();
 		glDepthFunc(GL_LESS);			// set depth function back to default

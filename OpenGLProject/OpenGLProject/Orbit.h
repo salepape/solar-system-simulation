@@ -3,10 +3,8 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <stdio.h>
 
-#include <vector>
+
 
 class Orbit
 {
@@ -37,39 +35,14 @@ public:
 		nbMeridStrips = 100;
 		std::vector<float> vertCoor;
 
-
-
-
-
 		for (int i = 0; i <= nbMeridStrips; ++i)
 		{
 			theta = 2.0f * pi * (float)i / nbMeridStrips;
-			//theta = glm::radians(2.0f * pi * (float)i / nbMeridStrips);
 
 			vertCoor.push_back(radius * glm::sin(theta));
 			vertCoor.push_back(0.0f);
 			vertCoor.push_back(radius * glm::cos(theta));
 		}
-
-		//theta = 2.0f * pi / (float)nbMeridStrips;
-		//float cosTheta = glm::cos(theta);
-		//float sinTheta = glm::sin(theta);
-
-		//float xc = 1.0f;
-		//float yc = 0.0f;
-
-		//for (int i = 0; i <= nbMeridStrips; ++i)
-		//{
-		//	float xcNew = cosTheta * xc - sinTheta * yc;
-		//	yc = sinTheta * xc + cosTheta * yc;
-		//	xc = xcNew;
-
-		//	vertCoor.push_back(xcNew);
-		//	vertCoor.push_back(yc);
-		//}
-
-		//vertCoor.push_back(1.0f);
-		//vertCoor.push_back(0.0f);
 
 
 
@@ -86,7 +59,6 @@ public:
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-		//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -96,7 +68,6 @@ public:
 	{
 		glBindVertexArray(VAO);
 
-		//glDrawArrays(GL_TRIANGLE_FAN, 0, nbMeridStrips);
 		glDrawArrays(GL_LINE_LOOP, 0, nbMeridStrips);
 	}
 
