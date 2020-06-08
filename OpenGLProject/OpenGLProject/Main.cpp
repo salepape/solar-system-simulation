@@ -261,8 +261,8 @@ int main()
 	Shader shaderSkybox("CubeShader.vs", "CubeShader.fs");
 
 	// GENERATION T2O - Generate 10 TO storing its ID within texTab array (graphics memory)
-	GLuint texTab[12];
-	glGenTextures(12, texTab);
+	GLuint texTab[13];
+	glGenTextures(13, texTab);
 
 	// Load texture image files
 	CreateTexture(texTab[0], GL_RGB, "../Images/8k_sun.jpg");
@@ -281,7 +281,7 @@ int main()
 
 	CreateCubemap(texTab[11]);
 
-
+	CreateTexture(texTab[12], GL_RGB, "../Images/Satellites/8k_luna.jpg");
 
 
 
@@ -340,12 +340,18 @@ int main()
 
 	// Planets and orbits
 	Sphere * planets[9];
-	Orbit * orbits[9];
+	Orbit * orbits[10];
 	for (int i = 0; i < 9; ++i)
 	{
 		planets[i] = new Sphere(radii[i]);
 		orbits[i] = new Orbit(distances[i]);
 	}
+
+	float luna_radius = 0.273f;
+	Sphere * luna = new Sphere(luna_radius);
+	float earth_luna_distance = 0.384f * factor;
+	float luna_distance = earth_distance + earth_luna_distance;
+	orbits[9] = new Orbit(earth_luna_distance);
 
 
 
@@ -412,21 +418,21 @@ int main()
 
 
 
-		// Render the 10 planets orbiting around the sun
+		// Render the 10 planets orbiting around the sun and their orbits
 		for (unsigned int i = 0; i < 9; i++)
 		{
 			// Calculate the MODEL matrix for each cube (with translations applied to see them all) 
 			glm::mat4 modelPlanet = glm::mat4(1.0f);
 
-			float angleSat = (float)(glfwGetTime() * (i+1));
-			float angleSatInRad = glm::radians(angleSat);
+			float anglePl = (float)(glfwGetTime() * (i+1));
+			float anglePlInRad = glm::radians(anglePl);
 
 			// ORBITAL MOTION : rotation around the sun
-			modelPlanet = glm::translate(modelPlanet, glm::vec3(distances[i] * sin(angleSatInRad), 0.0f, distances[i] * cos(angleSatInRad)));
+			modelPlanet = glm::translate(modelPlanet, glm::vec3(distances[i] * sin(anglePlInRad), 0.0f, distances[i] * cos(anglePlInRad)));
 			// Rotation (permanent since the beginning) on itself to have texture seen horizontaly
 			modelPlanet = glm::rotate(modelPlanet, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			// PROGRADE MOTION (not retrograde) : rotation on itself
-			modelPlanet = glm::rotate(modelPlanet, angleSat, glm::vec3(0.0f, 0.0f, 1.0f));
+			modelPlanet = glm::rotate(modelPlanet, anglePl, glm::vec3(0.0f, 0.0f, 1.0f));
 
 			shaderSphere.use();
 			shaderSphere.setMat4("model", modelPlanet);
@@ -439,10 +445,39 @@ int main()
 
 			planets[i]->Draw();
 
+			// Drawing luna and its orbite
+			if (i == 2)
+			{
+				glm::mat4 modelLuna = glm::mat4(1.0f);
 
+				float angleLuna = (float)(glfwGetTime() * (i + 10));
+				float angleLunaInRad = glm::radians(angleLuna);
 
+				modelLuna = glm::translate(modelLuna, glm::vec3(earth_distance * sin(anglePlInRad), 0.0f, earth_distance * cos(anglePlInRad)));
+				modelLuna = glm::translate(modelLuna, glm::vec3(earth_luna_distance * sin(angleLunaInRad), 0.0f, earth_luna_distance * cos(angleLunaInRad)));
+				modelLuna = glm::rotate(modelLuna, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				modelLuna = glm::rotate(modelLuna, angleLuna, glm::vec3(0.0f, 0.0f, 1.0f));
 
+				shaderSphere.use();
+				shaderSphere.setMat4("model", modelLuna);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, texTab[12]);
+				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
 
+				luna->Draw();
+
+				// Drawing planet orbites
+				glm::mat4 modelOrbit = glm::mat4(1.0f);
+				modelOrbit = glm::translate(modelOrbit, glm::vec3(earth_distance * sin(anglePlInRad), 0.0f, earth_distance * cos(anglePlInRad)));
+				shaderSphere.use();
+				shaderSphere.setMat4("model", modelOrbit);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, texTab[10]);
+				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
+				orbits[9]->Draw();
+			}
+
+			// Drawing planet orbites
 			glm::mat4 modelOrbit = glm::mat4(1.0f);
 			shaderSphere.use();
 			shaderSphere.setMat4("model", modelOrbit);
