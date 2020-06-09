@@ -305,6 +305,7 @@ int main()
 		GLuint textID;
 		float radius;
 		float dist;
+		float obliquity;
 		Sphere * sphere;
 		Orbit * orbit;
 		EntityInfo * planet;
@@ -321,25 +322,28 @@ int main()
 	// Texture index
 	// Planet, plutoid and moons (only those > pluto radius in length) radii in relation to earth's radius (= scaled so that earth radius = 1)
 	// Distances between planets (resp. moons) and sun (resp. the planet around which they turn) in relation to earth's distance 
+	// Or axial tilt : angle between planet / moon axis rotation and the normal of its orbital plane (in radians)
 	// Sphere mesh
 	// Orbit mesh
-	data.insert(dataElmt("Sun",		{ texTab[0],  109.3f, 0.0f, nullptr, nullptr }));
-	data.insert(dataElmt("Mercury", { texTab[1],  0.383f, data["Sun"].radius + 0.38f * factor, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Venus",	{ texTab[2],  0.95f, data["Mercury"].dist + 0.72f * factor, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Earth",	{ texTab[3],  1.0f,	data["Venus"].dist + 1.0f * factor, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Mars",	{ texTab[4],  0.532f, data["Earth"].dist + 1.52f * factor, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Jupiter",	{ texTab[5],  10.97f, data["Mars"].dist + 5.19f * factor, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Saturn",	{ texTab[6],  9.14f, data["Jupiter"].dist + 9.53f * factor, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Uranus",	{ texTab[7],  3.981f, data["Saturn"].dist + 19.20f * factor, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Neptune",	{ texTab[8],  3.865f, data["Uranus"].dist + 30.05f * factor, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Pluto",	{ texTab[9],  0.186f, data["Neptune"].dist + 39.24f * factor, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Luna",	{ texTab[10], 0.273f, data["Earth"].radius + 0.384f * factor, nullptr, nullptr, &data["Earth"] }));
-	data.insert(dataElmt("Callisto",{ texTab[11], 0.378f, data["Jupiter"].radius + 1.883000f * factor, nullptr, nullptr, &data["Jupiter"] }));
-	data.insert(dataElmt("Europa",	{ texTab[12], 0.245f, data["Jupiter"].radius + 0.671000f * factor, nullptr, nullptr, &data["Jupiter"] }));
-	data.insert(dataElmt("Ganymede",{ texTab[13], 0.413f, data["Jupiter"].radius + 1.070000f * factor, nullptr, nullptr, &data["Jupiter"] }));
-	data.insert(dataElmt("Io",		{ texTab[14], 0.286f, data["Jupiter"].radius + 0.422000f * factor, nullptr, nullptr, &data["Jupiter"] }));
-	data.insert(dataElmt("Titan",	{ texTab[15], 0.404f, data["Saturn"].radius + 1.222000f * factor, nullptr, nullptr, &data["Saturn"] }));
-	data.insert(dataElmt("Triton",	{ texTab[16], 0.212f, data["Neptune"].radius + 0.354800f * factor, nullptr, nullptr, &data["Neptune"] }));
+	// Reference to the planet object to be able to make computation for its moon
+	// Angle of rotation around the sun (in radians)
+	data.insert(dataElmt("Sun",		{ texTab[0],  109.3f, 0.0f, 0.0f, nullptr, nullptr }));
+	data.insert(dataElmt("Mercury", { texTab[1],  0.383f, data["Sun"].radius + 0.38f * factor, 0.1f, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Venus",	{ texTab[2],  0.95f, data["Mercury"].dist + 0.72f * factor, 177.4f, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Earth",	{ texTab[3],  1.0f,	data["Venus"].dist + 1.0f * factor, 23.45f, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Mars",	{ texTab[4],  0.532f, data["Earth"].dist + 1.52f * factor, 25.19f, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Jupiter",	{ texTab[5],  10.97f, data["Mars"].dist + 5.19f * factor, 3.12f, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Saturn",	{ texTab[6],  9.14f, data["Jupiter"].dist + 9.53f * factor, 26.73f, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Uranus",	{ texTab[7],  3.981f, data["Saturn"].dist + 19.20f * factor, 97.86f, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Neptune",	{ texTab[8],  3.865f, data["Uranus"].dist + 30.05f * factor, 29.56f, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Pluto",	{ texTab[9],  0.186f, data["Neptune"].dist + 39.24f * factor, 119.6f, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Luna",	{ texTab[10], 0.273f, data["Earth"].radius + 0.384f * factor, 6.687f, nullptr, nullptr, &data["Earth"] }));
+	data.insert(dataElmt("Callisto",{ texTab[11], 0.378f, data["Jupiter"].radius + 1.883000f * factor, 0.0f, nullptr, nullptr, &data["Jupiter"] }));
+	data.insert(dataElmt("Europa",	{ texTab[12], 0.245f, data["Jupiter"].radius + 0.671000f * factor, 0.1f, nullptr, nullptr, &data["Jupiter"] }));
+	data.insert(dataElmt("Ganymede",{ texTab[13], 0.413f, data["Jupiter"].radius + 1.070000f * factor, 0.16f, nullptr, nullptr, &data["Jupiter"] }));
+	data.insert(dataElmt("Io",		{ texTab[14], 0.286f, data["Jupiter"].radius + 0.422000f * factor, 0.0f, nullptr, nullptr, &data["Jupiter"] }));
+	data.insert(dataElmt("Titan",	{ texTab[15], 0.404f, data["Saturn"].radius + 1.222000f * factor, 0.0f, nullptr, nullptr, &data["Saturn"] }));
+	data.insert(dataElmt("Triton",	{ texTab[16], 0.212f, data["Neptune"].radius + 0.354800f * factor, 0.0f, nullptr, nullptr, &data["Neptune"] }));
 
 	for (auto it = data.begin(); it != data.end(); ++it)
 	{
@@ -419,24 +423,30 @@ int main()
 		{
 			if (it->first == "Sun")
 				continue;
-			else if (it->second.planet == nullptr)
+			else
 			{
 				// Calculate the MODEL matrix for each cube (with translations applied to see them all) 
-				glm::mat4 modelPlanet = glm::mat4(1.0f);
+				glm::mat4 modelSphere = glm::mat4(1.0f);
 
-				float anglePl = (float)(glfwGetTime() * count);
-				float anglePlInRad = glm::radians(anglePl);
-				it->second.anglePlanet = anglePlInRad;
+				float angleRotSun = glm::radians((float)(glfwGetTime() * count));
+				if(it->second.planet != nullptr)
+					angleRotSun += 10.0f;
+				if (it->second.planet == nullptr)
+					it->second.anglePlanet = angleRotSun;
+				float angleRotItself = angleRotSun * 2.0f;
 
-				// ORBITAL MOTION : rotation around the sun
-				modelPlanet = glm::translate(modelPlanet, glm::vec3(it->second.dist * sin(anglePlInRad), 0.0f, it->second.dist * cos(anglePlInRad)));
-				// Rotation (permanent since the beginning) on itself to have texture seen horizontaly
-				modelPlanet = glm::rotate(modelPlanet, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				// Circular translation around planet (for moons only)
+				if (it->second.planet != nullptr)
+					modelSphere = glm::translate(modelSphere, glm::vec3(it->second.planet->dist  * sin(it->second.planet->anglePlanet), 0.0f, it->second.planet->dist * cos(it->second.planet->anglePlanet)));
+				// ORBITAL MOTION : circular translation around the sun
+				modelSphere = glm::translate(modelSphere, glm::vec3(it->second.dist * sin(angleRotSun), 0.0f, it->second.dist * cos(angleRotSun)));
+				// Rotation on itself to have texture seen horizontaly + obliquity angle
+				modelSphere = glm::rotate(modelSphere, glm::radians(90.0f + it->second.obliquity), glm::vec3(1.0f, 0.0f, 0.0f));
 				// PROGRADE MOTION (not retrograde) : rotation on itself
-				modelPlanet = glm::rotate(modelPlanet, anglePl, glm::vec3(0.0f, 0.0f, 1.0f));
+				modelSphere = glm::rotate(modelSphere, angleRotItself, glm::vec3(0.0f, 0.0f, 1.0f));
 
 				shaderSphere.use();
-				shaderSphere.setMat4("model", modelPlanet);
+				shaderSphere.setMat4("model", modelSphere);
 
 				// Activate the texture unit before binding texture
 				glActiveTexture(GL_TEXTURE0);
@@ -448,36 +458,8 @@ int main()
 
 				// Drawing planet orbites
 				glm::mat4 modelOrbit = glm::mat4(1.0f);
-				shaderSphere.use();
-				shaderSphere.setMat4("model", modelOrbit);
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, texTab[spritesSize - 1]);
-				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
-				it->second.orbit->Draw();
-			}
-			else
-			{
-				glm::mat4 modelMoon = glm::mat4(1.0f);
-
-				float angleMoon = (float)(glfwGetTime() * (count + 10));
-				float angleMoonInRad = glm::radians(angleMoon);
-
-				modelMoon = glm::translate(modelMoon, glm::vec3(it->second.planet->dist  * sin(it->second.planet->anglePlanet), 0.0f, it->second.planet->dist * cos(it->second.planet->anglePlanet)));
-				modelMoon = glm::translate(modelMoon, glm::vec3(it->second.dist * sin(angleMoonInRad), 0.0f, it->second.dist * cos(angleMoonInRad)));
-				modelMoon = glm::rotate(modelMoon, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				modelMoon = glm::rotate(modelMoon, angleMoon, glm::vec3(0.0f, 0.0f, 1.0f));
-
-				shaderSphere.use();
-				shaderSphere.setMat4("model", modelMoon);
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, it->second.textID);
-				shaderSphere.setInt("texSampler", 0); // SEEM UNEFFECTIVE
-
-				it->second.sphere->Draw();
-
-				// Drawing planet orbites
-				glm::mat4 modelOrbit = glm::mat4(1.0f);
-				modelOrbit = glm::translate(modelOrbit, glm::vec3(it->second.planet->dist * sin(it->second.planet->anglePlanet), 0.0f, it->second.planet->dist * cos(it->second.planet->anglePlanet)));
+				if (it->second.planet != nullptr)
+					modelOrbit = glm::translate(modelOrbit, glm::vec3(it->second.planet->dist * sin(it->second.planet->anglePlanet), 0.0f, it->second.planet->dist * cos(it->second.planet->anglePlanet)));
 				shaderSphere.use();
 				shaderSphere.setMat4("model", modelOrbit);
 				glActiveTexture(GL_TEXTURE0);
@@ -489,9 +471,9 @@ int main()
 			++count;
 		}
 
-		glDepthFunc(GL_LEQUAL);		// change depth function so depth test passes when values are equal to depth buffer's content
+		glDepthFunc(GL_LEQUAL);				// Change depth function so that depth test passes when values are equal to depth buffer's content
 		glm::mat4 projectionSb = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-		glm::mat4 viewSb = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
+		glm::mat4 viewSb = glm::mat4(glm::mat3(camera.GetViewMatrix())); 
 		shaderSkybox.use();
 		shaderSkybox.setMat4("view", viewSb);
 		shaderSkybox.setMat4("projection", projectionSb);
@@ -499,7 +481,7 @@ int main()
 		glBindTexture(GL_TEXTURE_CUBE_MAP, texTab[spritesSize]);
 		shaderSkybox.setInt("texSampler", 0);
 		sb->Draw();
-		glDepthFunc(GL_LESS);			// set depth function back to default
+		glDepthFunc(GL_LESS);				// Set depth function back to default
 
 
 
