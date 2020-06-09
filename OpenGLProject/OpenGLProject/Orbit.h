@@ -6,10 +6,11 @@
 
 
 
+// Approximation : all planet / moon orbits will be circular (eccentricities close to 0)
 class Orbit
 {
 private:
-	// Angle increment / degree of smoothness
+	// Number of edges (controls degree of smoothness)
 	int nbMeridStrips;
 	// Vertex Array Object
 	unsigned int VAO;
@@ -17,7 +18,7 @@ private:
 	unsigned int VBO;
 	// Element Buffer Object
 	unsigned int EBO;
-	// Radius of the orbit (= distance sun / corresponding planet)
+	// Radius of the orbit (= distance between sun and corresponding planet) (dimensionless - "distance unit chosen ~ 100km")
 	float radius;
 
 
@@ -27,10 +28,6 @@ public:
 	{
 		radius = radiusArg;
 
-		// ZONE  = triangle or square formed by intersection of 1 meridian strip and 1 parallel strip
-		// THETA = ANGLE BETWEEN 2 ZONES OF ONE PARALLEL STRIP; 
-		// PHI   = ANGLE BETWEEN 2 ZONES OF ONE MERIDIAN STRIP; 
-		//-> using spherical coordinate system
 		float pi = glm::pi<float>(), theta;
 		nbMeridStrips = 100;
 		std::vector<float> vertCoor;

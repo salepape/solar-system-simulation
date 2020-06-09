@@ -128,9 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Background.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Cube.h" />
     <ClInclude Include="Orbit.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skybox.h" />

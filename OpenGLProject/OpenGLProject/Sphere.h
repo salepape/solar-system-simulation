@@ -7,6 +7,7 @@
 #include <vector>
 
 
+
 class Sphere
 {
 private:
@@ -18,7 +19,7 @@ private:
 	unsigned int VBO;
 	// Element Buffer Object
 	unsigned int EBO;
-	// Radius of the planet
+	// Radius of the planet (dimensionless - "distance unit chosen ~ 100km")
 	float radius;
 
 
@@ -29,8 +30,8 @@ public:
 		radius = radiusArg;
 
 		// ZONE  = triangle or square formed by intersection of 1 meridian strip and 1 parallel strip
-		// THETA = ANGLE BETWEEN 2 ZONES OF ONE PARALLEL STRIP; 
-		// PHI   = ANGLE BETWEEN 2 ZONES OF ONE MERIDIAN STRIP; 
+		// THETA = ANGLE BETWEEN 2 ZONES OF ONE PARALLEL STRIP (in radians); 
+		// PHI   = ANGLE BETWEEN 2 ZONES OF ONE MERIDIAN STRIP (in radians); 
 		//-> using spherical coordinate system
 		float pi = glm::pi<float>(), theta, cosTheta, phi, zCoor;
 		int nbParalStrips = 100, nbMeridStrips = 100;
