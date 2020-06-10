@@ -57,6 +57,7 @@ std::vector<std::string> sprites
 	"../Images/Satellites/titan.tga",
 	"../Images/Satellites/triton.tga",
 
+	"../Images/asteroid.tga",
 	"../Images/saturn_ring.tga"
 };
 
@@ -292,27 +293,28 @@ int main()
 
 
 
-
-
-
-
-
 	glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_DEPTH_CLAMP);
 
 	// Build and compile shader programs
-	Shader shaderSphere("SphereShader.vs", "SphereShader.fs");
-	Shader shaderSkybox("CubeShader.vs", "CubeShader.fs");
+	Shader sphereShader("SphereShader.vs", "SphereShader.fs");
+	Shader skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
+	Shader asteroidShader("AsteroidShader.vs", "AsteroidShader.fs");
 
-	// Load model
+	// Load models
 	Model saturnRings("../Models/SaturnRings.obj");
+	Model asteroid("../Models/rock.obj");
+
+
+
+
 
 	// Milky Way skybox
 	Skybox * sb = new Skybox();
 
 	// GENERATION TAO - Generate TOs storing its ID within texArray (within graphics memory)
 	int spritesSize = sprites.size();
-	GLuint texTab[21];
+	GLuint texTab[22];
 	CreateTexture(texTab);
 	CreateSkybox(texTab[spritesSize]);
 
@@ -386,7 +388,84 @@ int main()
 
 
 
+	struct Belt
+	{
+		int asteroidNb;
+		int sizeFactor;
+		float radius;
+		float tubeRadius;
+	};
 
+	Belt asteroidBelt = { 10000, 10, data["Mars"].dist * 1.1f, 2.75f * FACTOR / 2.5f };
+	Belt kuiperBelt = { 20000, 20, data["Neptune"].dist * 1.4f, 30.05f * FACTOR };
+	std::vector<Belt> belts = { asteroidBelt, kuiperBelt };
+
+	// Generate large list of semi-random model transformation matrices, each representing an asteroid in a belt
+	glm::mat4 * modelMatrices;
+	int totalNbAsteroid = asteroidBelt.asteroidNb + kuiperBelt.asteroidNb;
+	modelMatrices = new glm::mat4[totalNbAsteroid];
+	srand((unsigned int)glfwGetTime());					// Initialize random seed	
+
+	int k = 0;
+	for (int b = 0; b < belts.size(); ++b)
+	{
+		for (unsigned int i = k + 0; i < k + belts[b].asteroidNb; i++)
+		{
+			glm::mat4 model = glm::mat4(1.0f);
+			// TRANSLATION : compute random position within the belt tore
+			float angle = (float)i / (float)belts[b].asteroidNb * 360.0f;
+			float displacement = (rand() % (int)(2 * belts[b].tubeRadius * 100)) / 100.0f - belts[b].tubeRadius;
+			float x = sin(angle) * belts[b].radius + displacement;
+			displacement = (rand() % (int)(2 * belts[b].tubeRadius * 100)) / 100.0f - belts[b].tubeRadius;
+			float y = displacement * 0.4f;					// keep height of asteroid field smaller compared to width of x and z
+			displacement = (rand() % (int)(2 * belts[b].tubeRadius * 100)) / 100.0f - belts[b].tubeRadius;
+			float z = cos(angle) * belts[b].radius + displacement;
+			model = glm::translate(model, glm::vec3(x, y, z));
+
+			// SCALE : resize between 0.05 and "0.05 + 0.sizeFactor"
+			float scale = (float)(rand() % belts[b].sizeFactor) / 100.0f + 0.05f;
+			model = glm::scale(model, glm::vec3(scale));
+
+			// ROTATION : add random rotation around a (semi)-randomly picked rotation axis vector
+			float rotAngle = (float)(rand() % 360);
+			model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
+
+			// Add current model matrix to the list
+			modelMatrices[i] = model;
+		}
+
+		k = belts[b].asteroidNb;
+	}
+
+	// Configure instanced array
+	unsigned int buffer;
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ARRAY_BUFFER, (totalNbAsteroid) * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+
+	// Set transformation matrices as an instance vertex attribute (with divisor 1)
+	for (unsigned int i = 0; i < asteroid.meshes.size(); i++)
+	{
+		unsigned int VAO = asteroid.meshes[i].VAO;
+		glBindVertexArray(VAO);
+
+		// Set attribute pointers for matrix (4 times vec4 due to GLSL vertex shader limitation)
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+		glEnableVertexAttribArray(5);
+		glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+		glEnableVertexAttribArray(6);
+		glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+
+		glVertexAttribDivisor(3, 1);
+		glVertexAttribDivisor(4, 1);
+		glVertexAttribDivisor(5, 1);
+		glVertexAttribDivisor(6, 1);
+
+		glBindVertexArray(0);
+	}
 
 
 
@@ -432,16 +511,16 @@ int main()
 		modelSun = glm::rotate(modelSun, currentFrame / data["Sun"].rotPeriod, glm::vec3(0.0f, 0.0f, 1.0f));
 
 		// Activate the shader to initialize projection, view then model mat4 inside it
-		shaderSphere.use();
-		shaderSphere.setMat4("projection", projection);
-		shaderSphere.setMat4("view", view);
-		shaderSphere.setMat4("model", modelSun);
+		sphereShader.use();
+		sphereShader.setMat4("projection", projection);
+		sphereShader.setMat4("view", view);
+		sphereShader.setMat4("model", modelSun);
 
 		// Activate the texture unit before binding texture
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, data["Sun"].textID);
 
-		shaderSphere.setInt("texSampler", 0);	// SEEM UNEFFECTIVE
+		sphereShader.setInt("texSampler", 0);	// SEEM UNEFFECTIVE
 
 		data["Sun"].sphere->Draw();
 
@@ -476,11 +555,11 @@ int main()
 				// Rotation on itself
 				modelSphere = glm::rotate(modelSphere, angleRotItself, glm::vec3(0.0f, 0.0f, 1.0f));
 
-				shaderSphere.use();
-				shaderSphere.setMat4("model", modelSphere);
+				sphereShader.use();
+				sphereShader.setMat4("model", modelSphere);
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, it->second.textID);
-				shaderSphere.setInt("texSampler", 0); 
+				sphereShader.setInt("texSampler", 0);
 				it->second.sphere->Draw();
 
 				if (it->second.orbit != nullptr)
@@ -489,11 +568,11 @@ int main()
 					glm::mat4 modelOrbit = glm::mat4(1.0f);
 					if (it->second.planet != nullptr)
 						modelOrbit = glm::translate(modelOrbit, glm::vec3(it->second.planet->dist * sin(it->second.planet->anglePlanet), 0.0f, it->second.planet->dist * cos(it->second.planet->anglePlanet)));
-					shaderSphere.use();
-					shaderSphere.setMat4("model", modelOrbit);
+					sphereShader.use();
+					sphereShader.setMat4("model", modelOrbit);
 					glActiveTexture(GL_TEXTURE0);
 					glBindTexture(GL_TEXTURE_2D, texTab[spritesSize - 1]);
-					shaderSphere.setInt("texSampler", 0);
+					sphereShader.setInt("texSampler", 0);
 					it->second.orbit->Draw();
 				}
 			}
@@ -503,12 +582,12 @@ int main()
 		glDepthFunc(GL_LEQUAL);				// Change depth function so that depth test passes when values are equal to depth buffer's content
 		glm::mat4 projectionSb = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 viewSb = glm::mat4(glm::mat3(camera.GetViewMatrix())); 
-		shaderSkybox.use();
-		shaderSkybox.setMat4("view", viewSb);
-		shaderSkybox.setMat4("projection", projectionSb);
+		skyboxShader.use();
+		skyboxShader.setMat4("view", viewSb);
+		skyboxShader.setMat4("projection", projectionSb);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, texTab[spritesSize]);
-		shaderSkybox.setInt("texSampler", 0);
+		skyboxShader.setInt("texSampler", 0);
 		sb->Draw();
 		glDepthFunc(GL_LESS);				// Set depth function back to default
 
@@ -516,7 +595,7 @@ int main()
 
 
 
-		// render the loaded model
+		// Drawing Saturn rings
 		glm::mat4 modelSaturnRings = glm::mat4(1.0f);
 		auto saturnData = data["Saturn"];
 		float angleRotSun = saturnData.anglePlanet;
@@ -525,18 +604,36 @@ int main()
 		modelSaturnRings = glm::rotate(modelSaturnRings, glm::radians(saturnData.obliquity), glm::vec3(1.0f, 0.0f, 0.0f));
 		modelSaturnRings = glm::rotate(modelSaturnRings, angleRotItself, glm::vec3(0.0f, -1.0f, 0.0f));
 		modelSaturnRings = glm::scale(modelSaturnRings, glm::vec3(0.05f, 0.05f, 0.05f));
-		shaderSphere.use();
-		shaderSphere.setMat4("model", modelSaturnRings);
+		sphereShader.use();
+		sphereShader.setMat4("model", modelSaturnRings);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texTab[spritesSize - 1]);
-		shaderSphere.setInt("texSampler", 0);
-		saturnRings.Draw(shaderSphere);
+		sphereShader.setInt("texSampler", 0);
+		saturnRings.Draw(sphereShader);
 
 
 
 
 
-		//// Swap font and back buffers (we sent to the screen the updated buffer)
+		// Drawing the 2 main belts composed of asteroids
+		asteroidShader.use();
+		asteroidShader.setMat4("projection", projection);
+		asteroidShader.setMat4("view", view);
+		asteroidShader.setInt("texSampler", 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, asteroid.textures_loaded[0].id);		
+		for (unsigned int i = 0; i < asteroid.meshes.size(); i++)
+		{
+			glBindVertexArray(asteroid.meshes[i].VAO);
+			glDrawElementsInstanced(GL_TRIANGLES, asteroid.meshes[i].indices.size(), GL_UNSIGNED_INT, 0, totalNbAsteroid);
+			glBindVertexArray(0);
+		}
+
+
+
+
+
+		// Swap font and back buffers (we sent to the screen the updated buffer)
 		glfwSwapBuffers(window);
 
 		// Check if any events are triggered, updates the window states and call the corresponding functions

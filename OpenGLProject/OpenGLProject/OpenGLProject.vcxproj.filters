@@ -55,10 +55,16 @@
     <None Include="SphereShader.fs">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="CubeShader.vs">
+    <None Include="AsteroidShader.vs">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="CubeShader.fs">
+    <None Include="AsteroidShader.fs">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="SkyboxShader.vs">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="SkyboxShader.fs">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

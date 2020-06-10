@@ -143,8 +143,10 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CubeShader.fs" />
-    <None Include="CubeShader.vs" />
+    <None Include="AsteroidShader.fs" />
+    <None Include="AsteroidShader.vs" />
+    <None Include="SkyboxShader.fs" />
+    <None Include="SkyboxShader.vs" />
     <None Include="SphereShader.fs" />
     <None Include="SphereShader.vs" />
   </ItemGroup>
