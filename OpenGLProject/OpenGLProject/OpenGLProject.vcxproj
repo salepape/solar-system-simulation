@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\Sandy-PC\Documents\GIT\solar-system-simulation\OpenGLProject\Outils OpenGL - GLFW\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Sandy-PC\Documents\GIT\solar-system-simulation\OpenGLProject\Outils OpenGL - GLFW\Librairies;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Sandy-PC\Documents\GIT\solar-system-simulation\OpenGLProject\Tools\Includes;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Sandy-PC\Documents\GIT\solar-system-simulation\OpenGLProject\Tools\Librairies;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -79,11 +79,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Sandy-PC\Documents\GIT\solar-system-simulation\OpenGLProject\Outils généraux\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Sandy-PC\Documents\GIT\solar-system-simulation\OpenGLProject\Tools\Includes\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Sandy-PC\Documents\GIT\solar-system-simulation\OpenGLProject\Tools\Librairies\glfw;C:\Users\Sandy-PC\Documents\GIT\solar-system-simulation\OpenGLProject\Tools\Librairies\assimp;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -129,6 +130,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="Orbit.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skybox.h" />
