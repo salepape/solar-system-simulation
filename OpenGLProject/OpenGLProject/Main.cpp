@@ -14,6 +14,7 @@
 #include "stb_image.h"
 
 #define FACTOR 10.0f
+float FACTOR2 = 1.0;
 
 // Initial dimensions for the graphics window
 const unsigned int SCR_WIDTH = 1000;
@@ -71,16 +72,6 @@ std::vector<std::string> faces
 	"../Images/skybox/stars.tga"				// -> front
 };
 
-//std::vector<std::string> faces
-//{
-//	"../Images/skybox/milky_way_right.tga",				// right
-//	"../Images/skybox/milky_way_right.tga",				// -> left
-//	"../Images/skybox/stars.tga",						// top 
-//	"../Images/skybox/stars.tga",						// bottom
-//	"../Images/skybox/milky_way_left.tga",				// back
-//	"../Images/skybox/milky_way_left.tga"				// -> front
-//};
-
 
 
 
@@ -88,10 +79,11 @@ std::vector<std::string> faces
 // Check whether a specific key is pressed / released 
 void processInput(GLFWwindow* window)
 {
+	// Quit the simulation
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	// Enable camera to move up, down, left and right (designed for AZERTY keyboards with corresponding QWERTY GLFW_KEYs)
+	// Enable camera to move forward, backward, up, down, left and right (designed for AZERTY keyboards with corresponding QWERTY GLFW_KEYs)
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera.ProcessKeyboard(FORWARD, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -105,6 +97,7 @@ void processInput(GLFWwindow* window)
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 		camera.ProcessKeyboard(DOWN, deltaTime);
 
+	// Pause the simulation
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		paused = true;
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE)
@@ -112,6 +105,12 @@ void processInput(GLFWwindow* window)
 		paused = false;
 		glfwSetTime(lastFrame);
 	}
+
+	// Speed up / Slow down the simulation
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+		FACTOR2 *= 2.0f;
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		FACTOR2 /= 2.0f;
 }
 
 // Adapt the viewport whenever the window size has been changed (by OS or the user)
@@ -319,16 +318,16 @@ int main()
 	CreateSkybox(texTab[spritesSize]);
 
 	// Texture index
-	// Planets and moons (only those > pluto radius in length) radii relative to earth's radius (= scaled so that earth radius = 1) (dimensionless)
-	// Distances between planets (resp. moons) and sun (resp. the planet around which they turn) relative to earth's distance (dimensionless)
-	// Or axial tilt : angle between planet / moon axis rotation and the normal of its orbital plane (in degrees)
-	// Time the planet (resp. moon) takes to do 1 revolution around the sun (resp. its planet) (in earth days)
-	// Time the planet takes to do a rotation on itself (in earth days)
-	// Inclination of the orbit (in degrees)
+	// Planets and moons (only those > pluto radius in length) radii divided by earth's radius value [in kms]
+	// Distances between planets (resp. moons) and sun (resp. the planet around which they turn) divided by earth's distance value [in kms]
+	// Or axial tilt : angle between planet / moon axis rotation and the normal of its orbital plane [in degrees]
+	// Time the planet (resp. moon) takes to do 1 revolution around the sun (resp. its planet) [in earth days]
+	// Time the planet takes to do a rotation on itself [in earth days]
+	// Or "orbital tilt" : angle between planet / moon orbit and the ecliptic [in degrees]
 	// Sphere mesh
 	// Orbit mesh
 	// Reference to the planet object to be able to make computation for its moon
-	// Angle of rotation around the sun (in radians)
+	// Angle of planet rotation around the sun per frame [in radians]
 	struct EntityInfo
 	{
 		GLuint textID;
@@ -337,47 +336,43 @@ int main()
 		float obliquity;
 		float orbPeriod;
 		float rotPeriod;
-		// float orbInclination;
 		Sphere * sphere;
+		float orbInclination;
 		Orbit * orbit;
 		EntityInfo * planet;
-		float anglePlanet;
+		float angleRot;
 	};
 
 	// Solar System data
 	std::unordered_map<std::string, EntityInfo> data;
 	using dataElmt = std::pair<std::string, EntityInfo>;
 
-	float factor = 10.0f;
+	data.insert(dataElmt("Sun", { texTab[0],  109.3f, 0.0f, 7.25f, 0.0f, 27.0f, nullptr, 0.0f, nullptr, nullptr, 0.0f })); 
 
-	data.insert(dataElmt("Sun",		{ texTab[0],  109.3f, 0.0f, 7.25f, 0.0f, 30.0f, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Mercury", { texTab[1],  0.383f, data["Sun"].radius + 0.38f * FACTOR, 0.03f, 87.97f, 58.6f, nullptr, 7.01f, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Venus", { texTab[2],  0.95f, data["Mercury"].dist + 0.72f * FACTOR, 2.64f, 224.7f, -243.02f, nullptr, 3.39f, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Earth", { texTab[3],  1.0f,	data["Venus"].dist + 1.0f * FACTOR, 23.44f, 365.26f, 0.99f, nullptr, 0.0f, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Mars", { texTab[4],  0.532f, data["Earth"].dist + 1.52f * FACTOR, 25.19f, 686.97f, 1.03f, nullptr, 1.85f, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Jupiter", { texTab[5],  10.97f, data["Mars"].dist + 5.19f * FACTOR, 3.13f, 4332.59f, 0.41f, nullptr, 1.31f, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Saturn", { texTab[6],  9.14f, data["Jupiter"].dist + 9.53f * FACTOR, 26.73f, 10759.22f, 0.43f, nullptr, 2.49f, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Uranus", { texTab[7],  3.981f, data["Saturn"].dist + 19.20f * FACTOR, 82.23f, 30688.5, -0.72f, nullptr, 0.77f, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Neptune", { texTab[8],  3.865f, data["Uranus"].dist + 30.05f * FACTOR, 28.32f, 60182.0f, 0.67f, nullptr, 1.77f, nullptr, nullptr, 0.0f }));
 
-	data.insert(dataElmt("Mercury", { texTab[1],  0.383f, data["Sun"].radius + 0.38f * FACTOR, 0.03f, 87.97f, 58.6f, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Venus",	{ texTab[2],  0.95f, data["Mercury"].dist + 0.72f * FACTOR, 2.64f, 224.7f, -243.02f, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Earth",	{ texTab[3],  1.0f,	data["Venus"].dist + 1.0f * FACTOR, 23.44f, 365.26f, 0.99f, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Mars",	{ texTab[4],  0.532f, data["Earth"].dist + 1.52f * FACTOR, 25.19f, 686.97f, 1.03f, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Jupiter",	{ texTab[5],  10.97f, data["Mars"].dist + 5.19f * FACTOR, 3.13f, 4332.59f, 0.41f, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Saturn",	{ texTab[6],  9.14f, data["Jupiter"].dist + 9.53f * FACTOR, 26.73f, 10759.22f, 0.43f, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Uranus",	{ texTab[7],  3.981f, data["Saturn"].dist + 19.20f * FACTOR, 82.23f, 30688.5, -0.72f, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Neptune", { texTab[8],  3.865f, data["Uranus"].dist + 30.05f * FACTOR, 28.32f, 60182.0f, 0.67f, nullptr, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Ceres", { texTab[9],  0.074f, data["Mars"].dist + 2.75f * FACTOR, 0.0f, 1683.15f, 9.07f, nullptr, 17.14f, nullptr, nullptr, 0.0f }));
+	data.insert(dataElmt("Pluto", { texTab[10],  0.186f, data["Neptune"].dist + 39.24f * FACTOR, 57.47f, 90560.0f, -6.39f, nullptr, 10.62f, nullptr, nullptr, 0.0f }));
 
-	data.insert(dataElmt("Ceres",	{ texTab[9],  0.074f, data["Mars"].dist + 2.75f * FACTOR, 0.0f, 1683.15f, 9.07f, nullptr, nullptr, nullptr, 0.0f }));
-	data.insert(dataElmt("Pluto",	{ texTab[10],  0.186f, data["Neptune"].dist + 39.24f * FACTOR, 57.47f, 90560.0f, -6.39f, nullptr, nullptr, nullptr, 0.0f }));
-
-	data.insert(dataElmt("Luna",	{ texTab[11], 0.273f, data["Earth"].radius + 0.384f * FACTOR, 6.68f, 27.32f, 27.32f, nullptr, nullptr, &data["Earth"] }));
-	data.insert(dataElmt("Callisto",{ texTab[12], 0.378f, data["Jupiter"].radius + 1.883f * FACTOR, 0.0f, 16.69f, 16.69f, nullptr, nullptr, &data["Jupiter"] }));
-	data.insert(dataElmt("Europa",	{ texTab[13], 0.245f, data["Jupiter"].radius + 0.671f * FACTOR, 0.1f, 3.55f, 3.55f, nullptr, nullptr, &data["Jupiter"] }));
-	data.insert(dataElmt("Ganymede",{ texTab[14], 0.413f, data["Jupiter"].radius + 1.07f * FACTOR, 0.16f, 7.15f, 7.15f, nullptr, nullptr, &data["Jupiter"] }));
-	data.insert(dataElmt("Io",		{ texTab[15], 0.286f, data["Jupiter"].radius + 0.422f * FACTOR, 0.0f, 1.77f, 1.77f, nullptr, nullptr, &data["Jupiter"] }));
-	data.insert(dataElmt("Titan",	{ texTab[16], 0.404f, data["Saturn"].radius + 1.222f * FACTOR, 0.0f, 15.95f, 15.95f, nullptr, nullptr, &data["Saturn"] }));
-	data.insert(dataElmt("Triton",	{ texTab[17], 0.212f, data["Neptune"].radius + 0.354f * FACTOR, 0.0f, 5.88f, 5.88f, nullptr, nullptr, &data["Neptune"] }));
+	data.insert(dataElmt("Luna", { texTab[11], 0.273f, data["Earth"].radius + 0.384f * FACTOR, 6.68f, 27.32f, 27.32f, nullptr, 5.145f, nullptr, &data["Earth"] }));
+	data.insert(dataElmt("Callisto", { texTab[12], 0.378f, data["Jupiter"].radius + 1.883f * FACTOR, 0.0f, 16.69f, 16.69f, nullptr, 2.017f, nullptr, &data["Jupiter"] }));
+	data.insert(dataElmt("Europa", { texTab[13], 0.245f, data["Jupiter"].radius + 0.671f * FACTOR, 0.1f, 3.55f, 3.55f, nullptr, 1.791f, nullptr, &data["Jupiter"] }));
+	data.insert(dataElmt("Ganymede", { texTab[14], 0.413f, data["Jupiter"].radius + 1.07f * FACTOR, 0.16f, 7.15f, 7.15f, nullptr, 2.214f, nullptr, &data["Jupiter"] }));
+	data.insert(dataElmt("Io", { texTab[15], 0.286f, data["Jupiter"].radius + 0.422f * FACTOR, 0.0f, 1.77f, 1.77f, nullptr, 2.213f, nullptr, &data["Jupiter"] }));
+	data.insert(dataElmt("Titan", { texTab[16], 0.404f, data["Saturn"].radius + 1.222f * FACTOR, 0.0f, 15.95f, 15.95f, nullptr, 0.0f, nullptr, &data["Saturn"] }));
+	data.insert(dataElmt("Triton", { texTab[17], 0.212f, data["Neptune"].radius + 0.354f * FACTOR, 0.0f, 5.88f, 5.88f, nullptr, 129.812f, nullptr, &data["Neptune"] }));
 
 	for (auto it = data.begin(); it != data.end(); ++it)
 	{
 		if (it->first == "Sun")
 			it->second.sphere = new Sphere(it->second.radius / 2.0f);
-		else if (it->first == "Ceres" || it->first == "Pluto")
-			it->second.sphere = new Sphere(it->second.radius);
 		else
 		{
 			it->second.sphere = new Sphere(it->second.radius);
@@ -396,9 +391,10 @@ int main()
 		float tubeRadius;
 	};
 
-	Belt asteroidBelt = { 10000, 10, data["Mars"].dist * 1.1f, 2.75f * FACTOR / 2.5f };
+	Belt asteroidBelt = { 5000, 10, data["Mars"].dist * 1.1f, 2.75f * FACTOR / 2.5f };
 	Belt kuiperBelt = { 20000, 20, data["Neptune"].dist * 1.4f, 30.05f * FACTOR };
-	std::vector<Belt> belts = { asteroidBelt, kuiperBelt };
+	static const int nbBelts = 2;
+	Belt belts[nbBelts] = { asteroidBelt, kuiperBelt };
 
 	// Generate large list of semi-random model transformation matrices, each representing an asteroid in a belt
 	glm::mat4 * modelMatrices;
@@ -407,9 +403,9 @@ int main()
 	srand((unsigned int)glfwGetTime());					// Initialize random seed	
 
 	int k = 0;
-	for (int b = 0; b < belts.size(); ++b)
+	for (int b = 0; b < nbBelts; ++b)
 	{
-		for (unsigned int i = k + 0; i < k + belts[b].asteroidNb; i++)
+		for (int i = k + 0; i < k + belts[b].asteroidNb; i++)
 		{
 			glm::mat4 model = glm::mat4(1.0f);
 			// TRANSLATION : compute random position within the belt tore
@@ -474,9 +470,9 @@ int main()
 	// RENDER LOOP (check at the start of each loop iteration if GLFW has been instructed to close every frame)
 	while (!glfwWindowShouldClose(window))
 	{
-		// Time elapsed since GLFW initialisation (in seconds)
 		if (!paused)
 		{
+			// Time elapsed since GLFW initialisation (considered as a dimensionless chrono, but in seconds in reality)
 			currentFrame = (float)glfwGetTime();
 
 			// Compute delta time in order to reduce differences between computer processing powers
@@ -484,18 +480,18 @@ int main()
 			lastFrame = currentFrame;
 		}
 
-
 		// Check if a specific key is pressed and react accordingly
 		processInput(window);
 
-		colorationGLFWWindow();
-
-
-
-
+		// Not needed since we have a skybox
+		//colorationGLFWWindow();
 
 		// Clear the depth buffer 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+
+
 
 		// Calculate the PROJECTION matrix (simulate a zoom - set far plane variable to a sufficiently high value)
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)(SCR_WIDTH / SCR_HEIGHT), 0.1f, 1000.0f);
@@ -503,80 +499,88 @@ int main()
 		// Calculate the VIEW matrix (simulate a camera circling around the scene)
 		glm::mat4 view = camera.GetViewMatrix();
 
-		// Calculate the MODEL matrix for the sun (simulate movements that affects the sun)
-		glm::mat4 modelSun = glm::mat4(1.0f);
-		// Rotation on itself to have texture seen horizontaly + obliquity angle
-		modelSun = glm::rotate(modelSun, glm::radians(90.0f + data["Sun"].obliquity), glm::vec3(1.0f, 0.0f, 0.0f));
-		// Rotation on itself
-		modelSun = glm::rotate(modelSun, currentFrame / data["Sun"].rotPeriod, glm::vec3(0.0f, 0.0f, 1.0f));
-
 		// Activate the shader to initialize projection, view then model mat4 inside it
 		sphereShader.use();
 		sphereShader.setMat4("projection", projection);
 		sphereShader.setMat4("view", view);
-		sphereShader.setMat4("model", modelSun);
-
-		// Activate the texture unit before binding texture
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, data["Sun"].textID);
-
-		sphereShader.setInt("texSampler", 0);	// SEEM UNEFFECTIVE
-
-		data["Sun"].sphere->Draw();
 
 
 
-
-
-		// Drawing planets / moons, their orbits and their motion
+		// Drawing sun then planets / moons, their orbits and their motion
 		for (auto it = data.begin(); it != data.end(); it++)
 		{
-			if (it->first.compare("Sun") == 0)
-				continue;
+			float angleRot, angleRotItself;
+			if (it->first != "Sun")
+			{
+				// Angle of rotation around the sun (resp. planet) for planets (resp. moons) per frame
+				angleRot = 2.0f * glm::pi<float>() * currentFrame / it->second.orbPeriod * FACTOR2;
+				if (it->second.planet == nullptr)
+					it->second.angleRot = angleRot;
+
+				// Angle of rotation of the celestial body around itself per frame
+				angleRotItself = 2.0f * glm::pi<float>() * currentFrame * it->second.rotPeriod * FACTOR2;
+			}
 			else
 			{
-				// Only the model matrix differs from the sun
-				glm::mat4 modelSphere = glm::mat4(1.0f);
+				angleRot = 0.0f;
+				angleRotItself = 0.0f;
+			}
 
-				float angleRotSun = currentFrame / it->second.orbPeriod * it->second.dist / 10.0f;		
-				if (it->second.planet == nullptr)
-					it->second.anglePlanet = angleRotSun;
-				if(it->second.planet != nullptr)
-					angleRotSun += 10.0f;
-				float angleRotItself = 2.0f * glm::pi<float>() * currentFrame / it->second.rotPeriod / 10.0f;
 
-				// Circular translation around corresponding planet (for moons only)
+
+			// Calculate the MODEL matrix for the sun(simulate movements that affects the current celestial body)
+			glm::mat4 modelSphere = glm::mat4(1.0f);
+
+			// Orbital tilt (around axis colinear to orbit direction) + Circular translation along the orbit (equidistance to axis normal to orbital plane)
+			modelSphere = glm::translate(modelSphere, glm::vec3(it->second.dist * cos(glm::radians(it->second.orbInclination)) * sin(angleRot), it->second.dist * sin(glm::radians(it->second.orbInclination)) * sin(angleRot), it->second.dist * cos(angleRot)));																																																																	
+			
+			// Circular translation around corresponding planet (for moons only)
+			if (it->second.planet != nullptr)
+				modelSphere = glm::translate(modelSphere, glm::vec3(it->second.planet->dist * cos(glm::radians(it->second.planet->orbInclination)) * sin(it->second.planet->angleRot), it->second.planet->dist * sin(glm::radians(it->second.planet->orbInclination)) * sin(it->second.planet->angleRot), it->second.planet->dist * cos(it->second.planet->angleRot)));
+			
+			// Axis tilt (around axis colinear to orbit direction)
+			modelSphere = glm::rotate(modelSphere, glm::radians(it->second.obliquity), glm::vec3(1.0f, 0.0f, 0.0f));
+			// Rotation on itself (around axis normal to orbital plane)
+			modelSphere = glm::rotate(modelSphere, angleRotItself, glm::vec3(0.0f, 1.0f, 0.0f));				
+			// Rotation on itself to have spheres poles vertical 
+			modelSphere = glm::rotate(modelSphere, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+																						
+
+
+			sphereShader.use();
+			sphereShader.setMat4("model", modelSphere);
+
+			// Activate the texture unit before binding texture
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, it->second.textID);
+
+			sphereShader.setInt("texSampler", 0);					// SEEM UNEFFECTIVE
+
+			it->second.sphere->Draw();
+
+
+
+			if (it->first != "Sun")
+			{
+				// Drawing planet orbites
+				glm::mat4 modelOrbit = glm::mat4(1.0f);
+				// Condition applies for moons only
 				if (it->second.planet != nullptr)
-					modelSphere = glm::translate(modelSphere, glm::vec3(it->second.planet->dist  * sin(it->second.planet->anglePlanet), 0.0f, it->second.planet->dist * cos(it->second.planet->anglePlanet)));
-				// Circular translation around the sun
-				modelSphere = glm::translate(modelSphere, glm::vec3(it->second.dist * sin(angleRotSun), 0.0f, it->second.dist * cos(angleRotSun)));
-				// Rotation on itself to have texture seen horizontaly + obliquity angle
-				modelSphere = glm::rotate(modelSphere, glm::radians(90.0f + it->second.obliquity), glm::vec3(1.0f, 0.0f, 0.0f));
-				// Rotation on itself
-				modelSphere = glm::rotate(modelSphere, angleRotItself, glm::vec3(0.0f, 0.0f, 1.0f));
-
+					modelOrbit = glm::translate(modelOrbit, glm::vec3(it->second.planet->dist * cos(glm::radians(it->second.planet->orbInclination)) * sin(it->second.planet->angleRot), it->second.planet->dist * sin(glm::radians(it->second.planet->orbInclination)) * sin(it->second.planet->angleRot), it->second.planet->dist * cos(it->second.planet->angleRot)));
+				modelOrbit = glm::rotate(modelOrbit, glm::radians(it->second.orbInclination), glm::vec3(0.0f, 0.0f, 1.0f));
 				sphereShader.use();
-				sphereShader.setMat4("model", modelSphere);
+				sphereShader.setMat4("model", modelOrbit);
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, it->second.textID);
+				if (it->second.planet != nullptr || it->first == "Pluto" || it->first == "Ceres")
+					glBindTexture(GL_TEXTURE_2D, texTab[1]);
+				else
+					glBindTexture(GL_TEXTURE_2D, texTab[0]);
 				sphereShader.setInt("texSampler", 0);
-				it->second.sphere->Draw();
-
-				if (it->second.orbit != nullptr)
-				{
-					// Drawing planet orbites
-					glm::mat4 modelOrbit = glm::mat4(1.0f);
-					if (it->second.planet != nullptr)
-						modelOrbit = glm::translate(modelOrbit, glm::vec3(it->second.planet->dist * sin(it->second.planet->anglePlanet), 0.0f, it->second.planet->dist * cos(it->second.planet->anglePlanet)));
-					sphereShader.use();
-					sphereShader.setMat4("model", modelOrbit);
-					glActiveTexture(GL_TEXTURE0);
-					glBindTexture(GL_TEXTURE_2D, texTab[spritesSize - 1]);
-					sphereShader.setInt("texSampler", 0);
-					it->second.orbit->Draw();
-				}
+				it->second.orbit->Draw();
 			}
 		}
+
+
 
 		// Drawing skybox
 		glDepthFunc(GL_LEQUAL);				// Change depth function so that depth test passes when values are equal to depth buffer's content
@@ -593,16 +597,14 @@ int main()
 
 
 
-
-
 		// Drawing Saturn rings
 		glm::mat4 modelSaturnRings = glm::mat4(1.0f);
 		auto saturnData = data["Saturn"];
-		float angleRotSun = saturnData.anglePlanet;
-		float angleRotItself = 2.0f * glm::pi<float>() * currentFrame / saturnData.rotPeriod / 10.0f;
-		modelSaturnRings = glm::translate(modelSaturnRings, glm::vec3(saturnData.dist * sin(angleRotSun), 0.0f, saturnData.dist * cos(angleRotSun)));
+		float angleRotSun = saturnData.angleRot;
+		float angleRotItself = 2.0f * glm::pi<float>() * currentFrame * saturnData.rotPeriod * FACTOR2;
+		modelSaturnRings = glm::translate(modelSaturnRings, glm::vec3(saturnData.dist * cos(glm::radians(saturnData.orbInclination)) * sin(angleRotSun), saturnData.dist * sin(glm::radians(saturnData.orbInclination)) * sin(angleRotSun), saturnData.dist * cos(angleRotSun)));																																																																	
 		modelSaturnRings = glm::rotate(modelSaturnRings, glm::radians(saturnData.obliquity), glm::vec3(1.0f, 0.0f, 0.0f));
-		modelSaturnRings = glm::rotate(modelSaturnRings, angleRotItself, glm::vec3(0.0f, -1.0f, 0.0f));
+		modelSaturnRings = glm::rotate(modelSaturnRings, angleRotItself, glm::vec3(0.0f, 1.0f, 0.0f));			
 		modelSaturnRings = glm::scale(modelSaturnRings, glm::vec3(0.05f, 0.05f, 0.05f));
 		sphereShader.use();
 		sphereShader.setMat4("model", modelSaturnRings);
