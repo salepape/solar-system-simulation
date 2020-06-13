@@ -10,6 +10,6 @@ uniform mat4 model;
 
 void main()
 {
-    gl_Position = projection * view * model * vec4(vPos, 1.0f);
-    texCoord = vTexCoord;
+    gl_Position.xyzw = projection * view * model * vec4(vPos.xyz, 1.0f);
+    texCoord.xy = vTexCoord.xy;
 }

@@ -7,5 +7,5 @@ uniform sampler2D texSampler;
 
 void main()
 {
-    fColor = texture(texSampler, texCoord);
+    fColor.xyzw = texture(texSampler, texCoord.xy);
 }

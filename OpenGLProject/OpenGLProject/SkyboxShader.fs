@@ -7,5 +7,5 @@ uniform samplerCube texSampler;
 
 void main()
 {
-    fColor = texture(texSampler, texDir);
+    fColor.xyzw = texture(texSampler, texDir.xyz);
 }
