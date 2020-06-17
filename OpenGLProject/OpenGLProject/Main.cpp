@@ -1,22 +1,23 @@
-#include <glad/glad.h>
+//#include <glad/glad.h>
+#define GLFW_INCLUDE_NONE
 #include <glfw/glfw3.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
 #include <unordered_map>
 
-#include "Shader.h"
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/matrix_decompose.hpp>
+
+#define STB_IMAGE_IMPLEMENTATION
+//#include "stb_image.h"
+
+//#include "Shader.h"
 #include "Camera.h"
 #include "Sphere.h"
 #include "Skybox.h"
 #include "Orbit.h"
 #include "Model.h"
-
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/matrix_decompose.hpp>
-
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
 #define FACTOR 10.0f
 float FACTOR2 = 1.0;
@@ -24,9 +25,6 @@ float FACTOR2 = 1.0;
 // Initial dimensions for the graphics window
 const unsigned int SCR_WIDTH = 1000;
 const unsigned int SCR_HEIGHT = 1000;
-
-// Camera object initialization
-Camera camera(glm::vec3(0.0f, 50.0f, 200.0f));
 
 // Variables for mouse callback function
 bool firstMouseInput = true;
@@ -38,6 +36,8 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 bool paused = false;
 
+// Camera object initialization
+Camera camera(glm::vec3(0.0f, 50.0f, 200.0f));
 
 std::vector<std::string> sprites
 {
@@ -69,12 +69,12 @@ std::vector<std::string> sprites
 
 std::vector<std::string> faces
 {
-	"../Images/skybox/stars.tga",				// right			
-	"../Images/skybox/stars.tga",				// -> left
-	"../Images/skybox/stars.tga",				// top 
-	"../Images/skybox/stars.tga",				// bottom
-	"../Images/skybox/stars.tga",				// back
-	"../Images/skybox/stars.tga"				// -> front
+	"../Images/skybox/stars.tga",	// right			
+	"../Images/skybox/stars.tga",	// -> left
+	"../Images/skybox/stars.tga",	// top 
+	"../Images/skybox/stars.tga",	// bottom
+	"../Images/skybox/stars.tga",	// back
+	"../Images/skybox/stars.tga"	// -> front
 };
 
 
@@ -180,7 +180,7 @@ void CreateTexture(GLuint texTab[])
 {
 	glGenTextures(sprites.size(), texTab);
 
-	for (GLuint i = 0; i < sprites.size(); i++)
+	for (GLuint i = 0; i < sprites.size(); ++i)
 	{
 		// Bind texture name to the OpenGL target we want (here a 2D texture called GL_TEXTURE_2D)
 		glBindTexture(GL_TEXTURE_2D, texTab[i]);
@@ -214,13 +214,13 @@ void CreateTexture(GLuint texTab[])
 		}
 		else
 		{
-			std::cout << "Failed to load entity sprite at index " << i << std::endl;
+			std::cout << "ERROR::STB_IMAGE: Failed to load entity sprite at index " << i << std::endl;
 			stbi_image_free(data);
 		}
 	}
 }
 
-void CreateSkybox(GLuint& texSkyboxID)
+void CreateSkyboxTexture(GLuint& texSkyboxID)
 {
 	glGenTextures(1, &texSkyboxID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texSkyboxID);
@@ -235,34 +235,31 @@ void CreateSkybox(GLuint& texSkyboxID)
 	int width, height, nrChannels;
 	unsigned char *data;
 
-	for (GLuint i = 0; i < faces.size(); i++)
+	for (GLuint i = 0; i < faces.size(); ++i)
 	{
 		data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
 
 		if (data)
 		{
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			glGenerateMipmap(GL_TEXTURE_2D);
 			stbi_image_free(data);
 		}
 		else
 		{
-			std::cout << "Failed to load skybox sprite at index " << i << std::endl;
+			std::cout << "ERROR::STB_IMAGE: Failed to load skybox sprite at index " << i << std::endl;
 			stbi_image_free(data);
 		}
 	}
 }
 
-
-
-
-
 // Holds all state information relevant to a character as loaded using FreeType (including metrics)
 struct Character
 {
 	unsigned int TextureID;		// ID handle of the glyph texture
-	glm::ivec2   Size;			// Size of glyph
-	glm::ivec2   Bearing;		// Offset from baseline to left/top of glyph
-	unsigned int Advance;		// Horizontal offset to advance to next glyph
+	glm::ivec2 Size;			// Size of glyph
+	glm::ivec2 Bearing;			// Offset from baseline to left/top of glyph
+	FT_Pos Advance;				// Horizontal offset to advance to next glyph
 };
 
 std::map<GLchar, Character> Characters;
@@ -290,7 +287,7 @@ void CreateTextTextures()
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	// Load the first 128 characters of ASCII set
-	for (unsigned char c = 0; c < 128; c++)
+	for (unsigned char c = 0; c < 128; ++c)
 	{
 		// Load current character glyph 
 		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
@@ -310,6 +307,7 @@ void CreateTextTextures()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
+		glGenerateMipmap(GL_TEXTURE_2D);
 
 		// Create object storing current ASCII character caracteristics
 		Character character = 
@@ -350,7 +348,7 @@ void RenderText(std::string text, float x, float y, float scale)
 	glBindVertexArray(VAOText);
 
 	// Iterate through all characters
-	for (std::string::const_iterator c = text.begin(); c != text.end(); c++)
+	for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
 	{
 		Character ch = Characters[*c];
 
@@ -392,109 +390,29 @@ void RenderText(std::string text, float x, float y, float scale)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-
-
-
-
-
-
-
-
-
-int main()
+struct EntityInfo
 {
-	GLFWwindow* window = initGLFWWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL Solar System Simulation");
+	GLuint textID;				// Texture index
+	float radius;				// Planets and moons (only those > pluto radius in length) radii divided by earth's radius value [in kms]
+	float dist;					// Distances between planets (resp. moons) and sun (resp. the planet around which they turn) divided by earth's distance value [in kms]
+	float obliquity;			// Or axial tilt : angle between planet / moon axis rotation and the normal of its orbital plane [in degrees]
+	float orbPeriod;			// Time the planet (resp. moon) takes to do 1 revolution around the sun (resp. its planet) [in earth days]
+	float rotPeriod;			// Time the planet takes to do a rotation on itself [in earth days]
+	Sphere * sphere;			// Or "orbital tilt" : angle between planet / moon orbit and the ecliptic [in degrees]
+	float orbInclination;		// Sphere mesh
+	Orbit * orbit;				// Orbit mesh
+	EntityInfo * planet;		// Reference to the planet object to be able to make computation for its moon
+	float angleRot;				// Angle of planet rotation around the sun per frame [in radians]
+};
 
-	if (window == NULL)
-	{
-		std::cout << "Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
+// Solar System data
+std::unordered_map<std::string, EntityInfo> data;
 
-	// Tell GLFW that we want the window context to be the main one on the current thread
-	glfwMakeContextCurrent(window);
-
-	// Set the framebuffer resize callback of the specified window, called when the framebuffer of the specified window is resized
-	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
-
-	// Detect if any mouse movement is made and react accordingly
-	glfwSetCursorPosCallback(window, mouseCallback);
-
-	// Detect if any mouse whell movement is made and react accordingly
-	glfwSetScrollCallback(window, scrollCallback);
-
-	// Make the cursor invisible to the player and allow movements even if cursor is theorically outside the window
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-	// Load all OpenGL function pointers (localisations) thanks to GLAD
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "Failed to initialize GLAD" << std::endl;
-		return -1;
-	}
-
-
-
-
-
-	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_DEPTH_CLAMP);
-
-	// Build and compile shader programs
-	Shader sphereShader("SphereShader.vs", "SphereShader.fs");
-	Shader skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
-	Shader asteroidShader("AsteroidShader.vs", "AsteroidShader.fs");
-	Shader textShader("textShader.vs", "textShader.fs");	// see it as billboard shader
-
-	// Load models
-	Model saturnRings("../Models/SaturnRings.obj");
-	Model asteroid("../Models/rock.obj");
-
-
-
-
-
-	// Milky Way skybox
-	Skybox * sb = new Skybox();
-
-	// GENERATION TAO - Generate TOs storing its ID within texArray (within graphics memory)
-	int spritesSize = sprites.size();
-	GLuint texTab[22];
-	CreateTexture(texTab);
-	CreateSkybox(texTab[spritesSize]);
-
-	// Texture index
-	// Planets and moons (only those > pluto radius in length) radii divided by earth's radius value [in kms]
-	// Distances between planets (resp. moons) and sun (resp. the planet around which they turn) divided by earth's distance value [in kms]
-	// Or axial tilt : angle between planet / moon axis rotation and the normal of its orbital plane [in degrees]
-	// Time the planet (resp. moon) takes to do 1 revolution around the sun (resp. its planet) [in earth days]
-	// Time the planet takes to do a rotation on itself [in earth days]
-	// Or "orbital tilt" : angle between planet / moon orbit and the ecliptic [in degrees]
-	// Sphere mesh
-	// Orbit mesh
-	// Reference to the planet object to be able to make computation for its moon
-	// Angle of planet rotation around the sun per frame [in radians]
-	struct EntityInfo
-	{
-		GLuint textID;
-		float radius;
-		float dist;
-		float obliquity;
-		float orbPeriod;
-		float rotPeriod;
-		Sphere * sphere;
-		float orbInclination;
-		Orbit * orbit;
-		EntityInfo * planet;
-		float angleRot;
-	};
-
-	// Solar System data
-	std::unordered_map<std::string, EntityInfo> data;
+void LoadData(GLuint texTab[])
+{
 	using dataElmt = std::pair<std::string, EntityInfo>;
 
-	data.insert(dataElmt("Sun", { texTab[0],  109.3f, 0.0f, 7.25f, 0.0f, 27.0f, nullptr, 0.0f, nullptr, nullptr, 0.0f })); 
+	data.insert(dataElmt("Sun", { texTab[0],  109.3f, 0.0f, 7.25f, 0.0f, 27.0f, nullptr, 0.0f, nullptr, nullptr, 0.0f }));
 
 	data.insert(dataElmt("Mercury", { texTab[1],  0.383f, data["Sun"].radius + 0.38f * FACTOR, 0.03f, 87.97f, 58.6f, nullptr, 7.01f, nullptr, nullptr, 0.0f }));
 	data.insert(dataElmt("Venus", { texTab[2],  0.95f, data["Mercury"].dist + 0.72f * FACTOR, 2.64f, 224.7f, -243.02f, nullptr, 3.39f, nullptr, nullptr, 0.0f }));
@@ -518,6 +436,9 @@ int main()
 
 	for (auto it = data.begin(); it != data.end(); ++it)
 	{
+		// divide real radii and distances per a macro FACTOR here
+		// ...
+
 		if (it->first == "Sun")
 			it->second.sphere = new Sphere(it->second.radius / 2.0f);
 		else
@@ -526,18 +447,18 @@ int main()
 			it->second.orbit = new Orbit(it->second.dist);
 		}
 	}
+}
 
+struct Belt
+{
+	int asteroidNb;
+	int sizeFactor;
+	float majorRadius;
+	float minorRadius;
+};
 
-
-
-	struct Belt
-	{
-		int asteroidNb;
-		int sizeFactor;
-		float radius;
-		float tubeRadius;
-	};
-
+void CreateBelts(Model asteroid, int& totalNbAsteroid)
+{
 	Belt asteroidBelt = { 5000, 10, data["Mars"].dist * 1.1f, 2.75f * FACTOR / 2.5f };
 	Belt kuiperBelt = { 20000, 20, data["Neptune"].dist * 1.4f, 30.05f * FACTOR };
 	static const int nbBelts = 2;
@@ -545,24 +466,24 @@ int main()
 
 	// Generate large list of semi-random model transformation matrices, each representing an asteroid in a belt
 	glm::mat4 * modelMatrices;
-	int totalNbAsteroid = asteroidBelt.asteroidNb + kuiperBelt.asteroidNb;
+	totalNbAsteroid = asteroidBelt.asteroidNb + kuiperBelt.asteroidNb;
 	modelMatrices = new glm::mat4[totalNbAsteroid];
 	srand((unsigned int)glfwGetTime());					// Initialize random seed	
 
 	int k = 0;
 	for (int b = 0; b < nbBelts; ++b)
 	{
-		for (int i = k + 0; i < k + belts[b].asteroidNb; i++)
+		for (int i = k + 0; i < k + belts[b].asteroidNb; ++i)
 		{
 			glm::mat4 model = glm::mat4(1.0f);
 			// TRANSLATION : compute random position within the belt tore
 			float angle = (float)i / (float)belts[b].asteroidNb * 360.0f;
-			float displacement = (rand() % (int)(2 * belts[b].tubeRadius * 100)) / 100.0f - belts[b].tubeRadius;
-			float x = sin(angle) * belts[b].radius + displacement;
-			displacement = (rand() % (int)(2 * belts[b].tubeRadius * 100)) / 100.0f - belts[b].tubeRadius;
+			float displacement = (rand() % (int)(2 * belts[b].minorRadius * 100)) / 100.0f - belts[b].minorRadius;
+			float x = sin(angle) * belts[b].majorRadius + displacement;
+			displacement = (rand() % (int)(2 * belts[b].minorRadius * 100)) / 100.0f - belts[b].minorRadius;
 			float y = displacement * 0.4f;					// keep height of asteroid field smaller compared to width of x and z
-			displacement = (rand() % (int)(2 * belts[b].tubeRadius * 100)) / 100.0f - belts[b].tubeRadius;
-			float z = cos(angle) * belts[b].radius + displacement;
+			displacement = (rand() % (int)(2 * belts[b].minorRadius * 100)) / 100.0f - belts[b].minorRadius;
+			float z = cos(angle) * belts[b].majorRadius + displacement;
 			model = glm::translate(model, glm::vec3(x, y, z));
 
 			// SCALE : resize between 0.05 and "0.05 + 0.sizeFactor"
@@ -584,10 +505,10 @@ int main()
 	unsigned int buffer;
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, (totalNbAsteroid) * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, totalNbAsteroid * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
 
 	// Set transformation matrices as an instance vertex attribute (with divisor 1)
-	for (unsigned int i = 0; i < asteroid.meshes.size(); i++)
+	for (unsigned int i = 0; i < asteroid.meshes.size(); ++i)
 	{
 		unsigned int VAO = asteroid.meshes[i].VAO;
 		glBindVertexArray(VAO);
@@ -609,6 +530,83 @@ int main()
 
 		glBindVertexArray(0);
 	}
+}
+
+
+
+
+
+
+
+
+
+
+int main()
+{
+	GLFWwindow* window = initGLFWWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL Solar System Simulation");
+
+	if (window == NULL)
+	{
+		std::cout << "ERROR::GLFW: Failed to create GLFW window" << std::endl;
+		glfwTerminate();
+		return -1;
+	}
+
+	// Tell GLFW that we want the window context to be the main one on the current thread
+	glfwMakeContextCurrent(window);
+
+	// Set the framebuffer resize callback of the specified window, called when the framebuffer of the specified window is resized
+	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+
+	// Detect if any mouse movement is made and react accordingly
+	glfwSetCursorPosCallback(window, mouseCallback);
+
+	// Detect if any mouse whell movement is made and react accordingly
+	glfwSetScrollCallback(window, scrollCallback);
+
+	// Make the cursor invisible to the player and allow movements even if cursor is theorically outside the window
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	// Load all OpenGL function pointers (localisations) thanks to GLAD
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "ERROR::GLAD: Failed to initialize GLAD" << std::endl;
+		return -1;
+	}
+
+
+
+
+
+	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_CLAMP);
+
+	// Build and compile shader programs
+	Shader sphereShader("SphereShader.vs", "SphereShader.fs");
+	Shader textShader("textShader.vs", "textShader.fs");
+	Shader asteroidShader("AsteroidShader.vs", "AsteroidShader.fs");
+	Shader skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
+
+	// Load models
+	Model saturnRings("../Models/SaturnRings.obj");
+	Model asteroid("../Models/rock.obj");
+
+	// Create Milky Way skybox
+	Skybox * sb = new Skybox();
+
+	// Create textures
+	int spritesSize = sprites.size();
+	GLuint texTab[22];
+	CreateTexture(texTab);
+	CreateSkyboxTexture(texTab[spritesSize]);
+	CreateTextTextures();
+
+	// Fill map with celestial bodies data
+	LoadData(texTab);
+
+	// Prepare instancing for famous rock belts
+	int totalNbAsteroid;
+	CreateBelts(asteroid, totalNbAsteroid);
 
 
 
@@ -619,7 +617,7 @@ int main()
 	{
 		if (!paused)
 		{
-			// Time elapsed since GLFW initialisation (considered as a dimensionless chrono, but in seconds in reality)
+			// Time elapsed since GLFW initialisation [considered as a dimensionless chrono, but in seconds in reality]
 			currentFrame = (float)glfwGetTime();
 
 			// Compute delta time in order to reduce differences between computer processing powers
@@ -640,6 +638,9 @@ int main()
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		// Trim down polygon count (but we cannot "visit" spheres interior anymore)
+		//glEnable(GL_CULL_FACE);
+
 
 
 		// Calculate the PROJECTION matrix (simulate a zoom - set far plane variable to a sufficiently high value)
@@ -648,25 +649,23 @@ int main()
 		// Calculate the VIEW matrix (simulate a camera circling around the scene)
 		glm::mat4 view = camera.GetViewMatrix();
 
+		int samplerID = 0;
+
+
+
 		// Activate the shader to initialize projection, view then model mat4 inside it
 		sphereShader.use();
 		sphereShader.setMat4("projection", projection);
 		sphereShader.setMat4("view", view);
+		sphereShader.setInt("texSampler", samplerID);					// SEEM UNEFFECTIVE
 
-
-
-		// Generate all ASCII characters textures
-		//glm::mat4 projectionText = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
 		textShader.use();
 		textShader.setMat4("projection", projection);
 		textShader.setMat4("view", view);
-		//textShader.setMat4("projection", projectionText);
-		CreateTextTextures();
+		textShader.setInt("texSampler", samplerID);
 
-
-
-		// Drawing sun then planets / moons, their orbits and their motion
-		for (auto it = data.begin(); it != data.end(); it++)
+		// Draw celestial bodies, their orbits and their motion
+		for (auto it = data.begin(); it != data.end(); ++it)
 		{
 			float angleRot, angleRotItself;
 			if (it->first != "Sun")
@@ -685,38 +684,47 @@ int main()
 				angleRotItself = 0.0f;
 			}
 
-
-
 			// Calculate the MODEL matrix for the sun(simulate movements that affects the current celestial body)
 			glm::mat4 modelSphere = glm::mat4(1.0f);
 			glm::mat4 modelText = glm::mat4(1.0f);
+			glm::mat4 modelOrbit = glm::mat4(1.0f);
 
+			// Circular translation around corresponding planet (condition applies for moons only)
+			if (it->second.planet != nullptr)
+			{
+				modelSphere = glm::translate(modelSphere, glm::vec3(it->second.planet->dist * cos(glm::radians(it->second.planet->orbInclination)) * sin(it->second.planet->angleRot), it->second.planet->dist * sin(glm::radians(it->second.planet->orbInclination)) * sin(it->second.planet->angleRot), it->second.planet->dist * cos(it->second.planet->angleRot)));
+				modelOrbit = modelSphere;
+			}
 			// Orbital tilt (around axis colinear to orbit direction) + Circular translation along the orbit (equidistance to axis normal to orbital plane)
 			modelSphere = glm::translate(modelSphere, glm::vec3(it->second.dist * cos(glm::radians(it->second.orbInclination)) * sin(angleRot), it->second.dist * sin(glm::radians(it->second.orbInclination)) * sin(angleRot), it->second.dist * cos(angleRot)));																																																																	
-			
-			// Circular translation around corresponding planet (for moons only)
-			if (it->second.planet != nullptr)
-				modelSphere = glm::translate(modelSphere, glm::vec3(it->second.planet->dist * cos(glm::radians(it->second.planet->orbInclination)) * sin(it->second.planet->angleRot), it->second.planet->dist * sin(glm::radians(it->second.planet->orbInclination)) * sin(it->second.planet->angleRot), it->second.planet->dist * cos(it->second.planet->angleRot)));
-			
 			modelText = modelSphere;
-
 			// Axis tilt (around axis colinear to orbit direction)
 			modelSphere = glm::rotate(modelSphere, glm::radians(it->second.obliquity), glm::vec3(1.0f, 0.0f, 0.0f));
 			// Rotation on itself (around axis normal to orbital plane)
-			modelSphere = glm::rotate(modelSphere, angleRotItself, glm::vec3(0.0f, 1.0f, 0.0f));				
+			modelSphere = glm::rotate(modelSphere, angleRotItself, glm::vec3(0.0f, 1.0f, 0.0f));	
+
+			if (it->first == "Saturn")
+			{
+				// Draw Saturn rings
+				glm::mat4 modelSaturnRings = glm::mat4(1.0f);
+				modelSaturnRings = modelSphere;
+				modelSaturnRings = glm::scale(modelSphere, glm::vec3(0.05f, 0.05f, 0.05f));
+				sphereShader.use();
+				sphereShader.setMat4("model", modelSaturnRings);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, texTab[spritesSize - 1]);
+				saturnRings.Draw(sphereShader);
+			}
+
 			// Rotation on itself to have spheres poles vertical 
 			modelSphere = glm::rotate(modelSphere, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 																						
-
-
 			sphereShader.use();
 			sphereShader.setMat4("model", modelSphere);
 
 			// Activate the texture unit before binding texture
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, it->second.textID);
-
-			sphereShader.setInt("texSampler", 0);					// SEEM UNEFFECTIVE
 
 			it->second.sphere->Draw();
 
@@ -732,24 +740,18 @@ int main()
 				//modelText[2] = glm::vec4(look, 0);
 				//modelText = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), camera.Position, glm::vec3(0.0f, 1.0f, 0.0f));
 
-				// Write at the top of the current celestial body its name
+				// Display at the top of the current celestial body its name (billboard)
 				textShader.use();
-				textShader.setInt("texSampler", 0);
-				textShader.setVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));
 				textShader.setMat4("model", modelText);
-
-				RenderText(it->first, -it->second.radius / 2.0f, it->second.radius + 1.0f, 0.01f);
+				textShader.setVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));
+				RenderText(it->first, -it->second.radius / 2.0f, it->second.radius * 1.5f, 0.01f);
 			}
 
 
 
 			if (it->first != "Sun")
 			{
-				// Drawing planet orbites
-				glm::mat4 modelOrbit = glm::mat4(1.0f);
-				// Condition applies for moons only
-				if (it->second.planet != nullptr)
-					modelOrbit = glm::translate(modelOrbit, glm::vec3(it->second.planet->dist * cos(glm::radians(it->second.planet->orbInclination)) * sin(it->second.planet->angleRot), it->second.planet->dist * sin(glm::radians(it->second.planet->orbInclination)) * sin(it->second.planet->angleRot), it->second.planet->dist * cos(it->second.planet->angleRot)));
+				// Draw planet orbites
 				modelOrbit = glm::rotate(modelOrbit, glm::radians(it->second.orbInclination), glm::vec3(0.0f, 0.0f, 1.0f));
 				sphereShader.use();
 				sphereShader.setMat4("model", modelOrbit);
@@ -758,59 +760,38 @@ int main()
 					glBindTexture(GL_TEXTURE_2D, texTab[1]);
 				else
 					glBindTexture(GL_TEXTURE_2D, texTab[0]);
-				sphereShader.setInt("texSampler", 0);
 				it->second.orbit->Draw();
 			}
 		}
 
 
 
-		// Drawing skybox
-		glDepthFunc(GL_LEQUAL);				// Change depth function so that depth test passes when values are equal to depth buffer's content
-		glm::mat4 projectionSb = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-		glm::mat4 viewSb = glm::mat4(glm::mat3(camera.GetViewMatrix())); 
-		skyboxShader.use();
-		skyboxShader.setMat4("view", viewSb);
-		skyboxShader.setMat4("projection", projectionSb);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, texTab[spritesSize]);
-		skyboxShader.setInt("texSampler", 0);
-		sb->Draw();
-		glDepthFunc(GL_LESS);				// Set depth function back to default
-
-
-
-		// Drawing Saturn rings
-		glm::mat4 modelSaturnRings = glm::mat4(1.0f);
-		auto saturnData = data["Saturn"];
-		float angleRotSun = saturnData.angleRot;
-		float angleRotItself = 2.0f * glm::pi<float>() * currentFrame * saturnData.rotPeriod * FACTOR2;
-		modelSaturnRings = glm::translate(modelSaturnRings, glm::vec3(saturnData.dist * cos(glm::radians(saturnData.orbInclination)) * sin(angleRotSun), saturnData.dist * sin(glm::radians(saturnData.orbInclination)) * sin(angleRotSun), saturnData.dist * cos(angleRotSun)));																																																																	
-		modelSaturnRings = glm::rotate(modelSaturnRings, glm::radians(saturnData.obliquity), glm::vec3(1.0f, 0.0f, 0.0f));
-		modelSaturnRings = glm::rotate(modelSaturnRings, angleRotItself, glm::vec3(0.0f, 1.0f, 0.0f));			
-		modelSaturnRings = glm::scale(modelSaturnRings, glm::vec3(0.05f, 0.05f, 0.05f));
-		sphereShader.use();
-		sphereShader.setMat4("model", modelSaturnRings);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texTab[spritesSize - 1]);
-		sphereShader.setInt("texSampler", 0);
-		saturnRings.Draw(sphereShader);
-
-
-
-		// Drawing the 2 main belts composed of asteroids
+		// Draw the 2 main belts composed of asteroids
 		asteroidShader.use();
 		asteroidShader.setMat4("projection", projection);
 		asteroidShader.setMat4("view", view);
-		asteroidShader.setInt("texSampler", 0);
+		asteroidShader.setInt("texSampler", samplerID);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, asteroid.textures_loaded[0].id);		
-		for (unsigned int i = 0; i < asteroid.meshes.size(); i++)
+		glBindTexture(GL_TEXTURE_2D, asteroid.textures_loaded[0].id);
+		for (unsigned int i = 0; i < asteroid.meshes.size(); ++i)
 		{
 			glBindVertexArray(asteroid.meshes[i].VAO);
 			glDrawElementsInstanced(GL_TRIANGLES, asteroid.meshes[i].indices.size(), GL_UNSIGNED_INT, 0, totalNbAsteroid);
 			glBindVertexArray(0);
 		}
+
+
+
+		// Draw skybox
+		glDepthFunc(GL_LEQUAL);				// Change depth function so that depth test passes when values are equal to depth buffer's content
+		skyboxShader.use();
+		skyboxShader.setMat4("projection", projection);
+		skyboxShader.setMat4("view", glm::mat4(glm::mat3(view)));
+		skyboxShader.setInt("texSampler", samplerID);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, texTab[spritesSize]);
+		sb->Draw();
+		glDepthFunc(GL_LESS);				// Set depth function back to default
 
 
 

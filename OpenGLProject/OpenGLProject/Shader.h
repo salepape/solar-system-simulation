@@ -1,7 +1,7 @@
-#pragma once
+#ifndef SHADER_H
+#define SHADER_H
 
-//#ifndef SHADER_H
-//#define SHADER_H
+#include <glad/glad.h>
 
 #include <glm/glm.hpp>
 
@@ -9,8 +9,6 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-
-
 
 class Shader
 {
@@ -56,7 +54,7 @@ public:
 				geometryCode = gShaderStream.str();
 			}
 		}
-		catch (std::ifstream::failure e)
+		catch (std::ifstream::failure&)
 		{
 			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
 		}
@@ -121,7 +119,6 @@ public:
 	{
 		glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
 	}
-
 	// ------------------------------------------------------------------------
 	void setVec2(const std::string &name, const glm::vec2 &value) const
 	{
@@ -192,4 +189,4 @@ private:
 		}
 	}
 };
-//#endif
+#endif
