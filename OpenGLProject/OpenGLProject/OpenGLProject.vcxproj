@@ -79,11 +79,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Sandy-PC\Documents\GIT\solar-system-simulation\OpenGLProject\Tools\Includes\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc141-mtd.lib;freetyped.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Users\Sandy-PC\Documents\GIT\solar-system-simulation\OpenGLProject\Tools\Librairies\glfw;C:\Users\Sandy-PC\Documents\GIT\solar-system-simulation\OpenGLProject\Tools\Librairies\assimp;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -149,6 +149,8 @@
     <None Include="SkyboxShader.vs" />
     <None Include="SphereShader.fs" />
     <None Include="SphereShader.vs" />
+    <None Include="textShader.fs" />
+    <None Include="textShader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

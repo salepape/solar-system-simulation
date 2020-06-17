@@ -1,5 +1,7 @@
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include <glfw/glfw3.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 #include <unordered_map>
 
@@ -9,6 +11,9 @@
 #include "Skybox.h"
 #include "Orbit.h"
 #include "Model.h"
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/matrix_decompose.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -177,7 +182,7 @@ void CreateTexture(GLuint texTab[])
 
 	for (GLuint i = 0; i < sprites.size(); i++)
 	{
-		// BINDING T2O - Bind TO to the OpenGL TO type we want (here a 2D texture called GL_TEXTURE_2D, hence T2O variable name)
+		// Bind texture name to the OpenGL target we want (here a 2D texture called GL_TEXTURE_2D)
 		glBindTexture(GL_TEXTURE_2D, texTab[i]);
 
 		// Set the texture wrapping option (on the currently bound texture object)
@@ -220,11 +225,12 @@ void CreateSkybox(GLuint& texSkyboxID)
 	glGenTextures(1, &texSkyboxID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texSkyboxID);
 
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	int width, height, nrChannels;
 	unsigned char *data;
@@ -244,6 +250,146 @@ void CreateSkybox(GLuint& texSkyboxID)
 			stbi_image_free(data);
 		}
 	}
+}
+
+
+
+
+
+// Holds all state information relevant to a character as loaded using FreeType (including metrics)
+struct Character
+{
+	unsigned int TextureID;		// ID handle of the glyph texture
+	glm::ivec2   Size;			// Size of glyph
+	glm::ivec2   Bearing;		// Offset from baseline to left/top of glyph
+	unsigned int Advance;		// Horizontal offset to advance to next glyph
+};
+
+std::map<GLchar, Character> Characters;
+unsigned int VBOText, VAOText;
+
+// Creature texture for each ASCII character
+void CreateTextTextures()
+{
+	// FreeType library instance
+	FT_Library ft;
+
+	// All functions return a value different than 0 whenever an error occurred
+	if (FT_Init_FreeType(&ft))
+		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+
+	// Load font as face object
+	FT_Face face;
+	if (FT_New_Face(ft, "../Fonts/arial.ttf", 0, &face))
+		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+
+	// Set pixel font size to extract from face
+	FT_Set_Pixel_Sizes(face, 0, 48);
+
+	// Disable byte-alignment restriction
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	// Load the first 128 characters of ASCII set
+	for (unsigned char c = 0; c < 128; c++)
+	{
+		// Load current character glyph 
+		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+		{
+			std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+			continue;
+		}
+
+		unsigned int textID;
+		glGenTextures(1, &textID);
+		glBindTexture(GL_TEXTURE_2D, textID);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
+
+		// Create object storing current ASCII character caracteristics
+		Character character = 
+		{
+			textID,
+			glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+			glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+			face->glyph->advance.x
+		};
+
+		// Store character for later use
+		Characters.insert(std::pair<char, Character>(c, character));
+	}
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// Destroy FreeType once work is finished
+	FT_Done_Face(face);
+	FT_Done_FreeType(ft);
+
+
+	// Configure VAO/VBO for 2D quads in which we will render character textures
+	glGenVertexArrays(1, &VAOText);
+	glGenBuffers(1, &VBOText);
+	glBindVertexArray(VAOText);
+	glBindBuffer(GL_ARRAY_BUFFER, VBOText);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
+
+// Render line of text
+void RenderText(std::string text, float x, float y, float scale)
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(VAOText);
+
+	// Iterate through all characters
+	for (std::string::const_iterator c = text.begin(); c != text.end(); c++)
+	{
+		Character ch = Characters[*c];
+
+		// Origin position of the quad
+		float xpos = x + ch.Bearing.x * scale;
+		float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+
+		// Size of the quad
+		float w = ch.Size.x * scale;
+		float h = ch.Size.y * scale;
+
+		// Update VBO for each character
+		float vertices[6][4] = 
+		{
+			{ xpos,     ypos + h,   0.0f, 0.0f },
+			{ xpos,     ypos,       0.0f, 1.0f },
+			{ xpos + w, ypos,       1.0f, 1.0f },
+
+			{ xpos,     ypos + h,   0.0f, 0.0f },
+			{ xpos + w, ypos,       1.0f, 1.0f },
+			{ xpos + w, ypos + h,   1.0f, 0.0f }
+		};
+
+		// Render glyph texture over quad
+		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+		// Update content of VBO memory
+		glBindBuffer(GL_ARRAY_BUFFER, VBOText);
+		// Be sure to use glBufferSubData and not glBufferData
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); 
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		// Render quad
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		// Advance cursors for next glyph (note that advance is number of 1/64 pixels)
+		x += (ch.Advance >> 6) * scale;			// bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+	}
+
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -299,6 +445,7 @@ int main()
 	Shader sphereShader("SphereShader.vs", "SphereShader.fs");
 	Shader skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
 	Shader asteroidShader("AsteroidShader.vs", "AsteroidShader.fs");
+	Shader textShader("textShader.vs", "textShader.fs");	// see it as billboard shader
 
 	// Load models
 	Model saturnRings("../Models/SaturnRings.obj");
@@ -489,7 +636,9 @@ int main()
 		// Clear the depth buffer 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+		// OpenGL states enabled to make texts rendering correctly
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
 
@@ -503,6 +652,16 @@ int main()
 		sphereShader.use();
 		sphereShader.setMat4("projection", projection);
 		sphereShader.setMat4("view", view);
+
+
+
+		// Generate all ASCII characters textures
+		//glm::mat4 projectionText = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
+		textShader.use();
+		textShader.setMat4("projection", projection);
+		textShader.setMat4("view", view);
+		//textShader.setMat4("projection", projectionText);
+		CreateTextTextures();
 
 
 
@@ -530,6 +689,7 @@ int main()
 
 			// Calculate the MODEL matrix for the sun(simulate movements that affects the current celestial body)
 			glm::mat4 modelSphere = glm::mat4(1.0f);
+			glm::mat4 modelText = glm::mat4(1.0f);
 
 			// Orbital tilt (around axis colinear to orbit direction) + Circular translation along the orbit (equidistance to axis normal to orbital plane)
 			modelSphere = glm::translate(modelSphere, glm::vec3(it->second.dist * cos(glm::radians(it->second.orbInclination)) * sin(angleRot), it->second.dist * sin(glm::radians(it->second.orbInclination)) * sin(angleRot), it->second.dist * cos(angleRot)));																																																																	
@@ -538,6 +698,8 @@ int main()
 			if (it->second.planet != nullptr)
 				modelSphere = glm::translate(modelSphere, glm::vec3(it->second.planet->dist * cos(glm::radians(it->second.planet->orbInclination)) * sin(it->second.planet->angleRot), it->second.planet->dist * sin(glm::radians(it->second.planet->orbInclination)) * sin(it->second.planet->angleRot), it->second.planet->dist * cos(it->second.planet->angleRot)));
 			
+			modelText = modelSphere;
+
 			// Axis tilt (around axis colinear to orbit direction)
 			modelSphere = glm::rotate(modelSphere, glm::radians(it->second.obliquity), glm::vec3(1.0f, 0.0f, 0.0f));
 			// Rotation on itself (around axis normal to orbital plane)
@@ -557,6 +719,27 @@ int main()
 			sphereShader.setInt("texSampler", 0);					// SEEM UNEFFECTIVE
 
 			it->second.sphere->Draw();
+
+
+
+			if (paused)
+			{
+				//glm::vec3 look = glm::normalize(camera.Position);
+				//glm::vec3 right = glm::cross(camera.Up, look);
+				//glm::vec3 up2 = cross(look, right);
+				//modelText[0] = glm::vec4(right, 0);
+				//modelText[1] = glm::vec4(up2, 0);
+				//modelText[2] = glm::vec4(look, 0);
+				//modelText = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), camera.Position, glm::vec3(0.0f, 1.0f, 0.0f));
+
+				// Write at the top of the current celestial body its name
+				textShader.use();
+				textShader.setInt("texSampler", 0);
+				textShader.setVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));
+				textShader.setMat4("model", modelText);
+
+				RenderText(it->first, -it->second.radius / 2.0f, it->second.radius + 1.0f, 0.01f);
+			}
 
 
 
@@ -612,8 +795,6 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, texTab[spritesSize - 1]);
 		sphereShader.setInt("texSampler", 0);
 		saturnRings.Draw(sphereShader);
-
-
 
 
 
