@@ -1,16 +1,17 @@
 //#include <glad/glad.h>
+
 #define GLFW_INCLUDE_NONE
-#include <glfw/glfw3.h>
+#include <glfw3.h>
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
-
-#include <unordered_map>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/matrix_decompose.hpp>
 
-#define STB_IMAGE_IMPLEMENTATION
-//#include "stb_image.h"
+//#include <soil2/SOIL2.h>
+
+#include <unordered_map>
 
 //#include "Shader.h"
 #include "Camera.h"
@@ -18,6 +19,8 @@
 #include "Skybox.h"
 #include "Orbit.h"
 #include "Model.h"
+
+
 
 #define FACTOR 10.0f
 float FACTOR2 = 1.0;
@@ -39,42 +42,36 @@ bool paused = false;
 // Camera object initialization
 Camera camera(glm::vec3(0.0f, 50.0f, 200.0f));
 
-std::vector<std::string> sprites
+
+
+
+
+std::vector<std::string> spritesDDS
 {
-	"../Images/8k_sun.tga",
+	"../Textures/8k_sun.dds",
 
-	"../Images/8k_mercury.tga",
-	"../Images/8k_venus.tga",
-	"../Images/8k_earth.tga",
-	"../Images/8k_mars.tga",
-	"../Images/8k_jupiter.tga",
-	"../Images/8k_saturn.tga",
-	"../Images/2k_uranus.tga",
-	"../Images/2k_neptune.tga",
+	"../Textures/8k_mercury.dds",
+	"../Textures/8k_venus.dds",
+	"../Textures/8k_earth.dds",
+	"../Textures/8k_mars.dds",
+	"../Textures/8k_jupiter.dds",
+	"../Textures/8k_saturn.dds",
+	"../Textures/2k_uranus.dds",
+	"../Textures/2k_neptune.dds",
 
-	"../Images/4k_ceres_fictional.tga",
-	"../Images/2k_pluto.tga",
+	"../Textures/4k_ceres_fictional.dds",
+	"../Textures/2k_pluto.dds",
 
-	"../Images/Satellites/8k_luna.tga",
-	"../Images/Satellites/callisto.tga",
-	"../Images/Satellites/europa.tga",
-	"../Images/Satellites/ganymede.tga",
-	"../Images/Satellites/io.tga",
-	"../Images/Satellites/titan.tga",
-	"../Images/Satellites/triton.tga",
+	"../Textures/Satellites/8k_luna.dds",
+	"../Textures/Satellites/callisto.dds",
+	"../Textures/Satellites/europa.dds",
+	"../Textures/Satellites/ganymede.dds",
+	"../Textures/Satellites/io.dds",
+	"../Textures/Satellites/titan.dds",
+	"../Textures/Satellites/triton.dds",
 
-	"../Images/asteroid.tga",
-	"../Images/saturn_ring.tga"
-};
-
-std::vector<std::string> faces
-{
-	"../Images/skybox/stars.tga",	// right			
-	"../Images/skybox/stars.tga",	// -> left
-	"../Images/skybox/stars.tga",	// top 
-	"../Images/skybox/stars.tga",	// bottom
-	"../Images/skybox/stars.tga",	// back
-	"../Images/skybox/stars.tga"	// -> front
+	"../Textures/asteroid.dds",
+	"../Textures/saturn_ring.dds"
 };
 
 
@@ -176,12 +173,17 @@ void colorationGLFWWindow()
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void CreateTexture(GLuint texTab[])
+void CreateTextureDDS(GLuint texTab[])
 {
-	glGenTextures(sprites.size(), texTab);
+	glGenTextures(spritesDDS.size(), texTab);
 
-	for (GLuint i = 0; i < sprites.size(); ++i)
+	for (GLuint i = 0; i < spritesDDS.size(); ++i)
 	{
+		texTab[i] = SOIL_load_OGL_texture(spritesDDS[i].c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
+
+		if (0 == texTab[i])
+			printf("SOIL loading error: '%s'\n", SOIL_last_result());
+
 		// Bind texture name to the OpenGL target we want (here a 2D texture called GL_TEXTURE_2D)
 		glBindTexture(GL_TEXTURE_2D, texTab[i]);
 
@@ -192,37 +194,22 @@ void CreateTexture(GLuint texTab[])
 		// Set the texture filtering option (on the currently bound texture object)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		int width, height, nrChannels;
-		unsigned char *data;
-
-		// Tell stb_image.h to flip loaded texture's on the y-axis (to see textures applied normal to outward faces directions)
-		stbi_set_flip_vertically_on_load(true);
-
-		// Load image (without alpha channel)
-		data = stbi_load(sprites[i].c_str(), &width, &height, &nrChannels, 0);
-
-		if (data)
-		{
-			// Generate texture image on the currently bound TO at the active texture unit
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-
-			// Generate all mipmap levels for the previous currently bound TO
-			glGenerateMipmap(GL_TEXTURE_2D);
-
-			stbi_image_free(data);
-		}
-		else
-		{
-			std::cout << "ERROR::STB_IMAGE: Failed to load entity sprite at index " << i << std::endl;
-			stbi_image_free(data);
-		}
 	}
 }
 
 void CreateSkyboxTexture(GLuint& texSkyboxID)
 {
 	glGenTextures(1, &texSkyboxID);
+
+	GLuint data = SOIL_load_OGL_single_cubemap
+	(
+		"../Textures/skybox/stars.dds",
+		"EWUDNS",
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_DDS_LOAD_DIRECT
+	);
+
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texSkyboxID);
 
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -231,26 +218,6 @@ void CreateSkyboxTexture(GLuint& texSkyboxID)
 
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	int width, height, nrChannels;
-	unsigned char *data;
-
-	for (GLuint i = 0; i < faces.size(); ++i)
-	{
-		data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
-
-		if (data)
-		{
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
-			stbi_image_free(data);
-		}
-		else
-		{
-			std::cout << "ERROR::STB_IMAGE: Failed to load skybox sprite at index " << i << std::endl;
-			stbi_image_free(data);
-		}
-	}
 }
 
 // Holds all state information relevant to a character as loaded using FreeType (including metrics)
@@ -595,9 +562,9 @@ int main()
 	Skybox * sb = new Skybox();
 
 	// Create textures
-	int spritesSize = sprites.size();
-	GLuint texTab[22];
-	CreateTexture(texTab);
+	int spritesSize = spritesDDS.size();
+	GLuint texTab[22];								// spritesDDS.size() (=20) + 2
+	CreateTextureDDS(texTab);						
 	CreateSkyboxTexture(texTab[spritesSize]);
 	CreateTextTextures();
 
@@ -732,6 +699,7 @@ int main()
 
 			if (paused)
 			{
+				// Orient text to camera position
 				//glm::vec3 look = glm::normalize(camera.Position);
 				//glm::vec3 right = glm::cross(camera.Up, look);
 				//glm::vec3 up2 = cross(look, right);
@@ -772,7 +740,7 @@ int main()
 		asteroidShader.setMat4("view", view);
 		asteroidShader.setInt("texSampler", samplerID);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, asteroid.textures_loaded[0].id);
+		glBindTexture(GL_TEXTURE_2D, texTab[spritesSize - 2]);// asteroid.textures_loaded[0].id);
 		for (unsigned int i = 0; i < asteroid.meshes.size(); ++i)
 		{
 			glBindVertexArray(asteroid.meshes[i].VAO);

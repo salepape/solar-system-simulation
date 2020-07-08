@@ -12,7 +12,8 @@ unsigned int TextureFromFile(const char *path, const std::string &directory, boo
 	glGenTextures(1, &textureID);
 
 	int width, height, nrComponents;
-	unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+	unsigned char *data = SOIL_load_image(filename.c_str(), &width, &height, &nrComponents, SOIL_LOAD_RGB);
+	//unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
 	if (data)
 	{
 		GLenum format;
@@ -24,7 +25,7 @@ unsigned int TextureFromFile(const char *path, const std::string &directory, boo
 			format = GL_RGBA;
 
 		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, nrComponents, format, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -32,12 +33,14 @@ unsigned int TextureFromFile(const char *path, const std::string &directory, boo
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		stbi_image_free(data);
+		//stb_image_free(data);
+		SOIL_free_image_data(data);
 	}
 	else
 	{
 		std::cout << "Texture failed to load at path: " << path << std::endl;
-		stbi_image_free(data);
+		//stb_image_free(data);
+		SOIL_free_image_data(data);
 	}
 
 	return textureID;

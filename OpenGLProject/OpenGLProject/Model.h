@@ -1,7 +1,8 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "stb_image.h"
+//#include "stb_image.h"
+#include<SOIL2.h>
 #include "mesh.h"
 
 #include <assimp/Importer.hpp>
