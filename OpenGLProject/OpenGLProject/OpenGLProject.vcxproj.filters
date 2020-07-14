@@ -13,24 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{574995b3-bc66-470e-afec-d22c4b69de49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Extern Files">
+      <UniqueIdentifier>{332f4d4c-63df-42a3-88a4-2cab99135963}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Storage files">
+      <UniqueIdentifier>{b1218cc2-67f3-458e-a34d-4b81430aad57}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Background.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Skybox.h">
@@ -39,27 +39,90 @@
     <ClInclude Include="Orbit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Belt.h">
+      <Filter>Header Files\Storage files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data.h">
+      <Filter>Header Files\Storage files</Filter>
+    </ClInclude>
+    <ClInclude Include="UX.h">
+      <Filter>Header Files\Storage files</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Header Files\Storage files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glad.c">
+    <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Orbit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="glad.c">
+      <Filter>Source Files\Extern Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SphereShader.vs">
-      <Filter>Source Files</Filter>
+    <None Include="AsteroidShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="AsteroidShader.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="SkyboxShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="SkyboxShader.vs">
+      <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="SphereShader.fs">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="CubeShader.vs">
-      <Filter>Source Files</Filter>
+    <None Include="SphereShader.vs">
+      <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="CubeShader.fs">
-      <Filter>Source Files</Filter>
+    <None Include="textShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="textShader.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="SaturnRingsShader.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="SaturnRingsShader.fs">
+      <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
