@@ -3,11 +3,7 @@
 
 //#include "stb_image.h"
 #include<SOIL2.h>
-#include "mesh.h"
-
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>		
+#include "mesh.h"	
 
 #include <iostream>
 //#include <string>
@@ -16,7 +12,7 @@
 
 
 
-unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
+//unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
 
 
 

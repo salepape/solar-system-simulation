@@ -11,6 +11,6 @@ uniform mat4 view;
 
 void main()
 {
-    texCoord.xy = vTexCoord.xy;
     gl_Position.xyzw = projection * view * vInstanceMatrix * vec4(vPos.xyz, 1.0f); 
+	texCoord.xy = vTexCoord.xy;
 }
