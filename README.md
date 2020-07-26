@@ -25,7 +25,7 @@ To be able to discover the Solar System, the user should use the following basic
 ## Technologies
 
 The project is developed under Visual Studio 17 within Windows 10 environment. It uses :
-* OpenGL 3.2 (core profile) : C / C++ code + GLSL shaders;
+* OpenGL 3.2 (core profile) API : C / C++ code + GLSL shaders;
 * GLFW3 library;
 * Glad;
 * Assimp library; 
