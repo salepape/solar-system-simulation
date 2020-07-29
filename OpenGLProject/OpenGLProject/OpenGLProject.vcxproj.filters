@@ -112,16 +112,16 @@
     <None Include="SphereShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="textShader.fs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="textShader.vs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="SaturnRingsShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="SaturnRingsShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="TextShader.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="TextShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>

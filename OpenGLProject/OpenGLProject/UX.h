@@ -46,6 +46,10 @@ GLFWwindow* initGLFWWindow(int windowWidth, int windowHeight, const char* window
 	// Tell explicitly GLFW that we want to use core-profile 
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
 	// Creation of a GLFW window of size "width x height", its title appearing in a top bar
 	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, windowTitle, NULL, NULL);
 

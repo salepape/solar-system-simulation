@@ -168,8 +168,8 @@
     <None Include="SkyboxShader.vs" />
     <None Include="SphereShader.fs" />
     <None Include="SphereShader.vs" />
-    <None Include="textShader.fs" />
-    <None Include="textShader.vs" />
+    <None Include="TextShader.fs" />
+    <None Include="TextShader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

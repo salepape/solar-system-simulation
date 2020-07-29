@@ -123,19 +123,31 @@ int main()
 		glm::mat4 modelText;
 		glm::mat4 modelOrbit;
 
-		// Texture sampler ID (one for each object) -> clarify usefulness
+		// Texture sampler ID (one for each object) 
 		GLint samplerID = 0;
 
 
 
-		// Activate the shader to initialize projection, view then model mat4 inside it
+		// Activate the shaders before initializing uniforms
 		sphereShader.use();
 		sphereShader.setMat4("projection", projection);
 		sphereShader.setMat4("view", view);
+		sphereShader.setVec3("material.specular", 0.0f, 0.0f, 0.0f);
+		sphereShader.setFloat("material.shininess", 64.0f);
+		sphereShader.setVec3("light.position", 0.0f, 0.0f, 0.0f);
+		sphereShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+		sphereShader.setVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
+		sphereShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		sphereShader.setFloat("light.constant", 1.0f);
+		sphereShader.setFloat("light.linear", 0.0007f);
+		sphereShader.setFloat("light.quadratic", 0.000002f);
+		sphereShader.setVec3("viewPos", camera.Position);
 
 		textShader.use();
 		textShader.setMat4("projection", projection);
 		textShader.setMat4("view", view);
+
+
 
 
 
@@ -156,6 +168,7 @@ int main()
 			}
 			else
 			{
+				// Sun rotation too fast to have a cool look
 				angleRot = 0.0f;
 				angleRotItself = 0.0f;
 			}
@@ -200,7 +213,12 @@ int main()
 																						
 			sphereShader.use();
 			sphereShader.setMat4("model", modelSphere);
-			sphereShader.setInt("texSampler", samplerID);
+			if (it->first != "Sun")
+				sphereShader.setBool("isSun", false);
+			else
+				sphereShader.setBool("isSun", true);
+			sphereShader.setInt("material.diffuse", samplerID);
+			//sphereShader.setInt("texSampler", samplerID);
 
 			it->second.text->enable(samplerID);
 			it->second.sphere->Draw();
@@ -242,7 +260,8 @@ int main()
 
 				sphereShader.use();
 				sphereShader.setMat4("model", modelOrbit);
-				sphereShader.setInt("texSampler", samplerID);
+				//sphereShader.setInt("texSampler", samplerID);
+				sphereShader.setInt("material.diffuse", samplerID);
 
 				if (it->second.planet != nullptr || it->first == "Pluto" || it->first == "Ceres")
 					data["Mercury"].text->enable(samplerID);
@@ -260,7 +279,18 @@ int main()
 		asteroidShader.use();
 		asteroidShader.setMat4("projection", projection);
 		asteroidShader.setMat4("view", view);
-		asteroidShader.setInt("texSampler", samplerID);
+		asteroidShader.setInt("material.diffuse", samplerID);
+		asteroidShader.setVec3("material.specular", 0.0f, 0.0f, 0.0f);
+		asteroidShader.setFloat("material.shininess", 64.0f);
+		asteroidShader.setVec3("light.position", 0.0f, 0.0f, 0.0f);
+		asteroidShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+		asteroidShader.setVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
+		asteroidShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		asteroidShader.setFloat("light.constant", 1.0f);
+		asteroidShader.setFloat("light.linear", 0.0007f);
+		asteroidShader.setFloat("light.quadratic", 0.000002f);
+		asteroidShader.setVec3("viewPos", camera.Position);
+		//asteroidShader.setInt("texSampler", samplerID);
 		asteroid.textures_loaded[0].enable(samplerID);
 		RenderBelts(asteroid);
 		++samplerID;
@@ -293,5 +323,3 @@ int main()
 
 	return 0;
 }
-
-

@@ -20,14 +20,21 @@ private:
 	unsigned int VAO;
 	// Element Buffer Object
 	unsigned int EBO;
-	// Radius of the planet [in kms]
+	// Radius of the planet 
 	float radius;
 
+	// Vectors containing sphere data computed
+	std::vector<float> vertCoor;
+	std::vector<float> normalCoor;
+	std::vector<float> textCoor;
+	std::vector<int> indexes;
 
 
 public:
 	Sphere(float radiusArg);
 
+	void Compute();
+	void Linking();
 	void Draw();
 
 	~Sphere();
