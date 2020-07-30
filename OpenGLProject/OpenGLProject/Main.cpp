@@ -200,10 +200,21 @@ int main()
 				saturnRingsShader.setMat4("projection", projection);
 				saturnRingsShader.setMat4("view", view);
 				saturnRingsShader.setMat4("model", modelSphere);
-				saturnRingsShader.setInt("texSampler", samplerID);		
-				
-				saturnRings.Draw(saturnRingsShader);
+				asteroidShader.setInt("material.diffuse", samplerID);
+				saturnRingsShader.setVec3("material.specular", 0.0f, 0.0f, 0.0f);
+				saturnRingsShader.setFloat("material.shininess", 64.0f);
+				saturnRingsShader.setVec3("light.position", 0.0f, 0.0f, 0.0f);
+				saturnRingsShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+				saturnRingsShader.setVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
+				saturnRingsShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+				saturnRingsShader.setFloat("light.constant", 1.0f);
+				saturnRingsShader.setFloat("light.linear", 0.0007f);
+				saturnRingsShader.setFloat("light.quadratic", 0.000002f);
+				saturnRingsShader.setVec3("viewPos", camera.Position);
+				//saturnRingsShader.setInt("texSampler", samplerID);
+
 				saturnRings.textures_loaded[0].enable(samplerID);
+				saturnRings.Draw(saturnRingsShader);
 
 				++samplerID;
 			}
