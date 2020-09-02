@@ -28,6 +28,10 @@ const float ZOOM = 45.0f;				// [in degrees]
 // Camera class that processes input and calculates the corresponding Euler angles, vectors and matrices for OpenGL to use
 class Camera
 {
+private:
+	// Compute updated Forward, Right and Up vectors from the Camera's updated Euler Angles
+	void UpdateCameraVectors();
+
 public:
 	// Camera Attributes
 	glm::vec3 Position;
@@ -60,12 +64,6 @@ public:
 
 	// Process input received from a mouse scroll-wheel event (only requires input on the vertical wheel-axis)
 	void ProcessMouseScroll(float yoffset);
-
-
-
-private:
-	// Compute updated Forward, Right and Up vectors from the Camera's updated Euler Angles
-	void UpdateCameraVectors();
 };
 
 #endif

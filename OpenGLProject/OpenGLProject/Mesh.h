@@ -1,15 +1,18 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include "Shader.h"
-#include "Texture.h"
-
 #include <glad/glad.h> 
 
 #include <glm/glm.hpp>	
 
 #include <string>
 #include <vector>
+
+#include "Shader.h"
+#include "Texture.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 
 
 
@@ -29,22 +32,23 @@ struct Vertex
 
 class Mesh 
 {
+private:
+	VertexArray * vao;
+	VertexBuffer * vbo;
+	IndexBuffer * ibo;
+
+	void Store();
+
 public:
-	// Mesh Data
 	std::vector<Vertex>       vertices;
 	std::vector<unsigned int> indices;
 	std::vector<Texture>      textures;
-	unsigned int VAO;
 
-	// Constructor
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+	Mesh(std::vector<Vertex> verticesArg, std::vector<unsigned int> indicesArg, std::vector<Texture> texturesArg);
 
 	void Draw(Shader &shader);
 
-private:
-	// render data 
-	unsigned int VBO, EBO;
-
-	void setupMesh();
+	// Save reference of mesh vao to be used within belt.cpp
+	inline VertexArray& GetVaoRef() const { return *vao; };
 };
 #endif

@@ -3,7 +3,7 @@
 
 
 
-Model::Model(std::string const &path, bool gamma) : gammaCorrection(gamma)
+Model::Model(std::string const &path, bool gammaCorrectionArg) : gammaCorrection(gammaCorrectionArg)
 {
 	loadModel(path);
 }
@@ -14,7 +14,6 @@ void Model::Draw(Shader &shader)
 		meshes[i].Draw(shader);
 }
 
-// Load a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector
 void Model::loadModel(std::string const &path)
 {
 	// Read file via ASSIMP
@@ -34,7 +33,6 @@ void Model::loadModel(std::string const &path)
 	processNode(scene->mRootNode, scene);
 }
 
-// Process a node and its children recursively
 void Model::processNode(aiNode *node, const aiScene *scene)
 {
 	// Process each mesh located at the current node
@@ -65,16 +63,19 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 	{
 		Vertex vertex;
 		glm::vec3 vector; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
+		
 		// Positions
 		vector.x = mesh->mVertices[i].x;
 		vector.y = mesh->mVertices[i].y;
 		vector.z = mesh->mVertices[i].z;
 		vertex.Position = vector;
+
 		// Normals
 		vector.x = mesh->mNormals[i].x;
 		vector.y = mesh->mNormals[i].y;
 		vector.z = mesh->mNormals[i].z;
 		vertex.Normal = vector;
+
 		// Texture coordinates
 		if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
 		{
@@ -87,11 +88,13 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 		}
 		else
 			vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+
 		// Tangent
 		vector.x = mesh->mTangents[i].x;
 		vector.y = mesh->mTangents[i].y;
 		vector.z = mesh->mTangents[i].z;
 		vertex.Tangent = vector;
+
 		// Bitangent
 		vector.x = mesh->mBitangents[i].x;
 		vector.y = mesh->mBitangents[i].y;
@@ -112,7 +115,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 
 
 
-	// process materials
+	// Process materials
 	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 	// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
 	// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
@@ -124,12 +127,15 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 	// 1. diffuse maps
 	std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+
 	// 2. specular maps
 	std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+
 	// 3. normal maps
 	std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
 	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+
 	// 4. height maps
 	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
@@ -138,8 +144,6 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 	return Mesh(vertices, indices, textures);
 }
 
-// checks all material textures of a given type and loads the textures if they're not loaded yet.
-// the required info is returned as a Texture struct.
 std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName)
 {
 	std::vector<Texture> textures;
@@ -164,9 +168,6 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType 
 		{   // if texture hasn't been loaded already, load it
 			Texture texture(str.C_Str(), typeName.c_str(), GL_TEXTURE_2D, 0);
 			texture.loadDDS();
-			//texture.textID = TextureFromFile(str.C_Str(), this->directory);
-			//texture.type = typeName;
-			//texture.path = str.C_Str();
 			textures.push_back(texture);
 			textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
 		}

@@ -7,6 +7,9 @@
 
 #include <vector>
 
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "VertexArray.h"
 
 
 class Sphere
@@ -14,14 +17,11 @@ class Sphere
 private:
 	// Number of double values that contains indexes vector
 	int nbIndexes;
-	// Vertex Buffer Object
-	unsigned int VBO;
-	// Vertex Array Object
-	unsigned int VAO;
-	// Element Buffer Object
-	unsigned int EBO;
 	// Radius of the planet 
 	float radius;
+	//unsigned int VAO;
+	VertexArray * vao;
+	IndexBuffer * ibo;
 
 	// Vectors containing sphere data computed
 	std::vector<float> vertCoor;
@@ -29,15 +29,15 @@ private:
 	std::vector<float> textCoor;
 	std::vector<int> indexes;
 
+	void Compute();
+	void Store();
+
 
 public:
 	Sphere(float radiusArg);
-
-	void Compute();
-	void Linking();
-	void Draw();
-
 	~Sphere();
+
+	void Draw();
 };
 
 #endif SPHERE_H

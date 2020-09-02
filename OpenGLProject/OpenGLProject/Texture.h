@@ -41,9 +41,9 @@ public:
 	void setFilters(GLenum all);
 	void setFilters(GLenum min, GLenum mag);
 
-	void bind();
+	void bind() const;
 	void enable(GLint textUnit);
-	void unbind();
+	void unbind() const;
 	void disable();
 
 

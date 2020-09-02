@@ -1,13 +1,11 @@
-
 #include "Sphere.h"
 
 
 
-Sphere::Sphere(float radiusArg)
+Sphere::Sphere(float radiusArg) : radius(radiusArg)
 {
-	radius = radiusArg;
 	Compute();
-	Linking();
+	Store();
 }
 
 void Sphere::Compute()
@@ -81,78 +79,56 @@ void Sphere::Compute()
 	}
 }
 
-void Sphere::Linking()
+void Sphere::Store()
 {
-	// Number of bytes encoding vertCoor vector
-	int sizeofVertices = sizeof(float) * vertCoor.size();
-	int sizeofNormals = sizeof(float) * normalCoor.size();
-	int sizeofTextures = sizeof(float) * textCoor.size();
-	int sizeofIndexes = sizeof(unsigned int) * indexes.size();
+	// Number of bytes encoding vertCoor / normalCoor / textCoor vectors
+	unsigned int  sizeofVertices = sizeof(float) * vertCoor.size();
+	unsigned int  sizeofNormals = sizeof(float) * normalCoor.size();
+	unsigned int  sizeofTextures = sizeof(float) * textCoor.size();
 
-	// GENERATION VBO - Generate 1 BO storing its ID / name in the provided array within graphics memory
-	glGenBuffers(1, &VBO);
-	// BINDING VBO - Bind BO to the OpenGL BO target we want (here the one of a vertex, called GL_ARRAY_BUFFER, hence VBO variable name)
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	// COPY - Allocate memory and store data into the currently bound BO memory
-	glBufferData(GL_ARRAY_BUFFER, sizeofVertices + sizeofNormals + sizeofTextures, NULL, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeofVertices, &vertCoor[0]);
-	glBufferSubData(GL_ARRAY_BUFFER, sizeofVertices, sizeofNormals, &normalCoor[0]);
-	glBufferSubData(GL_ARRAY_BUFFER, sizeofVertices + sizeofNormals, sizeofTextures, &textCoor[0]);
+	std::vector<unsigned int> sizeofs{ sizeofVertices, sizeofNormals, sizeofTextures };
+	std::vector<std::vector<float>*> dataAddresses { &vertCoor, &normalCoor, &textCoor };
 
-	// GENERATION EBO - Generate 1 BO for index elements
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeofIndexes, &indexes[0], GL_STATIC_DRAW);
+	vao = new VertexArray();
 
-	// GENERATION VAO - Generate 1 VAO 
-	glGenVertexArrays(1, &VAO);
-	// BINDING VAO - Bind VAO, which thus will store all following VBO calls
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	VertexBuffer vbo(NULL, sizeofVertices + sizeofNormals + sizeofTextures);
+	vbo.InitSubData(dataAddresses);
 
-	// PERMISSION - Enable the vertex attribute provided its location
-	glEnableVertexAttribArray(0);
-	// INTERPRETATION - Store in the currently bound VBO how OpenGL should interpret the vertex buffer data			   -> POSITION 0 FOR VERT COOR
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(sizeofVertices));					// -> POSITION 1 FOR NORMAL COOR
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)(sizeofVertices + sizeofNormals));	// -> POSITION 2 FOR TEXT COOR
+	VertexBufferLayout vbl;
+	vbl.Push<float>(3);						// Vertex position (location = 0 in SphereShader.vs)
+	vbl.Push<float>(3);						// Vertex normal (location = 1 in SphereShader.vs)
+	vbl.Push<float>(2);						// Vertex texture coordinates (location = 2 in SphereShader.vs)
+	vao->AddBuffer2(vbo, vbl, sizeofs);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	ibo = new IndexBuffer(&indexes[0], indexes.size());
 
 	// Configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
-	unsigned int lightVAO;
-	glGenVertexArrays(1, &lightVAO);
-	glBindVertexArray(lightVAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	VertexArray lightVao;
+	lightVao.Bind();
+	vbo.Bind();
 	// note that we update the lamp's position attribute's stride to reflect the updated buffer data
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	VertexBufferLayout lightVbl;
+	lightVbl.Push<float>(3);
+	lightVao.AddBuffer(vbo, lightVbl);
 
-	// UNBIND - Unbind buffers
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-}
-
-void Sphere::Draw()
-{
-	glBindVertexArray(VAO);
-
-	glDrawElements(GL_TRIANGLES, indexes.size() , GL_UNSIGNED_INT, (void*)0);
+	vbo.Unbind();
+	ibo->Unbind();
+	vao->Unbind();
 }
 
 Sphere::~Sphere()
 {
-	// CLEAN EBO (optional) - Free the resource once it've outlived its purpose
-	glDeleteBuffers(1, &EBO);
-
-	// CLEAN VBO (optional) - Free the resource once it've outlived its purpose
-	glDeleteBuffers(1, &VBO);
-
-	// CLEAN VAO (optional) - Free the resource once it've outlived its purpose
-	glDeleteVertexArrays(1, &VAO);
+	ibo->~IndexBuffer();
+	vao->~VertexArray();
 }
+
+void Sphere::Draw()
+{
+	vao->Bind();
+	ibo->Bind();
+
+	glDrawElements(GL_TRIANGLES, indexes.size() , GL_UNSIGNED_INT, (void*)0);
+}
+
+
 

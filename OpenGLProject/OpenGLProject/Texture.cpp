@@ -4,7 +4,8 @@
 
 
 
-Texture::Texture(const char * path, const char * type, GLenum target, int defaultParams) : path(path), type(type), target(target)
+Texture::Texture(const char * pathArg, const char * typeArg, GLenum targetArg, int defaultParams) :
+	path(pathArg), type(typeArg), target(targetArg)
 {
 	// Try catch exception ? if OpenGL context created in main() is still active
 	if (glfwGetCurrentContext() == NULL)
@@ -147,7 +148,7 @@ void Texture::setFilters(GLenum min, GLenum mag)
 	glTexParameteri(target, GL_TEXTURE_MAG_FILTER, mag);
 }
 
-void Texture::bind()		// textUnit = samplerID in main() ???
+void Texture::bind() const		// textUnit = samplerID in main() ???
 {
 	//glActiveTexture(GL_TEXTURE0 + textUnit);
 	glBindTexture(target, textID);
@@ -161,7 +162,7 @@ void Texture::enable(GLint textUnit)		// textUnit = samplerID in main() ???
 	bind();
 }
 
-void Texture::unbind()
+void Texture::unbind() const
 {
 	glBindTexture(target, 0);
 }

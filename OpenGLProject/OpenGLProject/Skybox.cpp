@@ -5,7 +5,13 @@
 
 Skybox::Skybox()
 {
-	float skyboxVertCoor[] =
+	Compute();
+	Store();
+};
+
+void Skybox::Compute()
+{
+	vertCoor =
 	{
 		-1.0f,  1.0f, -1.0f,
 		-1.0f, -1.0f, -1.0f,
@@ -49,35 +55,32 @@ Skybox::Skybox()
 		-1.0f, -1.0f,  1.0f,
 		 1.0f, -1.0f,  1.0f
 	};
+}
 
-	int sizeofVertices = sizeof(skyboxVertCoor);
-
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	
-	glBufferData(GL_ARRAY_BUFFER, sizeofVertices, &skyboxVertCoor, GL_STATIC_DRAW);
-
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-};
-
-void Skybox::Draw()
+void Skybox::Store()
 {
-	glBindVertexArray(VAO);
+	unsigned int sizeofVertices = sizeof(float) * vertCoor.size();
 
-	glDrawArrays(GL_TRIANGLES, 0, 36);
+	vao = new VertexArray();
+	VertexBuffer vbo(&vertCoor[0], sizeofVertices);
+
+	VertexBufferLayout vbl;
+	vbl.Push<float>(3);			// Vertex coordinates (location = 0 in SkyboxShader.vs) 
+	vao->AddBuffer(vbo, vbl);
+
+	vbo.Unbind();
+	vao->Unbind();
 }
 
 Skybox::~Skybox()
 {
-	glDeleteBuffers(1, &VBO);
-
-	glDeleteVertexArrays(1, &VAO);
+	vao->~VertexArray();
 }
+
+void Skybox::Draw()
+{
+	vao->Bind();
+
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+

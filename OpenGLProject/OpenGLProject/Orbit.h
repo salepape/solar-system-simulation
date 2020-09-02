@@ -8,31 +8,30 @@
 
 #include <vector>
 
+#include "VertexBuffer.h"
+#include "VertexArray.h"
+
 
 
 // Approximation : all planet / moon orbits will be circular (eccentricities close to 0)
 class Orbit
 {
 private:
-	// Number of edges (controls degree of smoothness)
-	int nbMeridStrips;
-	// Vertex Array Object
-	unsigned int VAO;
-	// Vertex Buffer Object
-	unsigned int VBO;
-	// Element Buffer Object
-	unsigned int EBO;
-	// Radius of the orbit (= distance between sun and corresponding planet) [in kms]
-	float radius;
+	float radius;				// Radius of the orbit (= distance between sun and corresponding planet) 
+	int nbMeridStrips;			// Number of edges (controls degree of smoothness)
+	VertexArray * vao;
 
+	// Vectors containing sphere data computed
+	std::vector<float> vertCoor;
 
+	void Compute();
+	void Store();
 
 public:
 	Orbit(float radiusArg);
+	~Orbit();
 
 	void Draw();
-
-	~Orbit();
 };
 
 #endif ORBIT_H

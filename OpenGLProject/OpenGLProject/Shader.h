@@ -14,6 +14,10 @@
 
 class Shader
 {
+private:
+	// Utility function for checking shader compilation / linking errors
+	void checkCompileErrors(GLuint shader, std::string type);
+
 public:
 	unsigned int ID;
 
@@ -36,10 +40,6 @@ public:
 	void setMat2(const std::string &name, const glm::mat2 &mat) const;
 	void setMat3(const std::string &name, const glm::mat3 &mat) const;
 	void setMat4(const std::string &name, const glm::mat4 &mat) const;
-
-private:
-	// Utility function for checking shader compilation / linking errors
-	void checkCompileErrors(GLuint shader, std::string type);
 };
 
 #endif

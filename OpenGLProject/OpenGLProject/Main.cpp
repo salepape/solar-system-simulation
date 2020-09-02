@@ -3,8 +3,7 @@
 #include "Text.h"
 #include "UX.h"
 #include "Belt.h"
-
-
+#include "Data.h"
 
 
 
@@ -64,21 +63,21 @@ int main()
 
 	// Create textures
 	Texture * texTab[nbTextures];
-	size_t k = 0;
-	for (; k < nbTextures; ++k)
+	for (size_t k = 0; k < nbTextures; ++k)
 	{
 		texTab[k] = new Texture(texturePaths[k], "", GL_TEXTURE_2D, 0);
 		texTab[k]->loadDDS();
 	}
 	Texture skyboxTex = Texture(textureStarsPath, "", GL_TEXTURE_CUBE_MAP, 2);
 	skyboxTex.loadCubemapDDS();
-	CreateTextTextures();
+	Text text;
 
 	// Put all celestial bodies data within an unordered_map
 	LoadData(texTab);
 
-	// Instancing for main Solar Systems rock belts
-	CreateBelts(asteroid);
+	// Instancing the main Solar Systems rock belts
+	Belt asteroidBelt { asteroid, 5000, 10, data["Mars"].dist * 1.1f, 2.75f * DIST_SCALE_FACTOR / 2.5f };
+	//Belt kuiperBelt { asteroid, 20000, 20, data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR };
 
 
 
@@ -255,9 +254,9 @@ int main()
 				textShader.setVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));		
 				
 				if(it->first != "Sun")
-					RenderText(it->first, 0.0f, it->second.radius * 1.25f, it->second.radius * 0.01f, samplerID);
+					text.Render(it->first, 0.0f, it->second.radius * 1.25f, it->second.radius * 0.01f, samplerID);
 				else
-					RenderText(it->first, 0.0f, it->second.radius * 0.5f * 1.25f, it->second.radius * 0.003f, samplerID);
+					text.Render(it->first, 0.0f, it->second.radius * 0.5f * 1.25f, it->second.radius * 0.003f, samplerID);
 
 				++samplerID;
 			}
@@ -303,7 +302,8 @@ int main()
 		asteroidShader.setVec3("viewPos", camera.Position);
 		//asteroidShader.setInt("texSampler", samplerID);
 		asteroid.textures_loaded[0].enable(samplerID);
-		RenderBelts(asteroid);
+		asteroidBelt.Render();
+		//kuiperBelt.Render();
 		++samplerID;
 
 

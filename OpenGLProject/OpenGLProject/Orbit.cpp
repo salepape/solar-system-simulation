@@ -3,13 +3,16 @@
 
 
 
-Orbit::Orbit(float radiusArg)
+Orbit::Orbit(float radiusArg) : radius(radiusArg)
 {
-	radius = radiusArg;
+	Compute();
+	Store();
+}
 
-	float pi = glm::pi<float>(), theta;
-	nbMeridStrips = 100;
-	std::vector<float> vertCoor;
+void Orbit::Compute()
+{
+	float pi = glm::pi<float>(), theta;	
+	nbMeridStrips = 100;				
 
 	for (int i = 0; i <= nbMeridStrips; ++i)
 	{
@@ -19,38 +22,32 @@ Orbit::Orbit(float radiusArg)
 		vertCoor.push_back(0.0f);
 		vertCoor.push_back(radius * glm::cos(theta));
 	}
-
-
-
-	int sizeofVertices = sizeof(float) * vertCoor.size();
-
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-	glBufferData(GL_ARRAY_BUFFER, sizeofVertices, &vertCoor[0], GL_STATIC_DRAW);
-
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Orbit::Draw()
+void Orbit::Store()
 {
-	glBindVertexArray(VAO);
+	unsigned int sizeofVertices = sizeof(float) * vertCoor.size();
 
-	glDrawArrays(GL_LINE_LOOP, 0, nbMeridStrips);
+	vao = new VertexArray();
+	VertexBuffer vbo(&vertCoor[0], sizeofVertices);
+
+	VertexBufferLayout vbl;
+	vbl.Push<float>(3);			// Vertex coordinates (location = 0 in SphereShader.vs)
+	vao->AddBuffer(vbo, vbl);
+
+	vbo.Unbind();
+	vao->Unbind();
 }
 
 Orbit::~Orbit()
 {
-	glDeleteBuffers(1, &VBO);
+	vao->~VertexArray();
+}
 
-	glDeleteVertexArrays(1, &VAO);
+void Orbit::Draw()
+{
+	vao->Bind();
+
+	glDrawArrays(GL_LINE_LOOP, 0, nbMeridStrips);
 }
 

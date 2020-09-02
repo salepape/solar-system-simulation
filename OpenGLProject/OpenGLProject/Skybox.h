@@ -4,23 +4,27 @@
 #include <glad/glad.h>
 
 #include <glm/glm.hpp>					// for cos and sin
+#include <vector>
+
+#include "VertexBuffer.h"
+#include "VertexArray.h"
 
 
 
 class Skybox
 {
 private:
-	// Vertex Buffer Object
-	unsigned int VBO;
-	// Vertex Array Object
-	unsigned int VAO;
+	std::vector<float> vertCoor;
+	VertexArray * vao;
+
+	void Compute();
+	void Store();
 
 public:
 	Skybox();
+	~Skybox();
 
 	void Draw();
-
-	~Skybox();
 };
 
 #endif SKYBOX_H
