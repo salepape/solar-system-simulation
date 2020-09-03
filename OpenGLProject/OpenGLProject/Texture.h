@@ -18,36 +18,6 @@
 
 class Texture
 {
-public:
-	GLuint textID;
-	const char * type;
-	const char * path;
-
-	Texture(const char * path, const char * type, GLenum target, int defaultParams);
-
-	void generate();
-
-	void loadImage(GLenum channel);
-	void loadGlyph(FT_Face face, GLenum channel);
-	void loadDDS();
-	void loadCubemapDDS();
-
-	// Set the texture wrapping option(on the currently bound texture object)
-	void setWrap(GLenum all);
-	void setWrap(GLenum s, GLenum t);
-	void setWrap(GLenum s, GLenum t, GLenum r);
-	
-	// Set the texture filtering option (on the currently bound texture object)
-	void setFilters(GLenum all);
-	void setFilters(GLenum min, GLenum mag);
-
-	void bind() const;
-	void enable(GLint textUnit);
-	void unbind() const;
-	void disable();
-
-
-
 private:
 	GLenum target;
 
@@ -55,6 +25,34 @@ private:
 	//int width;
 	//int height;
 	//int nbChannels;
+
+public:
+	GLuint textID;
+	const char * type;
+	const char * path;
+
+	Texture(const char * path, const char * type, GLenum target, int defaultParams);
+
+	void Generate();
+
+	void LoadImage(GLenum channel);
+	void LoadGlyph(FT_Face face, GLenum channel);
+	void LoadDDS();
+	void LoadCubemapDDS();
+
+	// Set the texture wrapping option(on the currently bound texture object)
+	void SetWrap(GLenum all);
+	void SetWrap(GLenum s, GLenum t);
+	void SetWrap(GLenum s, GLenum t, GLenum r);
+	
+	// Set the texture filtering option (on the currently bound texture object)
+	void SetFilters(GLenum all);
+	void SetFilters(GLenum min, GLenum mag);
+
+	void Bind() const;
+	void Enable(GLint textUnit);
+	void Unbind() const;
+	void Disable();
 };
 
 #endif 

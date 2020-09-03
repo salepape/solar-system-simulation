@@ -16,26 +16,26 @@ Texture::Texture(const char * pathArg, const char * typeArg, GLenum targetArg, i
 	// Textures by default
 	if (defaultParams == 0)
 	{
-		setWrap(GL_REPEAT);
-		setFilters(GL_LINEAR);
+		SetWrap(GL_REPEAT);
+		SetFilters(GL_LINEAR);
 	}
 	// Textures for characters
 	else if (defaultParams == 1)
 	{
-		generate();
+		Generate();
 
-		setWrap(GL_CLAMP_TO_EDGE);
-		setFilters(GL_LINEAR);
+		SetWrap(GL_CLAMP_TO_EDGE);
+		SetFilters(GL_LINEAR);
 	}
 	// Texture for skybox
 	else if (defaultParams == 2)
 	{
-		setWrap(GL_CLAMP_TO_EDGE);
-		setFilters(GL_LINEAR);
+		SetWrap(GL_CLAMP_TO_EDGE);
+		SetFilters(GL_LINEAR);
 	}
 }
 
-void Texture::generate()
+void Texture::Generate()
 {
 	// Bind TO to the OpenGL texture object (= TO) type we want 
 	glGenTextures(1, &textID);
@@ -44,7 +44,7 @@ void Texture::generate()
 	glBindTexture(target, textID);
 }
 
-void Texture::loadImage(GLenum channel)
+void Texture::LoadImage(GLenum channel)
 {
 	int width, height, nbChannels;
 
@@ -68,7 +68,7 @@ void Texture::loadImage(GLenum channel)
 		}
 
 		//glBindTexture(target, textID);
-		bind();
+		Bind();
 
 		// Generate texture image on the currently bound TO at the active texture unit
 		glTexImage2D(target, 0, format, width, height, nbChannels, format, GL_UNSIGNED_BYTE, data);
@@ -85,13 +85,13 @@ void Texture::loadImage(GLenum channel)
 	SOIL_free_image_data(data);
 }
 
-void Texture::loadGlyph(FT_Face face, GLenum format)
+void Texture::LoadGlyph(FT_Face face, GLenum format)
 {
 	glTexImage2D(target, 0, format, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, format, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void Texture::loadDDS()
+void Texture::LoadDDS()
 {
 	// Contains glGenTextures !!!
 	textID = SOIL_load_OGL_texture(path, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
@@ -101,10 +101,10 @@ void Texture::loadDDS()
 
 	// Bind texture name to the OpenGL target we want (expl : a 2D texture called GL_TEXTURE_2D)
 	//glBindTexture(target, textID);
-	bind();
+	Bind();
 }
 
-void Texture::loadCubemapDDS()
+void Texture::LoadCubemapDDS()
 {
 	textID = SOIL_load_OGL_single_cubemap(path, "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
@@ -113,64 +113,64 @@ void Texture::loadCubemapDDS()
 
 	// Bind texture name to the OpenGL target we want (expl : a 2D texture called GL_TEXTURE_2D)
 	//glBindTexture(target, textID);
-	bind();
+	Bind();
 }
 
-void Texture::setWrap(GLenum all)
+void Texture::SetWrap(GLenum all)
 {
 	if(target == GL_TEXTURE_CUBE_MAP)
-		setWrap(all, all, all);
+		SetWrap(all, all, all);
 	else
-		setWrap(all, all);
+		SetWrap(all, all);
 }
 
-void Texture::setWrap(GLenum s, GLenum t)
+void Texture::SetWrap(GLenum s, GLenum t)
 {
 	glTexParameteri(target, GL_TEXTURE_WRAP_S, s);
 	glTexParameteri(target, GL_TEXTURE_WRAP_T, t);
 }
 
-void Texture::setWrap(GLenum s, GLenum t, GLenum r)
+void Texture::SetWrap(GLenum s, GLenum t, GLenum r)
 {
 	glTexParameteri(target, GL_TEXTURE_WRAP_S, s);
 	glTexParameteri(target, GL_TEXTURE_WRAP_T, t);
 	glTexParameteri(target, GL_TEXTURE_WRAP_R, r);
 }
 
-void Texture::setFilters(GLenum all)
+void Texture::SetFilters(GLenum all)
 {
-	setFilters(all, all);
+	SetFilters(all, all);
 }
 
-void Texture::setFilters(GLenum min, GLenum mag)
+void Texture::SetFilters(GLenum min, GLenum mag)
 {
 	glTexParameteri(target, GL_TEXTURE_MIN_FILTER, min);
 	glTexParameteri(target, GL_TEXTURE_MAG_FILTER, mag);
 }
 
-void Texture::bind() const		// textUnit = samplerID in main() ???
+void Texture::Bind() const		// textUnit = samplerID in main() ???
 {
 	//glActiveTexture(GL_TEXTURE0 + textUnit);
 	glBindTexture(target, textID);
 }
 
-void Texture::enable(GLint textUnit)		// textUnit = samplerID in main() ???
+void Texture::Enable(GLint textUnit)		// textUnit = samplerID in main() ???
 {
 	// Activate the texture unit before binding texture
 	glActiveTexture(GL_TEXTURE0 + textUnit);
 
-	bind();
+	Bind();
 }
 
-void Texture::unbind() const
+void Texture::Unbind() const
 {
 	glBindTexture(target, 0);
 }
 
-void Texture::disable()
+void Texture::Disable()
 {
 	glActiveTexture(0);
-	unbind();
+	Unbind();
 }
 
 

@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "Shader.h"
+#include "ShaderProgram.h"
 #include "Texture.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
@@ -46,7 +46,7 @@ public:
 
 	Mesh(std::vector<Vertex> verticesArg, std::vector<unsigned int> indicesArg, std::vector<Texture> texturesArg);
 
-	void Draw(Shader &shader);
+	void Draw(ShaderProgram &shader);
 
 	// Save reference of mesh vao to be used within belt.cpp
 	inline VertexArray& GetVaoRef() const { return *vao; };

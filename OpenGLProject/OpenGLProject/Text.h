@@ -33,7 +33,7 @@ private:
 	VertexBuffer * vbo;
 
 	// Return the width of the text (spaces included)
-	float billboardSize(std::string text, float scale);
+	float GetBillboardSize(std::string text, float scale);
 
 public:
 	// Creature texture for each ASCII character

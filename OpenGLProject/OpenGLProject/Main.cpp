@@ -48,11 +48,11 @@ int main()
 	//glEnable(GL_DEPTH_CLAMP);
 
 	// Build and compile shader programs
-	Shader sphereShader("SphereShader.vs", "SphereShader.fs");
-	Shader textShader("TextShader.vs", "TextShader.fs");
-	Shader asteroidShader("AsteroidShader.vs", "AsteroidShader.fs");
-	Shader skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
-	Shader saturnRingsShader("SaturnRingsShader.vs", "SaturnRingsShader.fs");
+	ShaderProgram sphereShader("SphereShader.vs", "SphereShader.fs");
+	ShaderProgram textShader("TextShader.vs", "TextShader.fs");
+	ShaderProgram asteroidShader("AsteroidShader.vs", "AsteroidShader.fs");
+	ShaderProgram skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
+	ShaderProgram saturnRingsShader("SaturnRingsShader.vs", "SaturnRingsShader.fs");
 
 	// Load models (meshes with textures applied)
 	Model saturnRings("../Models/SaturnRings/SaturnRingsTextured.obj");
@@ -66,10 +66,10 @@ int main()
 	for (size_t k = 0; k < nbTextures; ++k)
 	{
 		texTab[k] = new Texture(texturePaths[k], "", GL_TEXTURE_2D, 0);
-		texTab[k]->loadDDS();
+		texTab[k]->LoadDDS();
 	}
 	Texture skyboxTex = Texture(textureStarsPath, "", GL_TEXTURE_CUBE_MAP, 2);
-	skyboxTex.loadCubemapDDS();
+	skyboxTex.LoadCubemapDDS();
 	Text text;
 
 	// Put all celestial bodies data within an unordered_map
@@ -128,7 +128,7 @@ int main()
 
 
 		// Activate the shaders before initializing uniforms
-		sphereShader.use();
+		sphereShader.Enable();
 		sphereShader.setMat4("projection", projection);
 		sphereShader.setMat4("view", view);
 		sphereShader.setVec3("material.specular", 0.0f, 0.0f, 0.0f);
@@ -142,7 +142,7 @@ int main()
 		sphereShader.setFloat("light.quadratic", 0.000002f);
 		sphereShader.setVec3("viewPos", camera.Position);
 
-		textShader.use();
+		textShader.Enable();
 		textShader.setMat4("projection", projection);
 		textShader.setMat4("view", view);
 
@@ -195,7 +195,7 @@ int main()
 			// Draw Saturn rings
 			if (it->first == "Saturn")
 			{
-				saturnRingsShader.use();
+				saturnRingsShader.Enable();
 				saturnRingsShader.setMat4("projection", projection);
 				saturnRingsShader.setMat4("view", view);
 				saturnRingsShader.setMat4("model", modelSphere);
@@ -212,7 +212,7 @@ int main()
 				saturnRingsShader.setVec3("viewPos", camera.Position);
 				//saturnRingsShader.setInt("texSampler", samplerID);
 
-				saturnRings.textures_loaded[0].enable(samplerID);
+				saturnRings.textures_loaded[0].Enable(samplerID);
 				saturnRings.Draw(saturnRingsShader);
 
 				++samplerID;
@@ -221,7 +221,7 @@ int main()
 			// Rotation on itself to have spheres poles vertical 
 			modelSphere = glm::rotate(modelSphere, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 																						
-			sphereShader.use();
+			sphereShader.Enable();
 			sphereShader.setMat4("model", modelSphere);
 			if (it->first != "Sun")
 				sphereShader.setBool("isSun", false);
@@ -230,7 +230,7 @@ int main()
 			sphereShader.setInt("material.diffuse", samplerID);
 			//sphereShader.setInt("texSampler", samplerID);
 
-			it->second.text->enable(samplerID);
+			it->second.text->Enable(samplerID);
 			it->second.sphere->Draw();
 
 			++samplerID;
@@ -248,7 +248,7 @@ int main()
 				modelText[1] = glm::vec4(up2, 0);
 				modelText[2] = glm::vec4(look, 0);
 
-				textShader.use();
+				textShader.Enable();
 				textShader.setMat4("model", modelText);			
 				textShader.setInt("texSampler", samplerID);
 				textShader.setVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));		
@@ -268,15 +268,15 @@ int main()
 			{			
 				modelOrbit = glm::rotate(modelOrbit, glm::radians(it->second.orbInclination), glm::vec3(0.0f, 0.0f, 1.0f));
 
-				sphereShader.use();
+				sphereShader.Enable();
 				sphereShader.setMat4("model", modelOrbit);
 				//sphereShader.setInt("texSampler", samplerID);
 				sphereShader.setInt("material.diffuse", samplerID);
 
 				if (it->second.planet != nullptr || it->first == "Pluto" || it->first == "Ceres")
-					data["Mercury"].text->enable(samplerID);
+					data["Mercury"].text->Enable(samplerID);
 				else
-					data["Sun"].text->enable(samplerID);
+					data["Sun"].text->Enable(samplerID);
 				it->second.orbit->Draw();
 
 				++samplerID;
@@ -286,7 +286,7 @@ int main()
 
 
 		// Draw the 2 main belts composed of asteroids
-		asteroidShader.use();
+		asteroidShader.Enable();
 		asteroidShader.setMat4("projection", projection);
 		asteroidShader.setMat4("view", view);
 		asteroidShader.setInt("material.diffuse", samplerID);
@@ -301,7 +301,7 @@ int main()
 		asteroidShader.setFloat("light.quadratic", 0.000002f);
 		asteroidShader.setVec3("viewPos", camera.Position);
 		//asteroidShader.setInt("texSampler", samplerID);
-		asteroid.textures_loaded[0].enable(samplerID);
+		asteroid.textures_loaded[0].Enable(samplerID);
 		asteroidBelt.Render();
 		//kuiperBelt.Render();
 		++samplerID;
@@ -310,11 +310,11 @@ int main()
 
 		// Draw Milky Way skybox
 		glDepthFunc(GL_LEQUAL);				// Change depth function so that depth test passes when values are equal to depth buffer's content
-		skyboxShader.use();
+		skyboxShader.Enable();
 		skyboxShader.setMat4("projection", projection);
 		skyboxShader.setMat4("view", glm::mat4(glm::mat3(view)));
 		skyboxShader.setInt("texSampler", samplerID);
-		skyboxTex.enable(samplerID);
+		skyboxTex.Enable(samplerID);
 		sb.Draw();
 		glDepthFunc(GL_LESS);				// Set depth function back to default
 

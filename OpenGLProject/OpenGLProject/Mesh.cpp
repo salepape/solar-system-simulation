@@ -31,7 +31,7 @@ void Mesh::Store()
 	vao->Unbind();
 }
 
-void Mesh::Draw(Shader &shader)
+void Mesh::Draw(ShaderProgram &shader)
 {
 	// Bind appropriate textures
 	unsigned int diffuseNr = 1;

@@ -3,7 +3,7 @@
 
 
 // Return the width of the text (spaces included)
-float Text::billboardSize(std::string text, float scale)
+float Text::GetBillboardSize(std::string text, float scale)
 {
 	float totalAdvance = 0.0f;
 	for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
@@ -46,7 +46,7 @@ Text::Text()
 		}
 
 		textCharacter = new Texture("", "", GL_TEXTURE_2D, 1);
-		textCharacter->loadGlyph(face, GL_RED);
+		textCharacter->LoadGlyph(face, GL_RED);
 
 		// Create object storing current ASCII character caracteristics
 		Character character =
@@ -62,7 +62,7 @@ Text::Text()
 	}
 
 	// Unbind character textures
-	textCharacter->unbind();
+	textCharacter->Unbind();
 
 	// Destroy FreeType once work is finished
 	FT_Done_Face(face);
@@ -90,7 +90,7 @@ Text::~Text()
 void Text::Render(std::string text, float x, float y, float scale, GLuint textUnit)
 {
 	// Shift billboard to left in order to center it to the concerned celestial body
-	x = -billboardSize(text, scale) * 0.5f;
+	x = -GetBillboardSize(text, scale) * 0.5f;
 
 	glActiveTexture(GL_TEXTURE0 + textUnit);
 	vao->Bind();
