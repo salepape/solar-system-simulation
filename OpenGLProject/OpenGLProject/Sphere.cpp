@@ -126,8 +126,9 @@ void Sphere::Draw()
 {
 	vao->Bind();
 	ibo->Bind();
-
 	glDrawElements(GL_TRIANGLES, indexes.size() , GL_UNSIGNED_INT, (void*)0);
+	vao->Unbind();
+	ibo->Unbind();
 }
 
 

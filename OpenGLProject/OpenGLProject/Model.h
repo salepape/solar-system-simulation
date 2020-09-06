@@ -16,6 +16,10 @@
 class Model
 {
 private:
+	std::vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
+	std::vector<Mesh>    meshes;
+	bool gammaCorrection;
+
 	// Load a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector
 	void LoadModel(std::string const &path);
 
@@ -28,14 +32,14 @@ private:
 	std::vector<Texture> LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
 
 public:
-	std::vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
-	std::vector<Mesh>    meshes;
-	std::string directory;
-	bool gammaCorrection;
-
 	Model(std::string const &path, bool gammaCorrectionArg = false);
+	~Model();
 
-	void Draw(ShaderProgram &shader);
+	//void Draw(ShaderProgram &shader);
+	void Draw();
+
+	inline std::vector<Texture> GetTextures() const { return textures_loaded; }
+	inline std::vector<Mesh> GetMeshes() const { return meshes; }
 };
 
 #endif

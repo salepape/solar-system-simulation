@@ -45,13 +45,13 @@ Text::Text()
 			continue;
 		}
 
-		textCharacter = new Texture("", "", GL_TEXTURE_2D, 1);
+		textCharacter = new Texture("", "", GL_TEXTURE_2D, "text_characters");
 		textCharacter->LoadGlyph(face, GL_RED);
 
 		// Create object storing current ASCII character caracteristics
 		Character character =
 		{
-			textCharacter->textID,
+			textCharacter->GetRendererID(),
 			glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
 			glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
 			face->glyph->advance.x

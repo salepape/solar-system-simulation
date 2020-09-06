@@ -8,12 +8,6 @@ Model::Model(std::string const &path, bool gammaCorrectionArg) : gammaCorrection
 	LoadModel(path);
 }
 
-void Model::Draw(ShaderProgram &shader)
-{
-	for (unsigned int i = 0; i < meshes.size(); ++i)
-		meshes[i].Draw(shader);
-}
-
 void Model::LoadModel(std::string const &path)
 {
 	// Read file via ASSIMP
@@ -25,9 +19,6 @@ void Model::LoadModel(std::string const &path)
 		std::cout << "ERROR::ASSIMP: " << importer.GetErrorString() << std::endl;
 		return;
 	}
-
-	// Retrieve directory path from filepath
-	directory = path.substr(0, path.find_last_of('/'));
 
 	// Process ASSIMP's root node recursively
 	ProcessNode(scene->mRootNode, scene);
@@ -156,7 +147,7 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType 
 		bool skip = false;
 		for (unsigned int j = 0; j < textures_loaded.size(); ++j)
 		{
-			if (std::strcmp(textures_loaded[j].path, str.C_Str()) == 0)
+			if (std::strcmp(textures_loaded[j].GetPath(), str.C_Str()) == 0)
 			{
 				textures.push_back(textures_loaded[j]);
 				skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
@@ -166,7 +157,7 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType 
 
 		if (!skip)
 		{   // if texture hasn't been loaded already, load it
-			Texture texture(str.C_Str(), typeName.c_str(), GL_TEXTURE_2D, 0);
+			Texture texture(str.C_Str(), typeName.c_str(), GL_TEXTURE_2D, "default");
 			texture.LoadDDS();
 			textures.push_back(texture);
 			textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
@@ -174,6 +165,19 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType 
 	}
 
 	return textures;
+}
+
+Model::~Model()
+{
+
+}
+
+//void Model::Draw(ShaderProgram &shader)
+void Model::Draw()
+{
+	for (unsigned int i = 0; i < meshes.size(); ++i)
+		meshes[i].Draw();
+		//meshes[i].Draw(shader);
 }
 
 

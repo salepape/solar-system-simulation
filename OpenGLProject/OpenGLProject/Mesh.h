@@ -33,6 +33,10 @@ struct Vertex
 class Mesh 
 {
 private:
+	std::vector<Vertex>       vertices;
+	std::vector<unsigned int> indices;
+	std::vector<Texture>      textures;
+
 	VertexArray * vao;
 	VertexBuffer * vbo;
 	IndexBuffer * ibo;
@@ -40,15 +44,14 @@ private:
 	void Store();
 
 public:
-	std::vector<Vertex>       vertices;
-	std::vector<unsigned int> indices;
-	std::vector<Texture>      textures;
-
 	Mesh(std::vector<Vertex> verticesArg, std::vector<unsigned int> indicesArg, std::vector<Texture> texturesArg);
+	~Mesh();
 
-	void Draw(ShaderProgram &shader);
+	//void Draw(ShaderProgram &shader);
+	void Draw();
 
 	// Save reference of mesh vao to be used within belt.cpp
 	inline VertexArray& GetVaoRef() const { return *vao; };
+	inline int GetIndicesCount() const { return indices.size(); }
 };
 #endif

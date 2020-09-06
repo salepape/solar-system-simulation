@@ -47,7 +47,7 @@ const char * textureStarsPath = "../Textures/MilkyWay/stars.dds";
 
 struct EntityInfo
 {
-	Texture * text;				// Texture object pointer
+	Texture * texture;			// Texture object pointer
 	float radius;				// Planets and moons (only those > pluto radius in length) radii divided by earth's radius value [in kms]
 	float dist;					// Distances between planets (resp. moons) and sun (resp. the planet around which they turn) divided by earth's distance value [in kms]
 	float obliquity;			// Or axial tilt : angle between planet / moon axis rotation and the normal of its orbital plane [in degrees]

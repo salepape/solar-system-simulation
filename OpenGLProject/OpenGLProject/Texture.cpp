@@ -4,23 +4,17 @@
 
 
 
-Texture::Texture(const char * pathArg, const char * typeArg, GLenum targetArg, int defaultParams) :
+Texture::Texture(const char * pathArg, const char * typeArg, GLenum targetArg, std::string objectType) :
 	path(pathArg), type(typeArg), target(targetArg)
 {
-	// Try catch exception ? if OpenGL context created in main() is still active
-	if (glfwGetCurrentContext() == NULL)
-	{
-		std::cout << "ERROR::GLFW: Failed to get current context : OpenGL functions will not work correctly" << std::endl;
-	}
-
 	// Textures by default
-	if (defaultParams == 0)
+	if (objectType == "default")
 	{
 		SetWrap(GL_REPEAT);
 		SetFilters(GL_LINEAR);
 	}
 	// Textures for characters
-	else if (defaultParams == 1)
+	else if (objectType == "text_characters")
 	{
 		Generate();
 
@@ -28,7 +22,7 @@ Texture::Texture(const char * pathArg, const char * typeArg, GLenum targetArg, i
 		SetFilters(GL_LINEAR);
 	}
 	// Texture for skybox
-	else if (defaultParams == 2)
+	else if (objectType == "skybox")
 	{
 		SetWrap(GL_CLAMP_TO_EDGE);
 		SetFilters(GL_LINEAR);
@@ -38,10 +32,9 @@ Texture::Texture(const char * pathArg, const char * typeArg, GLenum targetArg, i
 void Texture::Generate()
 {
 	// Bind TO to the OpenGL texture object (= TO) type we want 
-	glGenTextures(1, &textID);
+	glGenTextures(1, &rendererID);
 
-	// Bind texture name to the OpenGL target we want (expl : a 2D texture called GL_TEXTURE_2D)
-	glBindTexture(target, textID);
+	Bind();
 }
 
 void Texture::LoadImage(GLenum channel)
@@ -67,7 +60,6 @@ void Texture::LoadImage(GLenum channel)
 			break;
 		}
 
-		//glBindTexture(target, textID);
 		Bind();
 
 		// Generate texture image on the currently bound TO at the active texture unit
@@ -81,7 +73,6 @@ void Texture::LoadImage(GLenum channel)
 		std::cout << "ERROR::SOIL: Failed to load entity sprite at path " << path << std::endl;
 	}
 
-	//stb_image_free(data);
 	SOIL_free_image_data(data);
 }
 
@@ -93,26 +84,23 @@ void Texture::LoadGlyph(FT_Face face, GLenum format)
 
 void Texture::LoadDDS()
 {
-	// Contains glGenTextures !!!
-	textID = SOIL_load_OGL_texture(path, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
+	// Contains already glGenTextures !!!
+	rendererID = SOIL_load_OGL_texture(path, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
-	if (0 == textID)
+	if (0 == rendererID)
 		printf("ERROR::SOIL: Loading error: '%s'\n", SOIL_last_result());
 
-	// Bind texture name to the OpenGL target we want (expl : a 2D texture called GL_TEXTURE_2D)
-	//glBindTexture(target, textID);
 	Bind();
 }
 
 void Texture::LoadCubemapDDS()
 {
-	textID = SOIL_load_OGL_single_cubemap(path, "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
+	// Contains already glGenTextures !!!
+	rendererID = SOIL_load_OGL_single_cubemap(path, "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
-	if (0 == textID)
+	if (0 == rendererID)
 		printf("ERROR::SOIL: Loading error: '%s'\n", SOIL_last_result());
 
-	// Bind texture name to the OpenGL target we want (expl : a 2D texture called GL_TEXTURE_2D)
-	//glBindTexture(target, textID);
 	Bind();
 }
 
@@ -148,17 +136,21 @@ void Texture::SetFilters(GLenum min, GLenum mag)
 	glTexParameteri(target, GL_TEXTURE_MAG_FILTER, mag);
 }
 
-void Texture::Bind() const		// textUnit = samplerID in main() ???
+Texture::~Texture()
 {
-	//glActiveTexture(GL_TEXTURE0 + textUnit);
-	glBindTexture(target, textID);
+
 }
 
-void Texture::Enable(GLint textUnit)		// textUnit = samplerID in main() ???
+void Texture::Bind() const		
+{
+	// Bind texture name to the OpenGL target we want (expl : a 2D texture called GL_TEXTURE_2D)
+	glBindTexture(target, rendererID);
+}
+
+void Texture::Enable(GLint textUnit)		
 {
 	// Activate the texture unit before binding texture
 	glActiveTexture(GL_TEXTURE0 + textUnit);
-
 	Bind();
 }
 

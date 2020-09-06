@@ -80,7 +80,7 @@ Skybox::~Skybox()
 void Skybox::Draw()
 {
 	vao->Bind();
-
 	glDrawArrays(GL_TRIANGLES, 0, 36);
+	vao->Unbind();
 }
 

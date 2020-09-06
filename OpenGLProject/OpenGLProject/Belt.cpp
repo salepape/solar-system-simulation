@@ -48,9 +48,9 @@ void Belt::Store()
 	VertexBuffer vbo(modelMatrices, asteroidNb * sizeof(glm::mat4));
 
 	// Set transformation matrices as an instance vertex attribute (with divisor 1)
-	for (unsigned int i = 0; i < asteroid.meshes.size(); ++i)
+	for (unsigned int i = 0; i < asteroid.GetMeshes().size(); ++i)
 	{
-		vao = asteroid.meshes[i].GetVaoRef();		// TO SOLVE : Kuiper overwrites asteroid belt data !!!
+		vao = asteroid.GetMeshes()[i].GetVaoRef();		// TO SOLVE : Kuiper overwrites asteroid belt data !!!
 		vao.Bind();
 
 		VertexBufferLayout vbl;
@@ -66,15 +66,15 @@ void Belt::Store()
 
 Belt::~Belt()
 {
-
+	vao.~VertexArray();
 }
 
-void Belt::Render()
+void Belt::Draw()
 {
-	for (unsigned int i = 0; i < asteroid.meshes.size(); ++i)
+	for (unsigned int i = 0; i < asteroid.GetMeshes().size(); ++i)
 	{
 		vao.Bind();
-		glDrawElementsInstanced(GL_TRIANGLES, asteroid.meshes[i].indices.size(), GL_UNSIGNED_INT, 0, asteroidNb);
+		glDrawElementsInstanced(GL_TRIANGLES, asteroid.GetMeshes()[i].GetIndicesCount(), GL_UNSIGNED_INT, 0, asteroidNb);
 		vao.Unbind();
 	}
 }

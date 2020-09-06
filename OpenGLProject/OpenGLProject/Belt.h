@@ -15,8 +15,9 @@ private:
 	float majorRadius;
 	float minorRadius;
 	Model asteroid;
-	VertexArray vao;
 	glm::mat4 * modelMatrices;
+
+	VertexArray vao;
 
 	void Compute();
 	void Store();
@@ -25,7 +26,7 @@ public:
 	Belt(Model asteroidArg, unsigned int asteroidNbArg, int sizeFactorArg, float majorRadiusArg, float minorRadiusArg);
 	~Belt();
 
-	void Render();
+	void Draw();
 };
 
 

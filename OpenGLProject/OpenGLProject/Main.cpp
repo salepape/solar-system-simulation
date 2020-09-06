@@ -20,6 +20,10 @@ int main()
 
 	// Tell GLFW that we want the window context to be the main one on the current thread
 	glfwMakeContextCurrent(window);
+	if (glfwGetCurrentContext() == NULL)
+	{
+		std::cout << "ERROR::GLFW: Failed to get current context : OpenGL functions will not work correctly" << std::endl;
+	}
 
 	// Set the framebuffer resize callback of the specified window, called when the framebuffer of the specified window is resized
 	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
@@ -65,11 +69,13 @@ int main()
 	Texture * texTab[nbTextures];
 	for (size_t k = 0; k < nbTextures; ++k)
 	{
-		texTab[k] = new Texture(texturePaths[k], "", GL_TEXTURE_2D, 0);
+		texTab[k] = new Texture(texturePaths[k], "", GL_TEXTURE_2D, "default");
 		texTab[k]->LoadDDS();
 	}
-	Texture skyboxTex = Texture(textureStarsPath, "", GL_TEXTURE_CUBE_MAP, 2);
+	Texture skyboxTex = Texture(textureStarsPath, "", GL_TEXTURE_CUBE_MAP, "skybox");
 	skyboxTex.LoadCubemapDDS();
+
+	// Create text characters
 	Text text;
 
 	// Put all celestial bodies data within an unordered_map
@@ -123,7 +129,7 @@ int main()
 		glm::mat4 modelOrbit;
 
 		// Texture sampler ID (one for each object) 
-		GLint samplerID = 0;
+		unsigned int samplerID = 0;
 
 
 
@@ -199,7 +205,7 @@ int main()
 				saturnRingsShader.setMat4("projection", projection);
 				saturnRingsShader.setMat4("view", view);
 				saturnRingsShader.setMat4("model", modelSphere);
-				asteroidShader.setInt("material.diffuse", samplerID);
+				saturnRingsShader.setInt("material.diffuse", samplerID);
 				saturnRingsShader.setVec3("material.specular", 0.0f, 0.0f, 0.0f);
 				saturnRingsShader.setFloat("material.shininess", 64.0f);
 				saturnRingsShader.setVec3("light.position", 0.0f, 0.0f, 0.0f);
@@ -210,10 +216,9 @@ int main()
 				saturnRingsShader.setFloat("light.linear", 0.0007f);
 				saturnRingsShader.setFloat("light.quadratic", 0.000002f);
 				saturnRingsShader.setVec3("viewPos", camera.Position);
-				//saturnRingsShader.setInt("texSampler", samplerID);
 
-				saturnRings.textures_loaded[0].Enable(samplerID);
-				saturnRings.Draw(saturnRingsShader);
+				saturnRings.GetTextures()[0].Enable(samplerID);
+				saturnRings.Draw();
 
 				++samplerID;
 			}
@@ -228,9 +233,8 @@ int main()
 			else
 				sphereShader.setBool("isSun", true);
 			sphereShader.setInt("material.diffuse", samplerID);
-			//sphereShader.setInt("texSampler", samplerID);
 
-			it->second.text->Enable(samplerID);
+			it->second.texture->Enable(samplerID);
 			it->second.sphere->Draw();
 
 			++samplerID;
@@ -270,13 +274,12 @@ int main()
 
 				sphereShader.Enable();
 				sphereShader.setMat4("model", modelOrbit);
-				//sphereShader.setInt("texSampler", samplerID);
 				sphereShader.setInt("material.diffuse", samplerID);
 
 				if (it->second.planet != nullptr || it->first == "Pluto" || it->first == "Ceres")
-					data["Mercury"].text->Enable(samplerID);
+					data["Mercury"].texture->Enable(samplerID);
 				else
-					data["Sun"].text->Enable(samplerID);
+					data["Sun"].texture->Enable(samplerID);
 				it->second.orbit->Draw();
 
 				++samplerID;
@@ -300,9 +303,8 @@ int main()
 		asteroidShader.setFloat("light.linear", 0.0007f);
 		asteroidShader.setFloat("light.quadratic", 0.000002f);
 		asteroidShader.setVec3("viewPos", camera.Position);
-		//asteroidShader.setInt("texSampler", samplerID);
-		asteroid.textures_loaded[0].Enable(samplerID);
-		asteroidBelt.Render();
+		asteroid.GetTextures()[0].Enable(samplerID);
+		asteroidBelt.Draw();
 		//kuiperBelt.Render();
 		++samplerID;
 

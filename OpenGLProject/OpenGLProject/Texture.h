@@ -21,17 +21,18 @@ class Texture
 private:
 	GLenum target;
 
+	unsigned int rendererID;
+	const char * type;
+	const char * path;
+
 	// Image loading attributes
 	//int width;
 	//int height;
 	//int nbChannels;
 
 public:
-	GLuint textID;
-	const char * type;
-	const char * path;
-
-	Texture(const char * path, const char * type, GLenum target, int defaultParams);
+	Texture(const char * path, const char * type, GLenum target, std::string);
+	~Texture();
 
 	void Generate();
 
@@ -53,6 +54,9 @@ public:
 	void Enable(GLint textUnit);
 	void Unbind() const;
 	void Disable();
+
+	unsigned int GetRendererID() const { return rendererID; }
+	const char * GetPath() const { return path; }
 };
 
 #endif 
