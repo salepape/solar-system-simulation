@@ -1,16 +1,15 @@
 #ifndef ORBIT_H
 #define ORBIT_H
 
-#include <glad/glad.h>
-
 #include <glm/glm.hpp>					// for cos and sin
 #include <glm/gtc/constants.hpp>		// for pi
 
 #include <vector>
 
-#include "Texture.h"
-#include "VertexBuffer.h"
 #include "VertexArray.h"
+#include "Texture.h"
+#include "Renderer.h"
+
 
 
 
@@ -18,9 +17,11 @@
 class Orbit
 {
 private:
-	float radius;				// Radius of the orbit (= distance between sun and corresponding planet) 
-	int nbMeridStrips;			// Number of edges (controls degree of smoothness)
+	float radius;					// Radius of the orbit (= distance between sun and corresponding planet) 
+	unsigned int nbMeridStrips;		// Number of edges (controls degree of smoothness)
 	VertexArray * vao;
+
+	Texture * texture;
 
 	// Vectors containing sphere data computed
 	std::vector<float> vertCoor;
@@ -30,10 +31,10 @@ private:
 	void Store();
 
 public:
-	Orbit(const char * texturePath, float radiusArg);
+	Orbit(const char * path, float radiusArg);
 	~Orbit();
 
-	void Draw();
+	void Render(Renderer& renderer, unsigned int& textureUnit);
 };
 
 #endif ORBIT_H

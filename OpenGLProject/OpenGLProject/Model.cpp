@@ -8,11 +8,6 @@ Model::Model(std::string const &path, bool gammaCorrectionArg) : gammaCorrection
 	LoadModel(path);
 }
 
-Model::~Model()
-{
-
-}
-
 void Model::LoadModel(std::string const &path)
 {
 	// Read file via ASSIMP
@@ -149,36 +144,39 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType 
 
 		// Check if texture was loaded before and if so, continue to next iteration
 		bool skip = false;
-		for (unsigned int j = 0; j < textures_loaded.size(); ++j)
+		for (unsigned int j = 0; j < loadedTextures.size(); ++j)
 		{
-			// If a texture with the same filepath has already been loaded, continue to next one 
-			if (std::strcmp(textures_loaded[j].GetPath().c_str(), str.C_Str()) == 0)
+			if (std::strcmp(loadedTextures[j].GetPath(), str.C_Str()) == 0)
 			{
-				materialTextures.push_back(textures_loaded[j]);
-				skip = true;						
+				materialTextures.push_back(loadedTextures[j]);
+				skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
 				break;
 			}
 		}
 
 		// If texture hasn't been loaded already, load it
 		if (!skip)
-		{   
-			Texture texture(str.C_Str(), typeName.c_str(), GL_TEXTURE_2D, 0);
+		{   // if texture hasn't been loaded already, load it
+			Texture texture(str.C_Str(), typeName.c_str(), GL_TEXTURE_2D, "default");
 			texture.LoadDDS();
 			materialTextures.push_back(texture);
-			textures_loaded.push_back(texture);		// store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures
+			loadedTextures.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
 		}
 	}
 
 	return materialTextures;
 }
 
-//void Model::Draw(ShaderProgram &shader)
-void Model::Draw()
+Model::~Model()
+{
+
+}
+
+void Model::Render(Renderer& renderer, unsigned int& textureUnit)
 {
 	for (unsigned int i = 0; i < meshes.size(); ++i)
-		meshes[i].Draw();
-		//meshes[i].Draw(shader);
+		meshes[i].Render(renderer, textureUnit);
 }
+
 
 

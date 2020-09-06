@@ -5,8 +5,12 @@ OpenGLProject/OpenGLProject/Debug/
 
 *.blend
 
+<<<<<<< HEAD
 OpenGLProject/.vs/OpenGLProject/v15/.suo
 
 OpenGLProject/.vs/OpenGLProject/v15/Browse.VC.db
 
 OpenGLProject/.vs/OpenGLProject/v15/Browse.VC.opendb
+=======
+OpenGLProject/.vs/OpenGLProject/v15/
+>>>>>>> TexturingTests

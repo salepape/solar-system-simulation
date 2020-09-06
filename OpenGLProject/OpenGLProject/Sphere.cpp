@@ -2,9 +2,9 @@
 
 
 
-Sphere::Sphere(const char * texturePath, float radiusArg) : radius(radiusArg)
+Sphere::Sphere(const char * path, float radiusArg) : radius(radiusArg)
 {
-	texture = new Texture(texturePath, "", GL_TEXTURE_2D, "default");
+	texture = new Texture(path, "", GL_TEXTURE_2D, "default");
 	texture->LoadDDS();
 
 	Compute();
@@ -125,13 +125,10 @@ Sphere::~Sphere()
 	//vao->~VertexArray();
 }
 
-void Sphere::Draw()
+void Sphere::Render(Renderer& renderer, unsigned int& textureUnit)
 {
-	vao->Bind();
-	ibo->Bind();
-	glDrawElements(GL_TRIANGLES, indexes.size() , GL_UNSIGNED_INT, (void*)0);
-	ibo->Unbind();
-	vao->Unbind();
+	texture->Enable(textureUnit);
+	renderer.Draw(*vao, *ibo);
 }
 
 

@@ -11,6 +11,9 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
+#include "Texture.h"
+#include "Renderer.h"
+
 
 
 class Sphere
@@ -20,6 +23,7 @@ private:
 	int nbIndexes;
 	// Radius of the planet 
 	float radius;
+	Texture * texture;
 
 	VertexArray * vao;
 	IndexBuffer * ibo;
@@ -35,12 +39,10 @@ private:
 	void Store();
 
 public:
-	Sphere(const char * texturePath, float radiusArg);
+	Sphere(const char * path, float radiusArg);
 	~Sphere();
 
-	void Draw();
-
-	inline Texture GetTexture() const { return *texture; }
+	void Render(Renderer& renderer, unsigned int& textureUnit);
 };
 
 #endif SPHERE_H

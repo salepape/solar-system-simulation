@@ -1,8 +1,9 @@
 #include <vector>
-#include "Texture.h"
 #include <unordered_map>
+
 #include "Sphere.h"
 #include "Orbit.h"
+#include "Texture.h"
 
 
 
@@ -37,11 +38,10 @@ const char * texturePaths[nbTextures] =
 	"../Textures/Satellites/triton.dds",
 	"../Textures/Planets/8k_venus.dds"		// not used (just here to be able to consider triton texture path for some reason...)
 };
-//const char * textureStarsPath = "../Textures/MilkyWay/stars.dds";
 
 
 
-// Celestial bodies data
+// Represent all info relative to a celestial body
 struct EntityInfo
 {
 	const char * texturePath;	// DDS texture path
@@ -86,22 +86,6 @@ void LoadData()
 	data.insert(dataElmt("Europa",		{ texturePaths[13], 0.245f, data["Jupiter"].radius + 0.671f * DIST_SCALE_FACTOR, 0.1f,   3.55f,     3.55f,   nullptr, 1.791f,   nullptr, &data["Jupiter"] }));
 	data.insert(dataElmt("Ganymede",	{ texturePaths[14], 0.413f, data["Jupiter"].radius + 1.07f * DIST_SCALE_FACTOR,  0.16f,  7.15f,     7.15f,   nullptr, 2.214f,   nullptr, &data["Jupiter"] }));
 	data.insert(dataElmt("Io",			{ texturePaths[15], 0.286f, data["Jupiter"].radius + 0.422f * DIST_SCALE_FACTOR, 0.0f,   1.77f,     1.77f,   nullptr, 2.213f,   nullptr, &data["Jupiter"] }));
-	data.insert(dataElmt("Titan",		{ texturePaths[16], 0.404f, data["Saturn"].radius + 1.222f * DIST_SCALE_FACTOR,  0.0f,   15.95f,    15.95f,  nullptr, 0.0f,		nullptr, &data["Saturn"] }));
+	data.insert(dataElmt("Titan",		{ texturePaths[16], 0.404f, data["Saturn"].radius + 1.222f * DIST_SCALE_FACTOR,  0.0f,   15.95f,    15.95f,  nullptr, 0.0f,	  nullptr, &data["Saturn"] }));
 	data.insert(dataElmt("Triton",		{ texturePaths[17], 0.212f, data["Neptune"].radius + 0.354f * DIST_SCALE_FACTOR, 0.0f,   5.88f,     5.88f,   nullptr, 129.812f, nullptr, &data["Neptune"] }));
-
-
-
-	int ind = 0;
-	for (auto it = data.begin(); it != data.end(); ++it)
-	{
-		if (it->first == "Sun")
-			it->second.sphere = new Sphere(texturePaths[ind], it->second.radius * 0.5f);	// Otherwise sun appears too big in the modeling 
-		else
-		{
-			it->second.sphere = new Sphere(it->second.texturePath, it->second.radius);
-			it->second.orbit = new Orbit(it->second.texturePath, it->second.dist);
-		}
-
-		++ind;
-	}
 }

@@ -1,7 +1,6 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-//#include "stb_image.h"
 #include<SOIL2.h>
 
 #include <iostream>
@@ -16,7 +15,7 @@
 class Model
 {
 private:
-	std::vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
+	std::vector<Texture> loadedTextures;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
 	std::vector<Mesh>    meshes;
 	bool gammaCorrection;
 
@@ -34,12 +33,10 @@ public:
 	Model(std::string const &path, bool gammaCorrectionArg = false);
 	~Model();
 
-	//void Draw(ShaderProgram &shader);
-	void Draw();
+	void Render(Renderer& renderer, unsigned int& textureUnit);
 
-	// Save reference of mesh vao to be used within belt.cpp
-	inline const std::vector<Texture>& GetTexturesRef() const { return textures_loaded; };
-	inline const std::vector<Mesh>& GetMeshesRef() const { return meshes; };
+	inline std::vector<Texture> GetTextures() const { return loadedTextures; }
+	inline std::vector<Mesh> GetMeshes() const { return meshes; }
 };
 
 #endif

@@ -2,9 +2,9 @@
 
 
 
-Skybox::Skybox(const char * texturePath)
+Skybox::Skybox(const char * path)
 {
-	texture = new Texture(texturePath, "", GL_TEXTURE_CUBE_MAP, "skybox");
+	texture = new Texture(path, "", GL_TEXTURE_CUBE_MAP, "skybox");
 	texture->LoadCubemapDDS();
 
 	Compute();
@@ -79,10 +79,9 @@ Skybox::~Skybox()
 	//vao->~VertexArray();
 }
 
-void Skybox::Draw()
+void Skybox::Render(Renderer& renderer, unsigned int& textureUnit)
 {
-	vao->Bind();
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-	vao->Unbind();
+	texture->Enable(textureUnit);
+	renderer.Draw(*vao, GL_TRIANGLES, 36);
 }
 

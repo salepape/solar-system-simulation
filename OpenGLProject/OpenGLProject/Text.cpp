@@ -8,7 +8,7 @@ float Text::GetBillboardSize(std::string text, float scale)
 	float totalAdvance = 0.0f;
 	for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
 	{
-		totalAdvance += (Characters[*c].Advance >> 6) * scale;
+		totalAdvance += (characters[*c].Advance >> 6) * scale;
 	}
 
 	return totalAdvance;
@@ -33,7 +33,7 @@ Text::Text()
 	// Disable byte-alignment restriction
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-	Texture * textCharacter = nullptr;
+	Texture * characterTexture = nullptr;
 
 	// Load the first 128 characters of ASCII set
 	for (unsigned char c = 0; c < 128; ++c)
@@ -51,18 +51,18 @@ Text::Text()
 		// Create object storing current ASCII character caracteristics
 		Character character =
 		{
-			textCharacter->GetRendererID(),
+			characterTexture->GetRendererID(),
 			glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
 			glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
 			face->glyph->advance.x
 		};
 
 		// Store character for later use
-		Characters.insert(std::pair<char, Character>(c, character));
+		characters.insert(std::pair<char, Character>(c, character));
 	}
 
 	// Unbind character textures
-	textCharacter->Unbind();
+	characterTexture->Unbind();
 
 	// Destroy FreeType once work is finished
 	FT_Done_Face(face);
@@ -87,18 +87,18 @@ Text::~Text()
 }
 
 // Render line of text
-void Text::Draw(std::string text, float x, float y, float scale, GLuint textUnit)
+void Text::Render(Renderer& renderer, std::string text, float x, float y, float scale, unsigned int& textureUnit)
 {
 	// Shift billboard to left in order to center it to the concerned celestial body
 	x = -GetBillboardSize(text, scale) * 0.5f;
 
-	glActiveTexture(GL_TEXTURE0 + textUnit);
+	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	vao->Bind();
 
 	// Iterate through all characters
 	for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
 	{
-		Character ch = Characters[*c];
+		Character ch = characters[*c];
 
 		// Origin position of the quad
 		float xpos = x + ch.Bearing.x * scale;
@@ -121,7 +121,7 @@ void Text::Draw(std::string text, float x, float y, float scale, GLuint textUnit
 		};
 
 		// Render glyph texture over quad
-		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+		glBindTexture(GL_TEXTURE_2D, ch.rendererID);
 
 		// Update content of VBO memory
 		vbo->Bind();
@@ -129,8 +129,7 @@ void Text::Draw(std::string text, float x, float y, float scale, GLuint textUnit
 		vbo->InitSubData(verticesAddresses);
 		vbo->Unbind();
 
-		// Render quad
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		renderer.Draw(*vao, GL_TRIANGLES, 6);
 
 		// Advance cursors for next glyph (note that advance is number of 1/64 pixels)
 		x += (ch.Advance >> 6) * scale;											// bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))

@@ -26,7 +26,7 @@ private:
 	void CreateShaderProgram(unsigned int vsID, unsigned int fsID, unsigned int gsID);
 
 	// Utility function for checking shader compilation / linking errors
-	void checkCompileErrors(GLuint shader, std::string type);
+	void checkCompileErrors(unsigned int shader, std::string type);
 	int GetUniformLocation(const std::string& name);
 
 public:

@@ -9,12 +9,14 @@
 #include "VertexBuffer.h"
 #include "VertexArray.h"
 #include "Texture.h"
+#include "Renderer.h"
 
 
 class Skybox
 {
 private:
 	VertexArray * vao;
+	Texture * texture;
 
 	std::vector<float> vertCoor;
 	Texture * texture;
@@ -23,12 +25,10 @@ private:
 	void Store();
 
 public:
-	Skybox(const char * texturePath);
+	Skybox(const char * path);
 	~Skybox();
 
-	void Draw();
-
-	inline Texture GetTexture() const { return *texture; }
+	void Render(Renderer& renderer, unsigned int& textureUnit);
 };
 
 #endif SKYBOX_H

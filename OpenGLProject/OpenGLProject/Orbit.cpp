@@ -1,11 +1,10 @@
-
 #include "Orbit.h"
 
 
 
-Orbit::Orbit(const char * texturePath, float radiusArg) : radius(radiusArg)
+Orbit::Orbit(const char * path, float radiusArg) : radius(radiusArg)
 {
-	texture = new Texture(texturePath, "", GL_TEXTURE_2D, "default");
+	texture = new Texture(path, "", GL_TEXTURE_2D, "default");
 	texture->LoadDDS();
 
 	Compute();
@@ -17,7 +16,7 @@ void Orbit::Compute()
 	float pi = glm::pi<float>(), theta;	
 	nbMeridStrips = 100;				
 
-	for (int i = 0; i <= nbMeridStrips; ++i)
+	for (unsigned int i = 0; i <= nbMeridStrips; ++i)
 	{
 		theta = 2.0f * pi * (float)i / nbMeridStrips;
 
@@ -47,10 +46,9 @@ Orbit::~Orbit()
 	vao->~VertexArray();
 }
 
-void Orbit::Draw()
+void Orbit::Render(Renderer& renderer, unsigned int& textureUnit)
 {
-	vao->Bind();
-	glDrawArrays(GL_LINE_LOOP, 0, nbMeridStrips);
-	vao->Unbind();
+	texture->Enable(textureUnit);
+	renderer.Draw(*vao, GL_LINE_LOOP, nbMeridStrips);
 }
 
