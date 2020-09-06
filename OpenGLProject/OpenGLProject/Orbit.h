@@ -33,7 +33,7 @@ public:
 	Orbit(const char * path, float radiusArg);
 	~Orbit();
 
-	void Render(Renderer renderer);
+	void Render(Renderer& renderer, unsigned int& textureUnit);
 };
 
 #endif ORBIT_H

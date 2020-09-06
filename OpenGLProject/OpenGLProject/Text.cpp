@@ -87,7 +87,7 @@ Text::~Text()
 }
 
 // Render line of text
-void Text::Render(Renderer renderer, std::string text, float x, float y, float scale, unsigned int textureUnit)
+void Text::Render(Renderer& renderer, std::string text, float x, float y, float scale, unsigned int& textureUnit)
 {
 	// Shift billboard to left in order to center it to the concerned celestial body
 	x = -GetBillboardSize(text, scale) * 0.5f;

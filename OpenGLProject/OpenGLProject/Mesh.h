@@ -47,8 +47,7 @@ public:
 	Mesh(std::vector<Vertex> verticesArg, std::vector<unsigned int> indicesArg, std::vector<Texture> texturesArg);
 	~Mesh();
 
-	//void Draw(ShaderProgram &shader);
-	void Render(Renderer renderer);
+	void Render(Renderer& renderer, unsigned int& textureUnit);
 
 	// Save reference of mesh vao to be used within belt.cpp
 	inline VertexArray& GetVaoRef() const { return *vao; };

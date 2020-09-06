@@ -172,12 +172,10 @@ Model::~Model()
 
 }
 
-//void Model::Draw(ShaderProgram &shader)
-void Model::Render(Renderer renderer)
+void Model::Render(Renderer& renderer, unsigned int& textureUnit)
 {
 	for (unsigned int i = 0; i < meshes.size(); ++i)
-		meshes[i].Render(renderer);
-		//meshes[i].Draw(shader);
+		meshes[i].Render(renderer, textureUnit);
 }
 
 

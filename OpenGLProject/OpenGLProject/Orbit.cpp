@@ -46,8 +46,9 @@ Orbit::~Orbit()
 	vao->~VertexArray();
 }
 
-void Orbit::Render(Renderer renderer)
+void Orbit::Render(Renderer& renderer, unsigned int& textureUnit)
 {
+	texture->Enable(textureUnit);
 	renderer.Draw(*vao, GL_LINE_LOOP, nbMeridStrips);
 }
 

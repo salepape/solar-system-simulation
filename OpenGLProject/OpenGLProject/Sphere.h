@@ -41,9 +41,7 @@ public:
 	Sphere(const char * path, float radiusArg);
 	~Sphere();
 
-	void Render(Renderer renderer);
-
-	inline Texture GetTexture() const { return *texture; }
+	void Render(Renderer& renderer, unsigned int& textureUnit);
 };
 
 #endif SPHERE_H

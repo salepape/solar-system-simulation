@@ -34,8 +34,7 @@ public:
 	Model(std::string const &path, bool gammaCorrectionArg = false);
 	~Model();
 
-	//void Draw(ShaderProgram &shader);
-	void Render(Renderer renderer);
+	void Render(Renderer& renderer, unsigned int& textureUnit);
 
 	inline std::vector<Texture> GetTextures() const { return loadedTextures; }
 	inline std::vector<Mesh> GetMeshes() const { return meshes; }

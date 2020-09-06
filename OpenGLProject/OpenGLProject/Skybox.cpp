@@ -80,8 +80,9 @@ Skybox::~Skybox()
 	vao->~VertexArray();
 }
 
-void Skybox::Render(Renderer renderer)
+void Skybox::Render(Renderer& renderer, unsigned int& textureUnit)
 {
+	texture->Enable(textureUnit);
 	renderer.Draw(*vao, GL_TRIANGLES, 36);
 }
 

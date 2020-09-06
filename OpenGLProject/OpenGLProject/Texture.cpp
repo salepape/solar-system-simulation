@@ -153,7 +153,7 @@ void Texture::Enable(unsigned int textUnit)
 
 void Texture::Disable()
 {
-	glActiveTexture(0);
+	glActiveTexture(GL_TEXTURE0);
 	Unbind();
 }
 

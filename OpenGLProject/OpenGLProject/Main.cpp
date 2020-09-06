@@ -4,7 +4,6 @@
 #include "UX.h"
 #include "Belt.h"
 #include "Data.h"
-//#include "ShaderProgram.h"
 #include "Renderer.h"
 
 
@@ -216,10 +215,7 @@ int main()
 				saturnRingsShader.setFloat("light.linear", 0.0007f);
 				saturnRingsShader.setFloat("light.quadratic", 0.000002f);
 				saturnRingsShader.setVec3("viewPos", camera.Position);
-
-				saturnRings.GetTextures()[0].Enable(samplerID);
-				saturnRings.Render(renderer);
-
+				saturnRings.Render(renderer, samplerID);
 				++samplerID;
 			}
 
@@ -233,10 +229,7 @@ int main()
 			else
 				sphereShader.setBool("isSun", true);
 			sphereShader.setInt("material.diffuse", samplerID);
-
-			it->second.sphere->GetTexture().Enable(samplerID);
-			it->second.sphere->Render(renderer);
-
+			it->second.sphere->Render(renderer, samplerID);
 			++samplerID;
 
 
@@ -255,13 +248,11 @@ int main()
 				textShader.Enable();
 				textShader.setMat4("model", modelText);			
 				textShader.setInt("texSampler", samplerID);
-				textShader.setVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));		
-				
+				textShader.setVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));						
 				if(it->first != "Sun")
 					text.Render(renderer, it->first, 0.0f, it->second.radius * 1.25f, it->second.radius * 0.01f, samplerID);
 				else
 					text.Render(renderer, it->first, 0.0f, it->second.radius * 1.25f * 0.5f, it->second.radius * 0.003f, samplerID);
-
 				++samplerID;
 			}
 
@@ -275,13 +266,7 @@ int main()
 				sphereShader.Enable();
 				sphereShader.setMat4("model", modelOrbit);
 				sphereShader.setInt("material.diffuse", samplerID);
-
-				if (it->second.planet != nullptr || it->first == "Pluto" || it->first == "Ceres")
-					data["Mercury"].sphere->GetTexture().Enable(samplerID);
-				else
-					data["Sun"].sphere->GetTexture().Enable(samplerID);
-				it->second.orbit->Render(renderer);
-
+				it->second.orbit->Render(renderer, samplerID);
 				++samplerID;
 			}
 		}
@@ -303,9 +288,8 @@ int main()
 		asteroidShader.setFloat("light.linear", 0.0007f);
 		asteroidShader.setFloat("light.quadratic", 0.000002f);
 		asteroidShader.setVec3("viewPos", camera.Position);
-		asteroid.GetTextures()[0].Enable(samplerID);
-		asteroidBelt.Render(renderer);
-		//kuiperBelt.Render();
+		asteroidBelt.Render(renderer, samplerID);
+		//kuiperBelt.Render(renderer, samplerID);
 		++samplerID;
 
 
@@ -316,8 +300,7 @@ int main()
 		skyboxShader.setMat4("projection", projection);
 		skyboxShader.setMat4("view", glm::mat4(glm::mat3(view)));
 		skyboxShader.setInt("texSampler", samplerID);
-		skybox.GetTexture().Enable(samplerID);
-		skybox.Render(renderer);
+		skybox.Render(renderer, samplerID);
 		renderer.DepthLess();
 
 

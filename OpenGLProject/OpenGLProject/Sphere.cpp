@@ -125,8 +125,9 @@ Sphere::~Sphere()
 	vao->~VertexArray();
 }
 
-void Sphere::Render(Renderer renderer)
+void Sphere::Render(Renderer& renderer, unsigned int& textureUnit)
 {
+	texture->Enable(textureUnit);
 	renderer.Draw(*vao, *ibo);
 }
 
