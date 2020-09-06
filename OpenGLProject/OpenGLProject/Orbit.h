@@ -10,6 +10,7 @@
 
 #include "VertexBuffer.h"
 #include "VertexArray.h"
+#include "Texture.h"
 
 
 
@@ -21,6 +22,8 @@ private:
 	int nbMeridStrips;			// Number of edges (controls degree of smoothness)
 	VertexArray * vao;
 
+	Texture * texture;
+
 	// Vectors containing sphere data computed
 	std::vector<float> vertCoor;
 
@@ -28,7 +31,7 @@ private:
 	void Store();
 
 public:
-	Orbit(float radiusArg);
+	Orbit(const char * path, float radiusArg);
 	~Orbit();
 
 	void Draw();

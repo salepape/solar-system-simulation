@@ -3,8 +3,11 @@
 
 
 
-Skybox::Skybox()
+Skybox::Skybox(const char * path)
 {
+	texture = new Texture(path, "", GL_TEXTURE_CUBE_MAP, "skybox");
+	texture->LoadCubemapDDS();
+
 	Compute();
 	Store();
 };

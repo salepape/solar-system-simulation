@@ -8,6 +8,7 @@
 
 #include "VertexBuffer.h"
 #include "VertexArray.h"
+#include "Texture.h"
 
 
 
@@ -16,15 +17,18 @@ class Skybox
 private:
 	std::vector<float> vertCoor;
 	VertexArray * vao;
+	Texture * texture;
 
 	void Compute();
 	void Store();
 
 public:
-	Skybox();
+	Skybox(const char * path);
 	~Skybox();
 
 	void Draw();
+
+	inline Texture GetTexture() const { return *texture; }
 };
 
 #endif SKYBOX_H

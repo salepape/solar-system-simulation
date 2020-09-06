@@ -2,42 +2,34 @@
 
 
 
-
-
-Texture::Texture(const char * pathArg, const char * typeArg, GLenum targetArg, std::string objectType) :
+Texture::Texture(const char * pathArg, const char * typeArg, GLenum targetArg, const char * objectType) :
 	path(pathArg), type(typeArg), target(targetArg)
 {
 	// Textures by default
 	if (objectType == "default")
 	{
-		SetWrap(GL_REPEAT);
+		SetWraps(GL_REPEAT);
 		SetFilters(GL_LINEAR);
 	}
 	// Textures for characters
 	else if (objectType == "text_characters")
 	{
-		Generate();
+		// Bind TO to the OpenGL texture object (= TO) type we want 
+		glGenTextures(1, &rendererID);
+		Bind();
 
-		SetWrap(GL_CLAMP_TO_EDGE);
+		SetWraps(GL_CLAMP_TO_EDGE);
 		SetFilters(GL_LINEAR);
 	}
 	// Texture for skybox
 	else if (objectType == "skybox")
 	{
-		SetWrap(GL_CLAMP_TO_EDGE);
+		SetWraps(GL_CLAMP_TO_EDGE);
 		SetFilters(GL_LINEAR);
 	}
 }
 
-void Texture::Generate()
-{
-	// Bind TO to the OpenGL texture object (= TO) type we want 
-	glGenTextures(1, &rendererID);
-
-	Bind();
-}
-
-void Texture::LoadImage(GLenum channel)
+void Texture::LoadTextureImage(GLenum channel)
 {
 	int width, height, nbChannels;
 
@@ -104,30 +96,30 @@ void Texture::LoadCubemapDDS()
 	Bind();
 }
 
-void Texture::SetWrap(GLenum all)
+void Texture::SetWraps(GLenum wrapType)
 {
 	if(target == GL_TEXTURE_CUBE_MAP)
-		SetWrap(all, all, all);
+		SetWraps(wrapType, wrapType, wrapType);
 	else
-		SetWrap(all, all);
+		SetWraps(wrapType, wrapType);
 }
 
-void Texture::SetWrap(GLenum s, GLenum t)
+void Texture::SetWraps(GLenum s, GLenum t)
 {
 	glTexParameteri(target, GL_TEXTURE_WRAP_S, s);
 	glTexParameteri(target, GL_TEXTURE_WRAP_T, t);
 }
 
-void Texture::SetWrap(GLenum s, GLenum t, GLenum r)
+void Texture::SetWraps(GLenum s, GLenum t, GLenum r)
 {
 	glTexParameteri(target, GL_TEXTURE_WRAP_S, s);
 	glTexParameteri(target, GL_TEXTURE_WRAP_T, t);
 	glTexParameteri(target, GL_TEXTURE_WRAP_R, r);
 }
 
-void Texture::SetFilters(GLenum all)
+void Texture::SetFilters(GLenum filterType)
 {
-	SetFilters(all, all);
+	SetFilters(filterType, filterType);
 }
 
 void Texture::SetFilters(GLenum min, GLenum mag)
@@ -147,16 +139,16 @@ void Texture::Bind() const
 	glBindTexture(target, rendererID);
 }
 
-void Texture::Enable(GLint textUnit)		
+void Texture::Unbind() const
+{
+	glBindTexture(target, 0);
+}
+
+void Texture::Enable(unsigned int textUnit)		
 {
 	// Activate the texture unit before binding texture
 	glActiveTexture(GL_TEXTURE0 + textUnit);
 	Bind();
-}
-
-void Texture::Unbind() const
-{
-	glBindTexture(target, 0);
 }
 
 void Texture::Disable()

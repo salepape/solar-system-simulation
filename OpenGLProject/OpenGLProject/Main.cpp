@@ -63,7 +63,7 @@ int main()
 	Model asteroid("../Models/Asteroid/AsteroidTextured.obj");
 
 	// Create Milky Way skybox
-	Skybox sb = Skybox();
+	Skybox skybox = Skybox("../Textures/MilkyWay/stars.dds");
 
 	// Create textures
 	Texture * texTab[nbTextures];
@@ -72,8 +72,6 @@ int main()
 		texTab[k] = new Texture(texturePaths[k], "", GL_TEXTURE_2D, "default");
 		texTab[k]->LoadDDS();
 	}
-	Texture skyboxTex = Texture(textureStarsPath, "", GL_TEXTURE_CUBE_MAP, "skybox");
-	skyboxTex.LoadCubemapDDS();
 
 	// Create text characters
 	Text text;
@@ -258,9 +256,9 @@ int main()
 				textShader.setVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));		
 				
 				if(it->first != "Sun")
-					text.Render(it->first, 0.0f, it->second.radius * 1.25f, it->second.radius * 0.01f, samplerID);
+					text.Draw(it->first, 0.0f, it->second.radius * 1.25f, it->second.radius * 0.01f, samplerID);
 				else
-					text.Render(it->first, 0.0f, it->second.radius * 0.5f * 1.25f, it->second.radius * 0.003f, samplerID);
+					text.Draw(it->first, 0.0f, it->second.radius * 0.5f * 1.25f, it->second.radius * 0.003f, samplerID);
 
 				++samplerID;
 			}
@@ -316,8 +314,8 @@ int main()
 		skyboxShader.setMat4("projection", projection);
 		skyboxShader.setMat4("view", glm::mat4(glm::mat3(view)));
 		skyboxShader.setInt("texSampler", samplerID);
-		skyboxTex.Enable(samplerID);
-		sb.Draw();
+		skybox.GetTexture().Enable(samplerID);
+		skybox.Draw();
 		glDepthFunc(GL_LESS);				// Set depth function back to default
 
 

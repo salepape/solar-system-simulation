@@ -3,8 +3,11 @@
 
 
 
-Orbit::Orbit(float radiusArg) : radius(radiusArg)
+Orbit::Orbit(const char * path, float radiusArg) : radius(radiusArg)
 {
+	texture = new Texture(path, "", GL_TEXTURE_2D, "default");
+	texture->LoadDDS();
+
 	Compute();
 	Store();
 }

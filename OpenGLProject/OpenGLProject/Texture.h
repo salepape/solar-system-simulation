@@ -31,32 +31,31 @@ private:
 	//int nbChannels;
 
 public:
-	Texture(const char * path, const char * type, GLenum target, std::string);
+	Texture(const char * path, const char * type, GLenum target, const char * objectType);
 	~Texture();
 
-	void Generate();
-
-	void LoadImage(GLenum channel);
+	void LoadTextureImage(GLenum channel);
 	void LoadGlyph(FT_Face face, GLenum channel);
 	void LoadDDS();
 	void LoadCubemapDDS();
 
 	// Set the texture wrapping option(on the currently bound texture object)
-	void SetWrap(GLenum all);
-	void SetWrap(GLenum s, GLenum t);
-	void SetWrap(GLenum s, GLenum t, GLenum r);
+	void SetWraps(GLenum wrapType);
+	void SetWraps(GLenum s, GLenum t);
+	void SetWraps(GLenum s, GLenum t, GLenum r);
 	
 	// Set the texture filtering option (on the currently bound texture object)
-	void SetFilters(GLenum all);
+	void SetFilters(GLenum filterType);
 	void SetFilters(GLenum min, GLenum mag);
 
 	void Bind() const;
-	void Enable(GLint textUnit);
 	void Unbind() const;
+
+	void Enable(unsigned int textUnit);
 	void Disable();
 
-	unsigned int GetRendererID() const { return rendererID; }
-	const char * GetPath() const { return path; }
+	inline unsigned int GetRendererID() const { return rendererID; }
+	inline const char * GetPath() const { return path; }
 };
 
 #endif 

@@ -37,14 +37,10 @@ const char * texturePaths[nbTextures] =
 	"../Textures/Satellites/triton.dds",
 	"../Textures/Planets/8k_venus.dds"		// not used except for avoiding bug of triton texturing
 };
-const char * textureStarsPath = "../Textures/MilkyWay/stars.dds";
 
 
 
-
-
-///////////////////////// DATA /////////////////////////
-
+// Represent all info relative to a celestial body
 struct EntityInfo
 {
 	Texture * texture;			// Texture object pointer
@@ -90,7 +86,6 @@ void LoadData(Texture * texTab[])
 	data.insert(dataElmt("Titan",		{ texTab[16], 0.404f, data["Saturn"].radius + 1.222f * DIST_SCALE_FACTOR,  0.0f,   15.95f,    15.95f,  nullptr, 0.0f,	  nullptr, &data["Saturn"] }));
 	data.insert(dataElmt("Triton",		{ texTab[17], 0.212f, data["Neptune"].radius + 0.354f * DIST_SCALE_FACTOR, 0.0f,   5.88f,     5.88f,   nullptr, 129.812f, nullptr, &data["Neptune"] }));
 
-
 	for (auto it = data.begin(); it != data.end(); ++it)
 	{
 		if (it->first == "Sun")
@@ -98,7 +93,7 @@ void LoadData(Texture * texTab[])
 		else
 		{
 			it->second.sphere = new Sphere(it->second.radius);
-			it->second.orbit = new Orbit(it->second.dist);
+			it->second.orbit = new Orbit(texturePaths[0], it->second.dist);
 		}
 	}
 }

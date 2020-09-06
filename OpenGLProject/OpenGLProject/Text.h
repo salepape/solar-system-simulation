@@ -41,5 +41,5 @@ public:
 	~Text();
 
 	// Render line of text
-	void Render(std::string text, float x, float y, float scale, GLuint textUnit);
+	void Draw(std::string text, float x, float y, float scale, unsigned int textUnit);
 };

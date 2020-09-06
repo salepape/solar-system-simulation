@@ -70,7 +70,7 @@ void Mesh::Draw()
 	//	glBindTexture(GL_TEXTURE_2D, textures[i].textID);
 	//}
 
-	textures[0].Enable(0);
+	//textures[0].Enable(0);
 
 	// Draw mesh
 	vao->Bind();	
