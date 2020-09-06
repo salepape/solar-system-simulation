@@ -34,7 +34,7 @@ void Texture::LoadTextureImage(unsigned int channel)
 	int width, height, nbChannels;
 
 	// Load image (without alpha channel)
-	unsigned char *data = SOIL_load_image(path.c_str(), &width, &height, &nbChannels, channel);
+	unsigned char *data = SOIL_load_image(path, &width, &height, &nbChannels, channel);
 
 	if (data)
 	{
@@ -77,7 +77,7 @@ void Texture::LoadGlyph(FT_Face face, unsigned int format)
 void Texture::LoadDDS()
 {
 	// Already contains glGenTextures function !!!
-	rendererID = SOIL_load_OGL_texture(path.c_str(), SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
+	rendererID = SOIL_load_OGL_texture(path, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
 	if (0 == rendererID)
 		printf("ERROR::SOIL: Loading error: '%s'\n", SOIL_last_result());
@@ -88,7 +88,7 @@ void Texture::LoadDDS()
 void Texture::LoadCubemapDDS()
 {
 	// Already contains glGenTextures function !!!
-	rendererID = SOIL_load_OGL_single_cubemap(path.c_str(), "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
+	rendererID = SOIL_load_OGL_single_cubemap(path, "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
 	if (0 == rendererID)
 		printf("ERROR::SOIL: Loading error: '%s'\n", SOIL_last_result());

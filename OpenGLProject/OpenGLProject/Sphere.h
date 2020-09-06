@@ -23,7 +23,6 @@ private:
 	int nbIndexes;
 	// Radius of the planet 
 	float radius;
-	Texture * texture;
 
 	VertexArray * vao;
 	IndexBuffer * ibo;

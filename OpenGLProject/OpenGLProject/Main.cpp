@@ -52,12 +52,12 @@ int main()
 	//glEnable(GL_DEPTH_CLAMP);
 
 	// Build and compile shader programs
-	ShaderProgram sphereShader("SphereShader.vs", "SphereShader.fs");
-	ShaderProgram skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
 	ShaderProgram textShader("TextShader.vs", "TextShader.fs");
 	ShaderProgram saturnRingsShader("SaturnRingsShader.vs", "SaturnRingsShader.fs");
 	ShaderProgram asteroidShader("AsteroidShader.vs", "AsteroidShader.fs");
-	ShaderProgram saturnRingsShader("SaturnRingsShader.vs", "SaturnRingsShader.fs");
+	ShaderProgram skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
+	ShaderProgram sphereShader("SphereShader.vs", "SphereShader.fs");
+
 
 
 	// Create text characters
@@ -66,8 +66,6 @@ int main()
 	// Load models (meshes with textures applied)
 	Model saturnRings("../Models/SaturnRings/SaturnRingsTextured.obj");
 	Model asteroid("../Models/Asteroid/AsteroidTextured.obj");
-
-
 
 	// Create Milky Way skybox
 	Skybox skybox = Skybox("../Textures/MilkyWay/stars.dds");

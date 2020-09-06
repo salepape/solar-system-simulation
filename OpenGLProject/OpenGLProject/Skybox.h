@@ -15,11 +15,10 @@
 class Skybox
 {
 private:
-	VertexArray * vao;
-	Texture * texture;
-
 	std::vector<float> vertCoor;
 	Texture * texture;
+
+	VertexArray * vao;
 
 	void Compute();
 	void Store();
