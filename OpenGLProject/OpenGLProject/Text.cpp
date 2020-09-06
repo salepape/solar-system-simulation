@@ -87,7 +87,7 @@ Text::~Text()
 }
 
 // Render line of text
-void Text::Render(std::string text, float x, float y, float scale, unsigned int textureUnit)
+void Text::Render(Renderer renderer, std::string text, float x, float y, float scale, unsigned int textureUnit)
 {
 	// Shift billboard to left in order to center it to the concerned celestial body
 	x = -GetBillboardSize(text, scale) * 0.5f;
@@ -129,8 +129,7 @@ void Text::Render(std::string text, float x, float y, float scale, unsigned int 
 		vbo->InitSubData(verticesAddresses);
 		vbo->Unbind();
 
-		// Render quad
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		renderer.Draw(*vao, GL_TRIANGLES, 6);
 
 		// Advance cursors for next glyph (note that advance is number of 1/64 pixels)
 		x += (ch.Advance >> 6) * scale;											// bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))

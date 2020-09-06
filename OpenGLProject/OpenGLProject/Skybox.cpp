@@ -80,10 +80,8 @@ Skybox::~Skybox()
 	vao->~VertexArray();
 }
 
-void Skybox::Render()
+void Skybox::Render(Renderer renderer)
 {
-	vao->Bind();
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-	vao->Unbind();
+	renderer.Draw(*vao, GL_TRIANGLES, 36);
 }
 

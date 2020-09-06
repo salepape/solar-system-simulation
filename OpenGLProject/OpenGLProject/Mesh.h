@@ -11,8 +11,8 @@
 #include "ShaderProgram.h"
 #include "Texture.h"
 #include "VertexArray.h"
-#include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "Renderer.h"
 
 
 
@@ -48,10 +48,10 @@ public:
 	~Mesh();
 
 	//void Draw(ShaderProgram &shader);
-	void Render();
+	void Render(Renderer renderer);
 
 	// Save reference of mesh vao to be used within belt.cpp
 	inline VertexArray& GetVaoRef() const { return *vao; };
-	inline int GetIndicesCount() const { return indices.size(); }
+	inline unsigned int GetIndicesCount() const { return indices.size(); }
 };
 #endif

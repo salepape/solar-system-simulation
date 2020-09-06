@@ -1,9 +1,8 @@
-#include <glad/glad.h>
-
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/matrix_decompose.hpp>
 
 #include "Model.h"
+#include "Renderer.h"
 
 
 
@@ -26,7 +25,7 @@ public:
 	Belt(Model asteroidArg, unsigned int asteroidNbArg, int sizeFactorArg, float majorRadiusArg, float minorRadiusArg);
 	~Belt();
 
-	void Render();
+	void Render(Renderer& renderer);
 };
 
 

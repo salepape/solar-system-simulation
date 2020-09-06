@@ -173,10 +173,10 @@ Model::~Model()
 }
 
 //void Model::Draw(ShaderProgram &shader)
-void Model::Render()
+void Model::Render(Renderer renderer)
 {
 	for (unsigned int i = 0; i < meshes.size(); ++i)
-		meshes[i].Render();
+		meshes[i].Render(renderer);
 		//meshes[i].Draw(shader);
 }
 

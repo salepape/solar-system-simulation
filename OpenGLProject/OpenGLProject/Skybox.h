@@ -9,6 +9,7 @@
 #include "VertexBuffer.h"
 #include "VertexArray.h"
 #include "Texture.h"
+#include "Renderer.h"
 
 
 
@@ -26,7 +27,7 @@ public:
 	Skybox(const char * path);
 	~Skybox();
 
-	void Render();
+	void Render(Renderer renderer);
 
 	inline Texture GetTexture() const { return *texture; }
 };

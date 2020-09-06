@@ -125,13 +125,9 @@ Sphere::~Sphere()
 	vao->~VertexArray();
 }
 
-void Sphere::Render()
+void Sphere::Render(Renderer renderer)
 {
-	vao->Bind();
-	ibo->Bind();
-	glDrawElements(GL_TRIANGLES, indexes.size() , GL_UNSIGNED_INT, (void*)0);
-	vao->Unbind();
-	ibo->Unbind();
+	renderer.Draw(*vao, *ibo);
 }
 
 

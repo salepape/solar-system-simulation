@@ -11,6 +11,8 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Texture.h"
+#include "Renderer.h"
+
 
 
 class Sphere
@@ -20,11 +22,10 @@ private:
 	int nbIndexes;
 	// Radius of the planet 
 	float radius;
-	//unsigned int VAO;
+	Texture * texture;
+
 	VertexArray * vao;
 	IndexBuffer * ibo;
-
-	Texture * texture;
 
 	// Vectors containing sphere data computed
 	std::vector<float> vertCoor;
@@ -40,7 +41,7 @@ public:
 	Sphere(const char * path, float radiusArg);
 	~Sphere();
 
-	void Render();
+	void Render(Renderer renderer);
 
 	inline Texture GetTexture() const { return *texture; }
 };

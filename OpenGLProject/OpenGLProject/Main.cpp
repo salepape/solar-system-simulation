@@ -4,6 +4,8 @@
 #include "UX.h"
 #include "Belt.h"
 #include "Data.h"
+//#include "ShaderProgram.h"
+#include "Renderer.h"
 
 
 
@@ -59,7 +61,6 @@ int main()
 	ShaderProgram sphereShader("SphereShader.vs", "SphereShader.fs");
 
 
-
 	// Create text characters
 	Text text;
 
@@ -87,6 +88,8 @@ int main()
 	Belt asteroidBelt { asteroid, 5000, 10, data["Mars"].dist * 1.1f, 2.75f * DIST_SCALE_FACTOR / 2.5f };
 	//Belt kuiperBelt { asteroid, 20000, 20, data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR };
 
+	Renderer renderer;
+
 
 
 
@@ -107,15 +110,10 @@ int main()
 		// Check if a specific key is pressed and react accordingly
 		processInput(window);
 
-		// Clear the depth buffer 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		renderer.Clear();
+		renderer.Blend();
 
-		// OpenGL states enabled to make texts rendering correctly
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		// Trim down polygon count (but we cannot "visit" spheres interior anymore)
-		//glEnable(GL_CULL_FACE);
 
 
 
@@ -220,7 +218,7 @@ int main()
 				saturnRingsShader.setVec3("viewPos", camera.Position);
 
 				saturnRings.GetTextures()[0].Enable(samplerID);
-				saturnRings.Render();
+				saturnRings.Render(renderer);
 
 				++samplerID;
 			}
@@ -237,7 +235,7 @@ int main()
 			sphereShader.setInt("material.diffuse", samplerID);
 
 			it->second.sphere->GetTexture().Enable(samplerID);
-			it->second.sphere->Render();
+			it->second.sphere->Render(renderer);
 
 			++samplerID;
 
@@ -260,9 +258,9 @@ int main()
 				textShader.setVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));		
 				
 				if(it->first != "Sun")
-					text.Render(it->first, 0.0f, it->second.radius * 1.25f, it->second.radius * 0.01f, samplerID);
+					text.Render(renderer, it->first, 0.0f, it->second.radius * 1.25f, it->second.radius * 0.01f, samplerID);
 				else
-					text.Render(it->first, 0.0f, it->second.radius * 1.25f * 0.5f, it->second.radius * 0.003f, samplerID);
+					text.Render(renderer, it->first, 0.0f, it->second.radius * 1.25f * 0.5f, it->second.radius * 0.003f, samplerID);
 
 				++samplerID;
 			}
@@ -282,7 +280,7 @@ int main()
 					data["Mercury"].sphere->GetTexture().Enable(samplerID);
 				else
 					data["Sun"].sphere->GetTexture().Enable(samplerID);
-				it->second.orbit->Render();
+				it->second.orbit->Render(renderer);
 
 				++samplerID;
 			}
@@ -306,21 +304,21 @@ int main()
 		asteroidShader.setFloat("light.quadratic", 0.000002f);
 		asteroidShader.setVec3("viewPos", camera.Position);
 		asteroid.GetTextures()[0].Enable(samplerID);
-		asteroidBelt.Render();
+		asteroidBelt.Render(renderer);
 		//kuiperBelt.Render();
 		++samplerID;
 
 
 
 		// Draw Milky Way skybox
-		glDepthFunc(GL_LEQUAL);				// Change depth function so that depth test passes when values are equal to depth buffer's content
+		renderer.DepthEqual();
 		skyboxShader.Enable();
 		skyboxShader.setMat4("projection", projection);
 		skyboxShader.setMat4("view", glm::mat4(glm::mat3(view)));
 		skyboxShader.setInt("texSampler", samplerID);
 		skybox.GetTexture().Enable(samplerID);
-		skybox.Render();
-		glDepthFunc(GL_LESS);				// Set depth function back to default
+		skybox.Render(renderer);
+		renderer.DepthLess();
 
 
 

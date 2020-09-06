@@ -6,6 +6,7 @@
 #include "Texture.h"
 #include "VertexBuffer.h"
 #include "VertexArray.h"
+#include "Renderer.h"
 
 #include <map>
 #include <vector>
@@ -41,5 +42,5 @@ public:
 	~Text();
 
 	// Render line of text
-	void Render(std::string text, float x, float y, float scale, unsigned int textUnit);
+	void Render(Renderer renderer, std::string text, float x, float y, float scale, unsigned int textUnit);
 };

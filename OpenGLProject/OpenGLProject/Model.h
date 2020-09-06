@@ -1,7 +1,6 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-//#include "stb_image.h"
 #include<SOIL2.h>
 
 #include <iostream>
@@ -36,7 +35,7 @@ public:
 	~Model();
 
 	//void Draw(ShaderProgram &shader);
-	void Render();
+	void Render(Renderer renderer);
 
 	inline std::vector<Texture> GetTextures() const { return loadedTextures; }
 	inline std::vector<Mesh> GetMeshes() const { return meshes; }

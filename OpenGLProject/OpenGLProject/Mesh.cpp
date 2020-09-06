@@ -1,4 +1,3 @@
-
 #include "Mesh.h"
 
 
@@ -38,7 +37,7 @@ Mesh::~Mesh()
 }
 
 //void Mesh::Draw(ShaderProgram &shader)
-void Mesh::Render()
+void Mesh::Render(Renderer renderer)
 {
 	//// Bind appropriate textures
 	//unsigned int diffuseNr = 1;
@@ -72,12 +71,12 @@ void Mesh::Render()
 
 	//textures[0].Enable(0);
 
-	// Draw mesh
-	vao->Bind();	
+	renderer.Draw(*vao, *ibo);
+	//vao->Bind();
 	//ibo->Bind();
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	//glDrawElements(GL_TRIANGLES, ibo->GetCount(), GL_UNSIGNED_INT, nullptr);
 	//ibo->Unbind();
-	vao->Unbind();		
+	//vao->Unbind();
 
 	//glActiveTexture(GL_TEXTURE0);
 }
