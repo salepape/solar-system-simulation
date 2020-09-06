@@ -19,7 +19,7 @@
 class Texture
 {
 private:
-	GLenum target;
+	unsigned int target;
 
 	unsigned int rendererID;
 	const char * type;
@@ -31,22 +31,22 @@ private:
 	//int nbChannels;
 
 public:
-	Texture(const char * path, const char * type, GLenum target, const char * objectType);
+	Texture(const char * path, const char * type, unsigned int target, const char * objectType);
 	~Texture();
 
-	void LoadTextureImage(GLenum channel);
-	void LoadGlyph(FT_Face face, GLenum channel);
+	void LoadTextureImage(unsigned int channel);
+	void LoadGlyph(FT_Face face, unsigned int channel);
 	void LoadDDS();
 	void LoadCubemapDDS();
 
 	// Set the texture wrapping option(on the currently bound texture object)
-	void SetWraps(GLenum wrapType);
-	void SetWraps(GLenum s, GLenum t);
-	void SetWraps(GLenum s, GLenum t, GLenum r);
+	void SetWraps(unsigned int wrapType);
+	void SetWraps(unsigned int s, unsigned int t);
+	void SetWraps(unsigned int s, unsigned int t, unsigned int r);
 	
 	// Set the texture filtering option (on the currently bound texture object)
-	void SetFilters(GLenum filterType);
-	void SetFilters(GLenum min, GLenum mag);
+	void SetFilters(unsigned int filterType);
+	void SetFilters(unsigned int min, unsigned int mag);
 
 	void Bind() const;
 	void Unbind() const;
