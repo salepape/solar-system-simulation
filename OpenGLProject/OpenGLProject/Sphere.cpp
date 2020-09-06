@@ -2,8 +2,11 @@
 
 
 
-Sphere::Sphere(float radiusArg) : radius(radiusArg)
+Sphere::Sphere(const char * path, float radiusArg) : radius(radiusArg)
 {
+	texture = new Texture(path, "", GL_TEXTURE_2D, "default");
+	texture->LoadDDS();
+
 	Compute();
 	Store();
 }

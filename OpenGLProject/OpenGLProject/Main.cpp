@@ -65,19 +65,19 @@ int main()
 	// Create Milky Way skybox
 	Skybox skybox = Skybox("../Textures/MilkyWay/stars.dds");
 
-	// Create textures
-	Texture * texTab[nbTextures];
-	for (size_t k = 0; k < nbTextures; ++k)
-	{
-		texTab[k] = new Texture(texturePaths[k], "", GL_TEXTURE_2D, "default");
-		texTab[k]->LoadDDS();
-	}
+	//// Create textures
+	//Texture * texTab[nbTextures];
+	//for (size_t k = 0; k < nbTextures; ++k)
+	//{
+	//	texTab[k] = new Texture(texturePaths[k], "", GL_TEXTURE_2D, "default");
+	//	texTab[k]->LoadDDS();
+	//}
 
 	// Create text characters
 	Text text;
 
 	// Put all celestial bodies data within an unordered_map
-	LoadData(texTab);
+	LoadData();
 
 	// Instancing the main Solar Systems rock belts
 	Belt asteroidBelt { asteroid, 5000, 10, data["Mars"].dist * 1.1f, 2.75f * DIST_SCALE_FACTOR / 2.5f };
@@ -232,7 +232,7 @@ int main()
 				sphereShader.setBool("isSun", true);
 			sphereShader.setInt("material.diffuse", samplerID);
 
-			it->second.texture->Enable(samplerID);
+			it->second.sphere->GetTexture().Enable(samplerID);
 			it->second.sphere->Draw();
 
 			++samplerID;
@@ -275,9 +275,9 @@ int main()
 				sphereShader.setInt("material.diffuse", samplerID);
 
 				if (it->second.planet != nullptr || it->first == "Pluto" || it->first == "Ceres")
-					data["Mercury"].texture->Enable(samplerID);
+					data["Mercury"].sphere->GetTexture().Enable(samplerID);
 				else
-					data["Sun"].texture->Enable(samplerID);
+					data["Sun"].sphere->GetTexture().Enable(samplerID);
 				it->second.orbit->Draw();
 
 				++samplerID;
