@@ -33,9 +33,9 @@ struct Vertex
 class Mesh 
 {
 private:
-	std::vector<Vertex>       vertices;
+	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
-	std::vector<Texture>      textures;
+	std::vector<Texture> textures;
 
 	VertexArray * vao;
 	VertexBuffer * vbo;
@@ -48,7 +48,7 @@ public:
 	~Mesh();
 
 	//void Draw(ShaderProgram &shader);
-	void Draw();
+	void Render();
 
 	// Save reference of mesh vao to be used within belt.cpp
 	inline VertexArray& GetVaoRef() const { return *vao; };

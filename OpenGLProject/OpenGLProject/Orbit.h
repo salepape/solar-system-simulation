@@ -34,7 +34,7 @@ public:
 	Orbit(const char * path, float radiusArg);
 	~Orbit();
 
-	void Draw();
+	void Render();
 };
 
 #endif ORBIT_H

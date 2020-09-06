@@ -47,7 +47,7 @@ Orbit::~Orbit()
 	vao->~VertexArray();
 }
 
-void Orbit::Draw()
+void Orbit::Render()
 {
 	vao->Bind();
 	glDrawArrays(GL_LINE_LOOP, 0, nbMeridStrips);

@@ -52,11 +52,16 @@ int main()
 	//glEnable(GL_DEPTH_CLAMP);
 
 	// Build and compile shader programs
-	ShaderProgram sphereShader("SphereShader.vs", "SphereShader.fs");
 	ShaderProgram textShader("TextShader.vs", "TextShader.fs");
+	ShaderProgram saturnRingsShader("SaturnRingsShader.vs", "SaturnRingsShader.fs");
 	ShaderProgram asteroidShader("AsteroidShader.vs", "AsteroidShader.fs");
 	ShaderProgram skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
-	ShaderProgram saturnRingsShader("SaturnRingsShader.vs", "SaturnRingsShader.fs");
+	ShaderProgram sphereShader("SphereShader.vs", "SphereShader.fs");
+
+
+
+	// Create text characters
+	Text text;
 
 	// Load models (meshes with textures applied)
 	Model saturnRings("../Models/SaturnRings/SaturnRingsTextured.obj");
@@ -65,21 +70,20 @@ int main()
 	// Create Milky Way skybox
 	Skybox skybox = Skybox("../Textures/MilkyWay/stars.dds");
 
-	//// Create textures
-	//Texture * texTab[nbTextures];
-	//for (size_t k = 0; k < nbTextures; ++k)
-	//{
-	//	texTab[k] = new Texture(texturePaths[k], "", GL_TEXTURE_2D, "default");
-	//	texTab[k]->LoadDDS();
-	//}
-
-	// Create text characters
-	Text text;
-
-	// Put all celestial bodies data within an unordered_map
+	// Initialize all celestial bodies and their respective orbit
 	LoadData();
+	for (auto it = data.begin(); it != data.end(); ++it)
+	{
+		if (it->first == "Sun")
+			it->second.sphere = new Sphere(it->second.texturePath, it->second.radius * 0.5f);
+		else
+		{
+			it->second.sphere = new Sphere(it->second.texturePath, it->second.radius);
+			it->second.orbit = new Orbit(texturePaths[0], it->second.dist);
+		}
+	}
 
-	// Instancing the main Solar Systems rock belts
+	// Do some instancing to build the main Solar Systems rock belts
 	Belt asteroidBelt { asteroid, 5000, 10, data["Mars"].dist * 1.1f, 2.75f * DIST_SCALE_FACTOR / 2.5f };
 	//Belt kuiperBelt { asteroid, 20000, 20, data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR };
 
@@ -216,7 +220,7 @@ int main()
 				saturnRingsShader.setVec3("viewPos", camera.Position);
 
 				saturnRings.GetTextures()[0].Enable(samplerID);
-				saturnRings.Draw();
+				saturnRings.Render();
 
 				++samplerID;
 			}
@@ -233,13 +237,13 @@ int main()
 			sphereShader.setInt("material.diffuse", samplerID);
 
 			it->second.sphere->GetTexture().Enable(samplerID);
-			it->second.sphere->Draw();
+			it->second.sphere->Render();
 
 			++samplerID;
 
 
 
-			// Draw billboard on top of current celestial body
+			// Draw billboard (containing current celestial body name) on top of current celestial body
 			if (paused)
 			{
 				// Orient text to camera position
@@ -256,9 +260,9 @@ int main()
 				textShader.setVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));		
 				
 				if(it->first != "Sun")
-					text.Draw(it->first, 0.0f, it->second.radius * 1.25f, it->second.radius * 0.01f, samplerID);
+					text.Render(it->first, 0.0f, it->second.radius * 1.25f, it->second.radius * 0.01f, samplerID);
 				else
-					text.Draw(it->first, 0.0f, it->second.radius * 0.5f * 1.25f, it->second.radius * 0.003f, samplerID);
+					text.Render(it->first, 0.0f, it->second.radius * 1.25f * 0.5f, it->second.radius * 0.003f, samplerID);
 
 				++samplerID;
 			}
@@ -278,7 +282,7 @@ int main()
 					data["Mercury"].sphere->GetTexture().Enable(samplerID);
 				else
 					data["Sun"].sphere->GetTexture().Enable(samplerID);
-				it->second.orbit->Draw();
+				it->second.orbit->Render();
 
 				++samplerID;
 			}
@@ -302,7 +306,7 @@ int main()
 		asteroidShader.setFloat("light.quadratic", 0.000002f);
 		asteroidShader.setVec3("viewPos", camera.Position);
 		asteroid.GetTextures()[0].Enable(samplerID);
-		asteroidBelt.Draw();
+		asteroidBelt.Render();
 		//kuiperBelt.Render();
 		++samplerID;
 
@@ -315,7 +319,7 @@ int main()
 		skyboxShader.setMat4("view", glm::mat4(glm::mat3(view)));
 		skyboxShader.setInt("texSampler", samplerID);
 		skybox.GetTexture().Enable(samplerID);
-		skybox.Draw();
+		skybox.Render();
 		glDepthFunc(GL_LESS);				// Set depth function back to default
 
 

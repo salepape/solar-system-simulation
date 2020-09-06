@@ -18,7 +18,7 @@
 // Holds all state information relevant to a character as loaded using FreeType (including metrics)
 struct Character
 {
-	unsigned int TextureID;		// ID handle of the glyph texture
+	unsigned int rendererID;	// ID handle of the glyph texture
 	glm::ivec2 Size;			// Size of glyph
 	glm::ivec2 Bearing;			// Offset from baseline to left/top of glyph
 	FT_Pos Advance;				// Horizontal offset to advance to next glyph
@@ -28,7 +28,7 @@ struct Character
 class Text
 {
 private:
-	std::map<GLchar, Character> Characters;
+	std::map<GLchar, Character> characters;
 	VertexArray * vao;
 	VertexBuffer * vbo;
 
@@ -41,5 +41,5 @@ public:
 	~Text();
 
 	// Render line of text
-	void Draw(std::string text, float x, float y, float scale, unsigned int textUnit);
+	void Render(std::string text, float x, float y, float scale, unsigned int textUnit);
 };

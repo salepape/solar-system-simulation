@@ -80,7 +80,7 @@ Skybox::~Skybox()
 	vao->~VertexArray();
 }
 
-void Skybox::Draw()
+void Skybox::Render()
 {
 	vao->Bind();
 	glDrawArrays(GL_TRIANGLES, 0, 36);

@@ -26,7 +26,7 @@ public:
 	Belt(Model asteroidArg, unsigned int asteroidNbArg, int sizeFactorArg, float majorRadiusArg, float minorRadiusArg);
 	~Belt();
 
-	void Draw();
+	void Render();
 };
 
 

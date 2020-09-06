@@ -69,7 +69,7 @@ Belt::~Belt()
 	vao.~VertexArray();
 }
 
-void Belt::Draw()
+void Belt::Render()
 {
 	for (unsigned int i = 0; i < asteroid.GetMeshes().size(); ++i)
 	{

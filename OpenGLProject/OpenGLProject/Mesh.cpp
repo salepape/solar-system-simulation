@@ -38,7 +38,7 @@ Mesh::~Mesh()
 }
 
 //void Mesh::Draw(ShaderProgram &shader)
-void Mesh::Draw()
+void Mesh::Render()
 {
 	//// Bind appropriate textures
 	//unsigned int diffuseNr = 1;

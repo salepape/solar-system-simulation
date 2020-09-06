@@ -85,15 +85,4 @@ void LoadData()
 	data.insert(dataElmt("Io",			{ texturePaths[15], 0.286f, data["Jupiter"].radius + 0.422f * DIST_SCALE_FACTOR, 0.0f,   1.77f,     1.77f,   nullptr, 2.213f,   nullptr, &data["Jupiter"] }));
 	data.insert(dataElmt("Titan",		{ texturePaths[16], 0.404f, data["Saturn"].radius + 1.222f * DIST_SCALE_FACTOR,  0.0f,   15.95f,    15.95f,  nullptr, 0.0f,	  nullptr, &data["Saturn"] }));
 	data.insert(dataElmt("Triton",		{ texturePaths[17], 0.212f, data["Neptune"].radius + 0.354f * DIST_SCALE_FACTOR, 0.0f,   5.88f,     5.88f,   nullptr, 129.812f, nullptr, &data["Neptune"] }));
-
-	for (auto it = data.begin(); it != data.end(); ++it)
-	{
-		if (it->first == "Sun")
-			it->second.sphere = new Sphere(it->second.texturePath, it->second.radius * 0.5f);
-		else
-		{
-			it->second.sphere = new Sphere(it->second.texturePath, it->second.radius);
-			it->second.orbit = new Orbit(texturePaths[0], it->second.dist);
-		}
-	}
 }

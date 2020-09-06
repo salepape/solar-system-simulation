@@ -16,7 +16,7 @@
 class Model
 {
 private:
-	std::vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
+	std::vector<Texture> loadedTextures;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
 	std::vector<Mesh>    meshes;
 	bool gammaCorrection;
 
@@ -36,9 +36,9 @@ public:
 	~Model();
 
 	//void Draw(ShaderProgram &shader);
-	void Draw();
+	void Render();
 
-	inline std::vector<Texture> GetTextures() const { return textures_loaded; }
+	inline std::vector<Texture> GetTextures() const { return loadedTextures; }
 	inline std::vector<Mesh> GetMeshes() const { return meshes; }
 };
 

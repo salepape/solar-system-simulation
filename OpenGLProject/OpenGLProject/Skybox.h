@@ -26,7 +26,7 @@ public:
 	Skybox(const char * path);
 	~Skybox();
 
-	void Draw();
+	void Render();
 
 	inline Texture GetTexture() const { return *texture; }
 };

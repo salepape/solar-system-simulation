@@ -125,7 +125,7 @@ Sphere::~Sphere()
 	vao->~VertexArray();
 }
 
-void Sphere::Draw()
+void Sphere::Render()
 {
 	vao->Bind();
 	ibo->Bind();

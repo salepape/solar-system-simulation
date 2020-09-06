@@ -40,7 +40,7 @@ public:
 	Sphere(const char * path, float radiusArg);
 	~Sphere();
 
-	void Draw();
+	void Render();
 
 	inline Texture GetTexture() const { return *texture; }
 };

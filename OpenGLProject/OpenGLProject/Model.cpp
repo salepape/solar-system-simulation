@@ -137,7 +137,7 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene)
 
 std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName)
 {
-	std::vector<Texture> textures;
+	std::vector<Texture> materialTextures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
 	{
 		aiString str;
@@ -145,11 +145,11 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType 
 
 		// check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
 		bool skip = false;
-		for (unsigned int j = 0; j < textures_loaded.size(); ++j)
+		for (unsigned int j = 0; j < loadedTextures.size(); ++j)
 		{
-			if (std::strcmp(textures_loaded[j].GetPath(), str.C_Str()) == 0)
+			if (std::strcmp(loadedTextures[j].GetPath(), str.C_Str()) == 0)
 			{
-				textures.push_back(textures_loaded[j]);
+				materialTextures.push_back(loadedTextures[j]);
 				skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
 				break;
 			}
@@ -159,12 +159,12 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType 
 		{   // if texture hasn't been loaded already, load it
 			Texture texture(str.C_Str(), typeName.c_str(), GL_TEXTURE_2D, "default");
 			texture.LoadDDS();
-			textures.push_back(texture);
-			textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+			materialTextures.push_back(texture);
+			loadedTextures.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
 		}
 	}
 
-	return textures;
+	return materialTextures;
 }
 
 Model::~Model()
@@ -173,10 +173,10 @@ Model::~Model()
 }
 
 //void Model::Draw(ShaderProgram &shader)
-void Model::Draw()
+void Model::Render()
 {
 	for (unsigned int i = 0; i < meshes.size(); ++i)
-		meshes[i].Draw();
+		meshes[i].Render();
 		//meshes[i].Draw(shader);
 }
 
