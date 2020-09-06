@@ -2,54 +2,44 @@
 
 
 
-
-
-Texture::Texture(const char * pathArg, const char * typeArg, GLenum targetArg, int defaultParams) :
+Texture::Texture(std::string pathArg, std::string typeArg, GLenum targetArg, const char * objectType) :
 	path(pathArg), type(typeArg), target(targetArg)
 {
-	// Try catch exception ? if OpenGL context created in main() is still active
-	if (glfwGetCurrentContext() == NULL)
+	// Texture by default
+	if (objectType == "default")
 	{
-		std::cout << "ERROR::GLFW: Failed to get current context : OpenGL functions will not work correctly" << std::endl;
-	}
-
-	// Textures by default
-	if (defaultParams == 0)
-	{
-		SetWrap(GL_REPEAT);
+		SetWraps(GL_REPEAT);
 		SetFilters(GL_LINEAR);
 	}
-	// Textures for characters
-	else if (defaultParams == 1)
+	// Texture for text characters
+	else if (objectType == "text_characters")
 	{
-		Generate();
+		// Generate then bind Texture Object (= TO) to the OpenGL TO type we want 
+		glGenTextures(1, &rendererID);
+		glBindTexture(target, rendererID);
 
-		SetWrap(GL_CLAMP_TO_EDGE);
+		SetWraps(GL_CLAMP_TO_EDGE);
 		SetFilters(GL_LINEAR);
 	}
 	// Texture for skybox
-	else if (defaultParams == 2)
+	else if (objectType == "skybox")
 	{
-		SetWrap(GL_CLAMP_TO_EDGE);
+		SetWraps(GL_CLAMP_TO_EDGE);
 		SetFilters(GL_LINEAR);
 	}
 }
 
-void Texture::Generate()
+Texture::~Texture()
 {
-	// Bind TO to the OpenGL texture object (= TO) type we want 
-	glGenTextures(1, &textID);
-
-	// Bind texture name to the OpenGL target we want (expl : a 2D texture called GL_TEXTURE_2D)
-	glBindTexture(target, textID);
+	//glDeleteTextures(1, &rendererID);
 }
 
-void Texture::LoadImage(GLenum channel)
+void Texture::LoadTextureImage(GLenum channel)
 {
 	int width, height, nbChannels;
 
 	// Load image (without alpha channel)
-	unsigned char *data = SOIL_load_image(path, &width, &height, &nbChannels, channel);
+	unsigned char *data = SOIL_load_image(path.c_str(), &width, &height, &nbChannels, channel);
 
 	if (data)
 	{
@@ -67,7 +57,6 @@ void Texture::LoadImage(GLenum channel)
 			break;
 		}
 
-		//glBindTexture(target, textID);
 		Bind();
 
 		// Generate texture image on the currently bound TO at the active texture unit
@@ -81,7 +70,6 @@ void Texture::LoadImage(GLenum channel)
 		std::cout << "ERROR::SOIL: Failed to load entity sprite at path " << path << std::endl;
 	}
 
-	//stb_image_free(data);
 	SOIL_free_image_data(data);
 }
 
@@ -93,53 +81,50 @@ void Texture::LoadGlyph(FT_Face face, GLenum format)
 
 void Texture::LoadDDS()
 {
-	// Contains glGenTextures !!!
-	textID = SOIL_load_OGL_texture(path, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
+	// Already contains glGenTextures function !!!
+	rendererID = SOIL_load_OGL_texture(path.c_str(), SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
-	if (0 == textID)
+	if (0 == rendererID)
 		printf("ERROR::SOIL: Loading error: '%s'\n", SOIL_last_result());
 
-	// Bind texture name to the OpenGL target we want (expl : a 2D texture called GL_TEXTURE_2D)
-	//glBindTexture(target, textID);
 	Bind();
 }
 
 void Texture::LoadCubemapDDS()
 {
-	textID = SOIL_load_OGL_single_cubemap(path, "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
+	// Already contains glGenTextures function !!!
+	rendererID = SOIL_load_OGL_single_cubemap(path.c_str(), "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
-	if (0 == textID)
+	if (0 == rendererID)
 		printf("ERROR::SOIL: Loading error: '%s'\n", SOIL_last_result());
 
-	// Bind texture name to the OpenGL target we want (expl : a 2D texture called GL_TEXTURE_2D)
-	//glBindTexture(target, textID);
 	Bind();
 }
 
-void Texture::SetWrap(GLenum all)
+void Texture::SetWraps(GLenum wrapType)
 {
 	if(target == GL_TEXTURE_CUBE_MAP)
-		SetWrap(all, all, all);
+		SetWraps(wrapType, wrapType, wrapType);
 	else
-		SetWrap(all, all);
+		SetWraps(wrapType, wrapType);
 }
 
-void Texture::SetWrap(GLenum s, GLenum t)
+void Texture::SetWraps(GLenum s, GLenum t)
 {
 	glTexParameteri(target, GL_TEXTURE_WRAP_S, s);
 	glTexParameteri(target, GL_TEXTURE_WRAP_T, t);
 }
 
-void Texture::SetWrap(GLenum s, GLenum t, GLenum r)
+void Texture::SetWraps(GLenum s, GLenum t, GLenum r)
 {
 	glTexParameteri(target, GL_TEXTURE_WRAP_S, s);
 	glTexParameteri(target, GL_TEXTURE_WRAP_T, t);
 	glTexParameteri(target, GL_TEXTURE_WRAP_R, r);
 }
 
-void Texture::SetFilters(GLenum all)
+void Texture::SetFilters(GLenum filterType)
 {
-	SetFilters(all, all);
+	SetFilters(filterType, filterType);
 }
 
 void Texture::SetFilters(GLenum min, GLenum mag)
@@ -148,18 +133,9 @@ void Texture::SetFilters(GLenum min, GLenum mag)
 	glTexParameteri(target, GL_TEXTURE_MAG_FILTER, mag);
 }
 
-void Texture::Bind() const		// textUnit = samplerID in main() ???
+void Texture::Bind() const		
 {
-	//glActiveTexture(GL_TEXTURE0 + textUnit);
-	glBindTexture(target, textID);
-}
-
-void Texture::Enable(GLint textUnit)		// textUnit = samplerID in main() ???
-{
-	// Activate the texture unit before binding texture
-	glActiveTexture(GL_TEXTURE0 + textUnit);
-
-	Bind();
+	glBindTexture(target, rendererID);
 }
 
 void Texture::Unbind() const
@@ -167,8 +143,16 @@ void Texture::Unbind() const
 	glBindTexture(target, 0);
 }
 
+void Texture::Enable(unsigned int textUnit)		
+{
+	// Activate the texture unit before binding texture
+	glActiveTexture(GL_TEXTURE0 + textUnit);
+	Bind();
+}
+
 void Texture::Disable()
 {
+	// Set everything back to default once configured
 	glActiveTexture(0);
 	Unbind();
 }

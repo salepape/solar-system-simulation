@@ -1,10 +1,12 @@
-
 #include "Skybox.h"
 
 
 
-Skybox::Skybox()
+Skybox::Skybox(const char * texturePath)
 {
+	texture = new Texture(texturePath, "", GL_TEXTURE_CUBE_MAP, "skybox");
+	texture->LoadCubemapDDS();
+
 	Compute();
 	Store();
 };
@@ -74,13 +76,13 @@ void Skybox::Store()
 
 Skybox::~Skybox()
 {
-	vao->~VertexArray();
+	//vao->~VertexArray();
 }
 
 void Skybox::Draw()
 {
 	vao->Bind();
-
 	glDrawArrays(GL_TRIANGLES, 0, 36);
+	vao->Unbind();
 }
 

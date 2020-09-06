@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "Texture.h"
 #include "VertexBuffer.h"
 #include "VertexArray.h"
 
@@ -23,12 +24,13 @@ private:
 
 	// Vectors containing sphere data computed
 	std::vector<float> vertCoor;
+	Texture * texture;
 
 	void Compute();
 	void Store();
 
 public:
-	Orbit(float radiusArg);
+	Orbit(const char * texturePath, float radiusArg);
 	~Orbit();
 
 	void Draw();

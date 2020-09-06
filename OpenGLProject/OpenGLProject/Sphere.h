@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "Texture.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
@@ -19,7 +20,7 @@ private:
 	int nbIndexes;
 	// Radius of the planet 
 	float radius;
-	//unsigned int VAO;
+
 	VertexArray * vao;
 	IndexBuffer * ibo;
 
@@ -28,16 +29,18 @@ private:
 	std::vector<float> normalCoor;
 	std::vector<float> textCoor;
 	std::vector<int> indexes;
+	Texture * texture;
 
 	void Compute();
 	void Store();
 
-
 public:
-	Sphere(float radiusArg);
+	Sphere(const char * texturePath, float radiusArg);
 	~Sphere();
 
 	void Draw();
+
+	inline Texture GetTexture() const { return *texture; }
 };
 
 #endif SPHERE_H

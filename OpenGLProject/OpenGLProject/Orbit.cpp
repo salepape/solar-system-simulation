@@ -3,8 +3,11 @@
 
 
 
-Orbit::Orbit(float radiusArg) : radius(radiusArg)
+Orbit::Orbit(const char * texturePath, float radiusArg) : radius(radiusArg)
 {
+	texture = new Texture(texturePath, "", GL_TEXTURE_2D, "default");
+	texture->LoadDDS();
+
 	Compute();
 	Store();
 }
@@ -47,7 +50,7 @@ Orbit::~Orbit()
 void Orbit::Draw()
 {
 	vao->Bind();
-
 	glDrawArrays(GL_LINE_LOOP, 0, nbMeridStrips);
+	vao->Unbind();
 }
 

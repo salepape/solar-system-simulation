@@ -8,10 +8,9 @@ Model::Model(std::string const &path, bool gammaCorrectionArg) : gammaCorrection
 	LoadModel(path);
 }
 
-void Model::Draw(ShaderProgram &shader)
+Model::~Model()
 {
-	for (unsigned int i = 0; i < meshes.size(); ++i)
-		meshes[i].Draw(shader);
+
 }
 
 void Model::LoadModel(std::string const &path)
@@ -19,15 +18,11 @@ void Model::LoadModel(std::string const &path)
 	// Read file via ASSIMP
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
-
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 	{
 		std::cout << "ERROR::ASSIMP: " << importer.GetErrorString() << std::endl;
 		return;
 	}
-
-	// Retrieve directory path from filepath
-	directory = path.substr(0, path.find_last_of('/'));
 
 	// Process ASSIMP's root node recursively
 	ProcessNode(scene->mRootNode, scene);
@@ -39,7 +34,7 @@ void Model::ProcessNode(aiNode *node, const aiScene *scene)
 	for (unsigned int i = 0; i < node->mNumMeshes; ++i)
 	{
 		// Node object only contains indices to index the actual objects in the scene
-		// Scene contains all the data, node is just to keep stuff organized (like relations between nodes).
+		// Scene contains all the data, node is just to keep stuff organized (like relations between nodes)
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		meshes.push_back(ProcessMesh(mesh, scene));
 	}
@@ -77,10 +72,10 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene)
 		vertex.Normal = vector;
 
 		// Texture coordinates
-		if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
+		if (mesh->mTextureCoords[0]) 
 		{
 			glm::vec2 vec;
-			// a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
+			// A vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
 			// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
 			vec.x = mesh->mTextureCoords[0][i].x;
 			vec.y = mesh->mTextureCoords[0][i].y;
@@ -100,6 +95,8 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene)
 		vector.y = mesh->mBitangents[i].y;
 		vector.z = mesh->mBitangents[i].z;
 		vertex.Bitangent = vector;
+
+		// Store result in vertices vector
 		vertices.push_back(vertex);
 	}
 
@@ -113,68 +110,75 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene)
 			indices.push_back(facet.mIndices[j]);
 	}
 
-
-
 	// Process materials
 	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-	// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
+	// We assume a convention for sampler names in the shaders. Each diffuse texture should be named
 	// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
 	// Same applies to other texture as the following list summarizes:
-	// diffuse: texture_diffuseN
-	// specular: texture_specularN
-	// normal: texture_normalN
+	// diffuse	:	texture_diffuseN
+	// specular	:	texture_specularN
+	// normal	:	texture_normalN
 
-	// 1. diffuse maps
+	// Diffuse maps 
 	std::vector<Texture> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());		
 
-	// 2. specular maps
+	// Specular maps
 	std::vector<Texture> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
-	// 3. normal maps
+	// Normal maps
 	std::vector<Texture> normalMaps = LoadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
 	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 
-	// 4. height maps
+	// Height maps
 	std::vector<Texture> heightMaps = LoadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-	// return a mesh object created from the extracted mesh data
+	// Return a mesh object created from the extracted mesh data
 	return Mesh(vertices, indices, textures);
 }
 
 std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName)
 {
-	std::vector<Texture> textures;
+	std::vector<Texture> materialTextures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
 	{
 		aiString str;
 		mat->GetTexture(type, i, &str);
 
-		// check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
+		// Check if texture was loaded before and if so, continue to next iteration
 		bool skip = false;
 		for (unsigned int j = 0; j < textures_loaded.size(); ++j)
 		{
-			if (std::strcmp(textures_loaded[j].path, str.C_Str()) == 0)
+			// If a texture with the same filepath has already been loaded, continue to next one 
+			if (std::strcmp(textures_loaded[j].GetPath().c_str(), str.C_Str()) == 0)
 			{
-				textures.push_back(textures_loaded[j]);
-				skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
+				materialTextures.push_back(textures_loaded[j]);
+				skip = true;						
 				break;
 			}
 		}
 
+		// If texture hasn't been loaded already, load it
 		if (!skip)
-		{   // if texture hasn't been loaded already, load it
+		{   
 			Texture texture(str.C_Str(), typeName.c_str(), GL_TEXTURE_2D, 0);
 			texture.LoadDDS();
-			textures.push_back(texture);
-			textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+			materialTextures.push_back(texture);
+			textures_loaded.push_back(texture);		// store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures
 		}
 	}
 
-	return textures;
+	return materialTextures;
 }
 
+//void Model::Draw(ShaderProgram &shader)
+void Model::Draw()
+{
+	for (unsigned int i = 0; i < meshes.size(); ++i)
+		meshes[i].Draw();
+		//meshes[i].Draw(shader);
+}
 
 

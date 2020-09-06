@@ -45,13 +45,13 @@ Text::Text()
 			continue;
 		}
 
-		textCharacter = new Texture("", "", GL_TEXTURE_2D, 1);
+		textCharacter = new Texture("", "", GL_TEXTURE_2D, "text_characters");	// no need to specify image path here since it's a glyph
 		textCharacter->LoadGlyph(face, GL_RED);
 
 		// Create object storing current ASCII character caracteristics
 		Character character =
 		{
-			textCharacter->textID,
+			textCharacter->GetRendererID(),
 			glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
 			glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
 			face->glyph->advance.x
@@ -82,12 +82,12 @@ Text::Text()
 
 Text::~Text()
 {
-	vbo->~VertexBuffer();
-	vao->~VertexArray();
+	//vbo->~VertexBuffer();
+	//vao->~VertexArray();
 }
 
 // Render line of text
-void Text::Render(std::string text, float x, float y, float scale, GLuint textUnit)
+void Text::Draw(std::string text, float x, float y, float scale, GLuint textUnit)
 {
 	// Shift billboard to left in order to center it to the concerned celestial body
 	x = -GetBillboardSize(text, scale) * 0.5f;

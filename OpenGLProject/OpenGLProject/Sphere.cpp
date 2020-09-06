@@ -2,8 +2,11 @@
 
 
 
-Sphere::Sphere(float radiusArg) : radius(radiusArg)
+Sphere::Sphere(const char * texturePath, float radiusArg) : radius(radiusArg)
 {
+	texture = new Texture(texturePath, "", GL_TEXTURE_2D, "default");
+	texture->LoadDDS();
+
 	Compute();
 	Store();
 }
@@ -111,23 +114,24 @@ void Sphere::Store()
 	lightVbl.Push<float>(3);
 	lightVao.AddBuffer(vbo, lightVbl);
 
-	vbo.Unbind();
 	ibo->Unbind();
+	vbo.Unbind();
 	vao->Unbind();
 }
 
 Sphere::~Sphere()
 {
-	ibo->~IndexBuffer();
-	vao->~VertexArray();
+	//ibo->~IndexBuffer();
+	//vao->~VertexArray();
 }
 
 void Sphere::Draw()
 {
 	vao->Bind();
 	ibo->Bind();
-
 	glDrawElements(GL_TRIANGLES, indexes.size() , GL_UNSIGNED_INT, (void*)0);
+	ibo->Unbind();
+	vao->Unbind();
 }
 
 
