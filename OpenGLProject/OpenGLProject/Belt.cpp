@@ -42,6 +42,7 @@ void Belt::Compute()
 	}
 }
 
+// We could instantiate several belts with the same model (ie its VAO ID) if modelMatrices gathered data of all belts
 void Belt::Store()
 {
 	// Configure instanced array
@@ -50,7 +51,8 @@ void Belt::Store()
 	// Set transformation matrices as an instance vertex attribute (with divisor 1)
 	for (unsigned int i = 0; i < asteroid.GetMeshes().size(); ++i)
 	{
-		vao = asteroid.GetMeshes()[i].GetVaoRef();		// TODO : Kuiper overwrites asteroid belt data !!!
+		// Retrieve VAO ID of the rock mesh (we don't create any new VAO ID per belt because of instancing)
+		vao = asteroid.GetMeshes()[i].GetVaoRef();		
 		vao.Bind();
 
 		VertexBufferLayout vbl;

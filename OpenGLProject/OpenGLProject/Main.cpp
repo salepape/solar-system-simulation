@@ -1,4 +1,3 @@
-
 #include "Skybox.h"
 #include "Text.h"
 #include "UX.h"
@@ -66,6 +65,7 @@ int main()
 	// Load models (meshes with textures applied)
 	Model saturnRings("../Models/SaturnRings/SaturnRingsTextured.obj");
 	Model asteroid("../Models/Asteroid/AsteroidTextured.obj");
+	Model ice("../Models/Ice/IceTextured.obj");
 
 	// Create Milky Way skybox
 	Skybox skybox = Skybox("../Textures/MilkyWay/stars.dds");
@@ -85,7 +85,7 @@ int main()
 
 	// Do some instancing to build the main Solar Systems rock belts
 	Belt asteroidBelt { asteroid, 5000, 10, data["Mars"].dist * 1.1f, 2.75f * DIST_SCALE_FACTOR / 2.5f };
-	//Belt kuiperBelt { asteroid, 20000, 20, data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR };
+	Belt kuiperBelt { ice, 20000, 20, data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR };
 
 	Renderer renderer;
 
@@ -217,14 +217,6 @@ int main()
 				saturnRingsShader.setVec3("viewPos", camera.Position);
 				saturnRings.Render(renderer, samplerID);
 				++samplerID;
-
-				//for (size_t texIndex = 0; texIndex < texRef.size(); ++texIndex)
-				//{
-				//	texRef[texIndex].Enable(samplerID);
-				//	saturnRings.Draw(saturnRingsShader);
-
-				//	++samplerID;
-				//}
 			}
 
 			// Rotation on itself (to have spheres poles vertical)
@@ -285,7 +277,6 @@ int main()
 		asteroidShader.Enable();
 		asteroidShader.setMat4("projection", projection);
 		asteroidShader.setMat4("view", view);
-		asteroidShader.setInt("material.diffuse", samplerID);
 		asteroidShader.setVec3("material.specular", 0.0f, 0.0f, 0.0f);
 		asteroidShader.setFloat("material.shininess", 64.0f);
 		asteroidShader.setVec3("light.position", 0.0f, 0.0f, 0.0f);
@@ -296,17 +287,12 @@ int main()
 		asteroidShader.setFloat("light.linear", 0.0007f);
 		asteroidShader.setFloat("light.quadratic", 0.000002f);
 		asteroidShader.setVec3("viewPos", camera.Position);
+		asteroidShader.setInt("material.diffuse", samplerID);
 		asteroidBelt.Render(renderer, samplerID);
-		//kuiperBelt.Render(renderer, samplerID);
 		++samplerID;
-
-		//for (size_t texIndex = 0; texIndex < texRef.size(); ++texIndex)
-		//{
-		//	texRef[texIndex].Enable(samplerID);
-		//	asteroid.Draw(asteroidShader);
-
-		//	++samplerID;
-		//}
+		asteroidShader.setInt("material.diffuse", samplerID);
+		kuiperBelt.Render(renderer, samplerID);
+		++samplerID;
 
 
 

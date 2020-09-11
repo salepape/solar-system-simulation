@@ -39,7 +39,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& l
 	}
 }
 
-void VertexArray::AddBuffer2(const VertexBuffer& vbo, const VertexBufferLayout& layout, std::vector<unsigned int> sizeofs)
+void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout, std::vector<unsigned int> sizeofs)
 {
 	Bind();
 	vbo.Bind();
@@ -63,9 +63,6 @@ void VertexArray::AddBuffer2(const VertexBuffer& vbo, const VertexBufferLayout& 
 
 void VertexArray::AddInstancedBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout)
 {
-	//Bind();
-	//vbo.Bind();
-
 	const auto& elements = layout.GetElements();
 	unsigned int offset = 0;
 
@@ -79,14 +76,10 @@ void VertexArray::AddInstancedBuffer(const VertexBuffer& vbo, const VertexBuffer
 
 		// INTERPRETATION - Store in the currently bound VBO how OpenGL should interpret the vertex buffer data
 		glVertexAttribPointer(i, vbe.count, vbe.type, vbe.normalized, sizeof(glm::mat4), (const void*)offset);
+		glVertexAttribDivisor(i, 1);
 
 		offset += sizeof(glm::vec4);
 	}
-
-	glVertexAttribDivisor(3, 1);
-	glVertexAttribDivisor(4, 1);
-	glVertexAttribDivisor(5, 1);
-	glVertexAttribDivisor(6, 1);
 }
 
 void VertexArray::Bind() const
@@ -94,12 +87,6 @@ void VertexArray::Bind() const
 	// BINDING VAO - Bind VAO, which thus will store all following VBO calls
 	glBindVertexArray(rendererID);
 }
-
-//void VertexArray::Bind(unsigned int arrayID) const
-//{
-//	// BINDING VAO - Bind VAO, which thus will store all following VBO calls
-//	glBindVertexArray(arrayID);
-//}
 
 void VertexArray::Unbind() const
 {

@@ -101,7 +101,7 @@ void Sphere::Store()
 	vbl.Push<float>(3);						// Vertex position (location = 0 in SphereShader.vs)
 	vbl.Push<float>(3);						// Vertex normal (location = 1 in SphereShader.vs)
 	vbl.Push<float>(2);						// Vertex texture coordinates (location = 2 in SphereShader.vs)
-	vao->AddBuffer2(vbo, vbl, sizeofs);
+	vao->AddBuffer(vbo, vbl, sizeofs);
 
 	ibo = new IndexBuffer(&indexes[0], indexes.size());
 
