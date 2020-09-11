@@ -8,6 +8,18 @@ void Renderer::Clear() const
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+// Conduct a depth test
+void Renderer::DepthTest() const
+{
+	glEnable(GL_DEPTH_TEST);
+}
+
+// Conduct a depth clamp
+void Renderer::DepthClamp() const
+{
+	glEnable(GL_DEPTH_CLAMP);
+}
+
 // OpenGL states enabled to make texts rendering correctly
 void Renderer::Blend() const
 {
@@ -32,6 +44,14 @@ void Renderer::DepthLess() const
 {
 	glDepthFunc(GL_LESS);
 }
+
+// Set color when color buffers are cleared
+void Renderer::SetColor()
+{
+	// Set "RGB + alpha" coefficients for background color
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+}
+
 
 
 

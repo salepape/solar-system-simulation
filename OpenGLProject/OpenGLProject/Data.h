@@ -8,7 +8,7 @@
 
 
 #define DIST_SCALE_FACTOR 10.0f
-#define nbTextures 19
+#define nbTextures 18
 
 
 
@@ -18,7 +18,7 @@ const char * texturePaths[nbTextures] =
 	"../Textures/8k_sun.dds",
 
 	"../Textures/Planets/8k_mercury.dds",
-	"../Textures/Planets/4k_venus_atmosphere.dds",
+	"../Textures/Planets/4k_venus_atmosphere.dds",		//"../Textures/Planets/8k_venus.dds"
 	"../Textures/Planets/8k_earth.dds",
 	"../Textures/Planets/8k_mars.dds",
 	"../Textures/Planets/8k_jupiter.dds",
@@ -35,8 +35,7 @@ const char * texturePaths[nbTextures] =
 	"../Textures/Satellites/ganymede.dds",
 	"../Textures/Satellites/io.dds",
 	"../Textures/Satellites/titan.dds",
-	"../Textures/Satellites/triton.dds",
-	"../Textures/Planets/8k_venus.dds"		// not used (just here to be able to consider triton texture path for some reason...)
+	"../Textures/Satellites/triton.dds"
 };
 
 

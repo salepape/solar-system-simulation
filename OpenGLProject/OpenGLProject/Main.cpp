@@ -47,9 +47,6 @@ int main()
 
 
 
-	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_DEPTH_CLAMP);
-
 	// Build and compile shader programs
 	ShaderProgram textShader("TextShader.vs", "TextShader.fs");
 	ShaderProgram saturnRingsShader("SaturnRingsShader.vs", "SaturnRingsShader.fs");
@@ -87,7 +84,9 @@ int main()
 	Belt asteroidBelt { asteroid, 5000, 10, data["Mars"].dist * 1.1f, 2.75f * DIST_SCALE_FACTOR / 2.5f };
 	Belt kuiperBelt { ice, 20000, 20, data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR };
 
+	// Create renderer
 	Renderer renderer;
+	renderer.DepthTest();
 
 
 

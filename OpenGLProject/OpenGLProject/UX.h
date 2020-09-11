@@ -56,15 +56,6 @@ GLFWwindow* initGLFWWindow(int windowWidth, int windowHeight, const char* window
 	return window;
 }
 
-void colorationGLFWWindow()
-{
-	// Set "RGB + alpha" coefficients for background color
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
-	// Clear up window content
-	glClear(GL_COLOR_BUFFER_BIT);
-}
-
 
 
 
