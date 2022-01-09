@@ -73,7 +73,8 @@ Belt::~Belt()
 
 void Belt::Render(Renderer& renderer, unsigned int& textureUnit)
 {
-	asteroid.GetTextures()[0].Enable(textureUnit);
+	if (!asteroid.GetTextures().empty())
+		asteroid.GetTextures()[0].Enable(textureUnit);
 
 	for (unsigned int i = 0; i < asteroid.GetMeshes().size(); ++i)
 	{

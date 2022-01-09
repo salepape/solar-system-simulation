@@ -21,6 +21,7 @@ struct Light
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+    bool isBlinn;
 
     // Terms of atenuation spotlight formula
     float constant;
@@ -44,15 +45,24 @@ void main()
         vec3 ambient = light.ambient * texelSampling;
     
         // Diffuse lighting
-        vec3 norm = normalize(normalCoord);
+        vec3 normalDir = normalize(normalCoord);
         vec3 lightDir = normalize(light.position - fPos);
-        float diff = max(dot(norm, lightDir), 0.0);
+        float diff = max(dot(normalDir, lightDir), 0.0);
         vec3 diffuse = light.diffuse * diff * texelSampling;
     
         // Specular lighting
         vec3 viewDir = normalize(viewPos - fPos);
-        vec3 reflectDir = reflect(-lightDir, norm);  
-        float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+        float spec = 0.0f;
+        if(light.isBlinn)
+        {
+            vec3 halfwayDir = normalize(lightDir + viewDir);  
+            spec = pow(max(dot(normalDir, halfwayDir), 0.0), material.shininess);
+        }
+        else
+        {
+            vec3 reflectDir = reflect(-lightDir, normalDir);
+            spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+        }
         vec3 specular = light.specular * (spec * material.specular);  
 
         float distance = length(light.position - fPos);

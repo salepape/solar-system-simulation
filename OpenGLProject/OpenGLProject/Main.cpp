@@ -22,6 +22,7 @@ int main()
 	if (glfwGetCurrentContext() == NULL)
 	{
 		std::cout << "ERROR::GLFW: Failed to get current context : OpenGL functions will not work correctly" << std::endl;
+		return -1;
 	}
 
 	// Set the framebuffer resize callback of the specified window, called when the framebuffer of the specified window is resized
@@ -60,9 +61,11 @@ int main()
 	Text text;
 
 	// Load models (meshes with textures applied)
-	Model saturnRings("../Models/SaturnRings/SaturnRingsTextured.obj");
-	Model asteroid("../Models/Asteroid/AsteroidTextured.obj");
-	Model ice("../Models/Ice/IceTextured.obj");
+	Model saturnRings("../Models/SaturnRings.obj");
+	Model asteroid("../Models/Asteroid.obj");
+	Model ice("../Models/Ice.obj");
+	Model deimos("../Models/Deimos.obj");
+	Model phobos("../Models/Phobos.obj");
 
 	// Create Milky Way skybox
 	Skybox skybox = Skybox("../Textures/MilkyWay/stars.dds");
@@ -76,7 +79,7 @@ int main()
 		else
 		{
 			it->second.sphere = new Sphere(it->second.texturePath, it->second.radius);
-			it->second.orbit = new Orbit(texturePaths[0], it->second.dist);
+			it->second.orbit = new Orbit(it->second.texturePath, it->second.dist);
 		}
 	}
 
@@ -141,6 +144,7 @@ int main()
 		sphereShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
 		sphereShader.setVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
 		sphereShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		sphereShader.setFloat("light.isBlinn", false);
 		sphereShader.setFloat("light.constant", 1.0f);
 		sphereShader.setFloat("light.linear", 0.0007f);
 		sphereShader.setFloat("light.quadratic", 0.000002f);
@@ -210,6 +214,7 @@ int main()
 				saturnRingsShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
 				saturnRingsShader.setVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
 				saturnRingsShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+				saturnRingsShader.setFloat("light.isBlinn", false);
 				saturnRingsShader.setFloat("light.constant", 1.0f);
 				saturnRingsShader.setFloat("light.linear", 0.0007f);
 				saturnRingsShader.setFloat("light.quadratic", 0.000002f);
@@ -282,6 +287,7 @@ int main()
 		asteroidShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
 		asteroidShader.setVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
 		asteroidShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		asteroidShader.setFloat("light.isBlinn", false);
 		asteroidShader.setFloat("light.constant", 1.0f);
 		asteroidShader.setFloat("light.linear", 0.0007f);
 		asteroidShader.setFloat("light.quadratic", 0.000002f);

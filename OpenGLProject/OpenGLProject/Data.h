@@ -8,11 +8,12 @@
 
 
 #define DIST_SCALE_FACTOR 10.0f
-#define nbTextures 18
+#define nbTextures 19
+//#define nbTextures 21
 
 
 
-// Paths to retrieve DDS textures 
+// Paths to retrieve DDS textures
 const char * texturePaths[nbTextures] =
 {
 	"../Textures/8k_sun.dds",
@@ -26,16 +27,25 @@ const char * texturePaths[nbTextures] =
 	"../Textures/Planets/2k_uranus.dds",
 	"../Textures/Planets/2k_neptune.dds",
 
-	"../Textures/Planets/4k_ceres_fictional.dds",
+	// Dwarf planets
+	"../Textures/Planets/4k_ceres.dds",
 	"../Textures/Planets/2k_pluto.dds",
 
+	// Moons
 	"../Textures/Satellites/8k_luna.dds",
 	"../Textures/Satellites/callisto.dds",
 	"../Textures/Satellites/europa.dds",
 	"../Textures/Satellites/ganymede.dds",
 	"../Textures/Satellites/io.dds",
 	"../Textures/Satellites/titan.dds",
-	"../Textures/Satellites/triton.dds"
+	"../Textures/Satellites/triton.dds",
+
+	// Normal maps
+	"../Textures/Planets/8k_earth_normal_map.png",
+
+	//// Other entities
+	//"../Textures/8k_sun.dds",
+	//"../Textures/8k_sun.dds"
 };
 
 
