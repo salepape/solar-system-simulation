@@ -2,9 +2,9 @@
 
 
 
-Orbit::Orbit(const char * path, float radiusArg) : radius(radiusArg)
+Orbit::Orbit(const char* path, const float radiusArg) : radius(radiusArg)
 {
-	texture = new Texture(path, "", GL_TEXTURE_2D, "default");
+	texture = new Texture(path, "", GL_TEXTURE_2D, ObjectType::DEFAULT);
 	texture->LoadDDS();
 
 	Compute();
@@ -13,12 +13,11 @@ Orbit::Orbit(const char * path, float radiusArg) : radius(radiusArg)
 
 void Orbit::Compute()
 {
-	float pi = glm::pi<float>(), theta;	
 	nbMeridStrips = 100;				
 
 	for (unsigned int i = 0; i <= nbMeridStrips; ++i)
 	{
-		theta = 2.0f * pi * (float)i / nbMeridStrips;
+		const float theta = 2.0f * glm::pi<float>() * (float)i / nbMeridStrips;
 
 		vertCoor.push_back(radius * glm::sin(theta));
 		vertCoor.push_back(0.0f);
@@ -28,13 +27,13 @@ void Orbit::Compute()
 
 void Orbit::Store()
 {
-	unsigned int sizeofVertices = sizeof(float) * vertCoor.size();
+	const unsigned int sizeofVertices = sizeof(float) * vertCoor.size();
 
 	vao = new VertexArray();
 	VertexBuffer vbo(&vertCoor[0], sizeofVertices);
 
 	VertexBufferLayout vbl;
-	vbl.Push<float>(3);			// Vertex coordinates (location = 0 in SphereShader.vs)
+	vbl.Push<float>(3);
 	vao->AddBuffer(vbo, vbl);
 
 	vbo.Unbind();
@@ -46,7 +45,7 @@ Orbit::~Orbit()
 	vao->~VertexArray();
 }
 
-void Orbit::Render(Renderer& renderer, unsigned int& textureUnit)
+void Orbit::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
 	texture->Enable(textureUnit);
 	renderer.Draw(*vao, GL_LINE_LOOP, nbMeridStrips);

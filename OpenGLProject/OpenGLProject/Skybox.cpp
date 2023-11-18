@@ -4,7 +4,7 @@
 
 Skybox::Skybox(const char * path)
 {
-	texture = new Texture(path, "", GL_TEXTURE_CUBE_MAP, "skybox");
+	texture = new Texture(path, "", GL_TEXTURE_CUBE_MAP, ObjectType::SKYBOX);
 	texture->LoadCubemapDDS();
 
 	Compute();
@@ -61,13 +61,13 @@ void Skybox::Compute()
 
 void Skybox::Store()
 {
-	unsigned int sizeofVertices = sizeof(float) * vertCoor.size();
+	const unsigned int sizeofVertices = sizeof(float) * vertCoor.size();
 
 	vao = new VertexArray();
 	VertexBuffer vbo(&vertCoor[0], sizeofVertices);
 
 	VertexBufferLayout vbl;
-	vbl.Push<float>(3);			// Vertex coordinates (location = 0 in SkyboxShader.vs) 
+	vbl.Push<float>(3);
 	vao->AddBuffer(vbo, vbl);
 
 	vbo.Unbind();

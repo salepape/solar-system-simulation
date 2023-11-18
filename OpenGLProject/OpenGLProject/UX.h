@@ -11,12 +11,13 @@
 float ACCELERATION = 1.0;
 
 // Initial dimensions for the graphics window
-const unsigned int SCR_WIDTH = 1000;
-const unsigned int SCR_HEIGHT = 1000;
+constexpr unsigned int SCR_WIDTH = 1000;
+constexpr unsigned int SCR_HEIGHT = 1000;
 
 // Variables for mouse callback function
 bool firstMouseInput = true;
-double lastX = SCR_WIDTH / 2.0f, lastY = SCR_HEIGHT / 2.0f;
+double lastX = SCR_WIDTH / 2.0f;
+double lastY = SCR_HEIGHT / 2.0f;
 
 // Variables for time related to frames
 float currentFrame = 0.0f;

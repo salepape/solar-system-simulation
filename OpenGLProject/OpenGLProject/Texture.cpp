@@ -2,17 +2,17 @@
 
 
 
-Texture::Texture(const char * pathArg, const char * typeArg, unsigned int targetArg, const char * objectType) :
+Texture::Texture(const char* pathArg, const char* typeArg, const unsigned int targetArg, const ObjectType objectType) :
 	path(pathArg), type(typeArg), target(targetArg)
 {
-	// Textures by default
-	if (objectType == "default")
+	switch (objectType)
+	{
+	case ObjectType::DEFAULT:
 	{
 		SetWraps(GL_REPEAT);
 		SetFilters(GL_LINEAR);
 	}
-	// Texture for text characters
-	else if (objectType == "text_characters")
+	case ObjectType::TEXT_CHARACTERS:
 	{
 		// Generate then bind Texture Object (= TO) to the OpenGL TO type we want 
 		glGenTextures(1, &rendererID);
@@ -21,20 +21,20 @@ Texture::Texture(const char * pathArg, const char * typeArg, unsigned int target
 		SetWraps(GL_CLAMP_TO_EDGE);
 		SetFilters(GL_LINEAR);
 	}
-	// Texture for skybox
-	else if (objectType == "skybox")
+	case ObjectType::SKYBOX:
 	{
 		SetWraps(GL_CLAMP_TO_EDGE);
 		SetFilters(GL_LINEAR);
+	}
 	}
 }
 
 void Texture::LoadTextureImage(unsigned int channel)
 {
-	int width, height, nbChannels;
-
-	// Load image (without alpha channel)
-	unsigned char *data = SOIL_load_image(path, &width, &height, &nbChannels, channel);
+	int width = 0;
+	int height = 0;
+	int nbChannels = 0;
+	unsigned char* data = SOIL_load_image(path, &width, &height, &nbChannels, channel);
 
 	if (data)
 	{
@@ -76,10 +76,10 @@ void Texture::LoadGlyph(FT_Face face, unsigned int format)
 
 void Texture::LoadDDS()
 {
-	// Already contains glGenTextures function !!!
+	// Already contains glGenTextures function!!!
 	rendererID = SOIL_load_OGL_texture(path, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
-	if (0 == rendererID)
+	if (rendererID == 0)
 		printf("ERROR::SOIL: Loading error: '%s'\n", SOIL_last_result());
 
 	Bind();
@@ -87,10 +87,10 @@ void Texture::LoadDDS()
 
 void Texture::LoadCubemapDDS()
 {
-	// Already contains glGenTextures function !!!
+	// Already contains glGenTextures function!!!
 	rendererID = SOIL_load_OGL_single_cubemap(path, "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
-	if (0 == rendererID)
+	if (rendererID == 0)
 		printf("ERROR::SOIL: Loading error: '%s'\n", SOIL_last_result());
 
 	Bind();

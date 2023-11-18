@@ -7,15 +7,15 @@ ShaderProgram::ShaderProgram(const char* vertexPath, const char* fragmentPath, c
 	isGeom = (geometryPath != nullptr) ? true : false;
 
 	// Store .vs and .fs shader files into string
-	std::string vertexSource = ParseShader(vertexPath);
-	std::string fragmentSource = ParseShader(fragmentPath);
+	const std::string vertexSource = ParseShader(vertexPath);
+	const std::string fragmentSource = ParseShader(fragmentPath);
 	std::string geometrySource;
 	if (isGeom)
 		geometrySource = ParseShader(geometryPath);
 
 	// Create and compile shaders object
-	unsigned int vsID = CreateShader(GL_VERTEX_SHADER, vertexSource);
-	unsigned int fsID = CreateShader(GL_FRAGMENT_SHADER, fragmentSource);
+	const unsigned int vsID = CreateShader(GL_VERTEX_SHADER, vertexSource);
+	const unsigned int fsID = CreateShader(GL_FRAGMENT_SHADER, fragmentSource);
 	unsigned int gsID = -1;
 	if (isGeom)
 		gsID = CreateShader(GL_GEOMETRY_SHADER, geometrySource);
@@ -58,7 +58,7 @@ std::string ShaderProgram::ParseShader(const char* path)
 
 unsigned int ShaderProgram::CreateShader(unsigned int type, const std::string& source)
 {
-	unsigned int shaderID = glCreateShader(type);
+	const unsigned int shaderID = glCreateShader(type);
 	const char* shaderCode = source.c_str();
 
 	glShaderSource(shaderID, 1, &shaderCode, nullptr);
@@ -194,7 +194,7 @@ int ShaderProgram::GetUniformLocation(const std::string& name)
 	if (uniformLocationCache.find(name) != uniformLocationCache.end())
 		return uniformLocationCache[name];
 
-	int location = glGetUniformLocation(rendererID, name.c_str());
+	const int location = glGetUniformLocation(rendererID, name.c_str());
 	//if (location == -1)
 	//	std::cout << "ERROR::SHADER: uniform " << name << " doesn't exist !" << std::endl;
 

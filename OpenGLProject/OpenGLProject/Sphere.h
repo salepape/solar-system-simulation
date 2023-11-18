@@ -14,18 +14,18 @@
 
 
 
+constexpr int nbParalStrips = 100;
+constexpr int nbMeridStrips = 100;
+
 class Sphere
 {
 private:
-	// Number of double values that contains indexes vector
 	int nbIndexes;
-	// Radius of the planet 
 	float radius;
 
 	VertexArray * vao;
 	IndexBuffer * ibo;
 
-	// Vectors containing sphere data computed
 	std::vector<float> vertCoor;
 	std::vector<float> normalCoor;
 	std::vector<float> textCoor;
@@ -36,10 +36,10 @@ private:
 	void Store();
 
 public:
-	Sphere(const char * path, float radiusArg);
+	Sphere(const char* path, const float radiusArg);
 	~Sphere();
 
-	void Render(Renderer& renderer, unsigned int& textureUnit);
+	void Render(const Renderer& renderer, const unsigned int& textureUnit);
 };
 
 

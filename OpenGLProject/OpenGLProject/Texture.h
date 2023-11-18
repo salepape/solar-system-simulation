@@ -15,6 +15,13 @@
 
 
 
+enum class ObjectType
+{
+	DEFAULT,
+	TEXT_CHARACTERS,
+	SKYBOX,
+};
+
 class Texture
 {
 private:
@@ -30,7 +37,7 @@ private:
 	//int nbChannels;
 
 public:
-	Texture(const char * path, const char * type, unsigned int target, const char * objectType);
+	Texture(const char* path, const char* type, const unsigned int target, const ObjectType objectType);
 	~Texture();
 
 	void LoadTextureImage(unsigned int channel);

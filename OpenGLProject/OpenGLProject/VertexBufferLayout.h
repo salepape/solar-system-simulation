@@ -16,12 +16,19 @@ struct VertexBufferElement
 	{
 		switch (type)
 		{
-		case GL_FLOAT:	return 4;
-		default:		return 0;
+		case GL_FLOAT:	
+			return 4;
+		default:		
+			return 0;
 		}
 	}
 };
 
+// 1st vector is vertex position (location = 0 in a Vertex Shader)
+// 2nd vector is vertex normal (location = 1 in a Vertex Shader)
+// 3rd vector is vertex texture coord (location = 2 in a Vertex Shader)
+// 4th vector is vertex tangent (location = 3 in a Vertex Shader)
+// 5th vector is vertex bitangent (location = 4 in a Vertex Shader)
 class VertexBufferLayout
 {
 private:

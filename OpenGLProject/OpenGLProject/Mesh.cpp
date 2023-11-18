@@ -2,7 +2,7 @@
 
 
 
-Mesh::Mesh(std::vector<Vertex> verticesArg, std::vector<unsigned int> indicesArg, std::vector<Texture> texturesArg):
+Mesh::Mesh(const std::vector<Vertex> verticesArg, const std::vector<unsigned int> indicesArg, const std::vector<Texture> texturesArg):
 	vertices(verticesArg), indices(indicesArg), textures(texturesArg)
 {
 	// Set vertex buffers and its attribute pointers once we have all required data
@@ -11,7 +11,6 @@ Mesh::Mesh(std::vector<Vertex> verticesArg, std::vector<unsigned int> indicesArg
 
 void Mesh::Store()
 {
-	// Create buffers / arrays
 	vao = new VertexArray();
 	vbo = new VertexBuffer(&vertices[0], vertices.size() * sizeof(Vertex));
 	ibo = new IndexBuffer(&indices[0], indices.size());
@@ -20,11 +19,11 @@ void Mesh::Store()
 	ibo->Bind();
 
 	VertexBufferLayout vbl;
-	vbl.Push<float>(3);			// vertex position
-	vbl.Push<float>(3);			// vertex normal
-	vbl.Push<float>(2);			// vertex texture coord
-	vbl.Push<float>(3);			// vertex tangent
-	vbl.Push<float>(3);			// vertex bitangent
+	vbl.Push<float>(3);
+	vbl.Push<float>(3);
+	vbl.Push<float>(2);
+	vbl.Push<float>(3);
+	vbl.Push<float>(3);
 	vao->AddBuffer(*vbo, vbl);
 
 	//ibo->Unbind();
@@ -36,7 +35,7 @@ Mesh::~Mesh()
 
 }
 
-void Mesh::Render(Renderer& renderer, unsigned int& textureUnit)
+void Mesh::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
 	for (unsigned int i = 0; i < textures.size(); ++i)
 		textures[i].Enable(textureUnit);

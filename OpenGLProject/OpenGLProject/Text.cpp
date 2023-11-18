@@ -3,7 +3,7 @@
 
 
 // Return the width of the text (spaces included)
-float Text::GetBillboardSize(std::string text, float scale)
+float Text::GetBillboardSize(const std::string text, const float scale)
 {
 	float totalAdvance = 0.0f;
 	for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
@@ -14,10 +14,8 @@ float Text::GetBillboardSize(std::string text, float scale)
 	return totalAdvance;
 }
 
-// Creature texture for each ASCII character
 Text::Text()
 {
-	// FreeType library instance
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))
 		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
@@ -33,7 +31,7 @@ Text::Text()
 	// Disable byte-alignment restriction
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-	Texture * characterTexture = nullptr;
+	Texture* characterTexture = nullptr;
 
 	// Load the first 128 characters of ASCII set
 	for (unsigned char c = 0; c < 128; ++c)
@@ -45,7 +43,8 @@ Text::Text()
 			continue;
 		}
 
-		characterTexture = new Texture("", "", GL_TEXTURE_2D, "text_characters");	// no need to specify image path here since it's a glyph
+		// No need to specify image path here since it's a glyph
+		characterTexture = new Texture("", "", GL_TEXTURE_2D, ObjectType::TEXT_CHARACTERS);
 		characterTexture->LoadGlyph(face, GL_RED);
 
 		// Create object storing current ASCII character caracteristics
@@ -95,18 +94,17 @@ void Text::Render(Renderer& renderer, std::string text, float x, float y, float 
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	vao->Bind();
 
-	// Iterate through all characters
 	for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
 	{
-		Character ch = characters[*c];
+		const Character ch = characters[*c];
 
 		// Origin position of the quad
-		float xpos = x + ch.Bearing.x * scale;
-		float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+		const float xpos = x + ch.Bearing.x * scale;
+		const float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
 
 		// Size of the quad
-		float w = ch.Size.x * scale;
-		float h = ch.Size.y * scale;
+		const float w = ch.Size.x * scale;
+		const float h = ch.Size.y * scale;
 
 		// Update VBO for each character
 		std::vector<float> vertices =
@@ -132,10 +130,10 @@ void Text::Render(Renderer& renderer, std::string text, float x, float y, float 
 		renderer.Draw(*vao, GL_TRIANGLES, 6);
 
 		// Advance cursors for next glyph (note that advance is number of 1/64 pixels)
-		x += (ch.Advance >> 6) * scale;											// bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+		// bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+		x += (ch.Advance >> 6) * scale;
 	}
 
-	// Unbind VAOText
 	vao->Unbind();
 	glBindTexture(GL_TEXTURE_2D, 0);
 }

@@ -16,15 +16,10 @@
 
 struct Vertex 
 {
-	// Position
 	glm::vec3 Position;
-	// Normal
 	glm::vec3 Normal;
-	// Texture coordinates
 	glm::vec2 TexCoords;
-	// Tangent
 	glm::vec3 Tangent;
-	// Bitangent
 	glm::vec3 Bitangent;
 };
 
@@ -35,19 +30,18 @@ private:
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
 
-	VertexArray * vao;
-	VertexBuffer * vbo;
-	IndexBuffer * ibo;
+	VertexArray* vao;
+	VertexBuffer* vbo;
+	IndexBuffer* ibo;
 
 	void Store();
 
 public:
-	Mesh(std::vector<Vertex> verticesArg, std::vector<unsigned int> indicesArg, std::vector<Texture> texturesArg);
+	Mesh(const std::vector<Vertex> verticesArg, const std::vector<unsigned int> indicesArg, const std::vector<Texture> texturesArg);
 	~Mesh();
 
-	void Render(Renderer& renderer, unsigned int& textureUnit);
+	void Render(const Renderer& renderer, const unsigned int& textureUnit);
 
-	// Save reference of mesh vao to be used within belt.cpp
 	inline VertexArray& GetVaoRef() const { return *vao; };
 	inline unsigned int GetIndicesCount() const { return indices.size(); }
 };

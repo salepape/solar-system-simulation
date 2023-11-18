@@ -36,7 +36,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& l
 	}
 }
 
-void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout, std::vector<unsigned int> sizeofs)
+void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout, const std::vector<unsigned int> sizeofs)
 {
 	Bind();
 	vbo.Bind();

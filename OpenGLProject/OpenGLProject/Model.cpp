@@ -2,17 +2,16 @@
 
 
 
-Model::Model(std::string const &path, bool gammaCorrectionArg) : gammaCorrection(gammaCorrectionArg)
+Model::Model(const std::string& path, const bool gammaCorrectionArg) : gammaCorrection(gammaCorrectionArg)
 {
 	LoadModel(path);
 }
 
-void Model::LoadModel(std::string const &path)
+void Model::LoadModel(const std::string& path)
 {
-	// Read file via ASSIMP
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
-	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
 		std::cout << "ERROR::ASSIMP: " << importer.GetErrorString() << std::endl;
 		return;
@@ -22,50 +21,44 @@ void Model::LoadModel(std::string const &path)
 	ProcessNode(scene->mRootNode, scene);
 }
 
-void Model::ProcessNode(aiNode *node, const aiScene *scene)
+void Model::ProcessNode(const aiNode* node, const aiScene* scene)
 {
 	// Process each mesh located at the current node
 	for (unsigned int i = 0; i < node->mNumMeshes; ++i)
 	{
 		// Node object only contains indices to index the actual objects in the scene
 		// Scene contains all the data, node is just to keep stuff organized (like relations between nodes)
-		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		const aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		meshes.push_back(ProcessMesh(mesh, scene));
 	}
 
-	// Process recursively each of the children nodes
+	// Process ASSIMP's children nodes recursively
 	for (unsigned int i = 0; i < node->mNumChildren; ++i)
 	{
 		ProcessNode(node->mChildren[i], scene);
 	}
 }
 
-Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene)
+Mesh Model::ProcessMesh(const aiMesh* mesh, const aiScene* scene)
 {
-	// Data to fill
+	// Store the vertices of the mesh
 	std::vector<Vertex> vertices;
-	std::vector<unsigned int> indices;
-	std::vector<Texture> textures;
-	
-	// Walk through each of the mesh's vertices
 	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
 	{
 		Vertex vertex;
-		glm::vec3 vector; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
+		// ASSIMP doesn't use the same vec3 class, so we store all the information into a glm::vec3
+		glm::vec3 vector;
 		
-		// Positions
 		vector.x = mesh->mVertices[i].x;
 		vector.y = mesh->mVertices[i].y;
 		vector.z = mesh->mVertices[i].z;
 		vertex.Position = vector;
 
-		// Normals
 		vector.x = mesh->mNormals[i].x;
 		vector.y = mesh->mNormals[i].y;
 		vector.z = mesh->mNormals[i].z;
 		vertex.Normal = vector;
 
-		// Texture coordinates
 		if (mesh->mTextureCoords[0]) 
 		{
 			glm::vec2 vec;
@@ -78,40 +71,34 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene)
 		else
 			vertex.TexCoords = glm::vec2(0.0f, 0.0f);
 
-		// Tangent
 		vector.x = mesh->mTangents[i].x;
 		vector.y = mesh->mTangents[i].y;
 		vector.z = mesh->mTangents[i].z;
 		vertex.Tangent = vector;
 
-		// Bitangent
 		vector.x = mesh->mBitangents[i].x;
 		vector.y = mesh->mBitangents[i].y;
 		vector.z = mesh->mBitangents[i].z;
 		vertex.Bitangent = vector;
 
-		// Store result in vertices vector
 		vertices.push_back(vertex);
 	}
 
-	// Walk through each of the mesh's facets
+	// Store the indices of each mesh facet
+	std::vector<unsigned int> indices;
 	for (unsigned int i = 0; i < mesh->mNumFaces; ++i)
 	{
-		aiFace facet = mesh->mFaces[i];
+		const aiFace facet = mesh->mFaces[i];
 
-		// Retrieve all indices of the current facet and store them in the indices vector
 		for (unsigned int j = 0; j < facet.mNumIndices; ++j)
 			indices.push_back(facet.mIndices[j]);
 	}
 
-	// Process materials
-	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 	// We assume a convention for sampler names in the shaders. Each diffuse texture should be named
 	// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
-	// Same applies to other texture as the following list summarizes:
-	// diffuse	:	texture_diffuseN
-	// specular	:	texture_specularN
-	// normal	:	texture_normalN
+	// Same applies to specular and normal textures.
+	std::vector<Texture> textures;
+	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
 	// Diffuse maps 
 	std::vector<Texture> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
@@ -129,7 +116,6 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene)
 	std::vector<Texture> heightMaps = LoadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-	// Return a mesh object created from the extracted mesh data
 	return Mesh(vertices, indices, textures);
 }
 
@@ -138,28 +124,28 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType 
 	std::vector<Texture> materialTextures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
 	{
-		aiString str;
-		mat->GetTexture(type, i, &str);
+		aiString TexturePath;
+		mat->GetTexture(type, i, &TexturePath);
 
 		// Check if texture was loaded before and if so, continue to next iteration
 		bool skip = false;
 		for (unsigned int j = 0; j < loadedTextures.size(); ++j)
 		{
-			if (std::strcmp(loadedTextures[j].GetPath(), str.C_Str()) == 0)
+			// A texture with the same filepath has already been loaded: continue to next one!
+			if (std::strcmp(loadedTextures[j].GetPath(), TexturePath.C_Str()) == 0)
 			{
 				materialTextures.push_back(loadedTextures[j]);
-				skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
+				skip = true;
 				break;
 			}
 		}
 
-		// If texture hasn't been loaded already, load it
 		if (!skip)
-		{   // if texture hasn't been loaded already, load it
-			Texture texture(str.C_Str(), typeName.c_str(), GL_TEXTURE_2D, "default");
+		{
+			Texture texture(TexturePath.C_Str(), typeName.c_str(), GL_TEXTURE_2D, ObjectType::DEFAULT);
 			texture.LoadDDS();
 			materialTextures.push_back(texture);
-			loadedTextures.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+			loadedTextures.push_back(texture);
 		}
 	}
 
@@ -171,7 +157,7 @@ Model::~Model()
 
 }
 
-void Model::Render(Renderer& renderer, unsigned int& textureUnit)
+void Model::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
 	for (unsigned int i = 0; i < meshes.size(); ++i)
 		meshes[i].Render(renderer, textureUnit);

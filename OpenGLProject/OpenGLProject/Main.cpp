@@ -119,15 +119,10 @@ int main()
 
 
 		// Calculate the PROJECTION matrix (simulate a zoom - set far plane variable to a sufficiently high value)
-		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)(SCR_WIDTH / SCR_HEIGHT), 0.1f, 1000.0f);
+		const glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)(SCR_WIDTH / SCR_HEIGHT), 0.1f, 1000.0f);
 
 		// Calculate the VIEW matrix (simulate a camera circling around the scene)
-		glm::mat4 view = camera.GetViewMatrix();
-
-		// Calculate the MODEL matrices (simulate movements that affects the current celestial body)
-		glm::mat4 modelSphere;
-		glm::mat4 modelText;
-		glm::mat4 modelOrbit;
+		const glm::mat4 view = camera.GetViewMatrix();
 
 		// Texture sampler ID (one for each object) 
 		unsigned int samplerID = 0;
@@ -156,13 +151,12 @@ int main()
 
 
 
-
-
-		float angleRot, angleRotItself;
-
 		// Draw celestial bodies, their orbits and their motion
 		for (auto it = data.begin(); it != data.end(); ++it)
 		{		
+			float angleRot = 0.0f;
+			float angleRotItself = 0.0f;
+
 			if (it->first != "Sun")
 			{
 				// Angle of rotation around the sun (resp. planet) for planets (resp. moons) per frame
@@ -173,18 +167,11 @@ int main()
 				// Angle of rotation of the celestial body around itself per frame
 				angleRotItself = 2.0f * glm::pi<float>() * currentFrame * it->second.rotPeriod * ACCELERATION;
 			}
-			else
-			{
-				// Sun rotation too fast to have a cool look
-				angleRot = 0.0f;
-				angleRotItself = 0.0f;
-			}
 
-
-
-			modelSphere = glm::mat4(1.0f);
-			modelText = glm::mat4(1.0f);
-			modelOrbit = glm::mat4(1.0f);
+			// Calculate the MODEL matrices (simulate movements that affects the current celestial body)
+			glm::mat4 modelSphere = glm::mat4(1.0f);
+			glm::mat4 modelText = glm::mat4(1.0f);
+			glm::mat4 modelOrbit = glm::mat4(1.0f);
 
 			// Circular translation around corresponding planet (condition applies for moons only)
 			if (it->second.planet != nullptr)
@@ -242,9 +229,9 @@ int main()
 			if (paused)
 			{
 				// Orient text to camera position
-				glm::vec3 look = glm::normalize(camera.Position - glm::vec3(modelText[3]));
-				glm::vec3 right = glm::cross(camera.Up, look);
-				glm::vec3 up2 = cross(look, right);
+				const glm::vec3 look = glm::normalize(camera.Position - glm::vec3(modelText[3]));
+				const glm::vec3 right = glm::cross(camera.Up, look);
+				const glm::vec3 up2 = cross(look, right);
 				modelText[0] = glm::vec4(right, 0);
 				modelText[1] = glm::vec4(up2, 0);
 				modelText[2] = glm::vec4(look, 0);

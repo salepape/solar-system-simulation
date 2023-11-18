@@ -18,18 +18,18 @@ private:
 	float radius;					// Radius of the orbit (= distance between sun and corresponding planet) 
 	unsigned int nbMeridStrips;		// Number of edges (controls degree of smoothness)
 	std::vector<float> vertCoor;	// Vectors containing sphere data computed
-	Texture * texture;
+	Texture* texture;
 
-	VertexArray * vao;
+	VertexArray* vao;
 
 	void Compute();
 	void Store();
 
 public:
-	Orbit(const char * path, float radiusArg);
+	Orbit(const char* path, const float radiusArg);
 	~Orbit();
 
-	void Render(Renderer& renderer, unsigned int& textureUnit);
+	void Render(const Renderer& renderer, const unsigned int& textureUnit);
 };
 
 

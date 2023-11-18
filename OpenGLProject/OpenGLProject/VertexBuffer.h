@@ -12,13 +12,13 @@ private:
 	unsigned int rendererID;
 
 public:
-	VertexBuffer(const void * data, unsigned int size);
+	VertexBuffer(const void* data, const unsigned int size);
 	~VertexBuffer();
 
 	void Bind() const;
 	void Unbind() const;
 
-	void InitSubData(std::vector<std::vector<float>*>&);
+	void InitSubData(const std::vector<std::vector<float>*>& data);
 };
 
 

@@ -19,7 +19,7 @@ public:
 	~VertexArray();
 
 	void AddBuffer(const VertexBuffer& vbo,  const VertexBufferLayout& layout);
-	void AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout, std::vector<unsigned int> sizeofs);
+	void AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout, const std::vector<unsigned int> sizeofs);
 	void AddInstancedBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout);
 
 	void Bind() const;

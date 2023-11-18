@@ -2,7 +2,7 @@
 
 
 
-VertexBuffer::VertexBuffer(const void * data, unsigned int size)
+VertexBuffer::VertexBuffer(const void* data, const unsigned int size)
 {
 	// GENERATION VBO - Generate 1 BO storing its ID / name in the provided array within graphics memory
 	glGenBuffers(1, &rendererID);
@@ -28,7 +28,7 @@ void VertexBuffer::Unbind() const
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void VertexBuffer::InitSubData(std::vector<std::vector<float>*>& data)
+void VertexBuffer::InitSubData(const std::vector<std::vector<float>*>& data)
 {
 	unsigned int offset = 0;
 	for (size_t i = 0; i < data.size(); ++i)

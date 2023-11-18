@@ -2,9 +2,9 @@
 
 
 
-Sphere::Sphere(const char * path, float radiusArg) : radius(radiusArg)
+Sphere::Sphere(const char* path, const float radiusArg) : radius(radiusArg)
 {
-	texture = new Texture(path, "", GL_TEXTURE_2D, "default");
+	texture = new Texture(path, "", GL_TEXTURE_2D, ObjectType::DEFAULT);
 	texture->LoadDDS();
 
 	Compute();
@@ -13,39 +13,34 @@ Sphere::Sphere(const char * path, float radiusArg) : radius(radiusArg)
 
 void Sphere::Compute()
 {
-	float invLength = 1.0f / radius;
-
 	// ZONE  = triangle or square formed by intersection of 1 meridian strip and 1 parallel strip
 	// THETA = ANGLE BETWEEN 2 ZONES OF ONE PARALLEL STRIP (in radians); 
 	// PHI   = ANGLE BETWEEN 2 ZONES OF ONE MERIDIAN STRIP (in radians); 
 	//-> using spherical coordinate system
-	float pi = glm::pi<float>(), theta, rCosTheta, phi, xCoor, yCoor, zCoor;
-	int nbParalStrips = 100, nbMeridStrips = 100;
 
 	for (int i = 0; i <= nbParalStrips; ++i)
 	{
-		theta = pi * (0.5f - (float)i / (float)nbParalStrips);
-		rCosTheta = radius * glm::cos(theta);
-		zCoor = radius * glm::sin(theta);
+		const float pi = glm::pi<float>();
+		const float theta = pi * (0.5f - (float)i / (float)nbParalStrips);
+		const float rCosTheta = radius * glm::cos(theta);
+		const float zCoor = radius * glm::sin(theta);
 
 		for (int j = 0; j <= nbMeridStrips; ++j)
 		{
-			phi = 2.0f * pi * (float)j / (float)nbMeridStrips;
+			const float phi = 2.0f * pi * (float)j / (float)nbMeridStrips;
 
-			xCoor = rCosTheta * glm::cos(phi);
-			yCoor = rCosTheta * glm::sin(phi);
+			const float xCoor = rCosTheta * glm::cos(phi);
+			const float yCoor = rCosTheta * glm::sin(phi);
 
-			// Poisition of the current vertex 
 			vertCoor.push_back(xCoor);
 			vertCoor.push_back(yCoor);
 			vertCoor.push_back(zCoor);
 
-			// Outward normal of the current vertex 
+			const float invLength = 1.0f / radius;
 			normalCoor.push_back(xCoor * invLength);
 			normalCoor.push_back(yCoor * invLength);
 			normalCoor.push_back(zCoor * invLength);
 
-			// Texture coordinates of the current vertex
 			textCoor.push_back((float)j / nbMeridStrips);
 			textCoor.push_back((float)i / nbParalStrips);
 		}
@@ -56,11 +51,10 @@ void Sphere::Compute()
 	//  |  / |
 	//  | /  |
 	//  k2--k2+1
-	unsigned int index1, index2;
 	for (int i = 0; i < nbParalStrips; ++i)
 	{
-		index1 = i * (nbMeridStrips + 1);			// beginning of current parallel strip
-		index2 = index1 + nbMeridStrips + 1;		// beginning of next parallel strip
+		unsigned int index1 = i * (nbMeridStrips + 1);		// beginning of current parallel strip
+		unsigned int index2 = index1 + nbMeridStrips + 1;	// beginning of next parallel strip
 
 		for (int j = 0; j < nbMeridStrips; ++j, ++index1, ++index2)
 		{
@@ -85,22 +79,21 @@ void Sphere::Compute()
 void Sphere::Store()
 {
 	// Number of bytes encoding vertCoor / normalCoor / textCoor vectors
-	unsigned int  sizeofVertices = sizeof(float) * vertCoor.size();
-	unsigned int  sizeofNormals = sizeof(float) * normalCoor.size();
-	unsigned int  sizeofTextures = sizeof(float) * textCoor.size();
-
-	std::vector<unsigned int> sizeofs{ sizeofVertices, sizeofNormals, sizeofTextures };
-	std::vector<std::vector<float>*> dataAddresses { &vertCoor, &normalCoor, &textCoor };
+	const unsigned int sizeofVertices = sizeof(float) * vertCoor.size();
+	const unsigned int sizeofNormals = sizeof(float) * normalCoor.size();
+	const unsigned int sizeofTextures = sizeof(float) * textCoor.size();
 
 	vao = new VertexArray();
 
+	const std::vector<std::vector<float>*> dataAddresses{ &vertCoor, &normalCoor, &textCoor };
 	VertexBuffer vbo(NULL, sizeofVertices + sizeofNormals + sizeofTextures);
 	vbo.InitSubData(dataAddresses);
 
+	const std::vector<unsigned int> sizeofs{ sizeofVertices, sizeofNormals, sizeofTextures };
 	VertexBufferLayout vbl;
-	vbl.Push<float>(3);						// Vertex position (location = 0 in SphereShader.vs)
-	vbl.Push<float>(3);						// Vertex normal (location = 1 in SphereShader.vs)
-	vbl.Push<float>(2);						// Vertex texture coordinates (location = 2 in SphereShader.vs)
+	vbl.Push<float>(3);
+	vbl.Push<float>(3);
+	vbl.Push<float>(2);
 	vao->AddBuffer(vbo, vbl, sizeofs);
 
 	ibo = new IndexBuffer(&indexes[0], indexes.size());
@@ -109,7 +102,8 @@ void Sphere::Store()
 	VertexArray lightVao;
 	lightVao.Bind();
 	vbo.Bind();
-	// note that we update the lamp's position attribute's stride to reflect the updated buffer data
+
+	// Note that we update the lamp's position attribute's stride to reflect the updated buffer data
 	VertexBufferLayout lightVbl;
 	lightVbl.Push<float>(3);
 	lightVao.AddBuffer(vbo, lightVbl);
@@ -125,7 +119,7 @@ Sphere::~Sphere()
 	//vao->~VertexArray();
 }
 
-void Sphere::Render(Renderer& renderer, unsigned int& textureUnit)
+void Sphere::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
 	texture->Enable(textureUnit);
 	renderer.Draw(*vao, *ibo);

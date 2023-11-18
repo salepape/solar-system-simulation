@@ -25,10 +25,10 @@ private:
 	void Store();
 
 public:
-	Belt(Model asteroidArg, unsigned int asteroidNbArg, int sizeFactorArg, float majorRadiusArg, float minorRadiusArg);
+	Belt(const Model asteroidArg, const unsigned int asteroidNbArg, const int sizeFactorArg, const float majorRadiusArg, const float minorRadiusArg);
 	~Belt();
 
-	void Render(Renderer& renderer, unsigned int& textureUnit);
+	void Render(const Renderer& renderer, const unsigned int& textureUnit);
 };
 
 

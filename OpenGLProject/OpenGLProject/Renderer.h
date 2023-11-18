@@ -10,19 +10,31 @@ class Renderer
 {
 private:
 public:
+	// Clear the depth buffer
 	void Clear() const;
+
 	void DepthTest() const;
+
 	void DepthClamp() const;
+
+	// Enable OpenGL states for blending to make texts rendered correctly
 	void Blend() const;
+
+	// Trim down polygon count (but we cannot "visit" spheres interior anymore)
 	void CullFace() const;
+
+	// Change depth function so that depth test passes when values are equal to depth buffer's content
 	void DepthEqual() const;
+
+	// Change depth function so that depth test passes when values are inferior to depth buffer's content
 	void DepthLess() const;
+
 	void SetColor();
 
-	void DrawInstanced(const VertexArray& vao, unsigned int iboCount, unsigned int count) const;
-	void Draw(const VertexArray& vao, const IndexBuffer& ibo, unsigned int mode, unsigned int count) const;
+	void DrawInstanced(const VertexArray& vao, const unsigned int iboCount, const unsigned int count) const;
+	void Draw(const VertexArray& vao, const IndexBuffer& ibo, const unsigned int mode, const unsigned int count) const;
 	void Draw(const VertexArray& vao, const IndexBuffer& ibo) const;
-	void Draw(const VertexArray& vao, unsigned int mode, unsigned int count) const;
+	void Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count) const;
 };
 
 
