@@ -12,7 +12,7 @@ private:
 	unsigned int count;
 
 public:
-	IndexBuffer(const void * data, unsigned int count);
+	IndexBuffer(const void* data, const unsigned int count);
 	~IndexBuffer();
 
 	void Bind() const;

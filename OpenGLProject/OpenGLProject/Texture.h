@@ -28,8 +28,8 @@ private:
 	unsigned int target;
 
 	unsigned int rendererID;
-	const char * type;
-	const char * path;
+	const char* type;
+	const char* path;
 
 	// Image loading attributes
 	//int width;
@@ -40,19 +40,19 @@ public:
 	Texture(const char* path, const char* type, const unsigned int target, const ObjectType objectType);
 	~Texture();
 
-	void LoadTextureImage(unsigned int channel);
-	void LoadGlyph(FT_Face face, unsigned int channel);
+	void LoadTextureImage(const unsigned int channel);
+	void LoadGlyph(const FT_Face face, const unsigned int channel);
 	void LoadDDS();
 	void LoadCubemapDDS();
 
 	// Set the texture wrapping option(on the currently bound texture object)
-	void SetWraps(unsigned int wrapType);
-	void SetWraps(unsigned int s, unsigned int t);
-	void SetWraps(unsigned int s, unsigned int t, unsigned int r);
+	void SetWraps(const unsigned int wrapType);
+	void SetWraps(const unsigned int s, const unsigned int t);
+	void SetWraps(const unsigned int s, const unsigned int t, const unsigned int r);
 	
 	// Set the texture filtering option (on the currently bound texture object)
-	void SetFilters(unsigned int filterType);
-	void SetFilters(unsigned int min, unsigned int mag);
+	void SetFilters(const unsigned int filterType);
+	void SetFilters(const unsigned int min, const unsigned int mag);
 
 	// Bind texture name to the OpenGL target we want (expl : a 2D texture called GL_TEXTURE_2D)
 	void Bind() const;

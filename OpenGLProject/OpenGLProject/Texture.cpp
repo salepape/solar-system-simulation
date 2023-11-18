@@ -29,7 +29,7 @@ Texture::Texture(const char* pathArg, const char* typeArg, const unsigned int ta
 	}
 }
 
-void Texture::LoadTextureImage(unsigned int channel)
+void Texture::LoadTextureImage(const unsigned int channel)
 {
 	int width = 0;
 	int height = 0;
@@ -68,7 +68,7 @@ void Texture::LoadTextureImage(unsigned int channel)
 	SOIL_free_image_data(data);
 }
 
-void Texture::LoadGlyph(FT_Face face, unsigned int format)
+void Texture::LoadGlyph(const FT_Face face, const unsigned int format)
 {
 	glTexImage2D(target, 0, format, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, format, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -96,7 +96,7 @@ void Texture::LoadCubemapDDS()
 	Bind();
 }
 
-void Texture::SetWraps(unsigned int wrapType)
+void Texture::SetWraps(const unsigned int wrapType)
 {
 	if(target == GL_TEXTURE_CUBE_MAP)
 		SetWraps(wrapType, wrapType, wrapType);
@@ -104,25 +104,25 @@ void Texture::SetWraps(unsigned int wrapType)
 		SetWraps(wrapType, wrapType);
 }
 
-void Texture::SetWraps(unsigned int s, unsigned int t)
+void Texture::SetWraps(const unsigned int s, const unsigned int t)
 {
 	glTexParameteri(target, GL_TEXTURE_WRAP_S, s);
 	glTexParameteri(target, GL_TEXTURE_WRAP_T, t);
 }
 
-void Texture::SetWraps(unsigned int s, unsigned int t, unsigned int r)
+void Texture::SetWraps(const unsigned int s, const unsigned int t, const unsigned int r)
 {
 	glTexParameteri(target, GL_TEXTURE_WRAP_S, s);
 	glTexParameteri(target, GL_TEXTURE_WRAP_T, t);
 	glTexParameteri(target, GL_TEXTURE_WRAP_R, r);
 }
 
-void Texture::SetFilters(unsigned int filterType)
+void Texture::SetFilters(const unsigned int filterType)
 {
 	SetFilters(filterType, filterType);
 }
 
-void Texture::SetFilters(unsigned int min, unsigned int mag)
+void Texture::SetFilters(const unsigned int min, const unsigned int mag)
 {
 	glTexParameteri(target, GL_TEXTURE_MIN_FILTER, min);
 	glTexParameteri(target, GL_TEXTURE_MAG_FILTER, mag);

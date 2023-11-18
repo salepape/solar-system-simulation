@@ -21,14 +21,13 @@ void Sphere::Compute()
 	for (int i = 0; i <= nbParalStrips; ++i)
 	{
 		const float pi = glm::pi<float>();
-		const float theta = pi * (0.5f - (float)i / (float)nbParalStrips);
+		const float theta = pi * (0.5f - static_cast<float>(i) / static_cast<float>(nbParalStrips));
 		const float rCosTheta = radius * glm::cos(theta);
 		const float zCoor = radius * glm::sin(theta);
 
 		for (int j = 0; j <= nbMeridStrips; ++j)
 		{
-			const float phi = 2.0f * pi * (float)j / (float)nbMeridStrips;
-
+			const float phi = 2.0f * pi * static_cast<float>(j) / static_cast<float>(nbMeridStrips);
 			const float xCoor = rCosTheta * glm::cos(phi);
 			const float yCoor = rCosTheta * glm::sin(phi);
 
@@ -41,8 +40,8 @@ void Sphere::Compute()
 			normalCoor.push_back(yCoor * invLength);
 			normalCoor.push_back(zCoor * invLength);
 
-			textCoor.push_back((float)j / nbMeridStrips);
-			textCoor.push_back((float)i / nbParalStrips);
+			textCoor.push_back(static_cast<float>(j) / nbMeridStrips);
+			textCoor.push_back(static_cast<float>(i) / nbParalStrips);
 		}
 	}
 

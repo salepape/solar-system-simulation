@@ -101,7 +101,7 @@ int main()
 		if (!paused)
 		{
 			// Time elapsed since GLFW initialisation [considered as a dimensionless chrono, but in seconds in reality]
-			currentFrame = (float)glfwGetTime();
+			currentFrame = static_cast<float>(glfwGetTime());
 
 			// Compute delta time in order to reduce differences between computer processing powers
 			deltaTime = currentFrame - lastFrame;
@@ -119,7 +119,7 @@ int main()
 
 
 		// Calculate the PROJECTION matrix (simulate a zoom - set far plane variable to a sufficiently high value)
-		const glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)(SCR_WIDTH / SCR_HEIGHT), 0.1f, 1000.0f);
+		const glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), static_cast<float>(SCR_WIDTH / SCR_HEIGHT), 0.1f, 1000.0f);
 
 		// Calculate the VIEW matrix (simulate a camera circling around the scene)
 		const glm::mat4 view = camera.GetViewMatrix();

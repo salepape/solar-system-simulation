@@ -16,18 +16,18 @@ class Skybox
 {
 private:
 	std::vector<float> vertCoor;
-	Texture * texture;
+	Texture* texture;
 
-	VertexArray * vao;
+	VertexArray* vao;
 
 	void Compute();
 	void Store();
 
 public:
-	Skybox(const char * path);
+	Skybox(const char* path);
 	~Skybox();
 
-	void Render(Renderer& renderer, unsigned int& textureUnit);
+	void Render(const Renderer& renderer, const unsigned int& textureUnit);
 };
 
 

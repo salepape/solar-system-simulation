@@ -17,7 +17,7 @@ void Orbit::Compute()
 
 	for (unsigned int i = 0; i <= nbMeridStrips; ++i)
 	{
-		const float theta = 2.0f * glm::pi<float>() * (float)i / nbMeridStrips;
+		const float theta = 2.0f * glm::pi<float>() * static_cast<float>(i) / nbMeridStrips;
 
 		vertCoor.push_back(radius * glm::sin(theta));
 		vertCoor.push_back(0.0f);

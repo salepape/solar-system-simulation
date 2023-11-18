@@ -30,7 +30,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& l
 		glEnableVertexAttribArray(i);
 
 		// INTERPRETATION - Store in the currently bound VBO how OpenGL should interpret the vertex buffer data
-		glVertexAttribPointer(i, vbe.count, vbe.type, vbe.normalized, layout.GetStride(), (const void*)offset);
+		glVertexAttribPointer(i, vbe.count, vbe.type, vbe.normalized, layout.GetStride(), reinterpret_cast<const GLvoid*>(offset));
 
 		offset += vbe.count * VertexBufferElement::GetTypeSize(vbe.type);
 	}
@@ -52,7 +52,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& l
 		glEnableVertexAttribArray(i);
 
 		// INTERPRETATION - Store in the currently bound VBO how OpenGL should interpret the vertex buffer data
-		glVertexAttribPointer(i, vbe.count, vbe.type, vbe.normalized, vbe.count * VertexBufferElement::GetTypeSize(vbe.type), (const void*)offset);
+		glVertexAttribPointer(i, vbe.count, vbe.type, vbe.normalized, vbe.count * VertexBufferElement::GetTypeSize(vbe.type), reinterpret_cast<const GLvoid*>(offset));
 
 		offset += sizeofs[i];
 	}
@@ -72,7 +72,7 @@ void VertexArray::AddInstancedBuffer(const VertexBuffer& vbo, const VertexBuffer
 		glEnableVertexAttribArray(i);
 
 		// INTERPRETATION - Store in the currently bound VBO how OpenGL should interpret the vertex buffer data
-		glVertexAttribPointer(i, vbe.count, vbe.type, vbe.normalized, sizeof(glm::mat4), (const void*)offset);
+		glVertexAttribPointer(i, vbe.count, vbe.type, vbe.normalized, sizeof(glm::mat4), reinterpret_cast<const GLvoid*>(offset));
 		glVertexAttribDivisor(i, 1);
 
 		offset += sizeof(glm::vec4);

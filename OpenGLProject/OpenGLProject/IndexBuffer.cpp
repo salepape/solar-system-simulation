@@ -2,7 +2,7 @@
 
 
 
-IndexBuffer::IndexBuffer(const void * data, unsigned int count) : count(count)
+IndexBuffer::IndexBuffer(const void* data, const unsigned int count) : count(count)
 {
 	if (sizeof(unsigned int) != sizeof(GLuint))
 		return;

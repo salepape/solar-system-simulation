@@ -128,10 +128,10 @@ void mouseCallback(GLFWwindow* window, double xpos, double ypos)
 	lastX = xpos;
 	lastY = ypos;
 
-	camera.ProcessMouseMovement((float)xoffset, (float)yoffset, firstMouseInput);
+	camera.ProcessMouseMovement(static_cast<float>(xoffset), static_cast<float>(yoffset), firstMouseInput);
 }
 
 void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	camera.ProcessMouseScroll((float)yoffset);
+	camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
