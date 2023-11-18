@@ -1,7 +1,8 @@
-#pragma once
+#ifndef RENDERER_H
+#define RENDERER_H
 
+#include "IndexBuffer.h"     
 #include "VertexArray.h"
-#include "IndexBuffer.h"
 
 
 
@@ -24,3 +25,6 @@ public:
 	void Draw(const VertexArray& vao, unsigned int mode, unsigned int count) const;
 };
 
+
+
+#endif // RENDERER_H

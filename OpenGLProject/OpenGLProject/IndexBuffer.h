@@ -1,6 +1,9 @@
-#pragma once
+#ifndef INDEXBUFFER_H
+#define INDEXBUFFER_H
 
 #include <glad/glad.h>
+
+
 
 class IndexBuffer
 {
@@ -17,3 +20,7 @@ public:
 
 	inline unsigned int GetCount() const { return count; }
 };
+
+
+
+#endif // INDEXBUFFER_H

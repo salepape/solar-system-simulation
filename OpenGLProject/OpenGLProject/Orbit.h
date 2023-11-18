@@ -1,15 +1,13 @@
 #ifndef ORBIT_H
 #define ORBIT_H
 
-#include <glm/glm.hpp>					// for cos and sin
-#include <glm/gtc/constants.hpp>		// for pi
-
+#include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
 #include <vector>
 
-#include "VertexArray.h"
-#include "Texture.h"
 #include "Renderer.h"
-
+#include "Texture.h"
+#include "VertexArray.h"
 
 
 
@@ -34,4 +32,6 @@ public:
 	void Render(Renderer& renderer, unsigned int& textureUnit);
 };
 
-#endif ORBIT_H
+
+
+#endif // ORBIT_H

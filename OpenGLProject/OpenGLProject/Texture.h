@@ -1,20 +1,17 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#define GLFW_INCLUDE_NONE
-#include <glfw3.h>
-
-#include <glad.h>
-#include <SOIL2.h>
-
-#include <iostream>
-
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
-#include <assimp/postprocess.h>	
-
+#include <assimp/postprocess.h>
 #include <ft2build.h>
+#include <glad.h>
+#include <glfw3.h>
+#include <iostream>
+#include <SOIL2.h>
+
 #include FT_FREETYPE_H
+#define GLFW_INCLUDE_NONE
 
 
 
@@ -61,4 +58,6 @@ public:
 	inline const char * GetPath() const { return path; }
 };
 
-#endif 
+
+
+#endif // TEXTURE_H

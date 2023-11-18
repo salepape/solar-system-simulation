@@ -1,5 +1,7 @@
 #include "VertexBuffer.h"
 
+
+
 VertexBuffer::VertexBuffer(const void * data, unsigned int size)
 {
 	// GENERATION VBO - Generate 1 BO storing its ID / name in the provided array within graphics memory

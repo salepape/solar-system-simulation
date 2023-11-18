@@ -1,4 +1,8 @@
-#pragma once
+#ifndef VERTEXARRAY_H
+#define VERTEXARRAY_H
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/matrix_decompose.hpp>
 
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
@@ -22,3 +26,6 @@ public:
 	void Unbind() const;
 };
 
+
+
+#endif // VERTEXARRAY_H

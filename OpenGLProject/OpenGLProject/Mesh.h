@@ -2,17 +2,15 @@
 #define MESH_H
 
 #include <glad/glad.h> 
-
 #include <glm/glm.hpp>	
-
 #include <string>
 #include <vector>
 
+#include "IndexBuffer.h"
+#include "Renderer.h"
 #include "ShaderProgram.h"
 #include "Texture.h"
 #include "VertexArray.h"
-#include "IndexBuffer.h"
-#include "Renderer.h"
 
 
 
@@ -54,4 +52,6 @@ public:
 	inline unsigned int GetIndicesCount() const { return indices.size(); }
 };
 
-#endif
+
+
+#endif // MESH_H

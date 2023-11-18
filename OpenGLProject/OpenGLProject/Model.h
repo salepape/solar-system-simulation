@@ -1,12 +1,9 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include<SOIL2.h>
-
 #include <iostream>
-//#include <string>
-//#include <vector>
 #include <map>
+#include <SOIL2.h>
 
 #include "mesh.h"	
 
@@ -39,4 +36,6 @@ public:
 	inline std::vector<Mesh> GetMeshes() const { return meshes; }
 };
 
-#endif
+
+
+#endif // MODEL_H

@@ -1,20 +1,18 @@
 #include <vector>
 #include <unordered_map>
 
-#include "Sphere.h"
 #include "Orbit.h"
+#include "Sphere.h"
 #include "Texture.h"
 
-
-
 #define DIST_SCALE_FACTOR 10.0f
-#define nbTextures 19
+#define NUM_TEXTURES 19
 //#define nbTextures 21
 
 
 
 // Paths to retrieve DDS textures
-const char * texturePaths[nbTextures] =
+const char * texturePaths[NUM_TEXTURES] =
 {
 	"../Textures/8k_sun.dds",
 

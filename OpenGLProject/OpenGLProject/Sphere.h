@@ -2,17 +2,15 @@
 #define SPHERE_H
 
 #include <glad/glad.h>
-#include <glm/glm.hpp>					// for cos and sin
-#include <glm/gtc/constants.hpp>		// for pi
-
+#include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
 #include <vector>
 
-#include "Texture.h"
-#include "VertexBuffer.h"
 #include "IndexBuffer.h"
-#include "VertexArray.h"
-#include "Texture.h"
 #include "Renderer.h"
+#include "Texture.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
 
 
 
@@ -44,4 +42,6 @@ public:
 	void Render(Renderer& renderer, unsigned int& textureUnit);
 };
 
-#endif SPHERE_H
+
+
+#endif // SPHERE_H

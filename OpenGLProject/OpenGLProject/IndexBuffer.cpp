@@ -1,5 +1,7 @@
 #include "IndexBuffer.h"
 
+
+
 IndexBuffer::IndexBuffer(const void * data, unsigned int count) : count(count)
 {
 	if (sizeof(unsigned int) != sizeof(GLuint))

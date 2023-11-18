@@ -1,10 +1,9 @@
-
-#define GLFW_INCLUDE_NONE
+#include <glad/glad.h>
 #include <glfw3.h>
 
-#include <glad/glad.h>
-
 #include "Camera.h"
+
+#define GLFW_INCLUDE_NONE
 
 
 

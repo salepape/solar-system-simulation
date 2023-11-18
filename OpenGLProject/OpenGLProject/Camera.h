@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <glm/gtc/matrix_transform.hpp>		// for cos, sin and lookAt functions
+#include <glm/gtc/matrix_transform.hpp>
 
 
 
@@ -66,5 +66,7 @@ public:
 	void ProcessMouseScroll(float yoffset);
 };
 
-#endif
+
+
+#endif // CAMERA_H
 

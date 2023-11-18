@@ -1,4 +1,5 @@
-#pragma once
+#ifndef VERTEXBUFFER_H
+#define VERTEXBUFFER_H
 
 #include <glad/glad.h>
 #include <vector>
@@ -19,3 +20,7 @@ public:
 
 	void InitSubData(std::vector<std::vector<float>*>&);
 };
+
+
+
+#endif // VERTEXBUFFER_H

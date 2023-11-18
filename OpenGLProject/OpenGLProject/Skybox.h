@@ -2,14 +2,14 @@
 #define SKYBOX_H
 
 #include <glad/glad.h>
-
-#include <glm/glm.hpp>					// for cos and sin
+#include <glm/glm.hpp>
 #include <vector>
 
-#include "VertexBuffer.h"
-#include "VertexArray.h"
-#include "Texture.h"
 #include "Renderer.h"
+#include "Texture.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
+
 
 
 class Skybox
@@ -30,4 +30,6 @@ public:
 	void Render(Renderer& renderer, unsigned int& textureUnit);
 };
 
-#endif SKYBOX_H
+
+
+#endif // SKYBOX_H

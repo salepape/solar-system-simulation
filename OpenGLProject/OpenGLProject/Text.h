@@ -1,18 +1,19 @@
-#pragma once
+#ifndef TEXT_H
+#define TEXT_H
 
 #include <ft2build.h>
-#include FT_FREETYPE_H
-
-#include "Texture.h"
-#include "VertexBuffer.h"
-#include "VertexArray.h"
-#include "Renderer.h"
-
+#include <glad/glad.h>
+#include <glm/vec2.hpp>
+#include <iostream>
 #include <map>
 #include <vector>
-#include <glad/glad.h>
-#include <iostream>
-#include <glm/vec2.hpp>
+
+#include "Renderer.h"
+#include "Texture.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
+
+#include FT_FREETYPE_H
 
 
 
@@ -44,3 +45,7 @@ public:
 	// Render line of text
 	void Render(Renderer& renderer, std::string text, float x, float y, float scale, unsigned int& textUnit);
 };
+
+
+
+#endif // TEXT_H

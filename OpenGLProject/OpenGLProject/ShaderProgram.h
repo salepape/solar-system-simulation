@@ -1,14 +1,12 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <glad/glad.h>
-
-#include <glm/glm.hpp>
-
-#include <string>
 #include <fstream>
-#include <sstream>
+#include <glad/glad.h>
+#include <glm/glm.hpp>
 #include <iostream>
+#include <sstream>
+#include <string>
 #include <unordered_map>
 
 
@@ -53,4 +51,6 @@ public:
 	void setMat4(const std::string& name, const glm::mat4 &mat);
 };
 
-#endif
+
+
+#endif // SHADER_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef VERTEXBUFFERLAYOUT_H
+#define VERTEXBUFFERLAYOUT_H
 
 #include <glad.h>
 #include <vector>
@@ -48,3 +49,7 @@ public:
 
 	inline unsigned int GetStride() const { return stride; }
 };
+
+
+
+#endif // VERTEXBUFFERLAYOUT_H
