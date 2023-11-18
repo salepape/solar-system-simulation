@@ -11,14 +11,18 @@ ShaderProgram::ShaderProgram(const char* vertexPath, const char* fragmentPath, c
 	const std::string fragmentSource = ParseShader(fragmentPath);
 	std::string geometrySource;
 	if (isGeom)
+	{
 		geometrySource = ParseShader(geometryPath);
+	}
 
 	// Create and compile shaders object
 	const unsigned int vsID = CreateShader(GL_VERTEX_SHADER, vertexSource);
 	const unsigned int fsID = CreateShader(GL_FRAGMENT_SHADER, fragmentSource);
 	unsigned int gsID = -1;
 	if (isGeom)
+	{
 		gsID = CreateShader(GL_GEOMETRY_SHADER, geometrySource);
+	}
 
 	// Create complete shader program object
 	CreateShaderProgram(vsID, fsID, gsID);
@@ -78,7 +82,9 @@ void ShaderProgram::CreateShaderProgram(const unsigned int vsID, const unsigned 
 	glAttachShader(rendererID, vsID);
 	glAttachShader(rendererID, fsID);
 	if (isGeom)
+	{
 		glAttachShader(rendererID, gsID);
+	}
 
 	// Link program to the current ID
 	glLinkProgram(rendererID);
@@ -192,7 +198,9 @@ int ShaderProgram::GetUniformLocation(const std::string& name)
 {
 	// Prevent glGetUniformLocation duplicate calls
 	if (uniformLocationCache.find(name) != uniformLocationCache.end())
+	{
 		return uniformLocationCache[name];
+	}
 
 	const int location = glGetUniformLocation(rendererID, name.c_str());
 	//if (location == -1)

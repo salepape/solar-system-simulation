@@ -67,31 +67,51 @@ void processInput(GLFWwindow* window)
 {
 	// Quit the simulation
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
 		glfwSetWindowShouldClose(window, true);
+	}
 
 	// Increase camera speed
 	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS && camera.MovementSpeed <= 2.0f * SPEED)
+	{
 		camera.MovementSpeed *= 2.0f;
+	}
 	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_RELEASE && camera.MovementSpeed >= SPEED)
+	{
 		camera.MovementSpeed /= 2.0f;
+	}
 
 	// Enable camera to move forward, backward, up, down, left and right (designed for AZERTY keyboards with corresponding QWERTY GLFW_KEYs)
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
 		camera.ProcessKeyboard(FORWARD, deltaTime);
+	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
 		camera.ProcessKeyboard(BACKWARD, deltaTime);
+	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	{
 		camera.ProcessKeyboard(LEFT, deltaTime);
+	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	{
 		camera.ProcessKeyboard(RIGHT, deltaTime);
+	}
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+	{
 		camera.ProcessKeyboard(UP, deltaTime);
+	}
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+	{
 		camera.ProcessKeyboard(DOWN, deltaTime);
+	}
 
 	// Pause the simulation
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+	{
 		paused = true;
+	}
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE)
 	{
 		paused = false;
@@ -100,9 +120,13 @@ void processInput(GLFWwindow* window)
 
 	// Speed up / Slow down the simulation
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	{
 		ACCELERATION *= 2.0f;
+	}
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	{
 		ACCELERATION /= 2.0f;
+	}
 }
 
 // Adapt the viewport whenever the window size has been changed (by OS or the user)
@@ -122,13 +146,14 @@ void mouseCallback(GLFWwindow* window, double xpos, double ypos)
 		firstMouseInput = false;
 	}
 
-	double xoffset = xpos - lastX;
+	const float xoffset = static_cast<float>(xpos - lastX);
 	// Reverse y-coordinates since they go from bottom to top
-	double yoffset = lastY - ypos;
+	const float yoffset = static_cast<float>(lastY - ypos);
+
 	lastX = xpos;
 	lastY = ypos;
 
-	camera.ProcessMouseMovement(static_cast<float>(xoffset), static_cast<float>(yoffset), firstMouseInput);
+	camera.ProcessMouseMovement(xoffset, yoffset, firstMouseInput);
 }
 
 void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)

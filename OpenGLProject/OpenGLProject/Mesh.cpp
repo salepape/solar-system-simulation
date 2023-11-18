@@ -2,7 +2,7 @@
 
 
 
-Mesh::Mesh(const std::vector<Vertex> verticesArg, const std::vector<unsigned int> indicesArg, const std::vector<Texture> texturesArg):
+Mesh::Mesh(const std::vector<Vertex> verticesArg, const std::vector<unsigned int> indicesArg, const std::vector<Texture> texturesArg) :
 	vertices(verticesArg), indices(indicesArg), textures(texturesArg)
 {
 	// Set vertex buffers and its attribute pointers once we have all required data
@@ -38,7 +38,9 @@ Mesh::~Mesh()
 void Mesh::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
 	for (unsigned int i = 0; i < textures.size(); ++i)
+	{
 		textures[i].Enable(textureUnit);
+	}
 
 	renderer.Draw(*vao, *ibo);
 

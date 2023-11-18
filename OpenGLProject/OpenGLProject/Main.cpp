@@ -75,7 +75,9 @@ int main()
 	for (auto it = data.begin(); it != data.end(); ++it)
 	{
 		if (it->first == "Sun")
+		{
 			it->second.sphere = new Sphere(it->second.texturePath, it->second.radius * 0.5f);
+		}
 		else
 		{
 			it->second.sphere = new Sphere(it->second.texturePath, it->second.radius);
@@ -84,8 +86,8 @@ int main()
 	}
 
 	// Do some instancing to build the main Solar Systems rock belts
-	Belt asteroidBelt { asteroid, 5000, 10, data["Mars"].dist * 1.1f, 2.75f * DIST_SCALE_FACTOR / 2.5f };
-	Belt kuiperBelt { ice, 20000, 20, data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR };
+	Belt asteroidBelt	{ asteroid, 5000,  10, data["Mars"].dist * 1.1f,	2.75f * DIST_SCALE_FACTOR / 2.5f };
+	Belt kuiperBelt		{ ice,		20000, 20, data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR };
 
 	// Create renderer
 	Renderer renderer;
@@ -153,7 +155,7 @@ int main()
 
 		// Draw celestial bodies, their orbits and their motion
 		for (auto it = data.begin(); it != data.end(); ++it)
-		{		
+		{
 			float angleRot = 0.0f;
 			float angleRotItself = 0.0f;
 
@@ -162,7 +164,9 @@ int main()
 				// Angle of rotation around the sun (resp. planet) for planets (resp. moons) per frame
 				angleRot = 2.0f * glm::pi<float>() * currentFrame / it->second.orbPeriod * ACCELERATION;
 				if (it->second.planet == nullptr)
+				{
 					it->second.angleRot = angleRot;
+				}
 
 				// Angle of rotation of the celestial body around itself per frame
 				angleRotItself = 2.0f * glm::pi<float>() * currentFrame * it->second.rotPeriod * ACCELERATION;
@@ -180,12 +184,12 @@ int main()
 				modelOrbit = modelSphere;
 			}
 			// Orbital tilt (around axis colinear to orbit direction) + Circular translation along the orbit (equidistance to axis normal to orbital plane)
-			modelSphere = glm::translate(modelSphere, glm::vec3(it->second.dist * cos(glm::radians(it->second.orbInclination)) * sin(angleRot), it->second.dist * sin(glm::radians(it->second.orbInclination)) * sin(angleRot), it->second.dist * cos(angleRot)));																																																																	
+			modelSphere = glm::translate(modelSphere, glm::vec3(it->second.dist * cos(glm::radians(it->second.orbInclination)) * sin(angleRot), it->second.dist * sin(glm::radians(it->second.orbInclination)) * sin(angleRot), it->second.dist * cos(angleRot)));
 			modelText = modelSphere;
 			// Axis tilt (around axis colinear to orbit direction)
 			modelSphere = glm::rotate(modelSphere, glm::radians(it->second.obliquity), glm::vec3(1.0f, 0.0f, 0.0f));
 			// Rotation on itself (around axis normal to orbital plane)
-			modelSphere = glm::rotate(modelSphere, angleRotItself, glm::vec3(0.0f, 1.0f, 0.0f));	
+			modelSphere = glm::rotate(modelSphere, angleRotItself, glm::vec3(0.0f, 1.0f, 0.0f));
 
 			// Draw Saturn rings
 			if (it->first == "Saturn")
@@ -212,13 +216,17 @@ int main()
 
 			// Rotation on itself (to have spheres poles vertical)
 			modelSphere = glm::rotate(modelSphere, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-																						
+
 			sphereShader.Enable();
 			sphereShader.setMat4("model", modelSphere);
 			if (it->first != "Sun")
+			{
 				sphereShader.setBool("isSun", false);
+			}
 			else
+			{
 				sphereShader.setBool("isSun", true);
+			}
 			sphereShader.setInt("material.diffuse", samplerID);
 			it->second.sphere->Render(renderer, samplerID);
 			++samplerID;
@@ -237,13 +245,17 @@ int main()
 				modelText[2] = glm::vec4(look, 0);
 
 				textShader.Enable();
-				textShader.setMat4("model", modelText);			
+				textShader.setMat4("model", modelText);
 				textShader.setInt("texSampler", samplerID);
-				textShader.setVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));						
-				if(it->first != "Sun")
+				textShader.setVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));
+				if (it->first != "Sun")
+				{
 					text.Render(renderer, it->first, 0.0f, it->second.radius * 1.25f, it->second.radius * 0.01f, samplerID);
+				}
 				else
+				{
 					text.Render(renderer, it->first, 0.0f, it->second.radius * 1.25f * 0.5f, it->second.radius * 0.003f, samplerID);
+				}
 				++samplerID;
 			}
 
@@ -251,7 +263,7 @@ int main()
 
 			// Draw planet orbites
 			if (it->first != "Sun")
-			{			
+			{
 				modelOrbit = glm::rotate(modelOrbit, glm::radians(it->second.orbInclination), glm::vec3(0.0f, 0.0f, 1.0f));
 
 				sphereShader.Enable();

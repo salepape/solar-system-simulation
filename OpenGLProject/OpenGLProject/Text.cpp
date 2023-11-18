@@ -2,28 +2,20 @@
 
 
 
-// Return the width of the text (spaces included)
-float Text::GetBillboardSize(const std::string text, const float scale)
-{
-	float totalAdvance = 0.0f;
-	for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
-	{
-		totalAdvance += (characters[*c].Advance >> 6) * scale;
-	}
-
-	return totalAdvance;
-}
-
 Text::Text()
 {
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))
+	{
 		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+	}
 
 	// Load font as face object
 	FT_Face face;
 	if (FT_New_Face(ft, "../Fonts/arial.ttf", 0, &face))
+	{
 		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+	}
 
 	// Set pixel font size to extract from face (render quality)
 	FT_Set_Pixel_Sizes(face, 0, 100);
@@ -44,7 +36,7 @@ Text::Text()
 		}
 
 		// No need to specify image path here since it's a glyph
-		characterTexture = new Texture("", "", GL_TEXTURE_2D, ObjectType::TEXT_CHARACTERS);
+		characterTexture = new Texture("", GL_TEXTURE_2D, ObjectType::TEXT_CHARACTERS, MapType::NONE);
 		characterTexture->LoadGlyph(face, GL_RED);
 
 		// Create object storing current ASCII character caracteristics
@@ -85,7 +77,17 @@ Text::~Text()
 	//vao->~VertexArray();
 }
 
-// Render line of text
+float Text::GetBillboardSize(const std::string text, const float scale)
+{
+	float totalAdvance = 0.0f;
+	for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
+	{
+		totalAdvance += (characters[*c].Advance >> 6) * scale;
+	}
+
+	return totalAdvance;
+}
+
 void Text::Render(const Renderer& renderer, const std::string text, float x, const float y, const float scale, const unsigned int& textureUnit)
 {
 	// Shift billboard to left in order to center it to the concerned celestial body

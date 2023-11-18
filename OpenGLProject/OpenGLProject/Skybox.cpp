@@ -4,7 +4,7 @@
 
 Skybox::Skybox(const char* path)
 {
-	texture = new Texture(path, "", GL_TEXTURE_CUBE_MAP, ObjectType::SKYBOX);
+	texture = new Texture(path, GL_TEXTURE_CUBE_MAP, ObjectType::SKYBOX, MapType::NONE);
 	texture->LoadCubemapDDS();
 
 	Compute();

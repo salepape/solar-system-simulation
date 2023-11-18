@@ -4,7 +4,7 @@
 
 Orbit::Orbit(const char* path, const float radiusArg) : radius(radiusArg)
 {
-	texture = new Texture(path, "", GL_TEXTURE_2D, ObjectType::DEFAULT);
+	texture = new Texture(path, GL_TEXTURE_2D, ObjectType::DEFAULT, MapType::NONE);
 	texture->LoadDDS();
 
 	Compute();
@@ -13,8 +13,6 @@ Orbit::Orbit(const char* path, const float radiusArg) : radius(radiusArg)
 
 void Orbit::Compute()
 {
-	nbMeridStrips = 100;				
-
 	for (unsigned int i = 0; i <= nbMeridStrips; ++i)
 	{
 		const float theta = 2.0f * glm::pi<float>() * static_cast<float>(i) / nbMeridStrips;

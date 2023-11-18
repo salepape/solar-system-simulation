@@ -1,9 +1,9 @@
 #include "Texture.h"
 
 
-
-Texture::Texture(const char* pathArg, const char* typeArg, const unsigned int targetArg, const ObjectType objectType) :
-	path(pathArg), type(typeArg), target(targetArg)
+// @todo - Implement effect of mapType of Texture object
+Texture::Texture(const char* pathArg, const unsigned int InTarget, const ObjectType objectType, const MapType InMapType) :
+	path(pathArg), target(InTarget), mapType(InMapType)
 {
 	switch (objectType)
 	{
@@ -11,6 +11,7 @@ Texture::Texture(const char* pathArg, const char* typeArg, const unsigned int ta
 	{
 		SetWraps(GL_REPEAT);
 		SetFilters(GL_LINEAR);
+		break;
 	}
 	case ObjectType::TEXT_CHARACTERS:
 	{
@@ -20,13 +21,20 @@ Texture::Texture(const char* pathArg, const char* typeArg, const unsigned int ta
 
 		SetWraps(GL_CLAMP_TO_EDGE);
 		SetFilters(GL_LINEAR);
+		break;
 	}
 	case ObjectType::SKYBOX:
 	{
 		SetWraps(GL_CLAMP_TO_EDGE);
 		SetFilters(GL_LINEAR);
+		break;
 	}
 	}
+}
+
+Texture::~Texture()
+{
+
 }
 
 void Texture::LoadTextureImage(const unsigned int channel)
@@ -41,15 +49,21 @@ void Texture::LoadTextureImage(const unsigned int channel)
 		unsigned int format;
 		switch (nbChannels)
 		{
-		case 1 : 
+		case 1:
+		{
 			format = GL_RED;
 			break;
+		}
 		case 3:
+		{
 			format = GL_RGB;
 			break;
+		}
 		case 4:
+		{
 			format = GL_RGBA;
 			break;
+		}
 		}
 
 		Bind();
@@ -80,7 +94,9 @@ void Texture::LoadDDS()
 	rendererID = SOIL_load_OGL_texture(path, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
 	if (rendererID == 0)
+	{
 		printf("ERROR::SOIL: Loading error: '%s'\n", SOIL_last_result());
+	}
 
 	Bind();
 }
@@ -91,17 +107,23 @@ void Texture::LoadCubemapDDS()
 	rendererID = SOIL_load_OGL_single_cubemap(path, "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
 	if (rendererID == 0)
+	{
 		printf("ERROR::SOIL: Loading error: '%s'\n", SOIL_last_result());
+	}
 
 	Bind();
 }
 
 void Texture::SetWraps(const unsigned int wrapType)
 {
-	if(target == GL_TEXTURE_CUBE_MAP)
+	if (target == GL_TEXTURE_CUBE_MAP)
+	{
 		SetWraps(wrapType, wrapType, wrapType);
+	}
 	else
+	{
 		SetWraps(wrapType, wrapType);
+	}
 }
 
 void Texture::SetWraps(const unsigned int s, const unsigned int t)
@@ -128,12 +150,7 @@ void Texture::SetFilters(const unsigned int min, const unsigned int mag)
 	glTexParameteri(target, GL_TEXTURE_MAG_FILTER, mag);
 }
 
-Texture::~Texture()
-{
-
-}
-
-void Texture::Bind() const		
+void Texture::Bind() const
 {
 	// Bind texture name to the OpenGL target we want (expl : a 2D texture called GL_TEXTURE_2D)
 	glBindTexture(target, rendererID);
@@ -144,7 +161,7 @@ void Texture::Unbind() const
 	glBindTexture(target, 0);
 }
 
-void Texture::Enable(unsigned int textUnit)		
+void Texture::Enable(unsigned int textUnit)
 {
 	// Activate the texture unit before binding texture
 	glActiveTexture(GL_TEXTURE0 + textUnit);

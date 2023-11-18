@@ -22,22 +22,25 @@ enum class ObjectType
 	SKYBOX,
 };
 
+enum class MapType
+{
+	NONE,
+	DIFFUSE,
+	SPECULAR,
+	NORMAL,
+	HEIGHT,
+};
+
 class Texture
 {
 private:
 	unsigned int target;
-
 	unsigned int rendererID;
-	const char* type;
 	const char* path;
-
-	// Image loading attributes
-	//int width;
-	//int height;
-	//int nbChannels;
+	MapType mapType;
 
 public:
-	Texture(const char* path, const char* type, const unsigned int target, const ObjectType objectType);
+	Texture(const char* path, const unsigned int target, const ObjectType objectType, const MapType textureType);
 	~Texture();
 
 	void LoadTextureImage(const unsigned int channel);
@@ -49,7 +52,7 @@ public:
 	void SetWraps(const unsigned int wrapType);
 	void SetWraps(const unsigned int s, const unsigned int t);
 	void SetWraps(const unsigned int s, const unsigned int t, const unsigned int r);
-	
+
 	// Set the texture filtering option (on the currently bound texture object)
 	void SetFilters(const unsigned int filterType);
 	void SetFilters(const unsigned int min, const unsigned int mag);

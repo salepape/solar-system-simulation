@@ -16,9 +16,9 @@ struct VertexBufferElement
 	{
 		switch (type)
 		{
-		case GL_FLOAT:	
+		case GL_FLOAT:
 			return 4;
-		default:		
+		default:
 			return 0;
 		}
 	}
@@ -39,16 +39,16 @@ public:
 	VertexBufferLayout();
 	~VertexBufferLayout();
 
-	template<typename T> 
+	template<typename T>
 	void Push(unsigned int count)
 	{
 
 	}
 
 	template <>
-	void Push<float>(unsigned int count) 
+	void Push<float>(unsigned int count)
 	{
-		elements.push_back({GL_FLOAT, count, GL_FALSE});
+		elements.push_back({ GL_FLOAT, count, GL_FALSE });
 		stride += count * VertexBufferElement::GetTypeSize(GL_FLOAT);
 	}
 

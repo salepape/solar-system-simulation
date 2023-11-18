@@ -5,7 +5,9 @@
 IndexBuffer::IndexBuffer(const void* data, const unsigned int count) : count(count)
 {
 	if (sizeof(unsigned int) != sizeof(GLuint))
+	{
 		return;
+	}
 
 	// GENERATION IBO - Generate 1 BO storing its ID / name in the provided array within graphics memory
 	glGenBuffers(1, &rendererID);

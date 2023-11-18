@@ -25,16 +25,16 @@ private:
 	Mesh ProcessMesh(const aiMesh* mesh, const aiScene* scene);
 
 	// Check all material textures of a given type and loads the textures if they're not loaded yet
-	std::vector<Texture> LoadMaterialTextures(const aiMaterial* mat, const aiTextureType type, const std::string typeName);
+	std::vector<Texture> LoadMaterialTextures(const aiMaterial* mat, const aiTextureType type);
 
 public:
 	Model(const std::string& path, const bool gammaCorrectionArg = false);
 	~Model();
 
-	void Render(const Renderer& renderer, const unsigned int& textureUnit);
-
 	inline std::vector<Texture> GetTextures() const { return loadedTextures; }
 	inline std::vector<Mesh> GetMeshes() const { return meshes; }
+
+	void Render(const Renderer& renderer, const unsigned int& textureUnit);
 };
 
 

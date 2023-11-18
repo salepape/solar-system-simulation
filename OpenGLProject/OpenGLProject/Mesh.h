@@ -14,7 +14,7 @@
 
 
 
-struct Vertex 
+struct Vertex
 {
 	glm::vec3 Position;
 	glm::vec3 Normal;
@@ -23,7 +23,7 @@ struct Vertex
 	glm::vec3 Bitangent;
 };
 
-class Mesh 
+class Mesh
 {
 private:
 	std::vector<Vertex> vertices;

@@ -35,23 +35,35 @@ void Camera::ProcessKeyboard(const Camera_Movement direction, const float deltaT
 	switch (direction)
 	{
 	case FORWARD:
+	{
 		Position += Forward * distance;
 		break;
+	}
 	case BACKWARD:
+	{
 		Position -= Forward * distance;
 		break;
+	}
 	case RIGHT:
+	{
 		Position += Right * distance;
 		break;
+	}
 	case LEFT:
+	{
 		Position -= Right * distance;
 		break;
+	}
 	case UP:
+	{
 		Position += Up * distance;
 		break;
+	}
 	case DOWN:
+	{
 		Position -= Up * distance;
 		break;
+	}
 	}
 }
 
@@ -66,10 +78,8 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, const bool const
 	// Make sure that when Pitch is out of bounds, screen doesn't get flipped
 	if (constrainPitch)
 	{
-		if (Pitch > 89.0f)
-			Pitch = 89.0f;
-		if (Pitch < -89.0f)
-			Pitch = -89.0f;
+		Pitch = std::fmin(Pitch, 89.0f);
+		Pitch = std::fmax(Pitch, -89.0f);
 	}
 
 	UpdateCameraVectors();
@@ -78,11 +88,12 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, const bool const
 void Camera::ProcessMouseScroll(const float yoffset)
 {
 	if (Zoom >= 1.0f && Zoom <= 45.0f)
+	{
 		Zoom -= yoffset;
-	if (Zoom <= 1.0f)
-		Zoom = 1.0f;
-	if (Zoom >= 45.0f)
-		Zoom = 45.0f;
+	}
+
+	Zoom = std::fmax(Zoom, -1.0f);
+	Zoom = std::fmin(Zoom, 45.0f);
 }
 
 void Camera::UpdateCameraVectors()

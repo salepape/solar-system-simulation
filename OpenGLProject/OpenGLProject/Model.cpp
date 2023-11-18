@@ -7,11 +7,16 @@ Model::Model(const std::string& path, const bool gammaCorrectionArg) : gammaCorr
 	LoadModel(path);
 }
 
+Model::~Model()
+{
+
+}
+
 void Model::LoadModel(const std::string& path)
 {
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
-	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
 	{
 		std::cout << "ERROR::ASSIMP: " << importer.GetErrorString() << std::endl;
 		return;
@@ -48,7 +53,7 @@ Mesh Model::ProcessMesh(const aiMesh* mesh, const aiScene* scene)
 		Vertex vertex;
 		// ASSIMP doesn't use the same vec3 class, so we store all the information into a glm::vec3
 		glm::vec3 vector;
-		
+
 		vector.x = mesh->mVertices[i].x;
 		vector.y = mesh->mVertices[i].y;
 		vector.z = mesh->mVertices[i].z;
@@ -59,7 +64,7 @@ Mesh Model::ProcessMesh(const aiMesh* mesh, const aiScene* scene)
 		vector.z = mesh->mNormals[i].z;
 		vertex.Normal = vector;
 
-		if (mesh->mTextureCoords[0]) 
+		if (mesh->mTextureCoords[0])
 		{
 			glm::vec2 vec;
 			// A vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
@@ -69,7 +74,9 @@ Mesh Model::ProcessMesh(const aiMesh* mesh, const aiScene* scene)
 			vertex.TexCoords = vec;
 		}
 		else
+		{
 			vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+		}
 
 		vector.x = mesh->mTangents[i].x;
 		vector.y = mesh->mTangents[i].y;
@@ -91,7 +98,9 @@ Mesh Model::ProcessMesh(const aiMesh* mesh, const aiScene* scene)
 		const aiFace facet = mesh->mFaces[i];
 
 		for (unsigned int j = 0; j < facet.mNumIndices; ++j)
+		{
 			indices.push_back(facet.mIndices[j]);
+		}
 	}
 
 	// We assume a convention for sampler names in the shaders. Each diffuse texture should be named
@@ -101,25 +110,25 @@ Mesh Model::ProcessMesh(const aiMesh* mesh, const aiScene* scene)
 	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
 	// Diffuse maps 
-	std::vector<Texture> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());		
+	std::vector<Texture> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE);
+	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
 	// Specular maps
-	std::vector<Texture> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+	std::vector<Texture> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR);
 	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
 	// Normal maps
-	std::vector<Texture> normalMaps = LoadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+	std::vector<Texture> normalMaps = LoadMaterialTextures(material, aiTextureType_NORMALS);
 	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 
 	// Height maps
-	std::vector<Texture> heightMaps = LoadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+	std::vector<Texture> heightMaps = LoadMaterialTextures(material, aiTextureType_HEIGHT);
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
 	return Mesh(vertices, indices, textures);
 }
 
-std::vector<Texture> Model::LoadMaterialTextures(const aiMaterial* mat, const aiTextureType type, const std::string typeName)
+std::vector<Texture> Model::LoadMaterialTextures(const aiMaterial* mat, const aiTextureType type)
 {
 	std::vector<Texture> materialTextures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
@@ -131,7 +140,7 @@ std::vector<Texture> Model::LoadMaterialTextures(const aiMaterial* mat, const ai
 		bool skip = false;
 		for (unsigned int j = 0; j < loadedTextures.size(); ++j)
 		{
-			// A texture with the same filepath has already been loaded: continue to next one!
+			// A texture with the same file path has already been loaded: continue to next one!
 			if (std::strcmp(loadedTextures[j].GetPath(), TexturePath.C_Str()) == 0)
 			{
 				materialTextures.push_back(loadedTextures[j]);
@@ -142,7 +151,8 @@ std::vector<Texture> Model::LoadMaterialTextures(const aiMaterial* mat, const ai
 
 		if (!skip)
 		{
-			Texture texture(TexturePath.C_Str(), typeName.c_str(), GL_TEXTURE_2D, ObjectType::DEFAULT);
+			// @todo - Implement correspondance aiTextureType and MapType enums
+			Texture texture(TexturePath.C_Str(), GL_TEXTURE_2D, ObjectType::DEFAULT, MapType::NONE);
 			texture.LoadDDS();
 			materialTextures.push_back(texture);
 			loadedTextures.push_back(texture);
@@ -152,15 +162,12 @@ std::vector<Texture> Model::LoadMaterialTextures(const aiMaterial* mat, const ai
 	return materialTextures;
 }
 
-Model::~Model()
-{
-
-}
-
 void Model::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
 	for (unsigned int i = 0; i < meshes.size(); ++i)
+	{
 		meshes[i].Render(renderer, textureUnit);
+	}
 }
 
 

@@ -13,7 +13,8 @@ void Belt::Compute()
 {
 	modelMatrices = new glm::mat4[asteroidNb];
 
-	srand((unsigned int)glfwGetTime());					// Initialize random seed	
+	// Initialize random seed
+	srand(static_cast<unsigned int>(glfwGetTime()));
 
 	for (unsigned int i = 0; i < asteroidNb; ++i)
 	{
@@ -52,7 +53,7 @@ void Belt::Store()
 	for (unsigned int i = 0; i < asteroid.GetMeshes().size(); ++i)
 	{
 		// Retrieve VAO ID of the rock mesh (we don't create any new VAO ID per belt because of instancing)
-		vao = asteroid.GetMeshes()[i].GetVaoRef();		
+		vao = asteroid.GetMeshes()[i].GetVaoRef();
 		vao.Bind();
 
 		VertexBufferLayout vbl;
@@ -60,7 +61,7 @@ void Belt::Store()
 		vbl.Push<float>(4);
 		vbl.Push<float>(4);
 		vbl.Push<float>(4);
-		vao.AddInstancedBuffer(vbo, vbl);	
+		vao.AddInstancedBuffer(vbo, vbl);
 
 		vao.Unbind();
 	}
@@ -73,8 +74,10 @@ Belt::~Belt()
 
 void Belt::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
-	if (!asteroid.GetTextures().empty())
+	if (asteroid.GetTextures().empty() == false)
+	{
 		asteroid.GetTextures()[0].Enable(textureUnit);
+	}
 
 	for (unsigned int i = 0; i < asteroid.GetMeshes().size(); ++i)
 	{
