@@ -12,7 +12,7 @@ int main()
 	GLFWwindow* window = initGLFWWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL Solar System Simulation");
 	if (window == NULL)
 	{
-		std::cout << "ERROR::GLFW: Failed to create GLFW window" << std::endl;
+		std::cout << "ERROR::GLFW - Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
@@ -21,7 +21,7 @@ int main()
 	glfwMakeContextCurrent(window);
 	if (glfwGetCurrentContext() == NULL)
 	{
-		std::cout << "ERROR::GLFW: Failed to get current context : OpenGL functions will not work correctly" << std::endl;
+		std::cout << "ERROR::GLFW - Failed to get current context : OpenGL functions will not work correctly" << std::endl;
 		return -1;
 	}
 
@@ -40,7 +40,7 @@ int main()
 	// Load all OpenGL function pointers (localisations) thanks to GLAD
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
-		std::cout << "ERROR::GLAD: Failed to initialize GLAD" << std::endl;
+		std::cout << "ERROR::GLAD - Failed to initialise GLAD" << std::endl;
 		return -1;
 	}
 
@@ -70,7 +70,7 @@ int main()
 	// Create Milky Way skybox
 	Skybox skybox = Skybox("../Textures/MilkyWay/stars.dds");
 
-	// Initialize all celestial bodies and their respective orbit
+	// Initialise all celestial bodies and their respective orbit
 	LoadData();
 	for (auto it = data.begin(); it != data.end(); ++it)
 	{

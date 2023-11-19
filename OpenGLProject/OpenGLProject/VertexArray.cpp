@@ -36,6 +36,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& l
 	}
 }
 
+// @todo - Can probably be removed
 void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout, const std::vector<unsigned int> sizeofs)
 {
 	Bind();

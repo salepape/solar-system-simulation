@@ -54,7 +54,7 @@ std::string ShaderProgram::ParseShader(const char* path)
 	}
 	catch (std::ifstream::failure&)
 	{
-		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+		std::cout << "ERROR::SHADER - File not successfully read" << std::endl;
 	}
 
 	return code;
@@ -180,7 +180,7 @@ void ShaderProgram::checkCompileErrors(const unsigned int shader, const std::str
 		if (!success)
 		{
 			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-			std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << "\n" << std::endl;
+			std::cout << "ERROR::SHADER - Linking error of type: " << type << "\n" << infoLog << "\n" << std::endl;
 		}
 	}
 	else
@@ -189,7 +189,7 @@ void ShaderProgram::checkCompileErrors(const unsigned int shader, const std::str
 		if (!success)
 		{
 			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-			std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n" << std::endl;
+			std::cout << "ERROR::PROGRAM - Linking error of type: " << type << "\n" << infoLog << "\n" << std::endl;
 		}
 	}
 }

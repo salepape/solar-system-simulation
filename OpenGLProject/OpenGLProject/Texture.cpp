@@ -76,7 +76,7 @@ void Texture::LoadTextureImage(const unsigned int channel)
 	}
 	else
 	{
-		std::cout << "ERROR::SOIL: Failed to load entity sprite at path " << path << std::endl;
+		std::cout << "ERROR::SOIL - Failed to load entity sprite at path " << path << std::endl;
 	}
 
 	SOIL_free_image_data(data);
@@ -95,7 +95,7 @@ void Texture::LoadDDS()
 
 	if (rendererID == 0)
 	{
-		printf("ERROR::SOIL: Loading error: '%s'\n", SOIL_last_result());
+		printf("ERROR::SOIL - Loading error: '%s'\n", SOIL_last_result());
 	}
 
 	Bind();
@@ -108,7 +108,7 @@ void Texture::LoadCubemapDDS()
 
 	if (rendererID == 0)
 	{
-		printf("ERROR::SOIL: Loading error: '%s'\n", SOIL_last_result());
+		printf("ERROR::SOIL - Loading error: '%s'\n", SOIL_last_result());
 	}
 
 	Bind();

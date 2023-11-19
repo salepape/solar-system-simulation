@@ -13,7 +13,7 @@ void Belt::Compute()
 {
 	modelMatrices = new glm::mat4[asteroidNb];
 
-	// Initialize random seed
+	// Initialise random seed
 	srand(static_cast<unsigned int>(glfwGetTime()));
 
 	for (unsigned int i = 0; i < asteroidNb; ++i)
