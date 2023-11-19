@@ -21,9 +21,9 @@
 struct Character
 {
 	unsigned int rendererID;	// ID handle of the glyph texture
-	glm::ivec2 Size;			// Size of glyph
-	glm::ivec2 Bearing;			// Offset from baseline to left/top of glyph
-	FT_Pos Advance;				// Horizontal offset to advance to next glyph
+	glm::ivec2 size;			// Size of glyph
+	glm::ivec2 bearing;			// Offset from baseline to left/top of glyph
+	FT_Pos advance;				// Horizontal offset to advance to next glyph
 };
 
 // Text encompassing all texts (name of each celestial body) appearing within the simulation
@@ -41,6 +41,8 @@ public:
 	// Creature texture for each ASCII character
 	Text();
 	~Text();
+
+	void Store();
 
 	// Render line of text
 	void Render(const Renderer& renderer, const std::string text, float x, const float y, const float scale, const unsigned int& textUnit);

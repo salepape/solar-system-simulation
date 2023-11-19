@@ -4,17 +4,17 @@
 
 Text::Text()
 {
-	FT_Library ft;
-	if (FT_Init_FreeType(&ft))
+	FT_Library FreeTypeLibrary;
+	if (FT_Init_FreeType(&FreeTypeLibrary))
 	{
-		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+		std::cout << "ERROR::FREETYPE - Could not init FreeType Library" << std::endl;
 	}
 
 	// Load font as face object
 	FT_Face face;
-	if (FT_New_Face(ft, "../Fonts/arial.ttf", 0, &face))
+	if (FT_New_Face(FreeTypeLibrary, "../Fonts/arial.ttf", 0, &face))
 	{
-		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+		std::cout << "ERROR::FREETYPE - Failed to load font" << std::endl;
 	}
 
 	// Set pixel font size to extract from face (render quality)
@@ -28,10 +28,9 @@ Text::Text()
 	// Load the first 128 characters of ASCII set
 	for (unsigned char c = 0; c < 128; ++c)
 	{
-		// Load current character glyph 
 		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
 		{
-			std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+			std::cout << "ERROR::FREETYTPE - Failed to load Glyph" << std::endl;
 			continue;
 		}
 
@@ -57,8 +56,19 @@ Text::Text()
 
 	// Destroy FreeType once work is finished
 	FT_Done_Face(face);
-	FT_Done_FreeType(ft);
+	FT_Done_FreeType(FreeTypeLibrary);
 
+	Store();
+}
+
+Text::~Text()
+{
+	//vbo->~VertexBuffer();
+	//vao->~VertexArray();
+}
+
+void Text::Store()
+{
 	// Configure VAO/VBO for 2D quads in which we will render character textures
 	vao = new VertexArray();
 	vbo = new VertexBuffer(NULL, sizeof(float) * 6 * 4);
@@ -71,18 +81,12 @@ Text::Text()
 	vao->Unbind();
 }
 
-Text::~Text()
-{
-	//vbo->~VertexBuffer();
-	//vao->~VertexArray();
-}
-
 float Text::GetBillboardSize(const std::string text, const float scale)
 {
 	float totalAdvance = 0.0f;
 	for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
 	{
-		totalAdvance += (characters[*c].Advance >> 6) * scale;
+		totalAdvance += (characters[*c].advance >> 6) * scale;
 	}
 
 	return totalAdvance;
@@ -98,30 +102,30 @@ void Text::Render(const Renderer& renderer, const std::string text, float x, con
 
 	for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
 	{
-		const Character ch = characters[*c];
+		const Character character = characters[*c];
 
-		// Origin position of the quad
-		const float xpos = x + ch.Bearing.x * scale;
-		const float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+		// Position of the quad
+		const float xpos = x + character.bearing.x * scale;
+		const float ypos = y - (character.size.y - character.bearing.y) * scale;
 
 		// Size of the quad
-		const float w = ch.Size.x * scale;
-		const float h = ch.Size.y * scale;
+		const float width = character.size.x * scale;
+		const float height = character.size.y * scale;
 
 		// Update VBO for each character
 		std::vector<float> vertices =
 		{
-			xpos,     ypos + h,   0.0f, 0.0f ,
-			xpos,     ypos,       0.0f, 1.0f ,
-			xpos + w, ypos,       1.0f, 1.0f ,
+			xpos,			ypos + height,  0.0f, 0.0f ,
+			xpos,			ypos,			0.0f, 1.0f ,
+			xpos + width,	ypos,			1.0f, 1.0f ,
 
-			xpos,     ypos + h,   0.0f, 0.0f ,
-			xpos + w, ypos,       1.0f, 1.0f ,
-			xpos + w, ypos + h,   1.0f, 0.0f
+			xpos,			ypos + height,  0.0f, 0.0f ,
+			xpos + width,	ypos,			1.0f, 1.0f ,
+			xpos + width,	ypos + height,  1.0f, 0.0f
 		};
 
 		// Render glyph texture over quad
-		glBindTexture(GL_TEXTURE_2D, ch.rendererID);
+		glBindTexture(GL_TEXTURE_2D, character.rendererID);
 
 		// Update content of VBO memory
 		vbo->Bind();
@@ -133,7 +137,7 @@ void Text::Render(const Renderer& renderer, const std::string text, float x, con
 
 		// Advance cursors for next glyph (note that advance is number of 1/64 pixels)
 		// bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
-		x += (ch.Advance >> 6) * scale;
+		x += (character.advance >> 6) * scale;
 	}
 
 	vao->Unbind();
