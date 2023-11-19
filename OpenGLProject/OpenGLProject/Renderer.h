@@ -8,7 +8,6 @@
 
 class Renderer
 {
-private:
 public:
 	// Clear the depth buffer
 	void Clear() const;

@@ -12,12 +12,12 @@
 class Belt
 {
 private:
-	unsigned int asteroidNb;
-	int sizeFactor;
-	float majorRadius;
-	float minorRadius;
+	unsigned int asteroidNb{ 0 };
+	int sizeFactor{ 1 };
+	float majorRadius{ 0.0f };
+	float minorRadius{ 0.0f };
 	Model asteroid;
-	glm::mat4 * modelMatrices;
+	glm::mat4* modelMatrices;
 
 	VertexArray vao;
 

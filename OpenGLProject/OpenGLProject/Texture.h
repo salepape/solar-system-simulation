@@ -34,9 +34,9 @@ enum class MapType
 class Texture
 {
 private:
-	unsigned int target;
-	unsigned int rendererID;
-	const char* path;
+	unsigned int target{ 0 };
+	unsigned int rendererID{ 0 };
+	const char* path{ nullptr };
 	MapType mapType;
 
 public:

@@ -15,7 +15,7 @@ private:
 	// Stores all the textures loaded so far, to make sure each is not loaded more than once
 	std::vector<Texture> loadedTextures;
 	std::vector<Mesh> meshes;
-	bool gammaCorrection;
+	bool gammaCorrection{ false };
 
 	// Load a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector
 	void LoadModel(const std::string& path);

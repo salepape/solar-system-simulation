@@ -15,9 +15,9 @@
 class ShaderProgram
 {
 private:
-	unsigned int rendererID;
+	unsigned int rendererID{ 0 };
 	std::unordered_map<std::string, int> uniformLocationCache;
-	bool isGeom;
+	bool isGeom{ false };
 
 	std::string ParseShader(const char* path);
 	unsigned int CreateShader(const unsigned int type, const std::string& source);

@@ -8,8 +8,8 @@
 class IndexBuffer
 {
 private:
-	unsigned int rendererID;
-	unsigned int count;
+	unsigned int rendererID{ 0 };
+	unsigned int count{ 0 };
 
 public:
 	IndexBuffer(const void* data, const unsigned int count);

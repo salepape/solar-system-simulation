@@ -20,17 +20,17 @@ constexpr int nbMeridStrips = 100;
 class Sphere
 {
 private:
-	int nbIndexes;
-	float radius;
+	int nbIndexes{ 0 };
+	float radius{ 0.0f };
 
-	VertexArray * vao;
-	IndexBuffer * ibo;
+	VertexArray* vao{ nullptr };
+	IndexBuffer* ibo{ nullptr };
 
 	std::vector<float> vertCoor;
 	std::vector<float> normalCoor;
 	std::vector<float> textCoor;
 	std::vector<int> indexes;
-	Texture * texture;
+	Texture* texture{ nullptr };
 
 	void Compute();
 	void Store();

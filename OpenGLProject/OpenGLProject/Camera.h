@@ -39,12 +39,12 @@ public:
 	glm::vec3 Right;
 	glm::vec3 WorldUp;
 
-	float Yaw;
-	float Pitch;
+	float Yaw{ 0.0f };
+	float Pitch{ 0.0f };
 
-	float MovementSpeed;
-	float MouseSensitivity;
-	float Zoom;
+	float MovementSpeed{ 0.0f };
+	float MouseSensitivity{ 0.0f };
+	float Zoom{ 0.0f };
 
 	Camera(const glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), const glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), const float yaw = YAW, const float pitch = PITCH);
 	Camera(const float posX, const float posY, const float posZ, const float upX, const float upY, const float upZ, const float yaw, const float pitch);

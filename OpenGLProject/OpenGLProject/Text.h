@@ -31,8 +31,8 @@ class Text
 {
 private:
 	std::map<GLchar, Character> characters;
-	VertexArray* vao;
-	VertexBuffer* vbo;
+	VertexArray* vao{ nullptr };
+	VertexBuffer* vbo{ nullptr };
 
 	// Return the width of the text (spaces included)
 	float GetBillboardSize(const std::string text, const float scale);

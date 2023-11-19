@@ -16,9 +16,9 @@ class Skybox
 {
 private:
 	std::vector<float> vertCoor;
-	Texture* texture;
+	Texture* texture{ nullptr };
 
-	VertexArray* vao;
+	VertexArray* vao{ nullptr };
 
 	void Compute();
 	void Store();

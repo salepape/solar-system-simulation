@@ -15,12 +15,12 @@
 class Orbit
 {
 private:
-	float radius;							// Radius of the orbit (= distance between sun and corresponding planet) 
-	unsigned int nbMeridStrips = 100;		// Number of edges (controls degree of smoothness)
+	float radius{ 0.0f };					// Radius of the orbit (= distance between sun and corresponding planet) 
+	unsigned int nbMeridStrips{ 100 };		// Number of edges (controls degree of smoothness)
 	std::vector<float> vertCoor;			// Vectors containing sphere data computed
-	Texture* texture;
+	Texture* texture{ nullptr };
 
-	VertexArray* vao;
+	VertexArray* vao{ nullptr };
 
 	void Compute();
 	void Store();

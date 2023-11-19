@@ -30,9 +30,9 @@ private:
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
 
-	VertexArray* vao;
-	VertexBuffer* vbo;
-	IndexBuffer* ibo;
+	VertexArray* vao{ nullptr };
+	VertexBuffer* vbo{ nullptr };
+	IndexBuffer* ibo{ nullptr };
 
 	void Store();
 
