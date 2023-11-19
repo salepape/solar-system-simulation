@@ -6,40 +6,22 @@
 #include <glm/gtc/constants.hpp>
 #include <vector>
 
-#include "IndexBuffer.h"
-#include "Renderer.h"
-#include "Texture.h"
-#include "VertexArray.h"
-#include "VertexBuffer.h"
+#include "Mesh.h"
 
 
 
-constexpr int nbParalStrips = 100;
-constexpr int nbMeridStrips = 100;
-
-class Sphere
+class Sphere: public Mesh
 {
 private:
-	int nbIndexes{ 0 };
 	float radius{ 0.0f };
 
-	VertexArray* vao{ nullptr };
-	IndexBuffer* ibo{ nullptr };
-
-	std::vector<float> vertCoor;
-	std::vector<float> normalCoor;
-	std::vector<float> textCoor;
-	std::vector<int> indexes;
-	Texture* texture{ nullptr };
-
-	void Compute();
-	void Store();
+protected:
+	// Note that we call square the zone created by the intersection between one meridian strip and one parallel strip
+	void Compute() override;
 
 public:
-	Sphere(const char* path, const float radiusArg);
+	Sphere(const char* texturePath, const float radiusArg);
 	~Sphere();
-
-	void Render(const Renderer& renderer, const unsigned int& textureUnit);
 };
 
 

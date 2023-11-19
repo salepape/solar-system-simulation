@@ -25,7 +25,7 @@ struct Vertex
 
 class Mesh
 {
-private:
+protected:
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
@@ -34,13 +34,20 @@ private:
 	VertexBuffer* vbo{ nullptr };
 	IndexBuffer* ibo{ nullptr };
 
-	void Store();
+	// Compute each vertex of the mesh mathematically in code
+	virtual void Compute();
+
+	// Set vertex buffers and its attribute pointers once we have all required data
+	virtual void Store();
 
 public:
+	// Built in code
+	Mesh();
+	// Built by reading model
 	Mesh(const std::vector<Vertex> verticesArg, const std::vector<unsigned int> indicesArg, const std::vector<Texture> texturesArg);
-	~Mesh();
+	virtual ~Mesh();
 
-	void Render(const Renderer& renderer, const unsigned int& textureUnit);
+	virtual void Render(const Renderer& renderer, const unsigned int& textureUnit);
 
 	inline VertexArray& GetVaoRef() const { return *vao; };
 	inline unsigned int GetIndicesCount() const { return indices.size(); }

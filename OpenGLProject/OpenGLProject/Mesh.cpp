@@ -2,11 +2,25 @@
 
 
 
+Mesh::Mesh()
+{
+
+}
+
 Mesh::Mesh(const std::vector<Vertex> verticesArg, const std::vector<unsigned int> indicesArg, const std::vector<Texture> texturesArg) :
 	vertices(verticesArg), indices(indicesArg), textures(texturesArg)
 {
-	// Set vertex buffers and its attribute pointers once we have all required data
 	Store();
+}
+
+Mesh::~Mesh()
+{
+
+}
+
+void Mesh::Compute()
+{
+
 }
 
 void Mesh::Store()
@@ -26,13 +40,8 @@ void Mesh::Store()
 	vbl.Push<float>(3);
 	vao->AddBuffer(*vbo, vbl);
 
-	//ibo->Unbind();
+	ibo->Unbind();
 	vao->Unbind();
-}
-
-Mesh::~Mesh()
-{
-
 }
 
 void Mesh::Render(const Renderer& renderer, const unsigned int& textureUnit)
