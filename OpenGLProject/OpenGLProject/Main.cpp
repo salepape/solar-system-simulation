@@ -10,7 +10,7 @@
 int main()
 {
 	GLFWwindow* window = initGLFWWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL Solar System Simulation");
-	if (window == NULL)
+	if (window == nullptr)
 	{
 		std::cout << "ERROR::GLFW - Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -19,7 +19,7 @@ int main()
 
 	// Tell GLFW that we want the window context to be the main one on the current thread
 	glfwMakeContextCurrent(window);
-	if (glfwGetCurrentContext() == NULL)
+	if (glfwGetCurrentContext() == nullptr)
 	{
 		std::cout << "ERROR::GLFW - Failed to get current context : OpenGL functions will not work correctly" << std::endl;
 		return -1;

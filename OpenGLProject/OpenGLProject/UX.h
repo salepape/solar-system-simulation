@@ -51,7 +51,7 @@ GLFWwindow* initGLFWWindow(int windowWidth, int windowHeight, const char* window
 #endif
 
 	// Creation of a GLFW window of size "width x height", its title appearing in a top bar
-	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, windowTitle, NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, windowTitle, nullptr, nullptr);
 
 	return window;
 }

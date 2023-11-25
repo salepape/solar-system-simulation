@@ -179,7 +179,7 @@ void ShaderProgram::checkCompileErrors(const unsigned int shader, const std::str
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 		if (!success)
 		{
-			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+			glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
 			std::cout << "ERROR::SHADER - Linking error of type: " << type << "\n" << infoLog << "\n" << std::endl;
 		}
 	}
@@ -188,7 +188,7 @@ void ShaderProgram::checkCompileErrors(const unsigned int shader, const std::str
 		glGetProgramiv(shader, GL_LINK_STATUS, &success);
 		if (!success)
 		{
-			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
+			glGetProgramInfoLog(shader, 1024, nullptr, infoLog);
 			std::cout << "ERROR::PROGRAM - Linking error of type: " << type << "\n" << infoLog << "\n" << std::endl;
 		}
 	}

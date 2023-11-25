@@ -71,7 +71,7 @@ void Text::Store()
 {
 	// Configure VAO/VBO for 2D quads in which we will render character textures
 	vao = new VertexArray();
-	vbo = new VertexBuffer(NULL, sizeof(float) * 6 * 4);
+	vbo = new VertexBuffer(nullptr, sizeof(float) * 6 * 4);
 
 	VertexBufferLayout vbl;
 	vbl.Push<float>(4);
