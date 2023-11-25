@@ -2,13 +2,19 @@
 
 
 
-Orbit::Orbit(const char* path, const float radiusArg) : radius(radiusArg)
+Orbit::Orbit(const char* texturePath, const float radiusArg) : radius(radiusArg)
 {
-	texture = new Texture(path, GL_TEXTURE_2D, ObjectType::DEFAULT, MapType::NONE);
+	texture = new Texture(texturePath, GL_TEXTURE_2D, ObjectType::DEFAULT, MapType::NONE);
 	texture->LoadDDS();
+	textures.push_back(*texture);
 
 	Compute();
 	Store();
+}
+
+Orbit::~Orbit()
+{
+
 }
 
 void Orbit::Compute()
@@ -17,30 +23,14 @@ void Orbit::Compute()
 	{
 		const float theta = 2.0f * glm::pi<float>() * static_cast<float>(i) / nbMeridStrips;
 
-		vertCoor.push_back(radius * glm::sin(theta));
-		vertCoor.push_back(0.0f);
-		vertCoor.push_back(radius * glm::cos(theta));
+		Vertex vertex;
+		vertex.Position = glm::vec3(radius * glm::sin(theta), 0.0f, radius * glm::cos(theta));
+		vertex.Normal = glm::vec3(0.0f, 0.0f, 0.0f);
+		vertex.TexCoords = glm::vec3(0.0f, 0.0f, 0.0f);
+		vertex.Tangent = glm::vec3(0.0f, 0.0f, 0.0f);
+		vertex.Bitangent = glm::vec3(0.0f, 0.0f, 0.0f);
+		vertices.push_back(vertex);
 	}
-}
-
-void Orbit::Store()
-{
-	const unsigned int sizeofVertices = sizeof(float) * vertCoor.size();
-
-	vao = new VertexArray();
-	VertexBuffer vbo(&vertCoor[0], sizeofVertices);
-
-	VertexBufferLayout vbl;
-	vbl.Push<float>(3);
-	vao->AddBuffer(vbo, vbl);
-
-	vbo.Unbind();
-	vao->Unbind();
-}
-
-Orbit::~Orbit()
-{
-	vao->~VertexArray();
 }
 
 void Orbit::Render(const Renderer& renderer, const unsigned int& textureUnit)

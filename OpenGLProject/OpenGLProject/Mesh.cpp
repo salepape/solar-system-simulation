@@ -25,12 +25,26 @@ void Mesh::Compute()
 
 void Mesh::Store()
 {
+	if (vertices.empty())
+	{
+		std::cout << "ERROR::MESH - No vertices found!" << std::endl;
+		return;
+	}
+
 	vao = new VertexArray();
 	vbo = new VertexBuffer(&vertices[0], vertices.size() * sizeof(Vertex));
-	ibo = new IndexBuffer(&indices[0], indices.size());
+	
+	if (indices.empty() == false)
+	{
+		ibo = new IndexBuffer(&indices[0], indices.size());
+	}
 
 	vao->Bind();
-	ibo->Bind();
+
+	if (indices.empty() == false)
+	{
+		ibo->Bind();
+	}
 
 	VertexBufferLayout vbl;
 	vbl.Push<float>(3);
@@ -40,12 +54,22 @@ void Mesh::Store()
 	vbl.Push<float>(3);
 	vao->AddBuffer(*vbo, vbl);
 
-	ibo->Unbind();
+	if (indices.empty() == false)
+	{
+		ibo->Unbind();
+	}
+
 	vao->Unbind();
 }
 
 void Mesh::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
+	if (indices.empty())
+	{
+		std::cout << "ERROR::MESH - The base version of Render() needs indices array to be non null!" << std::endl;
+		return;
+	}
+
 	for (unsigned int i = 0; i < textures.size(); ++i)
 	{
 		textures[i].Enable(textureUnit);

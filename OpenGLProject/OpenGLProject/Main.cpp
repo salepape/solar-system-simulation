@@ -261,7 +261,7 @@ int main()
 
 
 
-			// Draw planet orbites
+			// Draw planet orbits
 			if (it->first != "Sun")
 			{
 				modelOrbit = glm::rotate(modelOrbit, glm::radians(it->second.orbInclination), glm::vec3(0.0f, 0.0f, 1.0f));

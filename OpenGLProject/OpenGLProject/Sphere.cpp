@@ -46,6 +46,9 @@ void Sphere::Compute()
 
 			vertex.TexCoords = glm::vec2(static_cast<float>(j) / numMeridianStrips, static_cast<float>(i) / numParallelStrips);
 
+			vertex.Tangent = glm::vec3(0.0f, 0.0f, 0.0f);
+			vertex.Bitangent = glm::vec3(0.0f, 0.0f, 0.0f);
+
 			vertices.push_back(vertex);
 		}
 	}

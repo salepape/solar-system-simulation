@@ -5,31 +5,30 @@
 #include <glm/gtc/constants.hpp>
 #include <vector>
 
-#include "Renderer.h"
-#include "Texture.h"
-#include "VertexArray.h"
+#include "Mesh.h"
 
 
 
 // Approximation : all planet / moon orbits will be circular (eccentricities close to 0)
-class Orbit
+class Orbit : public Mesh
 {
 private:
-	float radius{ 0.0f };					// Radius of the orbit (= distance between sun and corresponding planet) 
-	unsigned int nbMeridStrips{ 100 };		// Number of edges (controls degree of smoothness)
-	std::vector<float> vertCoor;			// Vectors containing sphere data computed
+	// Radius of the orbit (= distance between sun and corresponding planet) 
+	float radius{ 0.0f };
+
+	// Number of edges (controls degree of smoothness)
+	int nbMeridStrips = 100;
+
 	Texture* texture{ nullptr };
 
-	VertexArray* vao{ nullptr };
-
-	void Compute();
-	void Store();
+protected:
+	void Compute() override;
 
 public:
-	Orbit(const char* path, const float radiusArg);
+	Orbit(const char* texturePath, const float radiusArg);
 	~Orbit();
 
-	void Render(const Renderer& renderer, const unsigned int& textureUnit);
+	void Render(const Renderer& renderer, const unsigned int& textureUnit) override;
 };
 
 

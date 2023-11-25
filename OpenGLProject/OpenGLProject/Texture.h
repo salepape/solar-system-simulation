@@ -65,7 +65,7 @@ public:
 	void Disable();
 
 	inline unsigned int GetRendererID() const { return rendererID; }
-	inline const char * GetPath() const { return path; }
+	inline const char* GetPath() const { return path; }
 };
 
 
