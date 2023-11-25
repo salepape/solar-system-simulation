@@ -12,7 +12,7 @@
 class Model
 {
 private:
-	// Stores all the textures loaded so far, to make sure each is not loaded more than once
+	// Stores all the textures loaded so far to make sure each is only loaded once
 	std::vector<Texture> loadedTextures;
 	std::vector<Mesh> meshes;
 	bool gammaCorrection{ false };
@@ -20,12 +20,12 @@ private:
 	// Load a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector
 	void LoadModel(const std::string& path);
 
-	// Process a node in a recursive fashion
-	void ProcessNode(const aiNode* node, const aiScene* scene);
-	Mesh ProcessMesh(const aiMesh* mesh, const aiScene* scene);
+	// Process a node recursively
+	void ProcessNode(const aiNode& node, const aiScene& scene);
+	Mesh ProcessMesh(const aiMesh& mesh, const aiScene& scene);
 
-	// Check all material textures of a given type and loads the textures if they're not loaded yet
-	std::vector<Texture> LoadMaterialTextures(const aiMaterial* mat, const aiTextureType type);
+	// Check all textures of a given type for a given material and loads them if they're not loaded yet
+	std::vector<Texture> LoadTextures(const aiMaterial& material, const aiTextureType type);
 
 public:
 	Model(const std::string& path, const bool gammaCorrectionArg = false);
