@@ -6,6 +6,7 @@ Skybox::Skybox(const char* path)
 {
 	texture = new Texture(path, GL_TEXTURE_CUBE_MAP, ObjectType::SKYBOX, MapType::NONE);
 	texture->LoadCubemapDDS();
+	textures.push_back(*texture);
 
 	Compute();
 	Store();
@@ -13,7 +14,7 @@ Skybox::Skybox(const char* path)
 
 void Skybox::Compute()
 {
-	vertCoor =
+	std::vector<float> vertCoor =
 	{
 		-1.0f,  1.0f, -1.0f,
 		-1.0f, -1.0f, -1.0f,
@@ -57,26 +58,31 @@ void Skybox::Compute()
 		-1.0f, -1.0f,  1.0f,
 		 1.0f, -1.0f,  1.0f
 	};
-}
 
-void Skybox::Store()
-{
-	const unsigned int sizeofVertices = sizeof(float) * vertCoor.size();
+	constexpr int numFaces = 6;
+	constexpr int numVerticesPerFace = 6;
+	int index = 0;
 
-	vao = new VertexArray();
-	VertexBuffer vbo(&vertCoor[0], sizeofVertices);
+	for (int i = 0; i < numFaces; ++i)
+	{
+		for (int j = 0; j < numVerticesPerFace; ++j)
+		{
+			Vertex vertex;
+			vertex.Position = glm::vec3(vertCoor[index], vertCoor[index + 1], vertCoor[index + 2]);
+			vertex.Normal = glm::vec3(0.0f, 0.0f, 0.0f);
+			vertex.TexCoords = glm::vec3(0.0f, 0.0f, 0.0f);
+			vertex.Tangent = glm::vec3(0.0f, 0.0f, 0.0f);
+			vertex.Bitangent = glm::vec3(0.0f, 0.0f, 0.0f);
+			vertices.push_back(vertex);
 
-	VertexBufferLayout vbl;
-	vbl.Push<float>(3);
-	vao->AddBuffer(vbo, vbl);
-
-	vbo.Unbind();
-	vao->Unbind();
+			index += vertex.Position.length();
+		}
+	}
 }
 
 Skybox::~Skybox()
 {
-	//vao->~VertexArray();
+
 }
 
 void Skybox::Render(const Renderer& renderer, const unsigned int& textureUnit)

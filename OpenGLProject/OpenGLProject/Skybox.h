@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 
+#include "Mesh.h"
 #include "Renderer.h"
 #include "Texture.h"
 #include "VertexArray.h"
@@ -12,22 +13,19 @@
 
 
 
-class Skybox
+class Skybox : public Mesh
 {
 private:
-	std::vector<float> vertCoor;
 	Texture* texture{ nullptr };
 
-	VertexArray* vao{ nullptr };
-
-	void Compute();
-	void Store();
+protected:
+	void Compute() override;
 
 public:
 	Skybox(const char* path);
 	~Skybox();
 
-	void Render(const Renderer& renderer, const unsigned int& textureUnit);
+	void Render(const Renderer& renderer, const unsigned int& textureUnit) override;
 };
 
 

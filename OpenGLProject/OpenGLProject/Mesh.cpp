@@ -10,6 +10,7 @@ Mesh::Mesh()
 Mesh::Mesh(const std::vector<Vertex> verticesArg, const std::vector<unsigned int> indicesArg, const std::vector<Texture> texturesArg) :
 	vertices(verticesArg), indices(indicesArg), textures(texturesArg)
 {
+	Compute();
 	Store();
 }
 
