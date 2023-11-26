@@ -129,7 +129,7 @@ std::vector<Texture> Model::LoadTextures(const aiMaterial& material, const aiTex
 		if (textureAlreadyLoaded == false)
 		{
 			// @todo - Implement correspondance aiTextureType and MapType enums
-			Texture texture(TexturePath.C_Str(), GL_TEXTURE_2D, ObjectType::DEFAULT, MapType::NONE);
+			Texture texture(TexturePath.C_Str(), GL_TEXTURE_2D, GeometryType::MODEL, MapType::NONE);
 			texture.LoadDDS();
 			textures.push_back(texture);
 			loadedTextures.push_back(texture);

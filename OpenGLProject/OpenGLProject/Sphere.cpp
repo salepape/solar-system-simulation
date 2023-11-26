@@ -4,7 +4,7 @@
 
 Sphere::Sphere(const char* texturePath, const float radiusArg) : radius(radiusArg)
 {
-	Texture* texture = new Texture(texturePath, GL_TEXTURE_2D, ObjectType::DEFAULT, MapType::NONE);
+	Texture* texture = new Texture(texturePath, GL_TEXTURE_2D, GeometryType::SPHERE, MapType::NONE);
 	texture->LoadDDS();
 	textures.push_back(*texture);
 

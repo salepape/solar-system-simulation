@@ -142,7 +142,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="Orbit.h" />
     <ClInclude Include="Renderer.h" />
-    <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="Shader.h" /> 
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Text.h" />
@@ -162,7 +162,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Orbit.cpp" />
     <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Text.cpp" />

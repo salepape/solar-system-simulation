@@ -2,29 +2,31 @@
 
 
 // @todo - Implement effect of mapType of Texture object
-Texture::Texture(const char* pathArg, const unsigned int InTarget, const ObjectType objectType, const MapType InMapType) :
+Texture::Texture(const char* pathArg, const unsigned int InTarget, const GeometryType geometryType, const MapType InMapType) :
 	path(pathArg), target(InTarget), mapType(InMapType)
 {
-	switch (objectType)
+	switch (geometryType)
 	{
-	case ObjectType::DEFAULT:
+	case GeometryType::CIRCLE:
+	case GeometryType::SPHERE:
+	case GeometryType::MODEL:
 	{
 		SetWraps(GL_REPEAT);
 		SetFilters(GL_LINEAR);
 		break;
 	}
-	case ObjectType::TEXT_CHARACTERS:
+	case GeometryType::CUBE:
+	{
+		SetWraps(GL_CLAMP_TO_EDGE);
+		SetFilters(GL_LINEAR);
+		break;
+	}
+	case GeometryType::CHARACTER:
 	{
 		// Generate then bind Texture Object (= TO) to the OpenGL TO type we want 
 		glGenTextures(1, &rendererID);
 		glBindTexture(target, rendererID);
 
-		SetWraps(GL_CLAMP_TO_EDGE);
-		SetFilters(GL_LINEAR);
-		break;
-	}
-	case ObjectType::SKYBOX:
-	{
 		SetWraps(GL_CLAMP_TO_EDGE);
 		SetFilters(GL_LINEAR);
 		break;

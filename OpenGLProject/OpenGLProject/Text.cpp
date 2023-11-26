@@ -35,7 +35,7 @@ Text::Text()
 		}
 
 		// No need to specify image path here since it's a glyph
-		characterTexture = new Texture("", GL_TEXTURE_2D, ObjectType::TEXT_CHARACTERS, MapType::NONE);
+		characterTexture = new Texture("", GL_TEXTURE_2D, GeometryType::CHARACTER, MapType::NONE);
 		characterTexture->LoadGlyph(face, GL_RED);
 
 		// Create object storing current ASCII character caracteristics

@@ -15,11 +15,15 @@
 
 
 
-enum class ObjectType
+enum class GeometryType
 {
-	DEFAULT,
-	TEXT_CHARACTERS,
-	SKYBOX,
+	CIRCLE,
+
+	SPHERE,	
+	CUBE,
+
+	CHARACTER,
+	MODEL,
 };
 
 enum class MapType
@@ -40,7 +44,7 @@ private:
 	MapType mapType;
 
 public:
-	Texture(const char* path, const unsigned int target, const ObjectType objectType, const MapType textureType);
+	Texture(const char* path, const unsigned int target, const GeometryType geometryType, const MapType textureType);
 	~Texture();
 
 	void LoadTextureImage(const unsigned int channel);

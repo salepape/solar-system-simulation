@@ -8,7 +8,7 @@
 
 #include "IndexBuffer.h"
 #include "Renderer.h"
-#include "ShaderProgram.h"
+#include "Shader.h"
 #include "Texture.h"
 #include "VertexArray.h"
 

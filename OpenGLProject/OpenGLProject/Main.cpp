@@ -44,16 +44,12 @@ int main()
 		return -1;
 	}
 
-
-
-
-
 	// Build and compile shader programs
-	ShaderProgram textShader("TextShader.vs", "TextShader.fs");
-	ShaderProgram saturnRingsShader("SaturnRingsShader.vs", "SaturnRingsShader.fs");
-	ShaderProgram asteroidShader("AsteroidShader.vs", "AsteroidShader.fs");
-	ShaderProgram skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
-	ShaderProgram sphereShader("SphereShader.vs", "SphereShader.fs");
+	Shader textShader("TextShader.vs", "TextShader.fs");
+	Shader saturnRingsShader("SaturnRingsShader.vs", "SaturnRingsShader.fs");
+	Shader asteroidShader("AsteroidShader.vs", "AsteroidShader.fs");
+	Shader skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
+	Shader sphereShader("SphereShader.vs", "SphereShader.fs");
 
 
 
@@ -64,8 +60,8 @@ int main()
 	Model saturnRings("../Models/SaturnRings.obj");
 	Model asteroid("../Models/Asteroid.obj");
 	Model ice("../Models/Ice.obj");
-	Model deimos("../Models/Deimos.obj");
-	Model phobos("../Models/Phobos.obj");
+	//Model deimos("../Models/Deimos.obj");
+	//Model phobos("../Models/Phobos.obj");
 
 	// Create Milky Way skybox
 	Skybox skybox = Skybox("../Textures/MilkyWay/stars.dds");
@@ -133,23 +129,23 @@ int main()
 
 		// Activate the shaders before initializing uniforms
 		sphereShader.Enable();
-		sphereShader.setMat4("projection", projection);
-		sphereShader.setMat4("view", view);
-		sphereShader.setVec3("material.specular", 0.0f, 0.0f, 0.0f);
-		sphereShader.setFloat("material.shininess", 64.0f);
-		sphereShader.setVec3("light.position", 0.0f, 0.0f, 0.0f);
-		sphereShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-		sphereShader.setVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
-		sphereShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-		sphereShader.setFloat("light.isBlinn", false);
-		sphereShader.setFloat("light.constant", 1.0f);
-		sphereShader.setFloat("light.linear", 0.0007f);
-		sphereShader.setFloat("light.quadratic", 0.000002f);
-		sphereShader.setVec3("viewPos", camera.Position);
+		sphereShader.setUniformMat4("projection", projection);
+		sphereShader.setUniformMat4("view", view);
+		sphereShader.setUniformVec3("material.specular", 0.0f, 0.0f, 0.0f);
+		sphereShader.setUniformFloat("material.shininess", 64.0f);
+		sphereShader.setUniformVec3("light.position", 0.0f, 0.0f, 0.0f);
+		sphereShader.setUniformVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+		sphereShader.setUniformVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
+		sphereShader.setUniformVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		sphereShader.setUniformFloat("light.isBlinn", false);
+		sphereShader.setUniformFloat("light.constant", 1.0f);
+		sphereShader.setUniformFloat("light.linear", 0.0007f);
+		sphereShader.setUniformFloat("light.quadratic", 0.000002f);
+		sphereShader.setUniformVec3("viewPos", camera.Position);
 
 		textShader.Enable();
-		textShader.setMat4("projection", projection);
-		textShader.setMat4("view", view);
+		textShader.setUniformMat4("projection", projection);
+		textShader.setUniformMat4("view", view);
 
 
 
@@ -195,21 +191,21 @@ int main()
 			if (it->first == "Saturn")
 			{
 				saturnRingsShader.Enable();
-				saturnRingsShader.setMat4("projection", projection);
-				saturnRingsShader.setMat4("view", view);
-				saturnRingsShader.setMat4("model", modelSphere);
-				saturnRingsShader.setInt("material.diffuse", samplerID);
-				saturnRingsShader.setVec3("material.specular", 0.0f, 0.0f, 0.0f);
-				saturnRingsShader.setFloat("material.shininess", 64.0f);
-				saturnRingsShader.setVec3("light.position", 0.0f, 0.0f, 0.0f);
-				saturnRingsShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-				saturnRingsShader.setVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
-				saturnRingsShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-				saturnRingsShader.setFloat("light.isBlinn", false);
-				saturnRingsShader.setFloat("light.constant", 1.0f);
-				saturnRingsShader.setFloat("light.linear", 0.0007f);
-				saturnRingsShader.setFloat("light.quadratic", 0.000002f);
-				saturnRingsShader.setVec3("viewPos", camera.Position);
+				saturnRingsShader.setUniformMat4("projection", projection);
+				saturnRingsShader.setUniformMat4("view", view);
+				saturnRingsShader.setUniformMat4("model", modelSphere);
+				saturnRingsShader.setUniformInt("material.diffuse", samplerID);
+				saturnRingsShader.setUniformVec3("material.specular", 0.0f, 0.0f, 0.0f);
+				saturnRingsShader.setUniformFloat("material.shininess", 64.0f);
+				saturnRingsShader.setUniformVec3("light.position", 0.0f, 0.0f, 0.0f);
+				saturnRingsShader.setUniformVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+				saturnRingsShader.setUniformVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
+				saturnRingsShader.setUniformVec3("light.specular", 1.0f, 1.0f, 1.0f);
+				saturnRingsShader.setUniformFloat("light.isBlinn", false);
+				saturnRingsShader.setUniformFloat("light.constant", 1.0f);
+				saturnRingsShader.setUniformFloat("light.linear", 0.0007f);
+				saturnRingsShader.setUniformFloat("light.quadratic", 0.000002f);
+				saturnRingsShader.setUniformVec3("viewPos", camera.Position);
 				saturnRings.Render(renderer, samplerID);
 				++samplerID;
 			}
@@ -218,16 +214,16 @@ int main()
 			modelSphere = glm::rotate(modelSphere, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
 			sphereShader.Enable();
-			sphereShader.setMat4("model", modelSphere);
+			sphereShader.setUniformMat4("model", modelSphere);
 			if (it->first != "Sun")
 			{
-				sphereShader.setBool("isSun", false);
+				sphereShader.setUniformBool("isSun", false);
 			}
 			else
 			{
-				sphereShader.setBool("isSun", true);
+				sphereShader.setUniformBool("isSun", true);
 			}
-			sphereShader.setInt("material.diffuse", samplerID);
+			sphereShader.setUniformInt("material.diffuse", samplerID);
 			it->second.sphere->Render(renderer, samplerID);
 			++samplerID;
 
@@ -245,9 +241,9 @@ int main()
 				modelText[2] = glm::vec4(look, 0);
 
 				textShader.Enable();
-				textShader.setMat4("model", modelText);
-				textShader.setInt("texSampler", samplerID);
-				textShader.setVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));
+				textShader.setUniformMat4("model", modelText);
+				textShader.setUniformInt("texSampler", samplerID);
+				textShader.setUniformVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));
 				if (it->first != "Sun")
 				{
 					text.Render(renderer, it->first, 0.0f, it->second.radius * 1.25f, it->second.radius * 0.01f, samplerID);
@@ -267,8 +263,8 @@ int main()
 				modelOrbit = glm::rotate(modelOrbit, glm::radians(it->second.orbInclination), glm::vec3(0.0f, 0.0f, 1.0f));
 
 				sphereShader.Enable();
-				sphereShader.setMat4("model", modelOrbit);
-				sphereShader.setInt("material.diffuse", samplerID);
+				sphereShader.setUniformMat4("model", modelOrbit);
+				sphereShader.setUniformInt("material.diffuse", samplerID);
 				it->second.orbit->Render(renderer, samplerID);
 				++samplerID;
 			}
@@ -278,23 +274,23 @@ int main()
 
 		// Draw the 2 main belts composed of asteroids
 		asteroidShader.Enable();
-		asteroidShader.setMat4("projection", projection);
-		asteroidShader.setMat4("view", view);
-		asteroidShader.setVec3("material.specular", 0.0f, 0.0f, 0.0f);
-		asteroidShader.setFloat("material.shininess", 64.0f);
-		asteroidShader.setVec3("light.position", 0.0f, 0.0f, 0.0f);
-		asteroidShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-		asteroidShader.setVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
-		asteroidShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-		asteroidShader.setFloat("light.isBlinn", false);
-		asteroidShader.setFloat("light.constant", 1.0f);
-		asteroidShader.setFloat("light.linear", 0.0007f);
-		asteroidShader.setFloat("light.quadratic", 0.000002f);
-		asteroidShader.setVec3("viewPos", camera.Position);
-		asteroidShader.setInt("material.diffuse", samplerID);
+		asteroidShader.setUniformMat4("projection", projection);
+		asteroidShader.setUniformMat4("view", view);
+		asteroidShader.setUniformVec3("material.specular", 0.0f, 0.0f, 0.0f);
+		asteroidShader.setUniformFloat("material.shininess", 64.0f);
+		asteroidShader.setUniformVec3("light.position", 0.0f, 0.0f, 0.0f);
+		asteroidShader.setUniformVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+		asteroidShader.setUniformVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
+		asteroidShader.setUniformVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		asteroidShader.setUniformFloat("light.isBlinn", false);
+		asteroidShader.setUniformFloat("light.constant", 1.0f);
+		asteroidShader.setUniformFloat("light.linear", 0.0007f);
+		asteroidShader.setUniformFloat("light.quadratic", 0.000002f);
+		asteroidShader.setUniformVec3("viewPos", camera.Position);
+		asteroidShader.setUniformInt("material.diffuse", samplerID);
 		asteroidBelt.Render(renderer, samplerID);
 		++samplerID;
-		asteroidShader.setInt("material.diffuse", samplerID);
+		asteroidShader.setUniformInt("material.diffuse", samplerID);
 		kuiperBelt.Render(renderer, samplerID);
 		++samplerID;
 
@@ -303,9 +299,9 @@ int main()
 		// Draw Milky Way skybox
 		renderer.DepthEqual();
 		skyboxShader.Enable();
-		skyboxShader.setMat4("projection", projection);
-		skyboxShader.setMat4("view", glm::mat4(glm::mat3(view)));
-		skyboxShader.setInt("texSampler", samplerID);
+		skyboxShader.setUniformMat4("projection", projection);
+		skyboxShader.setUniformMat4("view", glm::mat4(glm::mat3(view)));
+		skyboxShader.setUniformInt("texSampler", samplerID);
 		skybox.Render(renderer, samplerID);
 		renderer.DepthLess();
 
