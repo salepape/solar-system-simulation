@@ -6,53 +6,43 @@
 
 
 
-struct VertexBufferElement
+// List of locations of attributes defined as layouts in a vertex shader (we assume this convention for all shader files)
+enum VertexAttributeLocation
 {
+	Position = 0,
+	Normal = 1,
+	TextCoord = 2,
+	Tangent = 3,
+	Bitangent = 4,
+
+	InstancedMatrixCol1 = 5,
+	InstancedMatrixCol2 = 6,
+	InstancedMatrixCol3 = 7,
+	InstancedMatrixCol4 = 8,
+};
+
+struct VertexAttributeLayout
+{
+	VertexAttributeLocation location;
+
 	unsigned int type;
 	unsigned int count;
 	unsigned char normalized;
-
-	static unsigned int GetTypeSize(unsigned int type)
-	{
-		switch (type)
-		{
-		case GL_FLOAT:
-			return 4;
-		default:
-			return 0;
-		}
-	}
 };
 
-// 1st vector is vertex position (location = 0 in a Vertex Shader)
-// 2nd vector is vertex normal (location = 1 in a Vertex Shader)
-// 3rd vector is vertex texture coord (location = 2 in a Vertex Shader)
-// 4th vector is vertex tangent (location = 3 in a Vertex Shader)
-// 5th vector is vertex bitangent (location = 4 in a Vertex Shader)
 class VertexBufferLayout
 {
 private:
-	std::vector<VertexBufferElement> elements;
+	std::vector<VertexAttributeLayout> attributeLayouts;
 	unsigned int stride;
 
 public:
 	VertexBufferLayout();
 	~VertexBufferLayout();
 
-	template<typename T>
-	void Push(unsigned int count)
-	{
+	void AddAttributeLayout(const VertexAttributeLocation index, const unsigned int type, const unsigned int count);
 
-	}
-
-	template <>
-	void Push<float>(unsigned int count)
-	{
-		elements.push_back({ GL_FLOAT, count, GL_FALSE });
-		stride += count * VertexBufferElement::GetTypeSize(GL_FLOAT);
-	}
-
-	inline const std::vector<VertexBufferElement> GetElements() const { return elements; }
+	inline const std::vector<VertexAttributeLayout> GetAttributeLayouts() const { return attributeLayouts; }
 
 	inline unsigned int GetStride() const { return stride; }
 };

@@ -18,12 +18,14 @@ public:
 	VertexArray();
 	~VertexArray();
 
-	void AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout);
-	void AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout, const std::vector<unsigned int> sizeofs);
-	void AddInstancedBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout);
-
+	// Select the VAO we want to use
 	void Bind() const;
+
+	// Unselect the currently used VAO
 	void Unbind() const;
+
+	void AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout);
+	void AddInstancedBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout);
 };
 
 

@@ -74,7 +74,7 @@ void Text::Store()
 	vbo = new VertexBuffer(nullptr, sizeof(float) * 6 * 4);
 
 	VertexBufferLayout vbl;
-	vbl.Push<float>(4);
+	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, GetPositionNbElmts());
 	vao->AddBuffer(*vbo, vbl);
 
 	vbo->Unbind();

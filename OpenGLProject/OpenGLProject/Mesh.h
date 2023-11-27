@@ -21,6 +21,12 @@ struct Vertex
 	glm::vec2 TexCoords;
 	glm::vec3 Tangent;
 	glm::vec3 Bitangent;
+
+	static constexpr int GetPositionNumElmts() { return 3; }
+	static constexpr int GetNormalNumElmts() { return 3; }
+	static constexpr int GetTexCoordsNumElmts() { return 2; }
+	static constexpr int GetTangentNumElmts() { return 3; }
+	static constexpr int GetBitangentNumElmts() { return 3; }
 };
 
 class Mesh
@@ -43,7 +49,7 @@ protected:
 public:
 	// Built in code
 	Mesh();
-	// Built by reading model
+	// Built by parsing the model coming from a 3D modeling software
 	Mesh(const std::vector<Vertex> verticesArg, const std::vector<unsigned int> indicesArg, const std::vector<Texture> texturesArg);
 	virtual ~Mesh();
 

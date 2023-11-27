@@ -15,7 +15,10 @@ public:
 	VertexBuffer(const void* data, const unsigned int size);
 	~VertexBuffer();
 
+	// Select the VBO we want to use
 	void Bind() const;
+
+	// Unselect the currently used VBO
 	void Unbind() const;
 
 	void InitSubData(const std::vector<std::vector<float>*>& data);

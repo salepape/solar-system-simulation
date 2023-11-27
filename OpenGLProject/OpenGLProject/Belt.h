@@ -24,6 +24,8 @@ private:
 	void Compute();
 	void Store();
 
+	static constexpr int GetInstanceMatrixNumElmts() { return 4; }
+
 public:
 	Belt(const Model asteroidArg, const unsigned int asteroidNbArg, const int sizeFactorArg, const float majorRadiusArg, const float minorRadiusArg);
 	~Belt();

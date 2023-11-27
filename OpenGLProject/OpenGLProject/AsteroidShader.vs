@@ -3,7 +3,7 @@
 layout (location = 0) in vec3 vPos;
 layout (location = 1) in vec3 vNormalCoord;		
 layout (location = 2) in vec2 vTexCoord;
-layout (location = 3) in mat4 vInstanceMatrix;
+layout (location = 5) in mat4 vInstanceMatrix;	// locations 5, 6, 7 and 8 reserved for each column of the matrix
 
 out vec3 fPos;
 out vec3 normalCoord;

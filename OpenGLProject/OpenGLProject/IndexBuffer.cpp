@@ -2,24 +2,27 @@
 
 
 
-IndexBuffer::IndexBuffer(const void* data, const unsigned int count) : count(count)
+IndexBuffer::IndexBuffer(const unsigned int* data, const unsigned int count) : count(count)
 {
+	// Precaution at run-time taken just in case the size of an unsigned int is not 4 bytes on some platforms
 	if (sizeof(unsigned int) != sizeof(GLuint))
 	{
 		return;
 	}
 
-	// GENERATION IBO - Generate 1 BO storing its ID / name in the provided array within graphics memory
+	// Reserve an ID available to be used by the BO as a binding point
 	glGenBuffers(1, &rendererID);
-	// BINDING VBO - Bind BO to the OpenGL BO target we want (here the one of a vertex, called GL_ARRAY_BUFFER, hence VBO variable name)
+
+	// Bind the BO ID to a target, which specifies our intent to store indexes in it
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererID);
-	// COPY - Allocate memory and store data into the currently bound BO memory
+
+	// Allocate memory space (in bytes) to the IBO and store data in it
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW);
 }
 
 IndexBuffer::~IndexBuffer()
 {
-	// CLEAN IBO - Free the resource once it've outlived its purpose
+	// Delete the VBO and free up the ID that was being used by it
 	glDeleteBuffers(1, &rendererID);
 }
 

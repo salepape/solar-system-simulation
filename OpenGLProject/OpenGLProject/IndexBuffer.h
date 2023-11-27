@@ -12,10 +12,13 @@ private:
 	unsigned int count{ 0 };
 
 public:
-	IndexBuffer(const void* data, const unsigned int count);
+	IndexBuffer(const unsigned int* data, const unsigned int count);
 	~IndexBuffer();
 
+	// Select the IBO we want to use
 	void Bind() const;
+
+	// Unselect the currently used IBO
 	void Unbind() const;
 
 	inline unsigned int GetCount() const { return count; }

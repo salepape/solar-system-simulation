@@ -1,8 +1,8 @@
 #version 330 core
 
-layout (location = 0) in vec3 vPos;				// -> POSITION 0 FOR VERT COOR
-layout (location = 1) in vec3 vNormalCoord;		// -> POSITION 1 FOR NORMAL COOR
-layout (location = 2) in vec2 vTexCoord;		// -> POSITION 2 FOR TEXT COOR
+layout (location = 0) in vec3 vPos;
+layout (location = 1) in vec3 vNormalCoord;
+layout (location = 2) in vec2 vTexCoord;
 
 out vec3 fPos;
 out vec3 normalCoord;

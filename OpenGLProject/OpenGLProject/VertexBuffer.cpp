@@ -4,17 +4,19 @@
 
 VertexBuffer::VertexBuffer(const void* data, const unsigned int size)
 {
-	// GENERATION VBO - Generate 1 BO storing its ID / name in the provided array within graphics memory
+	// Reserve an ID available to be used by the BO as a binding point
 	glGenBuffers(1, &rendererID);
-	// BINDING VBO - Bind BO to the OpenGL BO target we want (here the one of a vertex, called GL_ARRAY_BUFFER, hence VBO variable name)
+
+	// Bind the BO ID to a target, which specifies our intent to store vertices in it
 	glBindBuffer(GL_ARRAY_BUFFER, rendererID);
-	// COPY - Allocate memory and store data into the currently bound BO memory
+
+	// Allocate memory space (in bytes) to the VBO and store data in it
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
 
 VertexBuffer::~VertexBuffer()
 {
-	// CLEAN VBO - Free the resource once it've outlived its purpose
+	// Delete the VBO and free up the ID that was being used by it
 	glDeleteBuffers(1, &rendererID);
 }
 
@@ -33,7 +35,11 @@ void VertexBuffer::InitSubData(const std::vector<std::vector<float>*>& data)
 	unsigned int offset = 0;
 	for (size_t i = 0; i < data.size(); ++i)
 	{
-		glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(float) * data[i]->size(), &(*data[i])[0]);
-		offset += sizeof(float) * data[i]->size();
+		const size_t subdataSize = sizeof(float) * data[i]->size();
+
+		// Update the data stored in the specified subset of memory space (in bytes), avoiding the reallocation cost
+		glBufferSubData(GL_ARRAY_BUFFER, offset, subdataSize, data[i]->data());
+
+		offset += subdataSize;
 	}
 }

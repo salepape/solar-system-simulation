@@ -33,11 +33,11 @@ void Mesh::Store()
 	}
 
 	vao = new VertexArray();
-	vbo = new VertexBuffer(&vertices[0], vertices.size() * sizeof(Vertex));
+	vbo = new VertexBuffer(vertices.data(), vertices.size() * sizeof(Vertex));
 	
 	if (indices.empty() == false)
 	{
-		ibo = new IndexBuffer(&indices[0], indices.size());
+		ibo = new IndexBuffer(indices.data(), indices.size());
 	}
 
 	vao->Bind();
@@ -47,12 +47,14 @@ void Mesh::Store()
 		ibo->Bind();
 	}
 
+	// how to read that position in Vertex struct is of 3 elmts with glm::vec3
+	// Can we parse the shader to read the attribute locations?
 	VertexBufferLayout vbl;
-	vbl.Push<float>(3);
-	vbl.Push<float>(3);
-	vbl.Push<float>(2);
-	vbl.Push<float>(3);
-	vbl.Push<float>(3);
+	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, Vertex::GetPositionNumElmts());
+	vbl.AddAttributeLayout(VertexAttributeLocation::Normal, GL_FLOAT, Vertex::GetNormalNumElmts());
+	vbl.AddAttributeLayout(VertexAttributeLocation::TextCoord, GL_FLOAT, Vertex::GetTexCoordsNumElmts());
+	vbl.AddAttributeLayout(VertexAttributeLocation::Tangent, GL_FLOAT, Vertex::GetTangentNumElmts());
+	vbl.AddAttributeLayout(VertexAttributeLocation::Bitangent, GL_FLOAT, Vertex::GetBitangentNumElmts());
 	vao->AddBuffer(*vbo, vbl);
 
 	if (indices.empty() == false)
