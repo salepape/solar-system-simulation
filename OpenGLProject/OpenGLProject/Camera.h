@@ -6,7 +6,7 @@
 
 
 // Defines several possible options for camera movement (used as abstraction to stay away from window-system specific input methods)
-enum Camera_Movement
+enum CameraMovement
 {
 	FORWARD,
 	BACKWARD,
@@ -53,7 +53,7 @@ public:
 	glm::mat4 GetViewMatrix() const;
 
 	// Process input received from any keyboard-like input system (requires enum camera movement option)
-	void ProcessKeyboard(const Camera_Movement direction, const float deltaTime);
+	void ProcessKeyboard(const CameraMovement direction, const float deltaTime);
 
 	// Process input received from a mouse input system (requires offset value in both x and y direction)
 	void ProcessMouseMovement(float xoffset, float yoffset, const bool constrainPitch = true);

@@ -1,5 +1,7 @@
 #include "IndexBuffer.h"
 
+#include <glad/glad.h>
+
 
 
 IndexBuffer::IndexBuffer(const unsigned int* data, const unsigned int count) : count(count)

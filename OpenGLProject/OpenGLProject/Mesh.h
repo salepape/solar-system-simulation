@@ -1,16 +1,14 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include <glad/glad.h> 
 #include <glm/glm.hpp>	
-#include <string>
 #include <vector>
 
-#include "IndexBuffer.h"
-#include "Renderer.h"
-#include "Shader.h"
-#include "Texture.h"
-#include "VertexArray.h"
+class IndexBuffer;
+class Renderer;
+class Texture;
+class VertexArray;
+class VertexBuffer;
 
 
 

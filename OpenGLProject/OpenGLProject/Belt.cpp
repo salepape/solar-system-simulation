@@ -1,5 +1,13 @@
 #include "Belt.h"
 
+#include <glfw3.h>
+
+#include "Mesh.h"
+#include "Renderer.h"
+#include "Texture.h"
+#include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
+
 
 
 Belt::Belt(const Model asteroidArg, const unsigned int asteroidNbArg, const int sizeFactorArg, const float majorRadiusArg, const float minorRadiusArg) :

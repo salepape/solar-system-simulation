@@ -1,8 +1,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "IndexBuffer.h"     
-#include "VertexArray.h"
+class IndexBuffer;
+class VertexArray;
 
 
 

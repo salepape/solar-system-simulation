@@ -1,14 +1,8 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 #include <ft2build.h>
-#include <glad.h>
-#include <glfw3.h>
-#include <iostream>
-#include <SOIL2.h>
+#include <string>
 
 #include FT_FREETYPE_H
 #define GLFW_INCLUDE_NONE
@@ -40,11 +34,11 @@ class Texture
 private:
 	unsigned int target{ 0 };
 	unsigned int rendererID{ 0 };
-	const char* path{ nullptr };
+	std::string path;
 	MapType mapType;
 
 public:
-	Texture(const char* path, const unsigned int target, const GeometryType geometryType, const MapType textureType);
+	Texture(std::string path, const unsigned int target, const GeometryType geometryType, const MapType textureType);
 	~Texture();
 
 	void LoadTextureImage(const unsigned int channel);
@@ -69,7 +63,7 @@ public:
 	void Disable();
 
 	inline unsigned int GetRendererID() const { return rendererID; }
-	inline const char* GetPath() const { return path; }
+	inline const std::string& GetPath() const { return path; }
 };
 
 

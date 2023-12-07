@@ -1,11 +1,15 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include <iostream>
-#include <map>
-#include <SOIL2.h>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include <string>
+#include <vector>
 
-#include "mesh.h"	
+class Mesh;
+class Renderer;
+class Texture;
 
 
 

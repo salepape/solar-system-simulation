@@ -1,7 +1,16 @@
+#include <iostream>
+#include <glad.h>
+#include <glfw3.h>
+#include <glm.hpp>
+
 #include "Belt.h"
 #include "Data.h"
+#include "Model.h"
+#include "Orbit.h"
 #include "Renderer.h"
+#include "Shader.h"
 #include "Skybox.h"
+#include "Sphere.h"
 #include "Text.h"
 #include "UX.h"
 
@@ -38,7 +47,7 @@ int main()
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	// Load all OpenGL function pointers (localisations) thanks to GLAD
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
 	{
 		std::cout << "ERROR::GLAD - Failed to initialise GLAD" << std::endl;
 		return -1;
@@ -94,7 +103,7 @@ int main()
 
 
 	// RENDER LOOP (check at the start of each loop iteration if GLFW has been instructed to close every frame)
-	while (!glfwWindowShouldClose(window))
+	while (glfwWindowShouldClose(window) == 0)
 	{
 		if (!paused)
 		{

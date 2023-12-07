@@ -1,5 +1,10 @@
 #include "Renderer.h"
 
+#include <glad.h>
+
+#include "IndexBuffer.h"
+#include "VertexArray.h"
+
 
 
 void Renderer::Clear() const

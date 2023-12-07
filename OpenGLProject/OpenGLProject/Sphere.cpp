@@ -1,8 +1,13 @@
 #include "Sphere.h"
 
+#include <glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
+
+#include "Texture.h"
 
 
-Sphere::Sphere(const char* texturePath, const float radiusArg) : radius(radiusArg)
+Sphere::Sphere(std::string texturePath, const float radiusArg) : radius(radiusArg)
 {
 	Texture* texture = new Texture(texturePath, GL_TEXTURE_2D, GeometryType::SPHERE, MapType::NONE);
 	texture->LoadDDS();

@@ -1,5 +1,7 @@
 #include "VertexBuffer.h"
 
+#include <glad/glad.h>
+
 
 
 VertexBuffer::VertexBuffer(const void* data, const unsigned int size)

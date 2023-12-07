@@ -1,8 +1,6 @@
 #ifndef INDEXBUFFER_H
 #define INDEXBUFFER_H
 
-#include <glad/glad.h>
-
 
 
 class IndexBuffer

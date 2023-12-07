@@ -1,5 +1,10 @@
 #include "Shader.h"
 
+#include <fstream>
+#include <glad.h>
+#include <iostream>
+#include <sstream>
+
 
 
 Shader::Shader(const std::string& vsPath, const std::string& fsPath) :

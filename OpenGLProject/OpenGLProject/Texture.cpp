@@ -1,8 +1,13 @@
 #include "Texture.h"
 
+#include <glad.h>
+#include <iostream>
+#include <SOIL2.h>
+
+
 
 // @todo - Implement effect of mapType of Texture object
-Texture::Texture(const char* pathArg, const unsigned int InTarget, const GeometryType geometryType, const MapType InMapType) :
+Texture::Texture(std::string pathArg, const unsigned int InTarget, const GeometryType geometryType, const MapType InMapType) :
 	path(pathArg), target(InTarget), mapType(InMapType)
 {
 	switch (geometryType)
@@ -44,7 +49,7 @@ void Texture::LoadTextureImage(const unsigned int channel)
 	int width = 0;
 	int height = 0;
 	int nbChannels = 0;
-	unsigned char* data = SOIL_load_image(path, &width, &height, &nbChannels, channel);
+	unsigned char* data = SOIL_load_image(path.c_str(), &width, &height, &nbChannels, channel);
 
 	if (data)
 	{
@@ -78,7 +83,7 @@ void Texture::LoadTextureImage(const unsigned int channel)
 	}
 	else
 	{
-		std::cout << "ERROR::SOIL - Failed to load entity sprite at path " << path << std::endl;
+		std::cout << "ERROR::SOIL - Failed to load entity sprite at path " << path.c_str() << std::endl;
 	}
 
 	SOIL_free_image_data(data);
@@ -93,7 +98,7 @@ void Texture::LoadGlyph(const FT_Face face, const unsigned int format)
 void Texture::LoadDDS()
 {
 	// Already contains glGenTextures function!!!
-	rendererID = SOIL_load_OGL_texture(path, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
+	rendererID = SOIL_load_OGL_texture(path.c_str(), SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
 	if (rendererID == 0)
 	{
@@ -106,7 +111,7 @@ void Texture::LoadDDS()
 void Texture::LoadCubemapDDS()
 {
 	// Already contains glGenTextures function!!!
-	rendererID = SOIL_load_OGL_single_cubemap(path, "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
+	rendererID = SOIL_load_OGL_single_cubemap(path.c_str(), "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
 	if (rendererID == 0)
 	{

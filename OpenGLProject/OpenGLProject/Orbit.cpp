@@ -1,8 +1,15 @@
 #include "Orbit.h"
 
+#include <glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
+
+#include "Renderer.h"
+#include "Texture.h"
 
 
-Orbit::Orbit(const char* texturePath, const float radiusArg) : radius(radiusArg)
+
+Orbit::Orbit(std::string texturePath, const float radiusArg) : radius(radiusArg)
 {
 	texture = new Texture(texturePath, GL_TEXTURE_2D, GeometryType::CIRCLE, MapType::NONE);
 	texture->LoadDDS();

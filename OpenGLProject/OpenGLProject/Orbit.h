@@ -1,11 +1,12 @@
 #ifndef ORBIT_H
 #define ORBIT_H
 
-#include <glm/glm.hpp>
-#include <glm/gtc/constants.hpp>
-#include <vector>
+#include <string>
 
 #include "Mesh.h"
+
+class Renderer;
+class Texture;
 
 
 
@@ -25,7 +26,7 @@ protected:
 	void Compute() override;
 
 public:
-	Orbit(const char* texturePath, const float radiusArg);
+	Orbit(std::string texturePath, const float radiusArg);
 	~Orbit();
 
 	void Render(const Renderer& renderer, const unsigned int& textureUnit) override;

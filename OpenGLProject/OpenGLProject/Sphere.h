@@ -1,10 +1,7 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
-#include <glad/glad.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/constants.hpp>
-#include <vector>
+#include <string>
 
 #include "Mesh.h"
 
@@ -20,7 +17,7 @@ protected:
 	void Compute() override;
 
 public:
-	Sphere(const char* texturePath, const float radiusArg);
+	Sphere(std::string texturePath, const float radiusArg);
 	~Sphere();
 };
 

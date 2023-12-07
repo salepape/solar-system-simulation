@@ -5,7 +5,9 @@
 #include <glm/gtx/matrix_decompose.hpp>
 
 #include "Model.h"
-#include "Renderer.h"
+#include "VertexArray.h"
+
+class Renderer;
 
 
 
@@ -36,12 +38,3 @@ public:
 
 
 #endif // BELT_H
-
-
-
-
-
-
-
-
-

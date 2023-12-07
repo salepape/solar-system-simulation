@@ -1,7 +1,6 @@
 #ifndef VERTEXBUFFER_H
 #define VERTEXBUFFER_H
 
-#include <glad/glad.h>
 #include <vector>
 
 

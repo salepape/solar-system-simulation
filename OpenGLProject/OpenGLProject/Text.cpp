@@ -1,5 +1,13 @@
 #include "Text.h"
 
+#include <glad.h>
+#include <iostream>
+
+#include "Renderer.h"
+#include "Texture.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
+
 
 
 Text::Text()

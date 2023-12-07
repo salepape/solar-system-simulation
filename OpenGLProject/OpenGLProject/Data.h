@@ -1,3 +1,4 @@
+#include <string>
 #include <vector>
 #include <unordered_map>
 
@@ -12,7 +13,7 @@
 
 
 // Paths to retrieve DDS textures
-const char * texturePaths[NUM_TEXTURES] =
+std::string texturePaths[NUM_TEXTURES] =
 {
 	"../Textures/8k_sun.dds",
 
@@ -51,16 +52,16 @@ const char * texturePaths[NUM_TEXTURES] =
 // Represent all info relative to a celestial body
 struct EntityInfo
 {
-	const char * texturePath;	// DDS texture path
+	std::string texturePath;	// DDS texture path
 	float radius;				// Planets and moons (only those > pluto radius in length) radii divided by earth's radius value [in kms]
 	float dist;					// Distances between planets (resp. moons) and sun (resp. the planet around which they turn) divided by earth's distance value [in kms]
 	float obliquity;			// Or axial tilt : angle between planet / moon axis rotation and the normal of its orbital plane [in degrees]
 	float orbPeriod;			// Time the planet (resp. moon) takes to do 1 revolution around the sun (resp. its planet) [in earth days]
 	float rotPeriod;			// Time the planet takes to do a rotation on itself [in earth days]
-	Sphere * sphere;			// Sphere mesh
+	Sphere* sphere;				// Sphere mesh
 	float orbInclination;		// Or "orbital tilt" : angle between planet / moon orbit and the ecliptic [in degrees]
-	Orbit * orbit;				// Orbit mesh
-	EntityInfo * planet;		// Reference to the planet object to be able to make computation for its moon
+	Orbit* orbit;				// Orbit mesh
+	EntityInfo* planet;			// Reference to the planet object to be able to make computation for its moon
 	float angleRot;				// Angle of planet rotation around the sun per frame [in radians]
 };
 

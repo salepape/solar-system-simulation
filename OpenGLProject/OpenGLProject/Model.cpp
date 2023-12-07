@@ -1,5 +1,11 @@
 #include "Model.h"
 
+#include <glad.h>
+#include <iostream>
+
+#include "Mesh.h"
+#include "Texture.h"
+
 
 
 Model::Model(const std::string& path, const bool gammaCorrectionArg) : gammaCorrection(gammaCorrectionArg)
@@ -118,7 +124,7 @@ std::vector<Texture> Model::LoadTextures(const aiMaterial& material, const aiTex
 		bool textureAlreadyLoaded = false;
 		for (unsigned int j = 0; j < loadedTextures.size(); ++j)
 		{
-			if (std::strcmp(loadedTextures[j].GetPath(), TexturePath.C_Str()) == 0)
+			if (std::strcmp(loadedTextures[j].GetPath().c_str(), TexturePath.C_Str()) == 0)
 			{
 				textures.push_back(loadedTextures[j]);
 				textureAlreadyLoaded = true;

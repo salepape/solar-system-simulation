@@ -2,16 +2,13 @@
 #define TEXT_H
 
 #include <ft2build.h>
-#include <glad/glad.h>
 #include <glm/vec2.hpp>
-#include <iostream>
 #include <map>
-#include <vector>
+#include <string>
 
-#include "Renderer.h"
-#include "Texture.h"
-#include "VertexArray.h"
-#include "VertexBuffer.h"
+class Renderer;
+class VertexArray;
+class VertexBuffer;
 
 #include FT_FREETYPE_H
 
@@ -30,7 +27,7 @@ struct Character
 class Text
 {
 private:
-	std::map<GLchar, Character> characters;
+	std::map<char, Character> characters;
 	VertexArray* vao{ nullptr };
 	VertexBuffer* vbo{ nullptr };
 

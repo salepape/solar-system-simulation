@@ -1,8 +1,14 @@
 #include "Skybox.h"
 
+#include <glad.h>
+#include <vector>
+
+#include "Renderer.h"
+#include "Texture.h"
 
 
-Skybox::Skybox(const char* path)
+
+Skybox::Skybox(std::string path)
 {
 	texture = new Texture(path, GL_TEXTURE_CUBE_MAP, GeometryType::CUBE, MapType::NONE);
 	texture->LoadCubemapDDS();

@@ -29,7 +29,7 @@ glm::mat4 Camera::GetViewMatrix() const
 	return glm::lookAt(Position, Position + Forward, Up);
 }
 
-void Camera::ProcessKeyboard(const Camera_Movement direction, const float deltaTime)
+void Camera::ProcessKeyboard(const CameraMovement direction, const float deltaTime)
 {
 	const float distance = MovementSpeed * deltaTime;
 	switch (direction)

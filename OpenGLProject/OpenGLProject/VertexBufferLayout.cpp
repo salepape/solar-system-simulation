@@ -1,5 +1,7 @@
 #include "VertexBufferLayout.h"
 
+#include <glad.h>
+
 
 
 VertexBufferLayout::VertexBufferLayout() : stride(0)
