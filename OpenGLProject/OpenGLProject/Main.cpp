@@ -4,6 +4,7 @@
 #include <glm.hpp>
 
 #include "Belt.h"
+#include "Camera.h"
 #include "Data.h"
 #include "Model.h"
 #include "Orbit.h"
@@ -12,46 +13,31 @@
 #include "Skybox.h"
 #include "Sphere.h"
 #include "Text.h"
-#include "UX.h"
+#include "Window.h"
+
+
 
 
 
 int main()
 {
-	GLFWwindow* window = initGLFWWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL Solar System Simulation");
-	if (window == nullptr)
-	{
-		std::cout << "ERROR::GLFW - Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
+	constexpr unsigned int SCR_WIDTH = 1000;
+	constexpr unsigned int SCR_HEIGHT = 1000;
+	Window window(SCR_WIDTH, SCR_HEIGHT, "Solar System Simulation");
 
-	// Tell GLFW that we want the window context to be the main one on the current thread
-	glfwMakeContextCurrent(window);
-	if (glfwGetCurrentContext() == nullptr)
-	{
-		std::cout << "ERROR::GLFW - Failed to get current context : OpenGL functions will not work correctly" << std::endl;
-		return -1;
-	}
+	Camera camera(glm::vec3(0.0f, 50.0f, 200.0f));
+	window.camera = &camera;
 
-	// Set the framebuffer resize callback of the specified window, called when the framebuffer of the specified window is resized
-	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
-
-	// Detect if any mouse movement is made and react accordingly
-	glfwSetCursorPosCallback(window, mouseCallback);
-
-	// Detect if any mouse whell movement is made and react accordingly
-	glfwSetScrollCallback(window, scrollCallback);
-
-	// Make the cursor invisible to the player and allow movements even if cursor is theorically outside the window
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-	// Load all OpenGL function pointers (localisations) thanks to GLAD
+	// Load all OpenGL function pointers locations using GLAD
 	if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
 	{
 		std::cout << "ERROR::GLAD - Failed to initialise GLAD" << std::endl;
 		return -1;
 	}
+
+
+
+
 
 	// Build and compile shader programs
 	Shader textShader("TextShader.vs", "TextShader.fs");
@@ -59,8 +45,6 @@ int main()
 	Shader asteroidShader("AsteroidShader.vs", "AsteroidShader.fs");
 	Shader skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
 	Shader sphereShader("SphereShader.vs", "SphereShader.fs");
-
-
 
 	// Create text characters
 	Text text;
@@ -102,31 +86,17 @@ int main()
 
 
 
-	// RENDER LOOP (check at the start of each loop iteration if GLFW has been instructed to close every frame)
-	while (glfwWindowShouldClose(window) == 0)
+	// RENDER LOOP (iterating every frame)
+	while (window.DoNotClose())
 	{
-		if (!paused)
-		{
-			// Time elapsed since GLFW initialisation [considered as a dimensionless chrono, but in seconds in reality]
-			currentFrame = static_cast<float>(glfwGetTime());
-
-			// Compute delta time in order to reduce differences between computer processing powers
-			deltaTime = currentFrame - lastFrame;
-			lastFrame = currentFrame;
-		}
-
-		// Check if a specific key is pressed and react accordingly
-		processInput(window);
+		window.UpdateFrames();
+		window.ProcessInput(camera);
 
 		renderer.Clear();
 		renderer.Blend();
 
-
-
-
-
 		// Calculate the PROJECTION matrix (simulate a zoom - set far plane variable to a sufficiently high value)
-		const glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), static_cast<float>(SCR_WIDTH / SCR_HEIGHT), 0.1f, 1000.0f);
+		const glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), static_cast<float>(SCR_WIDTH / SCR_HEIGHT), 0.1f, 1000.0f);
 
 		// Calculate the VIEW matrix (simulate a camera circling around the scene)
 		const glm::mat4 view = camera.GetViewMatrix();
@@ -150,7 +120,7 @@ int main()
 		sphereShader.setUniformFloat("light.constant", 1.0f);
 		sphereShader.setUniformFloat("light.linear", 0.0007f);
 		sphereShader.setUniformFloat("light.quadratic", 0.000002f);
-		sphereShader.setUniformVec3("viewPos", camera.Position);
+		sphereShader.setUniformVec3("viewPos", camera.position);
 
 		textShader.Enable();
 		textShader.setUniformMat4("projection", projection);
@@ -167,14 +137,14 @@ int main()
 			if (it->first != "Sun")
 			{
 				// Angle of rotation around the sun (resp. planet) for planets (resp. moons) per frame
-				angleRot = 2.0f * glm::pi<float>() * currentFrame / it->second.orbPeriod * ACCELERATION;
+				angleRot = 2.0f * glm::pi<float>() * window.GetCurrentFrame() / it->second.orbPeriod * window.GetAccelerationFactor();
 				if (it->second.planet == nullptr)
 				{
 					it->second.angleRot = angleRot;
 				}
 
 				// Angle of rotation of the celestial body around itself per frame
-				angleRotItself = 2.0f * glm::pi<float>() * currentFrame * it->second.rotPeriod * ACCELERATION;
+				angleRotItself = 2.0f * glm::pi<float>() * window.GetCurrentFrame() * it->second.rotPeriod * window.GetAccelerationFactor();
 			}
 
 			// Calculate the MODEL matrices (simulate movements that affects the current celestial body)
@@ -214,7 +184,7 @@ int main()
 				saturnRingsShader.setUniformFloat("light.constant", 1.0f);
 				saturnRingsShader.setUniformFloat("light.linear", 0.0007f);
 				saturnRingsShader.setUniformFloat("light.quadratic", 0.000002f);
-				saturnRingsShader.setUniformVec3("viewPos", camera.Position);
+				saturnRingsShader.setUniformVec3("viewPos", camera.position);
 				saturnRings.Render(renderer, samplerID);
 				++samplerID;
 			}
@@ -239,11 +209,11 @@ int main()
 
 
 			// Draw billboard (containing current celestial body name) on top of current celestial body
-			if (paused)
+			if (window.GetIsPaused())
 			{
 				// Orient text to camera position
-				const glm::vec3 look = glm::normalize(camera.Position - glm::vec3(modelText[3]));
-				const glm::vec3 right = glm::cross(camera.Up, look);
+				const glm::vec3 look = glm::normalize(camera.position - glm::vec3(modelText[3]));
+				const glm::vec3 right = glm::cross(camera.up, look);
 				const glm::vec3 up2 = cross(look, right);
 				modelText[0] = glm::vec4(right, 0);
 				modelText[1] = glm::vec4(up2, 0);
@@ -295,7 +265,7 @@ int main()
 		asteroidShader.setUniformFloat("light.constant", 1.0f);
 		asteroidShader.setUniformFloat("light.linear", 0.0007f);
 		asteroidShader.setUniformFloat("light.quadratic", 0.000002f);
-		asteroidShader.setUniformVec3("viewPos", camera.Position);
+		asteroidShader.setUniformVec3("viewPos", camera.position);
 		asteroidShader.setUniformInt("material.diffuse", samplerID);
 		asteroidBelt.Render(renderer, samplerID);
 		++samplerID;
@@ -318,15 +288,11 @@ int main()
 
 
 
-		// Swap font and back buffers (we sent to the screen the updated buffer)
-		glfwSwapBuffers(window);
-
-		// Check if any events are triggered, updates the window states and call the corresponding functions
-		glfwPollEvents();
+		window.SwapBuffers();
+		window.PollEvents();
 	}
 
-	// Clean up properly all previous allocated GLFW resources
-	glfwTerminate();
+	window.FreeUpResources();
 
 	return 0;
 }
