@@ -23,7 +23,7 @@ struct Light
     vec3 specular;
     bool isBlinn;
 
-    // Terms of atenuation spotlight formula
+    // Terms of attenuation spotlight formula
     float constant;
     float linear;
     float quadratic;
