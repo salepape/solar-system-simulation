@@ -31,12 +31,6 @@ enum class MapType
 
 class Texture
 {
-private:
-	unsigned int target{ 0 };
-	unsigned int rendererID{ 0 };
-	std::string path;
-	MapType mapType;
-
 public:
 	Texture(std::string path, const unsigned int target, const GeometryType geometryType, const MapType textureType);
 	~Texture();
@@ -46,7 +40,7 @@ public:
 	void LoadDDS();
 	void LoadCubemapDDS();
 
-	// Set the texture wrapping option(on the currently bound texture object)
+	// Set the texture wrapping option (on the currently bound texture object) using (s,t,r) texture coordinates
 	void SetWraps(const unsigned int wrapType);
 	void SetWraps(const unsigned int s, const unsigned int t);
 	void SetWraps(const unsigned int s, const unsigned int t, const unsigned int r);
@@ -59,11 +53,20 @@ public:
 	void Bind() const;
 	void Unbind() const;
 
+	// Activate the texture unit then bind texture
 	void Enable(unsigned int textUnit);
+
+	// Set everything back to default once texture is configured
 	void Disable();
 
 	inline unsigned int GetRendererID() const { return rendererID; }
 	inline const std::string& GetPath() const { return path; }
+
+private:
+	unsigned int target{ 0 };
+	unsigned int rendererID{ 0 };
+	std::string path;
+	MapType mapType;
 };
 
 

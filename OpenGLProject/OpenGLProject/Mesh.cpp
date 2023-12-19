@@ -56,8 +56,6 @@ void Mesh::Store()
 		ibo->Bind();
 	}
 
-	// how to read that position in Vertex struct is of 3 elmts with glm::vec3
-	// Can we parse the shader to read the attribute locations?
 	VertexBufferLayout vbl;
 	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, Vertex::GetPositionNumElmts());
 	vbl.AddAttributeLayout(VertexAttributeLocation::Normal, GL_FLOAT, Vertex::GetNormalNumElmts());

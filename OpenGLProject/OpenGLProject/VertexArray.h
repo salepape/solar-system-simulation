@@ -11,9 +11,6 @@
 
 class VertexArray
 {
-private:
-	unsigned int rendererID;
-
 public:
 	VertexArray();
 	~VertexArray();
@@ -26,6 +23,9 @@ public:
 
 	void AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout);
 	void AddInstancedBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout);
+
+private:
+	unsigned int rendererID;
 };
 
 

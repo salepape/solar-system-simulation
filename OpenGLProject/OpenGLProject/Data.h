@@ -1,3 +1,4 @@
+#include <array>
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -6,17 +7,18 @@
 #include "Sphere.h"
 #include "Texture.h"
 
-#define DIST_SCALE_FACTOR 10.0f
-#define NUM_TEXTURES 19
-//#define nbTextures 21
+constexpr int NUM_TEXTURES = 19;
+constexpr float DIST_SCALE_FACTOR = 10.0f;
 
 
 
 // Paths to retrieve DDS textures
-std::string texturePaths[NUM_TEXTURES] =
+std::array<const std::string, NUM_TEXTURES> texturePaths
 {
+	// Star
 	"../Textures/8k_sun.dds",
 
+	// Planets
 	"../Textures/Planets/8k_mercury.dds",
 	"../Textures/Planets/4k_venus_atmosphere.dds",		//"../Textures/Planets/8k_venus.dds"
 	"../Textures/Planets/8k_earth.dds",
@@ -40,11 +42,7 @@ std::string texturePaths[NUM_TEXTURES] =
 	"../Textures/Satellites/triton.dds",
 
 	// Normal maps
-	"../Textures/Planets/8k_earth_normal_map.png",
-
-	//// Other entities
-	//"../Textures/8k_sun.dds",
-	//"../Textures/8k_sun.dds"
+	"../Textures/Planets/8k_earth_normal_map.png"
 };
 
 

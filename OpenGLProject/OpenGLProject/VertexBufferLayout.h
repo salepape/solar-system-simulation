@@ -31,10 +31,6 @@ struct VertexAttributeLayout
 
 class VertexBufferLayout
 {
-private:
-	std::vector<VertexAttributeLayout> attributeLayouts;
-	unsigned int stride;
-
 public:
 	VertexBufferLayout();
 	~VertexBufferLayout();
@@ -44,6 +40,10 @@ public:
 	inline const std::vector<VertexAttributeLayout> GetAttributeLayouts() const { return attributeLayouts; }
 
 	inline unsigned int GetStride() const { return stride; }
+
+private:
+	std::vector<VertexAttributeLayout> attributeLayouts;
+	unsigned int stride;
 };
 
 

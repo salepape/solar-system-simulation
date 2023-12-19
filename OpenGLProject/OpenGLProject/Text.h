@@ -26,16 +26,6 @@ struct Character
 // Text encompassing all texts (name of each celestial body) appearing within the simulation
 class Text
 {
-private:
-	std::map<char, Character> characters;
-	VertexArray* vao{ nullptr };
-	VertexBuffer* vbo{ nullptr };
-
-	// Return the width of the text (spaces included)
-	float GetBillboardSize(const std::string text, const float scale);
-
-	static constexpr int GetPositionNbElmts() { return 4; }
-
 public:
 	// Creature texture for each ASCII character
 	Text();
@@ -45,6 +35,16 @@ public:
 
 	// Render line of text
 	void Render(const Renderer& renderer, const std::string text, float x, const float y, const float scale, const unsigned int& textUnit);
+
+private:
+	std::map<char, Character> characters;
+	VertexArray* vao{ nullptr };
+	VertexBuffer* vbo{ nullptr };
+
+	// Return the width of the text (spaces included)
+	float GetBillboardSize(const std::string text, const float scale);
+
+	static constexpr int GetPositionNbElmts() { return 4; }
 };
 
 

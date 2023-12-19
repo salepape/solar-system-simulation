@@ -13,6 +13,12 @@ class Renderer;
 
 class Belt
 {
+public:
+	Belt(const Model asteroidArg, const unsigned int asteroidNbArg, const int sizeFactorArg, const float majorRadiusArg, const float minorRadiusArg);
+	~Belt();
+
+	void Render(const Renderer& renderer, const unsigned int& textureUnit);
+
 private:
 	unsigned int asteroidNb{ 0 };
 	int sizeFactor{ 1 };
@@ -27,12 +33,6 @@ private:
 	void Store();
 
 	static constexpr int GetInstanceMatrixNumElmts() { return 4; }
-
-public:
-	Belt(const Model asteroidArg, const unsigned int asteroidNbArg, const int sizeFactorArg, const float majorRadiusArg, const float minorRadiusArg);
-	~Belt();
-
-	void Render(const Renderer& renderer, const unsigned int& textureUnit);
 };
 
 

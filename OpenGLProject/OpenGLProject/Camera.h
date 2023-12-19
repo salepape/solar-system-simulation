@@ -5,7 +5,7 @@
 
 
 
-// Defines several possible options for camera movement (used as abstraction to stay away from window-system specific input methods)
+// Defines several options for camera movement (used as abstraction to stay away from window-system specific input methods)
 enum CameraMovement
 {
 	FORWARD,
@@ -25,29 +25,24 @@ constexpr float ZOOM = 45.0f;				// [in degrees]
 
 
 
-// Camera class that processes input and calculates the corresponding Euler angles, vectors and matrices for OpenGL to use
+// Camera class that processes input and calculates the corresponding Euler angles, vectors and matrices
 class Camera
 {
-private:
-	// Compute updated Forward, Right and Up vectors from the Camera's updated Euler Angles
-	void UpdateCameraVectors();
-
 public:
-	glm::vec3 Position;
-	glm::vec3 Forward;
-	glm::vec3 Up;
-	glm::vec3 Right;
-	glm::vec3 WorldUp;
-
-	float Yaw{ 0.0f };
-	float Pitch{ 0.0f };
-
-	float MovementSpeed{ 0.0f };
-	float MouseSensitivity{ 0.0f };
-	float Zoom{ 0.0f };
-
 	Camera(const glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), const glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), const float yaw = YAW, const float pitch = PITCH);
-	Camera(const float posX, const float posY, const float posZ, const float upX, const float upY, const float upZ, const float yaw, const float pitch);
+
+	glm::vec3 position;
+	glm::vec3 worldUp;
+	glm::vec3 up;
+	glm::vec3 right;
+	glm::vec3 forward;
+
+	float yaw{ 0.0f };
+	float pitch{ 0.0f };
+
+	float movementSpeed{ 0.0f };
+	float mouseSensitivity{ 0.0f };
+	float zoom{ 0.0f };
 
 	// Compute View matrix using LookAt matrix
 	glm::mat4 GetViewMatrix() const;
@@ -60,6 +55,10 @@ public:
 
 	// Process input received from a mouse scroll-wheel event (only requires input on the vertical wheel-axis)
 	void ProcessMouseScroll(const float yoffset);
+
+private:
+	// Compute updated Forward, Right and Up vectors from the Camera's updated Euler Angles
+	void UpdateCameraVectors();
 };
 
 

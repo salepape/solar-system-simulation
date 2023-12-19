@@ -15,6 +15,15 @@ class Texture;
 
 class Model
 {
+public:
+	Model(const std::string& path, const bool gammaCorrectionArg = false);
+	~Model();
+
+	inline std::vector<Texture> GetTextures() const { return loadedTextures; }
+	inline std::vector<Mesh> GetMeshes() const { return meshes; }
+
+	void Render(const Renderer& renderer, const unsigned int& textureUnit);
+
 private:
 	// Stores all the textures loaded so far to make sure each is only loaded once
 	std::vector<Texture> loadedTextures;
@@ -30,15 +39,6 @@ private:
 
 	// Check all textures of a given type for a given material and loads them if they're not loaded yet
 	std::vector<Texture> LoadTextures(const aiMaterial& material, const aiTextureType type);
-
-public:
-	Model(const std::string& path, const bool gammaCorrectionArg = false);
-	~Model();
-
-	inline std::vector<Texture> GetTextures() const { return loadedTextures; }
-	inline std::vector<Mesh> GetMeshes() const { return meshes; }
-
-	void Render(const Renderer& renderer, const unsigned int& textureUnit);
 };
 
 

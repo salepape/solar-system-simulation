@@ -53,7 +53,7 @@ void Texture::LoadTextureImage(const unsigned int channel)
 
 	if (data)
 	{
-		unsigned int format;
+		unsigned int format = GL_RGBA;
 		switch (nbChannels)
 		{
 		case 1:
@@ -91,6 +91,11 @@ void Texture::LoadTextureImage(const unsigned int channel)
 
 void Texture::LoadGlyph(const FT_Face face, const unsigned int format)
 {
+	if (face == false)
+	{
+		return;
+	}
+
 	glTexImage2D(target, 0, format, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, format, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
@@ -159,7 +164,6 @@ void Texture::SetFilters(const unsigned int min, const unsigned int mag)
 
 void Texture::Bind() const
 {
-	// Bind texture name to the OpenGL target we want (expl : a 2D texture called GL_TEXTURE_2D)
 	glBindTexture(target, rendererID);
 }
 
@@ -170,14 +174,12 @@ void Texture::Unbind() const
 
 void Texture::Enable(unsigned int textUnit)
 {
-	// Activate the texture unit before binding texture
 	glActiveTexture(GL_TEXTURE0 + textUnit);
 	Bind();
 }
 
 void Texture::Disable()
 {
-	// Set everything back to default once configured
 	glActiveTexture(0);
 	Unbind();
 }

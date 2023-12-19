@@ -2,112 +2,101 @@
 
 
 
-Camera::Camera(const glm::vec3 position, const glm::vec3 up, const float yaw, const float pitch) :
-	Forward(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+Camera::Camera(const glm::vec3 inPosition, const glm::vec3 inUp, const float inYaw, const float inPitch) :
+	forward(glm::vec3(0.0f, 0.0f, -1.0f)), movementSpeed(SPEED), mouseSensitivity(SENSITIVITY), zoom(ZOOM)
 {
-	Position = position;
-	WorldUp = up;
-	Yaw = yaw;
-	Pitch = pitch;
-
-	UpdateCameraVectors();
-}
-
-Camera::Camera(const float posX, const float posY, const float posZ, const float upX, const float upY, const float upZ, const float yaw, const float pitch) :
-	Forward(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
-{
-	Position = glm::vec3(posX, posY, posZ);
-	WorldUp = glm::vec3(upX, upY, upZ);
-	Yaw = yaw;
-	Pitch = pitch;
+	position = inPosition;
+	worldUp = inUp;
+	yaw = inYaw;
+	pitch = inPitch;
 
 	UpdateCameraVectors();
 }
 
 glm::mat4 Camera::GetViewMatrix() const
 {
-	return glm::lookAt(Position, Position + Forward, Up);
+	return glm::lookAt(position, position + forward, up);
 }
 
 void Camera::ProcessKeyboard(const CameraMovement direction, const float deltaTime)
 {
-	const float distance = MovementSpeed * deltaTime;
+	const float distance = movementSpeed * deltaTime;
 	switch (direction)
 	{
 	case FORWARD:
 	{
-		Position += Forward * distance;
+		position += forward * distance;
 		break;
 	}
 	case BACKWARD:
 	{
-		Position -= Forward * distance;
+		position -= forward * distance;
 		break;
 	}
 	case RIGHT:
 	{
-		Position += Right * distance;
+		position += right * distance;
 		break;
 	}
 	case LEFT:
 	{
-		Position -= Right * distance;
+		position -= right * distance;
 		break;
 	}
 	case UP:
 	{
-		Position += Up * distance;
+		position += up * distance;
 		break;
 	}
 	case DOWN:
 	{
-		Position -= Up * distance;
+		position -= up * distance;
 		break;
 	}
 	}
 }
 
-void Camera::ProcessMouseMovement(float xoffset, float yoffset, const bool constrainPitch)
+void Camera::ProcessMouseMovement(float xOffset, float yOffset, const bool constrainPitch)
 {
-	xoffset *= MouseSensitivity;
-	yoffset *= MouseSensitivity;
+	xOffset *= mouseSensitivity;
+	yOffset *= mouseSensitivity;
 
-	Yaw += xoffset;
-	Pitch += yoffset;
+	yaw += xOffset;
+	pitch += yOffset;
 
 	// Make sure that when Pitch is out of bounds, screen doesn't get flipped
 	if (constrainPitch)
 	{
-		Pitch = std::fmin(Pitch, 89.0f);
-		Pitch = std::fmax(Pitch, -89.0f);
+		pitch = std::fmin(pitch, 89.0f);
+		pitch = std::fmax(pitch, -89.0f);
 	}
 
 	UpdateCameraVectors();
 }
 
-void Camera::ProcessMouseScroll(const float yoffset)
+void Camera::ProcessMouseScroll(const float yOffset)
 {
-	if (Zoom >= 1.0f && Zoom <= 45.0f)
+	if (zoom >= 1.0f && zoom <= 45.0f)
 	{
-		Zoom -= yoffset;
+		zoom -= yOffset;
 	}
 
-	Zoom = std::fmax(Zoom, -1.0f);
-	Zoom = std::fmin(Zoom, 45.0f);
+	zoom = std::fmax(zoom, -1.0f);
+	zoom = std::fmin(zoom, 45.0f);
 }
 
 void Camera::UpdateCameraVectors()
 {
 	// Normalise vectors because their length gets closer to 0 the more you look up or down, which results in slower movement
 	glm::vec3 newForward;
-	newForward.x = glm::cos(glm::radians(Yaw)) * glm::cos(glm::radians(Pitch));
-	newForward.y = glm::sin(glm::radians(Pitch));
-	newForward.z = glm::sin(glm::radians(Yaw)) * glm::cos(glm::radians(Pitch));
-	Forward = glm::normalize(newForward);
+	newForward.x = glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
+	newForward.y = glm::sin(glm::radians(pitch));
+	newForward.z = glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
+	forward = glm::normalize(newForward);
 
-	Right = glm::normalize(glm::cross(Forward, WorldUp));
+	right = glm::normalize(glm::cross(forward, worldUp));
 
-	Up = glm::normalize(glm::cross(Right, Forward));
+	up = glm::normalize(glm::cross(right, forward));
 }
 
 

@@ -17,6 +17,11 @@ Belt::Belt(const Model asteroidArg, const unsigned int asteroidNbArg, const int 
 	Store();
 }
 
+Belt::~Belt()
+{
+	vao.~VertexArray();
+}
+
 void Belt::Compute()
 {
 	modelMatrices = new glm::mat4[asteroidNb];
@@ -75,11 +80,6 @@ void Belt::Store()
 
 		vao.Unbind();
 	}
-}
-
-Belt::~Belt()
-{
-	vao.~VertexArray();
 }
 
 void Belt::Render(const Renderer& renderer, const unsigned int& textureUnit)

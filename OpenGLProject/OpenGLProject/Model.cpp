@@ -152,6 +152,3 @@ void Model::Render(const Renderer& renderer, const unsigned int& textureUnit)
 		meshes[i].Render(renderer, textureUnit);
 	}
 }
-
-
-

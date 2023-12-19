@@ -15,6 +15,21 @@ enum class ObjectType
 // Class dealing with vertex and fragment GLSL shaders
 class Shader
 {
+public:
+	Shader(const std::string& vsPath, const std::string& fsPath);
+	~Shader();
+
+	void Enable() const;
+	void Disable() const;
+
+	// Utility uniform setters
+	void setUniformBool(const std::string& name, const bool value);
+	void setUniformInt(const std::string& name, const int value);
+	void setUniformFloat(const std::string& name, const float value);
+	void setUniformVec3(const std::string& name, const glm::vec3& value);
+	void setUniformVec3(const std::string& name, const float x, const float y, const float z);
+	void setUniformMat4(const std::string& name, const glm::mat4& mat);
+
 private:
 	unsigned int rendererID{ 0 };
 	std::unordered_map<std::string, int> uniformLocationCache;
@@ -32,21 +47,6 @@ private:
 	void CheckValidity(const unsigned int ID, const ObjectType errorCode);
 
 	int GetUniformLocation(const std::string& name);
-
-public:
-	Shader(const std::string& vsPath, const std::string& fsPath);
-	~Shader();
-
-	void Enable() const;
-	void Disable() const;
-
-	// Utility uniform setters
-	void setUniformBool(const std::string& name, const bool value);
-	void setUniformInt(const std::string& name, const int value);
-	void setUniformFloat(const std::string& name, const float value);
-	void setUniformVec3(const std::string& name, const glm::vec3& value);
-	void setUniformVec3(const std::string& name, const float x, const float y, const float z);
-	void setUniformMat4(const std::string& name, const glm::mat4& mat);
 };
 
 

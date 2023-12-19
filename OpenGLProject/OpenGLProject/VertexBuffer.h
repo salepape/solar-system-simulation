@@ -7,9 +7,6 @@
 
 class VertexBuffer
 {
-private:
-	unsigned int rendererID;
-
 public:
 	VertexBuffer(const void* data, const unsigned int size);
 	~VertexBuffer();
@@ -21,6 +18,9 @@ public:
 	void Unbind() const;
 
 	void InitSubData(const std::vector<std::vector<float>*>& data);
+
+private:
+	unsigned int rendererID;
 };
 
 

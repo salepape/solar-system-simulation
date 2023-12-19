@@ -29,6 +29,18 @@ struct Vertex
 
 class Mesh
 {
+public:
+	// Built in code
+	Mesh();
+	// Built by parsing the model coming from a 3D modeling software
+	Mesh(const std::vector<Vertex> verticesArg, const std::vector<unsigned int> indicesArg, const std::vector<Texture> texturesArg);
+	virtual ~Mesh();
+
+	virtual void Render(const Renderer& renderer, const unsigned int& textureUnit);
+
+	inline VertexArray& GetVaoRef() const { return *vao; };
+	inline unsigned int GetIndicesCount() const { return indices.size(); }
+
 protected:
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
@@ -43,18 +55,6 @@ protected:
 
 	// Set vertex buffers and its attribute pointers once we have all required data
 	virtual void Store();
-
-public:
-	// Built in code
-	Mesh();
-	// Built by parsing the model coming from a 3D modeling software
-	Mesh(const std::vector<Vertex> verticesArg, const std::vector<unsigned int> indicesArg, const std::vector<Texture> texturesArg);
-	virtual ~Mesh();
-
-	virtual void Render(const Renderer& renderer, const unsigned int& textureUnit);
-
-	inline VertexArray& GetVaoRef() const { return *vao; };
-	inline unsigned int GetIndicesCount() const { return indices.size(); }
 };
 
 
