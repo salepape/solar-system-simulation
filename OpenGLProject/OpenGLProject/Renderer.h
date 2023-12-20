@@ -28,11 +28,19 @@ public:
 	// Change depth function so that depth test passes when values are inferior to depth buffer's content
 	void DepthLess() const;
 
+	// Set "RGB + alpha" coefficients for background color
 	void SetColor();
 
+	// For belts
 	void DrawInstanced(const VertexArray& vao, const unsigned int iboCount, const unsigned int count) const;
+
+	// For skybox and text
 	void Draw(const VertexArray& vao, const IndexBuffer& ibo, const unsigned int mode, const unsigned int count) const;
+
+	// For meshes
 	void Draw(const VertexArray& vao, const IndexBuffer& ibo) const;
+
+	// For orbits
 	void Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count) const;
 };
 

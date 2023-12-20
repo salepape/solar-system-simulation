@@ -51,6 +51,9 @@ void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& l
 
 void VertexArray::AddInstancedBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout)
 {
+	//Bind();
+	//vbo.Bind();
+
 	const auto& attributeLayouts = layout.GetAttributeLayouts();
 	unsigned int offset = 0;
 

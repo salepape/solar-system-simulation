@@ -45,24 +45,16 @@ void Renderer::DepthLess() const
 
 void Renderer::SetColor()
 {
-	// Set "RGB + alpha" coefficients for background color
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-
-
-
-// belt
 void Renderer::DrawInstanced(const VertexArray& vao, const unsigned int iboCount, const unsigned int count) const
 {
 	vao.Bind();
-	//ibo.Bind();
 	glDrawElementsInstanced(GL_TRIANGLES, iboCount, GL_UNSIGNED_INT, 0, count);
-	//ibo.Unbind();
 	vao.Unbind();
 }
 
-// skybox & text
 void Renderer::Draw(const VertexArray& vao, const IndexBuffer& ibo, const unsigned int mode, const unsigned int count) const
 {
 	vao.Bind();
@@ -72,7 +64,6 @@ void Renderer::Draw(const VertexArray& vao, const IndexBuffer& ibo, const unsign
 	vao.Unbind();
 }
 
-// mesh & spheres
 void Renderer::Draw(const VertexArray& vao, const IndexBuffer& ibo) const
 {
 	vao.Bind();
@@ -82,14 +73,9 @@ void Renderer::Draw(const VertexArray& vao, const IndexBuffer& ibo) const
 	vao.Unbind();
 }
 
-// orbit
 void Renderer::Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count) const
 {
 	vao.Bind();
-	//ibo.Bind();
 	glDrawArrays(mode, 0, count);
-	//ibo.Unbind();
 	vao.Unbind();
 }
-
-
