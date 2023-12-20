@@ -66,7 +66,8 @@ void Mesh::Store()
 
 	if (indices.empty() == false)
 	{
-		ibo->Unbind();
+		// @todo - Figure out why not commenting this line screw up instancing
+		//ibo->Unbind();
 	}
 
 	vao->Unbind();
