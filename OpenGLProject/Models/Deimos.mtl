@@ -1,0 +1,15 @@
+# Material definition name
+newmtl DeimosMaterial
+
+# Material parameters
+Ka 1.000000 1.000000 1.000000		# Ambiant Colour
+Kd 1.000000 1.000000 1.000000		# Diffuse Colour
+Ks 0.500000 0.500000 0.500000		# Specular Colour
+Ns 96.078431				# Specular exponent
+Ke 0.000000 0.000000 0.000000		# Emissive Colour
+Ni 1.000000				# Refraction index
+d 1.000000				# Dissolve
+illum 2					# Illumination model -> 2 : highlight on
+
+# PNG Texture path
+map_Kd ../Textures/Satellites/deimos.DDS

@@ -173,14 +173,12 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AsteroidShader.fs" />
-    <None Include="AsteroidShader.vs" />
-    <None Include="SaturnRingsShader.fs" />
-    <None Include="SaturnRingsShader.vs" />
+    <None Include="InstancedModelShader.fs" />
+    <None Include="InstancedModelShader.vs" />
     <None Include="SkyboxShader.fs" />
     <None Include="SkyboxShader.vs" />
-    <None Include="SphereShader.fs" />
-    <None Include="SphereShader.vs" />
+    <None Include="DefaultShader.fs" />
+    <None Include="DefaultShader.vs" />
     <None Include="TextShader.fs" />
     <None Include="TextShader.vs" />
   </ItemGroup>

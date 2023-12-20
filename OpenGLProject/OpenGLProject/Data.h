@@ -7,7 +7,7 @@
 #include "Sphere.h"
 #include "Texture.h"
 
-constexpr int NUM_TEXTURES = 19;
+constexpr int NUM_TEXTURES = 21;
 constexpr float DIST_SCALE_FACTOR = 10.0f;
 
 
@@ -16,7 +16,7 @@ constexpr float DIST_SCALE_FACTOR = 10.0f;
 std::array<const std::string, NUM_TEXTURES> texturePaths
 {
 	// Star
-	"../Textures/8k_sun.dds",
+	"../Textures/Stars/8k_sun.dds",
 
 	// Planets
 	"../Textures/Planets/8k_mercury.dds",
@@ -40,6 +40,8 @@ std::array<const std::string, NUM_TEXTURES> texturePaths
 	"../Textures/Satellites/io.dds",
 	"../Textures/Satellites/titan.dds",
 	"../Textures/Satellites/triton.dds",
+	"../Textures/Satellites/deimos.dds",
+	"../Textures/Satellites/phobos.dds",
 
 	// Normal maps
 	"../Textures/Planets/8k_earth_normal_map.png"
@@ -51,16 +53,16 @@ std::array<const std::string, NUM_TEXTURES> texturePaths
 struct EntityInfo
 {
 	std::string texturePath;	// DDS texture path
-	float radius;				// Planets and moons (only those > pluto radius in length) radii divided by earth's radius value [in kms]
-	float dist;					// Distances between planets (resp. moons) and sun (resp. the planet around which they turn) divided by earth's distance value [in kms]
-	float obliquity;			// Or axial tilt : angle between planet / moon axis rotation and the normal of its orbital plane [in degrees]
+	float radius;				// Planet or moon (only those > pluto radius in length) radius divided by earth's radius [in kms]
+	float dist;					// Distance between planet (resp. moon) and sun (resp. the planet around which they gravitate) divided by sun-earth distance [in kms]
+	float obliquity;			// Or axial tilt: angle between planet/moon axis rotation and the normal of its orbital plane [in degrees]
 	float orbPeriod;			// Time the planet (resp. moon) takes to do 1 revolution around the sun (resp. its planet) [in earth days]
 	float rotPeriod;			// Time the planet takes to do a rotation on itself [in earth days]
-	Sphere* sphere;				// Sphere mesh
-	float orbInclination;		// Or "orbital tilt" : angle between planet / moon orbit and the ecliptic [in degrees]
-	Orbit* orbit;				// Orbit mesh
-	EntityInfo* planet;			// Reference to the planet object to be able to make computation for its moon
-	float angleRot;				// Angle of planet rotation around the sun per frame [in radians]
+	Sphere* sphere;				// Pointer to the sphere mesh
+	float orbInclination;		// Or "orbital tilt": angle between planet/moon orbit and the ecliptic [in degrees]
+	Orbit* orbit;				// Pointer to the orbit mesh
+	EntityInfo* planetInfo;		// Pointer to the planet mesh info (only needed for moon computations)
+	float angleRotInRadians;	// Filled in later: angle of planet rotation around the sun per frame [in radians]
 };
 
 // Solar System celestial bodies data
@@ -92,6 +94,8 @@ void LoadData()
 	data.insert(dataElmt("Europa",		{ texturePaths[13], 0.245f, data["Jupiter"].radius + 0.671f * DIST_SCALE_FACTOR, 0.1f,   3.55f,     3.55f,   nullptr, 1.791f,   nullptr, &data["Jupiter"] }));
 	data.insert(dataElmt("Ganymede",	{ texturePaths[14], 0.413f, data["Jupiter"].radius + 1.07f * DIST_SCALE_FACTOR,  0.16f,  7.15f,     7.15f,   nullptr, 2.214f,   nullptr, &data["Jupiter"] }));
 	data.insert(dataElmt("Io",			{ texturePaths[15], 0.286f, data["Jupiter"].radius + 0.422f * DIST_SCALE_FACTOR, 0.0f,   1.77f,     1.77f,   nullptr, 2.213f,   nullptr, &data["Jupiter"] }));
-	data.insert(dataElmt("Titan",		{ texturePaths[16], 0.404f, data["Saturn"].radius + 1.222f * DIST_SCALE_FACTOR,  0.0f,   15.95f,    15.95f,  nullptr, 0.0f,	  nullptr, &data["Saturn"] }));
+	data.insert(dataElmt("Titan",		{ texturePaths[16], 0.404f, data["Saturn"].radius + 1.222f * DIST_SCALE_FACTOR,  0.0f,   15.95f,    15.95f,  nullptr, 0.0f,		nullptr, &data["Saturn"] }));
 	data.insert(dataElmt("Triton",		{ texturePaths[17], 0.212f, data["Neptune"].radius + 0.354f * DIST_SCALE_FACTOR, 0.0f,   5.88f,     5.88f,   nullptr, 129.812f, nullptr, &data["Neptune"] }));
+	data.insert(dataElmt("Deimos",		{ texturePaths[18], 0.000f,	data["Mars"].radius + 0.156f * DIST_SCALE_FACTOR,	 0.0f,   1.263f,    1.263f,  nullptr, 27.58f,	nullptr, &data["Mars"] }));
+	data.insert(dataElmt("Phobos",		{ texturePaths[19], 0.000f,	data["Mars"].radius + 0.94f * DIST_SCALE_FACTOR,	 0.0f,	 0.319f,    0.319f,  nullptr, 28.4f,	nullptr, &data["Mars"] }));
 }

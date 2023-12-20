@@ -19,6 +19,7 @@ public:
 	Shader(const std::string& vsPath, const std::string& fsPath);
 	~Shader();
 
+	// Needs to be called before we initialise a uniform of the shader
 	void Enable() const;
 	void Disable() const;
 

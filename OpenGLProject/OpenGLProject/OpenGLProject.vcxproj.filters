@@ -133,34 +133,28 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AsteroidShader.fs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="AsteroidShader.vs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="SkyboxShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="SkyboxShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="SphereShader.fs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="SphereShader.vs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="SaturnRingsShader.vs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="SaturnRingsShader.fs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="TextShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="TextShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="InstancedModelShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="InstancedModelShader.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="DefaultShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="DefaultShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>
