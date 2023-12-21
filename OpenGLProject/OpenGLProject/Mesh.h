@@ -39,7 +39,7 @@ public:
 	virtual void Render(const Renderer& renderer, const unsigned int& textureUnit);
 
 	inline VertexArray& GetVaoRef() const { return *vao; };
-	inline unsigned int GetIndicesCount() const { return indices.size(); }
+	inline size_t GetIndicesCount() const { return indices.size(); }
 
 protected:
 	std::vector<Vertex> vertices;

@@ -42,11 +42,11 @@ void Mesh::Store()
 	}
 
 	vao = new VertexArray();
-	vbo = new VertexBuffer(vertices.data(), vertices.size() * sizeof(Vertex));
+	vbo = new VertexBuffer(vertices.data(), static_cast<unsigned int>(vertices.size()) * sizeof(Vertex));
 	
 	if (indices.empty() == false)
 	{
-		ibo = new IndexBuffer(indices.data(), indices.size());
+		ibo = new IndexBuffer(indices.data(), static_cast<const unsigned int>(indices.size()));
 	}
 
 	vao->Bind();

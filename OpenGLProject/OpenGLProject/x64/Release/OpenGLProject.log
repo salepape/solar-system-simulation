@@ -1,0 +1,36 @@
+﻿  Belt.cpp
+c:\git\solar-system-simulation\openglproject\openglproject\mesh.h(42): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+  Main.cpp
+c:\git\solar-system-simulation\openglproject\openglproject\mesh.h(42): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+  Mesh.cpp
+c:\git\solar-system-simulation\openglproject\openglproject\mesh.h(42): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+  Model.cpp
+c:\git\solar-system-simulation\openglproject\openglproject\mesh.h(42): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+  Orbit.cpp
+c:\git\solar-system-simulation\openglproject\openglproject\mesh.h(42): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+  Skybox.cpp
+c:\git\solar-system-simulation\openglproject\openglproject\mesh.h(42): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+  Sphere.cpp
+c:\git\solar-system-simulation\openglproject\openglproject\mesh.h(42): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Generating code
+  2 of 1649 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(context.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+glfw3.lib(init.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(init.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+glfw3.lib(input.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(input.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(monitor.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+glfw3.lib(vulkan.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(vulkan.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+glfw3.lib(window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(window.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_init.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_init.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_joystick.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_joystick.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_monitor.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_time.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_time.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_thread.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_thread.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_window.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+glfw3.lib(wgl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(wgl_context.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+glfw3.lib(egl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(egl_context.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+glfw3.lib(osmesa_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(osmesa_context.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\glfw.pdb'; linking object as if no debug info
+  OpenGLProject.vcxproj -> C:\GIT\solar-system-simulation\OpenGLProject\x64\Release\OpenGLProject.exe

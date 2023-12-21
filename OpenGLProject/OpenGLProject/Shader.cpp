@@ -26,34 +26,23 @@ Shader::~Shader()
 
 std::string Shader::ParseShader(const std::string& path)
 {
-	// Retrieve the source code from file path
-	std::string shaderCode;
-	std::ifstream shaderFile;
+	std::ifstream shaderFile(path);
 
-	// Ensure ifstream objects can throw exceptions
-	shaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-
-	try
+	if (shaderFile)
 	{
-		// Open file
-		shaderFile.open(path);
-
-		// Read file's buffer content into streams
+		// Read file's buffer content into stream
 		std::stringstream shaderStream;
 		shaderStream << shaderFile.rdbuf();
 
-		// Close file handlers
 		shaderFile.close();
 
-		// Convert stream into string
-		shaderCode = shaderStream.str();
+		return shaderStream.str();
 	}
-	catch (std::ifstream::failure&)
+	else
 	{
 		std::cout << "ERROR::SHADER - File not successfully read" << std::endl;
+		return std::string();
 	}
-
-	return shaderCode;
 }
 
 unsigned int Shader::CreateShader(const unsigned int type, const std::string& content)
@@ -159,12 +148,12 @@ void Shader::CheckValidity(const unsigned int ID, const ObjectType objectType)
 			glGetShaderiv(ID, GL_INFO_LOG_LENGTH, &length);
 
 			// Need to heap allocate since we can't stack allocate a char*, alloca is dangerous and std::string is const
-			char* errorMessage = new char(length);
+			char* errorMessage = new char[length + 1];
 			glGetShaderInfoLog(ID, length, &length, errorMessage);
 
 			std::cout << "ERROR::SHADER - Error: " << errorMessage << std::endl;
 
-			delete errorMessage;
+			delete[] errorMessage;
 		}
 	}
 	case ObjectType::PROGRAM:
@@ -177,12 +166,12 @@ void Shader::CheckValidity(const unsigned int ID, const ObjectType objectType)
 			glGetProgramiv(ID, GL_INFO_LOG_LENGTH, &length);
 
 			// Need to heap allocate since we can't stack allocate a char*, alloca is dangerous and std::string is const
-			char* errorMessage = new char(length);
+			char* errorMessage = new char[length + 1];
 			glGetProgramInfoLog(ID, length, &length, errorMessage);
 
 			std::cout << "ERROR::PROGRAM - Error: " << errorMessage << std::endl;
 
-			delete errorMessage;
+			delete[] errorMessage;
 		}
 	}
 	}

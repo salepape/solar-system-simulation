@@ -70,12 +70,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)/Tools/Includes/glad;$(SolutionDir)/Tools/Includes/assimp;$(SolutionDir)/Tools/Includes/glm;$(SolutionDir)/Tools/Includes;$(SolutionDir)/Tools/Includes/glfw;$(SolutionDir)/Tools/Includes/soil2;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)/Tools/Librairies;$(SolutionDir)/Tools/Librairies/assimp;$(SolutionDir)/Tools/Librairies/glfw;$(SolutionDir)/Tools/Librairies/soil2;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)/Tools/Includes;$(SolutionDir)/Tools/Includes/glfw;$(SolutionDir)/Tools/Includes/glad;$(SolutionDir)/Tools/Includes/glm;$(SolutionDir)/Tools/Includes/soil2;$(SolutionDir)/Tools/Includes/assimp;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)/Tools/Libraries/x32;$(SolutionDir)/Tools/Libraries/x32/glfw;$(SolutionDir)/Tools/Libraries/x32/soil2;$(SolutionDir)/Tools/Libraries/x32/assimp;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath)</IncludePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)/Tools/Includes;$(SolutionDir)/Tools/Includes/glfw;$(SolutionDir)/Tools/Includes/glad;$(SolutionDir)/Tools/Includes/glm;$(SolutionDir)/Tools/Includes/soil2;$(SolutionDir)/Tools/Includes/assimp;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)/Tools/Libraries/x64;$(SolutionDir)/Tools/Libraries/x64/glfw;$(SolutionDir)/Tools/Libraries/x64/soil2;$(SolutionDir)/Tools/Libraries/x64/assimp;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(SolutionDir)/Tools/Includes;$(SolutionDir)/Tools/Includes/glfw;$(SolutionDir)/Tools/Includes/glad;$(SolutionDir)/Tools/Includes/glm;$(SolutionDir)/Tools/Includes/soil2;$(SolutionDir)/Tools/Includes/assimp;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)/Tools/Libraries/x32;$(SolutionDir)/Tools/Libraries/x32/glfw;$(SolutionDir)/Tools/Libraries/x32/soil2;$(SolutionDir)/Tools/Libraries/x32/assimp;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)/Tools/Includes;$(SolutionDir)/Tools/Includes/glfw;$(SolutionDir)/Tools/Includes/glad;$(SolutionDir)/Tools/Includes/glm;$(SolutionDir)/Tools/Includes/soil2;$(SolutionDir)/Tools/Includes/assimp;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)/Tools/Libraries/x64;$(SolutionDir)/Tools/Libraries/x64/glfw;$(SolutionDir)/Tools/Libraries/x64/soil2;$(SolutionDir)/Tools/Libraries/x64/assimp;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -100,7 +108,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc143-mt.lib;freetyped.lib;soil2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -116,6 +124,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc141-mtd.lib;freetyped.lib;soil2-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,6 +140,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc143-mt.lib;freetyped.lib;soil2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

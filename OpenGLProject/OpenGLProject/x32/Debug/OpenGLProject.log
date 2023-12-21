@@ -1,0 +1,48 @@
+﻿  Belt.cpp
+  Camera.cpp
+  IndexBuffer.cpp
+  Main.cpp
+  Mesh.cpp
+  Model.cpp
+  Orbit.cpp
+  Renderer.cpp
+  Shader.cpp
+  Skybox.cpp
+  Sphere.cpp
+  Text.cpp
+  Texture.cpp
+  VertexArray.cpp
+  VertexBuffer.cpp
+  VertexBufferLayout.cpp
+  Window.cpp
+  Generating Code...
+  glad.c
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+freetyped.lib(autofit.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(autofit.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(ftbase.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(ftbase.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(ftbitmap.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(ftbitmap.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(ftinit.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(ftinit.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(bdf.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(bdf.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(cff.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(cff.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(type1cid.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(type1cid.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(ftgzip.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(ftgzip.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(ftlzw.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(ftlzw.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(pcf.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(pcf.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(pfr.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(pfr.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(psaux.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(psaux.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(pshinter.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(pshinter.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(psnames.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(psnames.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(raster.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(raster.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(sfnt.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(sfnt.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(smooth.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(smooth.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(truetype.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(truetype.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(type1.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(type1.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(type42.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(type42.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(winfnt.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(winfnt.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(ftsystem.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(ftsystem.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+freetyped.lib(ftdebug.obj) : warning LNK4099: PDB 'freetype.pdb' was not found with 'freetyped.lib(ftdebug.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\freetype.pdb'; linking object as if no debug info
+soil2-debug.lib(image_DXT.obj) : warning LNK4099: PDB 'soil2-debug.pdb' was not found with 'soil2-debug.lib(image_DXT.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\soil2-debug.pdb'; linking object as if no debug info
+soil2-debug.lib(image_helper.obj) : warning LNK4099: PDB 'soil2-debug.pdb' was not found with 'soil2-debug.lib(image_helper.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\soil2-debug.pdb'; linking object as if no debug info
+soil2-debug.lib(SOIL2.obj) : warning LNK4099: PDB 'soil2-debug.pdb' was not found with 'soil2-debug.lib(SOIL2.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\soil2-debug.pdb'; linking object as if no debug info
+soil2-debug.lib(wfETC.obj) : warning LNK4099: PDB 'soil2-debug.pdb' was not found with 'soil2-debug.lib(wfETC.obj)' or at 'C:\GIT\solar-system-simulation\OpenGLProject\Debug\soil2-debug.pdb'; linking object as if no debug info
+  OpenGLProject.vcxproj -> C:\GIT\solar-system-simulation\OpenGLProject\Debug\OpenGLProject.exe

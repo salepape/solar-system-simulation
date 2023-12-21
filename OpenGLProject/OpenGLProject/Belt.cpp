@@ -94,7 +94,7 @@ void Belt::Render(const Renderer& renderer, const unsigned int& textureUnit)
 
 	for (unsigned int i = 0; i < instanceModel.GetMeshes().size(); ++i)
 	{
-		renderer.DrawInstanced(vao, instanceModel.GetMeshes()[i].GetIndicesCount(), instanceModelNb);
+		renderer.DrawInstanced(vao, static_cast<unsigned int>(instanceModel.GetMeshes()[i].GetIndicesCount()), instanceModelNb);
 	}
 }
 

@@ -42,6 +42,6 @@ void VertexBuffer::InitSubData(const std::vector<std::vector<float>*>& data)
 		// Update the data stored in the specified subset of memory space (in bytes), avoiding the reallocation cost
 		glBufferSubData(GL_ARRAY_BUFFER, offset, subdataSize, data[i]->data());
 
-		offset += subdataSize;
+		offset += static_cast<unsigned int>(subdataSize);
 	}
 }
