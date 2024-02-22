@@ -16,36 +16,11 @@ enum CameraMovement
 	DOWN,
 };
 
-// Default Camera values
-constexpr float YAW = -90.0f;				// [in degrees]	
-constexpr float PITCH = 0.0f;				// [in degrees]
-constexpr float SPEED = 20.0f;				// [in km/s]
-constexpr float SENSITIVITY = 0.1f;			// [dimensionless]
-constexpr float ZOOM = 45.0f;				// [in degrees]
-
-
-
-// Camera class that processes input and calculates the corresponding Euler angles, vectors and matrices
+// Camera class that processes input and calculates its Euler angles, vectors and matrices
 class Camera
 {
 public:
-	Camera(const glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), const glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), const float yaw = YAW, const float pitch = PITCH);
-
-	glm::vec3 position;
-	glm::vec3 worldUp;
-	glm::vec3 up;
-	glm::vec3 right;
-	glm::vec3 forward;
-
-	float yaw{ 0.0f };
-	float pitch{ 0.0f };
-
-	float movementSpeed{ 0.0f };
-	float mouseSensitivity{ 0.0f };
-	float zoom{ 0.0f };
-
-	// Compute View matrix using LookAt matrix
-	glm::mat4 GetViewMatrix() const;
+	Camera(const glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f));
 
 	// Process input received from any keyboard-like input system (requires enum camera movement option)
 	void ProcessKeyboard(const CameraMovement direction, const float deltaTime);
@@ -56,7 +31,39 @@ public:
 	// Process input received from a mouse scroll-wheel event (only requires input on the vertical wheel-axis)
 	void ProcessMouseScroll(const float yoffset);
 
+	void IncreaseSpeed(const float factor);
+	void DecreaseSpeed(const float factor);
+
+	const glm::vec3& GetPosition() const { return position; }
+	const glm::vec3& GetUp() const { return up; }
+
+	float GetZoom() const { return zoom; }
+
+	glm::mat4 GetViewMatrix() const;
+
 private:
+	glm::vec3 position;
+	glm::vec3 worldUp;
+	glm::vec3 up;
+	glm::vec3 right;
+	glm::vec3 forward;
+
+	// [in degrees]
+	float yaw{ -90.0f };
+
+	// [in degrees]
+	float pitch{ 0.0f };
+
+	// [in km/s]
+	float travelSpeed{ 20.0f };
+	float travelSpeedDefault{ 20.0f };
+
+	// [dimensionless]
+	float mouseSensitivity{ 0.1f };
+
+	// [in degrees]
+	float zoom{ 45.0f };
+
 	// Compute updated Forward, Right and Up vectors from the Camera's updated Euler Angles
 	void UpdateCameraVectors();
 };

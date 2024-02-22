@@ -16,8 +16,8 @@ Mesh::Mesh()
 
 }
 
-Mesh::Mesh(const std::vector<Vertex> verticesArg, const std::vector<unsigned int> indicesArg, const std::vector<Texture> texturesArg) :
-	vertices(verticesArg), indices(indicesArg), textures(texturesArg)
+Mesh::Mesh(const std::vector<Vertex> inVertices, const std::vector<unsigned int> inIndices, const std::vector<Texture> inTextures) :
+	vertices(inVertices), indices(inIndices), textures(inTextures)
 {
 	Compute();
 	Store();
@@ -25,7 +25,20 @@ Mesh::Mesh(const std::vector<Vertex> verticesArg, const std::vector<unsigned int
 
 Mesh::~Mesh()
 {
+	//if (ibo)
+	//{
+	//	ibo->~IndexBuffer();
+	//}
 
+	//if (vbo)
+	//{
+	//	vbo->~VertexBuffer();
+	//}
+
+	//if (vao)
+	//{
+	//	vao->~VertexArray();
+	//}
 }
 
 void Mesh::Compute()
@@ -57,11 +70,11 @@ void Mesh::Store()
 	}
 
 	VertexBufferLayout vbl;
-	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, Vertex::GetPositionNumElmts());
-	vbl.AddAttributeLayout(VertexAttributeLocation::Normal, GL_FLOAT, Vertex::GetNormalNumElmts());
-	vbl.AddAttributeLayout(VertexAttributeLocation::TextCoord, GL_FLOAT, Vertex::GetTexCoordsNumElmts());
-	vbl.AddAttributeLayout(VertexAttributeLocation::Tangent, GL_FLOAT, Vertex::GetTangentNumElmts());
-	vbl.AddAttributeLayout(VertexAttributeLocation::Bitangent, GL_FLOAT, Vertex::GetBitangentNumElmts());
+	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, Vertex::GetPositionElmtsCount());
+	vbl.AddAttributeLayout(VertexAttributeLocation::Normal, GL_FLOAT, Vertex::GetNormalElmtsCount());
+	vbl.AddAttributeLayout(VertexAttributeLocation::TextCoord, GL_FLOAT, Vertex::GetTexCoordsElmtsCount());
+	vbl.AddAttributeLayout(VertexAttributeLocation::Tangent, GL_FLOAT, Vertex::GetTangentElmtsCount());
+	vbl.AddAttributeLayout(VertexAttributeLocation::Bitangent, GL_FLOAT, Vertex::GetBitangentElmtsCount());
 	vao->AddBuffer(*vbo, vbl);
 
 	if (indices.empty() == false)

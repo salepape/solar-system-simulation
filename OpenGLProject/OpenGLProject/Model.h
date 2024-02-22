@@ -16,7 +16,7 @@ class Texture;
 class Model
 {
 public:
-	Model(const std::string& path, const bool gammaCorrectionArg = false);
+	Model(const std::string& inPath, const bool inGammaCorrection = false);
 	~Model();
 
 	inline std::vector<Texture> GetTextures() const { return loadedTextures; }

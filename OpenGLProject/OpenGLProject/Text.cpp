@@ -71,8 +71,15 @@ Text::Text()
 
 Text::~Text()
 {
-	//vbo->~VertexBuffer();
-	//vao->~VertexArray();
+	if (vbo)
+	{
+		vbo->~VertexBuffer();
+	}
+
+	if (vao)
+	{
+		vao->~VertexArray();
+	}
 }
 
 void Text::Store()
@@ -82,7 +89,7 @@ void Text::Store()
 	vbo = new VertexBuffer(nullptr, sizeof(float) * 6 * 4);
 
 	VertexBufferLayout vbl;
-	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, GetPositionNbElmts());
+	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, GetPositionElmtsCount());
 	vao->AddBuffer(*vbo, vbl);
 
 	vbo->Unbind();

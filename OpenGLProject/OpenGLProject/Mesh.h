@@ -20,11 +20,11 @@ struct Vertex
 	glm::vec3 Tangent;
 	glm::vec3 Bitangent;
 
-	static constexpr int GetPositionNumElmts() { return 3; }
-	static constexpr int GetNormalNumElmts() { return 3; }
-	static constexpr int GetTexCoordsNumElmts() { return 2; }
-	static constexpr int GetTangentNumElmts() { return 3; }
-	static constexpr int GetBitangentNumElmts() { return 3; }
+	static constexpr int GetPositionElmtsCount() { return 3; }
+	static constexpr int GetNormalElmtsCount() { return 3; }
+	static constexpr int GetTexCoordsElmtsCount() { return 2; }
+	static constexpr int GetTangentElmtsCount() { return 3; }
+	static constexpr int GetBitangentElmtsCount() { return 3; }
 };
 
 class Mesh
@@ -33,12 +33,12 @@ public:
 	// Built in code
 	Mesh();
 	// Built by parsing the model coming from a 3D modeling software
-	Mesh(const std::vector<Vertex> verticesArg, const std::vector<unsigned int> indicesArg, const std::vector<Texture> texturesArg);
+	Mesh(const std::vector<Vertex> inVertices, const std::vector<unsigned int> inIndices, const std::vector<Texture> inTextures);
 	virtual ~Mesh();
 
 	virtual void Render(const Renderer& renderer, const unsigned int& textureUnit);
 
-	inline VertexArray& GetVaoRef() const { return *vao; };
+	inline const VertexArray& GetVaoRef() const { return *vao; };
 	inline size_t GetIndicesCount() const { return indices.size(); }
 
 protected:

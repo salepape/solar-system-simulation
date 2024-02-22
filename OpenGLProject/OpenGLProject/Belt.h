@@ -15,17 +15,17 @@ class Renderer;
 class Belt
 {
 public:
-	Belt(const Model inInstanceModel, const unsigned int inInstanceModelNb, const int inSizeFactor, const float inMajorRadius, const float inMinorRadius);
+	Belt(const Model inInstanceModel, const unsigned int inInstancesCount, const int inSizeFactor, const float inMajorRadius, const float inMinorRadius);
 	~Belt();
 
 	void Render(const Renderer& renderer, const unsigned int& textureUnit);
 
 private:
-	unsigned int instanceModelNb{ 0 };
+	unsigned int instancesCount{ 0 };
 	int sizeFactor{ 1 };
 	float majorRadius{ 0.0f };
 	float minorRadius{ 0.0f };
-	Model instanceModel;
+	Model instance;
 	std::vector<glm::mat4> modelMatrices;
 
 	VertexArray vao;
@@ -35,7 +35,7 @@ private:
 	// We could instantiate several belts with the same model (ie its VAO ID) if modelMatrices gathered data of all belts
 	void Store();
 
-	static constexpr int GetInstanceMatrixNumElmts() { return 4; }
+	static constexpr int GetInstanceMatrixElmtsCount() { return 4; }
 };
 
 

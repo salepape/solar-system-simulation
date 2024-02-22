@@ -10,7 +10,7 @@
 class Sphere: public Mesh
 {
 public:
-	Sphere(std::string texturePath, const float radiusArg);
+	Sphere(std::string inTexturePath, const float inRadius, const int inMeridianStripsCount = 100, const int inParallelStripsCount = 100);
 	~Sphere();
 
 protected:
@@ -19,6 +19,8 @@ protected:
 
 private:
 	float radius{ 0.0f };
+	int meridianStripsCount{ 0 };
+	int parallelStripsCount{ 0 };
 };
 
 

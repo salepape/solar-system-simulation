@@ -25,7 +25,7 @@ public:
 	void AddInstancedBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout);
 
 private:
-	unsigned int rendererID;
+	unsigned int rendererID{ 0 };
 };
 
 

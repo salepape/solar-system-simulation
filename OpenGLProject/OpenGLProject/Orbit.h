@@ -14,7 +14,7 @@ class Texture;
 class Orbit : public Mesh
 {
 public:
-	Orbit(std::string texturePath, const float radiusArg);
+	Orbit(std::string texturePath, const float inRadius);
 	~Orbit();
 
 	void Render(const Renderer& renderer, const unsigned int& textureUnit) override;
@@ -23,11 +23,8 @@ protected:
 	void Compute() override;
 
 private:
-	// Radius of the orbit (= distance between sun and corresponding planet) 
 	float radius{ 0.0f };
-
-	// Number of edges (controls degree of smoothness)
-	int nbMeridStrips = 100;
+	int meridStripsCount{ 100 };
 
 	Texture* texture{ nullptr };
 };

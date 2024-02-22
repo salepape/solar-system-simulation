@@ -7,13 +7,13 @@
 #include "Sphere.h"
 #include "Texture.h"
 
-constexpr int NUM_TEXTURES = 21;
+constexpr int TEXTURES_COUNT = 21;
 constexpr float DIST_SCALE_FACTOR = 10.0f;
 
 
 
 // Paths to retrieve DDS textures
-std::array<const std::string, NUM_TEXTURES> texturePaths
+std::array<const std::string, TEXTURES_COUNT> texturePaths
 {
 	// Star
 	"../Textures/Stars/8k_sun.dds",

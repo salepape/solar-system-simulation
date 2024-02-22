@@ -85,6 +85,11 @@ void Window::SetCursorPositionCallback()
 	glfwSetCursorPosCallback(GLFWWindow, [](GLFWwindow* window, const double xPos, const double yPos)
 	{
 		auto* const self = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+		if (self == nullptr)
+		{
+			std::cout << "ERROR::WINDOW - Failed to reinterpret cast glfwGetWindowUserPointer()" << std::endl;
+			return;
+		}
 
 		// Avoid little jump
 		if (self->firstMouseInput)
@@ -102,7 +107,10 @@ void Window::SetCursorPositionCallback()
 		self->lastXPos = xPos;
 		self->lastYPos = yPos;
 
-		self->camera->ProcessMouseMovement(xOffset, yOffset, self->firstMouseInput);
+		if (self->camera)
+		{
+			self->camera->ProcessMouseMovement(xOffset, yOffset, self->firstMouseInput);
+		}
 	});
 }
 
@@ -111,7 +119,16 @@ void Window::SetScrollCallback()
 	glfwSetScrollCallback(GLFWWindow, [](GLFWwindow* window, double xOffset, double yOffset)
 	{
 		auto* const self = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
-		self->camera->ProcessMouseScroll(static_cast<float>(yOffset));
+		if (self == nullptr)
+		{
+			std::cout << "ERROR::WINDOW - Failed to reinterpret cast glfwGetWindowUserPointer()" << std::endl;
+			return;
+		}
+
+		if (self->camera)
+		{
+			self->camera->ProcessMouseScroll(static_cast<float>(yOffset));
+		}
 	});
 }
 
@@ -133,14 +150,14 @@ void Window::ProcessInput(Camera& camera)
 		glfwSetWindowShouldClose(GLFWWindow, true);
 	}
 
-	// Increase camera speed
-	if (glfwGetKey(GLFWWindow, GLFW_KEY_X) == GLFW_PRESS && camera.movementSpeed <= 2.0f * SPEED)
+	// Modify camera speed
+	if (glfwGetKey(GLFWWindow, GLFW_KEY_X) == GLFW_PRESS)
 	{
-		camera.movementSpeed *= 2.0f;
+		camera.IncreaseSpeed(2.0f);
 	}
-	if (glfwGetKey(GLFWWindow, GLFW_KEY_X) == GLFW_RELEASE && camera.movementSpeed >= SPEED)
+	if (glfwGetKey(GLFWWindow, GLFW_KEY_X) == GLFW_RELEASE)
 	{
-		camera.movementSpeed /= 2.0f;
+		camera.DecreaseSpeed(2.0f);
 	}
 
 	// Enable camera to move forward, backward, up, down, left and right (designed for AZERTY keyboards with corresponding QWERTY GLFW_KEYs)
@@ -169,25 +186,25 @@ void Window::ProcessInput(Camera& camera)
 		camera.ProcessKeyboard(DOWN, deltaTime);
 	}
 
-	// Pause the simulation
+	// Pause/Unpause the simulation
 	if (glfwGetKey(GLFWWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		paused = true;
+		simuPaused = true;
 	}
 	if (glfwGetKey(GLFWWindow, GLFW_KEY_SPACE) == GLFW_RELEASE)
 	{
-		paused = false;
+		simuPaused = false;
 		glfwSetTime(lastFrame);
 	}
 
-	// Speed up / Slow down the simulation
+	// Speed up/Slow down the simulation
 	if (glfwGetKey(GLFWWindow, GLFW_KEY_UP) == GLFW_PRESS)
 	{
-		accelerationFactor *= 2.0f;
+		simuSpeedFactor *= 2.0f;
 	}
 	if (glfwGetKey(GLFWWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
 	{
-		accelerationFactor /= 2.0f;
+		simuSpeedFactor /= 2.0f;
 	}
 }
 
@@ -198,7 +215,7 @@ bool Window::DoNotClose()
 
 void Window::UpdateFrames()
 {
-	if (!paused)
+	if (simuPaused == false)
 	{
 		// Time elapsed since GLFW initialisation [considered as a dimensionless chrono, but in seconds in reality]
 		currentFrame = static_cast<float>(glfwGetTime());

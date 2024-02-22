@@ -65,30 +65,30 @@ void Skybox::Compute()
 		 1.0f, -1.0f,  1.0f
 	};
 
-	constexpr int numFaces = 6;
-	constexpr int numVerticesPerFace = 6;
-	int index = 0;
+	constexpr int facesCount = 6;
+	constexpr int verticesPerFaceCount = 6;
+	int positionIndex = 0;
 
-	for (int i = 0; i < numFaces; ++i)
+	for (int i = 0; i < facesCount; ++i)
 	{
-		for (int j = 0; j < numVerticesPerFace; ++j)
+		for (int j = 0; j < verticesPerFaceCount; ++j)
 		{
 			Vertex vertex;
-			vertex.Position = glm::vec3(vertCoor[index], vertCoor[index + 1], vertCoor[index + 2]);
+			vertex.Position = glm::vec3(vertCoor[positionIndex], vertCoor[positionIndex + 1], vertCoor[positionIndex + 2]);
 			vertex.Normal = glm::vec3(0.0f, 0.0f, 0.0f);
 			vertex.TexCoords = glm::vec3(0.0f, 0.0f, 0.0f);
 			vertex.Tangent = glm::vec3(0.0f, 0.0f, 0.0f);
 			vertex.Bitangent = glm::vec3(0.0f, 0.0f, 0.0f);
 			vertices.push_back(vertex);
 
-			index += vertex.Position.length();
+			positionIndex += Vertex::GetPositionElmtsCount();
 		}
 	}
 }
 
 Skybox::~Skybox()
 {
-
+	delete texture;
 }
 
 void Skybox::Render(const Renderer& renderer, const unsigned int& textureUnit)

@@ -6,7 +6,6 @@
 #include <sstream>
 
 
-
 Shader::Shader(const std::string& vsPath, const std::string& fsPath) :
 	rendererID(0)
 {
@@ -27,22 +26,19 @@ Shader::~Shader()
 std::string Shader::ParseShader(const std::string& path)
 {
 	std::ifstream shaderFile(path);
-
-	if (shaderFile)
-	{
-		// Read file's buffer content into stream
-		std::stringstream shaderStream;
-		shaderStream << shaderFile.rdbuf();
-
-		shaderFile.close();
-
-		return shaderStream.str();
-	}
-	else
+	if (!shaderFile)
 	{
 		std::cout << "ERROR::SHADER - File not successfully read" << std::endl;
 		return std::string();
 	}
+
+	// Read file's buffer content into stream
+	std::stringstream shaderStream;
+	shaderStream << shaderFile.rdbuf();
+
+	shaderFile.close();
+
+	return shaderStream.str();
 }
 
 unsigned int Shader::CreateShader(const unsigned int type, const std::string& content)

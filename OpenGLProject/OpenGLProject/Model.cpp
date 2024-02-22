@@ -8,9 +8,9 @@
 
 
 
-Model::Model(const std::string& path, const bool gammaCorrectionArg) : gammaCorrection(gammaCorrectionArg)
+Model::Model(const std::string& inPath, const bool inGammaCorrection) : gammaCorrection(inGammaCorrection)
 {
-	LoadModel(path);
+	LoadModel(inPath);
 }
 
 Model::~Model()
@@ -120,26 +120,23 @@ std::vector<Texture> Model::LoadTextures(const aiMaterial& material, const aiTex
 		aiString TexturePath;
 		material.GetTexture(type, i, &TexturePath);
 
-		// Skip all textures with the same file path since it means it has already been loaded
-		bool textureAlreadyLoaded = false;
-		for (unsigned int j = 0; j < loadedTextures.size(); ++j)
+		// Skip texture creation if it has already been loaded
+		const auto loadedTextureIt = find_if(loadedTextures.begin(), loadedTextures.end(), [TexturePath](const Texture& loadedTexture)
 		{
-			if (std::strcmp(loadedTextures[j].GetPath().c_str(), TexturePath.C_Str()) == 0)
-			{
-				textures.push_back(loadedTextures[j]);
-				textureAlreadyLoaded = true;
-				break;
-			}
-		}
+			return std::string(TexturePath.C_Str(), TexturePath.length) == loadedTexture.GetPath();
+		});
 
-		if (textureAlreadyLoaded == false)
+		if (loadedTextureIt != loadedTextures.end())
 		{
-			// @todo - Implement correspondance aiTextureType and MapType enums
-			Texture texture(TexturePath.C_Str(), GL_TEXTURE_2D, GeometryType::MODEL, MapType::NONE);
-			texture.LoadDDS();
-			textures.push_back(texture);
-			loadedTextures.push_back(texture);
+			textures.push_back(*loadedTextureIt);
+			continue;
 		}
+		
+		// @todo - Implement correspondance aiTextureType and MapType enums
+		Texture texture(std::string(TexturePath.C_Str(), TexturePath.length), GL_TEXTURE_2D, GeometryType::MODEL, MapType::NONE);
+		texture.LoadDDS();
+		textures.push_back(texture);
+		loadedTextures.push_back(texture);
 	}
 
 	return textures;

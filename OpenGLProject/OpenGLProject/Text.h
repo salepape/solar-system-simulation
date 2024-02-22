@@ -44,7 +44,7 @@ private:
 	// Return the width of the text (spaces included)
 	float GetBillboardSize(const std::string text, const float scale);
 
-	static constexpr int GetPositionNbElmts() { return 4; }
+	static constexpr int GetPositionElmtsCount() { return 4; }
 };
 
 

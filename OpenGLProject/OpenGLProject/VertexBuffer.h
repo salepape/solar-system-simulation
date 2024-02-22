@@ -20,7 +20,7 @@ public:
 	void InitSubData(const std::vector<std::vector<float>*>& data);
 
 private:
-	unsigned int rendererID;
+	unsigned int rendererID{ 0 };
 };
 
 

@@ -104,7 +104,7 @@ int main()
 		renderer.Blend();
 
 		// Simulate a zoom - set far plane variable to a sufficiently high value
-		const glm::mat4 projectionMatrix = glm::perspective(glm::radians(camera.zoom), static_cast<float>(SCR_WIDTH / SCR_HEIGHT), 0.1f, 1000.0f);
+		const glm::mat4 projectionMatrix = glm::perspective(glm::radians(camera.GetZoom()), static_cast<float>(SCR_WIDTH / SCR_HEIGHT), 0.1f, 1000.0f);
 
 		// Simulate a camera circling around the scene
 		const glm::mat4 viewMatrix = camera.GetViewMatrix();
@@ -125,7 +125,7 @@ int main()
 		defaultShader.setUniformFloat("light.constant", 1.0f);
 		defaultShader.setUniformFloat("light.linear", 0.0007f);
 		defaultShader.setUniformFloat("light.quadratic", 0.000002f);
-		defaultShader.setUniformVec3("viewPos", camera.position);
+		defaultShader.setUniformVec3("viewPos", camera.GetPosition());
 
 		// Draw celestial bodies, their orbits and their motion
 		for (auto it = data.begin(); it != data.end(); ++it)
@@ -136,14 +136,14 @@ int main()
 			if (it->first != "Sun")
 			{
 				// Angle of rotation around the sun (resp. planet) for planets (resp. moons) per frame
-				angleRotInRadians = 2.0f * glm::pi<float>() * window.GetCurrentFrame() / it->second.orbPeriod * window.GetAccelerationFactor();
+				angleRotInRadians = 2.0f * glm::pi<float>() * window.GetCurrentFrame() / it->second.orbPeriod * window.GetSimuSpeedFactor();
 				if (it->second.planetInfo == nullptr)
 				{
 					it->second.angleRotInRadians = angleRotInRadians;
 				}
 
 				// Angle of rotation of the celestial body around itself per frame
-				angleRotItselfInRadians = 2.0f * glm::pi<float>() * window.GetCurrentFrame() * it->second.rotPeriod * window.GetAccelerationFactor();
+				angleRotItselfInRadians = 2.0f * glm::pi<float>() * window.GetCurrentFrame() * it->second.rotPeriod * window.GetSimuSpeedFactor();
 			
 				defaultShader.Enable();
 				defaultShader.setUniformBool("isSun", false);
@@ -230,11 +230,11 @@ int main()
 
 
 			// Draw billboard (containing current celestial body name) on top of current celestial body mesh/model
-			if (window.GetIsPaused())
+			if (window.IsSimuPaused())
 			{
 				// Orient text to camera position
-				const glm::vec3 look = glm::normalize(camera.position - glm::vec3(textModelMatrix[3]));
-				const glm::vec3 right = glm::cross(camera.up, look);
+				const glm::vec3 look = glm::normalize(camera.GetPosition() - glm::vec3(textModelMatrix[3]));
+				const glm::vec3 right = glm::cross(camera.GetUp(), look);
 				const glm::vec3 up2 = cross(look, right);
 				textModelMatrix[0] = glm::vec4(right, 0);
 				textModelMatrix[1] = glm::vec4(up2, 0);
@@ -296,7 +296,7 @@ int main()
 		instancedModelShader.setUniformFloat("light.constant", 1.0f);
 		instancedModelShader.setUniformFloat("light.linear", 0.0007f);
 		instancedModelShader.setUniformFloat("light.quadratic", 0.000002f);
-		instancedModelShader.setUniformVec3("viewPos", camera.position);
+		instancedModelShader.setUniformVec3("viewPos", camera.GetPosition());
 		instancedModelShader.setUniformInt("material.diffuse", samplerID);
 		asteroidBelt.Render(renderer, samplerID++);
 

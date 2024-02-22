@@ -10,8 +10,8 @@
 
 
 
-Belt::Belt(const Model inInstanceModel, const unsigned int inInstanceModelNb, const int inSizeFactor, const float inMajorRadius, const float inMinorRadius) :
-	instanceModel(inInstanceModel), instanceModelNb(inInstanceModelNb), sizeFactor(inSizeFactor), majorRadius(inMajorRadius), minorRadius(inMinorRadius)
+Belt::Belt(const Model inInstance, const unsigned int inInstancesCount, const int inSizeFactor, const float inMajorRadius, const float inMinorRadius) :
+	instance(inInstance), instancesCount(inInstancesCount), sizeFactor(inSizeFactor), majorRadius(inMajorRadius), minorRadius(inMinorRadius)
 {
 	Compute();
 	Store();
@@ -19,7 +19,7 @@ Belt::Belt(const Model inInstanceModel, const unsigned int inInstanceModelNb, co
 
 Belt::~Belt()
 {
-	vao.~VertexArray();
+
 }
 
 void Belt::Compute()
@@ -28,11 +28,11 @@ void Belt::Compute()
 	srand(static_cast<unsigned int>(glfwGetTime()));
 
 	// Compute random position for each model instance of the belt tore
-	for (unsigned int i = 0; i < instanceModelNb; ++i)
+	for (unsigned int i = 0; i < instancesCount; ++i)
 	{
 		glm::mat4 modelMatrix = glm::mat4(1.0f);
 
-		const float angle = static_cast<float>(i) / static_cast<float>(instanceModelNb) * 360.0f;
+		const float angle = static_cast<float>(i) / static_cast<float>(instancesCount) * 360.0f;
 
 		const float xOffset = (rand() % static_cast<int>(2 * minorRadius * 100)) / 100.0f - minorRadius;
 		const float x = sin(angle) * majorRadius + xOffset;
@@ -62,22 +62,22 @@ void Belt::Compute()
 void Belt::Store()
 {
 	// Configure instanced array
-	VertexBuffer vbo(&modelMatrices[0], instanceModelNb * sizeof(glm::mat4));
+	VertexBuffer vbo(&modelMatrices[0], instancesCount * sizeof(glm::mat4));
 
 	// Set transformation matrices as an instance vertex attribute (with divisor 1)
-	for (unsigned int i = 0; i < instanceModel.GetMeshes().size(); ++i)
+	for (unsigned int i = 0; i < instance.GetMeshes().size(); ++i)
 	{
 		// Retrieve VAO ID of the rock mesh (we don't create any new VAO ID per belt because of instancing)
-		vao = instanceModel.GetMeshes()[i].GetVaoRef();
+		vao = instance.GetMeshes()[i].GetVaoRef();
 		vao.Bind();
 
-		constexpr int NbElements = GetInstanceMatrixNumElmts();
+		constexpr int ElementsCount = GetInstanceMatrixElmtsCount();
 
 		VertexBufferLayout vbl;
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, NbElements);
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol2, GL_FLOAT, NbElements);
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol3, GL_FLOAT, NbElements);
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol4, GL_FLOAT, NbElements);
+		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, ElementsCount);
+		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol2, GL_FLOAT, ElementsCount);
+		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol3, GL_FLOAT, ElementsCount);
+		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol4, GL_FLOAT, ElementsCount);
 		vao.AddInstancedBuffer(vbo, vbl);
 
 		vao.Unbind();
@@ -86,15 +86,15 @@ void Belt::Store()
 
 void Belt::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
-	if (instanceModel.GetTextures().empty() == false)
+	if (instance.GetTextures().empty() == false)
 	{
 		// Note that we are assuming that a single texture will be stored in the model
-		instanceModel.GetTextures()[0].Enable(textureUnit);
+		instance.GetTextures()[0].Enable(textureUnit);
 	}
 
-	for (unsigned int i = 0; i < instanceModel.GetMeshes().size(); ++i)
+	for (unsigned int i = 0; i < instance.GetMeshes().size(); ++i)
 	{
-		renderer.DrawInstanced(vao, static_cast<unsigned int>(instanceModel.GetMeshes()[i].GetIndicesCount()), instanceModelNb);
+		renderer.DrawInstanced(vao, static_cast<unsigned int>(instance.GetMeshes()[i].GetIndicesCount()), instancesCount);
 	}
 }
 

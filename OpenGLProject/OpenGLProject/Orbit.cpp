@@ -9,7 +9,7 @@
 
 
 
-Orbit::Orbit(std::string texturePath, const float radiusArg) : radius(radiusArg)
+Orbit::Orbit(std::string texturePath, const float inRadius) : radius(inRadius)
 {
 	texture = new Texture(texturePath, GL_TEXTURE_2D, GeometryType::CIRCLE, MapType::NONE);
 	texture->LoadDDS();
@@ -21,14 +21,14 @@ Orbit::Orbit(std::string texturePath, const float radiusArg) : radius(radiusArg)
 
 Orbit::~Orbit()
 {
-
+	delete texture;
 }
 
 void Orbit::Compute()
 {
-	for (int i = 0; i <= nbMeridStrips; ++i)
+	for (int i = 0; i <= meridStripsCount; ++i)
 	{
-		const float theta = 2.0f * glm::pi<float>() * static_cast<float>(i) / nbMeridStrips;
+		const float theta = 2.0f * glm::pi<float>() * static_cast<float>(i) / meridStripsCount;
 
 		Vertex vertex;
 		vertex.Position = glm::vec3(radius * glm::sin(theta), 0.0f, radius * glm::cos(theta));
@@ -43,6 +43,6 @@ void Orbit::Compute()
 void Orbit::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
 	texture->Enable(textureUnit);
-	renderer.Draw(*vao, GL_LINE_LOOP, nbMeridStrips);
+	renderer.Draw(*vao, GL_LINE_LOOP, meridStripsCount);
 }
 

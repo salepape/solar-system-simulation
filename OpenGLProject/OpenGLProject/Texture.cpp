@@ -7,8 +7,8 @@
 
 
 // @todo - Implement effect of mapType of Texture object
-Texture::Texture(std::string pathArg, const unsigned int InTarget, const GeometryType geometryType, const MapType InMapType) :
-	path(pathArg), target(InTarget), mapType(InMapType)
+Texture::Texture(std::string inPath, const unsigned int InTarget, const GeometryType geometryType, const MapType InMapType) :
+	path(inPath), target(InTarget), mapType(InMapType)
 {
 	switch (geometryType)
 	{
@@ -48,43 +48,42 @@ void Texture::LoadTextureImage(const unsigned int channel)
 {
 	int width = 0;
 	int height = 0;
-	int nbChannels = 0;
-	unsigned char* data = SOIL_load_image(path.c_str(), &width, &height, &nbChannels, channel);
-
-	if (data)
+	int channelsCount = 0;
+	
+	unsigned char* data = SOIL_load_image(path.c_str(), &width, &height, &channelsCount, channel);
+	if (data == nullptr)
 	{
-		unsigned int format = GL_RGBA;
-		switch (nbChannels)
-		{
-		case 1:
-		{
-			format = GL_RED;
-			break;
-		}
-		case 3:
-		{
-			format = GL_RGB;
-			break;
-		}
-		case 4:
-		{
-			format = GL_RGBA;
-			break;
-		}
-		}
-
-		Bind();
-
-		// Generate texture image on the currently bound TO at the active texture unit
-		glTexImage2D(target, 0, format, width, height, nbChannels, format, GL_UNSIGNED_BYTE, data);
-
-		// Generate all mipmap levels for the previous currently bound TO
-		glGenerateMipmap(target);
+		std::cout << "ERROR::SOIL - Failed to load entity sprite at path " << path << std::endl;
+		return;
 	}
-	else
+
+	unsigned int format = GL_RGBA;
+	switch (channelsCount)
 	{
-		std::cout << "ERROR::SOIL - Failed to load entity sprite at path " << path.c_str() << std::endl;
+	case 1:
+	{
+		format = GL_RED;
+		break;
 	}
+	case 3:
+	{
+		format = GL_RGB;
+		break;
+	}
+	case 4:
+	{
+		format = GL_RGBA;
+		break;
+	}
+	}
+
+	Bind();
+
+	// Generate texture image on the currently bound TO at the active texture unit
+	glTexImage2D(target, 0, format, width, height, channelsCount, format, GL_UNSIGNED_BYTE, data);
+
+	// Generate all mipmap levels for the previous currently bound TO
+	glGenerateMipmap(target);
 
 	SOIL_free_image_data(data);
 }

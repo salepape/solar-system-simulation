@@ -2,14 +2,9 @@
 
 
 
-Camera::Camera(const glm::vec3 inPosition, const glm::vec3 inUp, const float inYaw, const float inPitch) :
-	forward(glm::vec3(0.0f, 0.0f, -1.0f)), movementSpeed(SPEED), mouseSensitivity(SENSITIVITY), zoom(ZOOM)
+Camera::Camera(const glm::vec3 inPosition) :
+	position(inPosition), worldUp(glm::vec3(0.0f, 1.0f, 0.0f)), forward(glm::vec3(0.0f, 0.0f, -1.0f))
 {
-	position = inPosition;
-	worldUp = inUp;
-	yaw = inYaw;
-	pitch = inPitch;
-
 	UpdateCameraVectors();
 }
 
@@ -20,7 +15,7 @@ glm::mat4 Camera::GetViewMatrix() const
 
 void Camera::ProcessKeyboard(const CameraMovement direction, const float deltaTime)
 {
-	const float distance = movementSpeed * deltaTime;
+	const float distance = travelSpeed * deltaTime;
 	switch (direction)
 	{
 	case FORWARD:
@@ -98,5 +93,27 @@ void Camera::UpdateCameraVectors()
 
 	up = glm::normalize(glm::cross(right, forward));
 }
+
+void Camera::IncreaseSpeed(const float factor)
+{
+	if (travelSpeed > factor * travelSpeedDefault)
+	{
+		return;
+	}
+
+	travelSpeed *= factor;
+}
+
+void Camera::DecreaseSpeed(const float factor)
+{
+	if (travelSpeed < travelSpeedDefault)
+	{
+		return;
+	}
+
+	travelSpeed /= factor;
+}
+
+
 
 

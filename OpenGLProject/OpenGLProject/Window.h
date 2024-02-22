@@ -49,9 +49,9 @@ public:
 	// Clean up properly all previous allocated GLFW resources
 	void FreeUpResources();
 
-	float GetAccelerationFactor() const { return accelerationFactor; }
-	float GetCurrentFrame() const { return currentFrame;}
-	bool GetIsPaused() const { return paused; }
+	float GetSimuSpeedFactor() const { return simuSpeedFactor; }
+	bool IsSimuPaused() const { return simuPaused; }
+	float GetCurrentFrame() const { return currentFrame;}	
 
 private:
 	int width{ 0 };
@@ -60,13 +60,12 @@ private:
 
 	// @todo - All variables below plus linked code to be moved in Engine / UserInputHandler (KeyInput + MouseInput) classes?
 
-	float accelerationFactor{ 1.0f };
-
 	// Variables for time related to frames
 	float currentFrame{ 0.0f };
 	float deltaTime{ 0.0f };
 	float lastFrame{ 0.0f };
-	bool paused{ false };
+	bool simuPaused{ false };
+	float simuSpeedFactor{ 1.0f };
 
 	// Variables for mouse callback function
 	bool firstMouseInput{ true };
