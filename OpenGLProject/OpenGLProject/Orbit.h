@@ -1,6 +1,7 @@
 #ifndef ORBIT_H
 #define ORBIT_H
 
+#include <iostream>
 #include <string>
 
 #include "Mesh.h"
@@ -10,7 +11,7 @@ class Texture;
 
 
 
-// Approximation : all planet / moon orbits will be circular (eccentricities close to 0)
+// Approximation: all planet / moon orbits will be circular (eccentricities close to 0)
 class Orbit : public Mesh
 {
 public:

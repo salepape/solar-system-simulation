@@ -1,8 +1,8 @@
 #ifndef BELT_H
 #define BELT_H
 
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/matrix_decompose.hpp>
+#include <glm/mat4x4.hpp>
+#include <iostream>
 #include <vector>
 
 #include "Model.h"

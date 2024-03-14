@@ -1,6 +1,7 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
+#include <iostream>
 #include <string>
 
 #include "Mesh.h"
@@ -10,7 +11,7 @@
 class Sphere: public Mesh
 {
 public:
-	Sphere(std::string inTexturePath, const float inRadius, const int inMeridianStripsCount = 100, const int inParallelStripsCount = 100);
+	Sphere(const std::string& inTexturePath, const float inRadius, const int inMeridianStripsCount = 100, const int inParallelStripsCount = 100);
 	~Sphere();
 
 protected:

@@ -1,9 +1,11 @@
 #include "Orbit.h"
 
 #include <glad.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/constants.hpp>
+#include <glm/ext/scalar_constants.hpp>
+#include <glm/trigonometric.hpp>
+#include <glm/vec3.hpp>
 
+#include "Mesh.h"
 #include "Renderer.h"
 #include "Texture.h"
 
@@ -45,4 +47,3 @@ void Orbit::Render(const Renderer& renderer, const unsigned int& textureUnit)
 	texture->Enable(textureUnit);
 	renderer.Draw(*vao, GL_LINE_LOOP, meridStripsCount);
 }
-

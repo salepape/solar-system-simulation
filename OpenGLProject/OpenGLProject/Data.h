@@ -1,7 +1,9 @@
 #include <array>
+#include <iostream>
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <utility>
 
 #include "Orbit.h"
 #include "Sphere.h"

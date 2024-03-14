@@ -2,15 +2,15 @@
 #define TEXT_H
 
 #include <ft2build.h>
+#include FT_FREETYPE_H
 #include <glm/vec2.hpp>
+#include <iostream>
 #include <map>
 #include <string>
 
 class Renderer;
 class VertexArray;
 class VertexBuffer;
-
-#include FT_FREETYPE_H
 
 
 
@@ -42,7 +42,7 @@ private:
 	VertexBuffer* vbo{ nullptr };
 
 	// Return the width of the text (spaces included)
-	float GetBillboardSize(const std::string text, const float scale);
+	float GetBillboardSize(const std::string& text, const float scale);
 
 	static constexpr int GetPositionElmtsCount() { return 4; }
 };

@@ -1,12 +1,14 @@
 #include "Text.h"
 
+#include <freetype/freetype.h>
 #include <glad.h>
-#include <iostream>
+#include <utility>
 
 #include "Renderer.h"
 #include "Texture.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
 
 
 
@@ -96,7 +98,7 @@ void Text::Store()
 	vao->Unbind();
 }
 
-float Text::GetBillboardSize(const std::string text, const float scale)
+float Text::GetBillboardSize(const std::string& text, const float scale)
 {
 	float totalAdvance = 0.0f;
 	for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)

@@ -1,10 +1,13 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <glfw3.h>
+#include <iostream>
 #include <string>
 
 class Camera;
+struct GLFWwindow;
+
+
 
 class Window
 {
@@ -74,5 +77,7 @@ private:
 
 	GLFWwindow* initGLFWWindow();
 };
+
+
 
 #endif // WINDOW_H

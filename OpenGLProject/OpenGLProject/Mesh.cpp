@@ -1,13 +1,13 @@
 #include "Mesh.h"
 
 #include <glad.h>
-#include <iostream>
 
 #include "IndexBuffer.h"
 #include "Renderer.h"
 #include "Texture.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
 
 
 

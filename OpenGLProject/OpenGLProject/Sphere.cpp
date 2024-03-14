@@ -1,13 +1,15 @@
 #include "Sphere.h"
 
 #include <glad.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/constants.hpp>
+#include <glm/ext/scalar_constants.hpp>
+#include <glm/trigonometric.hpp>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 
 #include "Texture.h"
 
 
-Sphere::Sphere(std::string inTexturePath, const float inRadius, const int inMeridianStripsCount, const int inParallelStripsCount) : 
+Sphere::Sphere(const std::string& inTexturePath, const float inRadius, const int inMeridianStripsCount, const int inParallelStripsCount) : 
 	radius(inRadius), meridianStripsCount(inMeridianStripsCount), parallelStripsCount(inParallelStripsCount)
 {
 	Texture texture(inTexturePath, GL_TEXTURE_2D, GeometryType::SPHERE, MapType::NONE);

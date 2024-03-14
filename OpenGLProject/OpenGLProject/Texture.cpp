@@ -1,13 +1,12 @@
 #include "Texture.h"
 
 #include <glad.h>
-#include <iostream>
 #include <SOIL2.h>
 
 
 
 // @todo - Implement effect of mapType of Texture object
-Texture::Texture(std::string inPath, const unsigned int InTarget, const GeometryType geometryType, const MapType InMapType) :
+Texture::Texture(const std::string& inPath, const unsigned int InTarget, const GeometryType geometryType, const MapType InMapType) :
 	path(inPath), target(InTarget), mapType(InMapType)
 {
 	switch (geometryType)
@@ -182,6 +181,3 @@ void Texture::Disable()
 	glActiveTexture(0);
 	Unbind();
 }
-
-
-

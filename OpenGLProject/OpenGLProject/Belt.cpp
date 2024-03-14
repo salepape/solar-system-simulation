@@ -1,6 +1,8 @@
 #include "Belt.h"
 
 #include <glfw3.h>
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/vec3.hpp>
 
 #include "Mesh.h"
 #include "Renderer.h"
@@ -37,7 +39,7 @@ void Belt::Compute()
 		const float xOffset = (rand() % static_cast<int>(2 * minorRadius * 100)) / 100.0f - minorRadius;
 		const float x = sin(angle) * majorRadius + xOffset;
 
-		// keep height of model field smaller compared to width of x and z
+		// Keep height of model field smaller compared to width of x and z
 		const float yOffset = (rand() % static_cast<int>(2 * minorRadius * 100)) / 100.0f - minorRadius;
 		const float y = yOffset * 0.4f;
 
@@ -97,5 +99,3 @@ void Belt::Render(const Renderer& renderer, const unsigned int& textureUnit)
 		renderer.DrawInstanced(vao, static_cast<unsigned int>(instance.GetMeshes()[i].GetIndicesCount()), instancesCount);
 	}
 }
-
-

@@ -2,10 +2,9 @@
 #define TEXTURE_H
 
 #include <ft2build.h>
-#include <string>
-
 #include FT_FREETYPE_H
-#define GLFW_INCLUDE_NONE
+#include <iostream>
+#include <string>
 
 
 
@@ -32,7 +31,7 @@ enum class MapType
 class Texture
 {
 public:
-	Texture(std::string path, const unsigned int target, const GeometryType geometryType, const MapType textureType);
+	Texture(const std::string& path, const unsigned int target, const GeometryType geometryType, const MapType textureType);
 	~Texture();
 
 	void LoadTextureImage(const unsigned int channel);

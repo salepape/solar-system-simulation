@@ -1,12 +1,15 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
+#include <assimp/material.h>
+#include <iostream>
 #include <string>
 #include <vector>
 
+struct aiMaterial;
+struct aiMesh;
+struct aiNode;
+struct aiScene;
 class Mesh;
 class Renderer;
 class Texture;

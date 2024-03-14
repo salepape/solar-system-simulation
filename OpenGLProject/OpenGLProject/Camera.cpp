@@ -1,5 +1,9 @@
 #include "Camera.h"
 
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/geometric.hpp>
+#include <glm/trigonometric.hpp>
+#include <iostream>
 
 
 Camera::Camera(const glm::vec3 inPosition) :
@@ -13,7 +17,7 @@ glm::mat4 Camera::GetViewMatrix() const
 	return glm::lookAt(position, position + forward, up);
 }
 
-void Camera::ProcessKeyboard(const CameraMovement direction, const float deltaTime)
+void Camera::ProcessKeyboard(const CameraMovement& direction, const float deltaTime)
 {
 	const float distance = travelSpeed * deltaTime;
 	switch (direction)
@@ -113,7 +117,3 @@ void Camera::DecreaseSpeed(const float factor)
 
 	travelSpeed /= factor;
 }
-
-
-
-

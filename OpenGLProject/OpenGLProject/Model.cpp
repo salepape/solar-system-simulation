@@ -1,7 +1,14 @@
 #include "Model.h"
 
+#include <algorithm>
+#include <assimp/Importer.hpp>
+#include <assimp/mesh.h>
+#include <assimp/postprocess.h>
+#include <assimp/scene.h>
+#include <assimp/types.h>
 #include <glad.h>
-#include <iostream>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 
 #include "Mesh.h"
 #include "Texture.h"

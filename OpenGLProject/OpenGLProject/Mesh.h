@@ -1,7 +1,9 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include <glm/glm.hpp>	
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <iostream>
 #include <vector>
 
 class IndexBuffer;

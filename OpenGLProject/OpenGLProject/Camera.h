@@ -1,7 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <glm/gtc/matrix_transform.hpp>
+#include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
 
 
 
@@ -23,7 +24,7 @@ public:
 	Camera(const glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f));
 
 	// Process input received from any keyboard-like input system (requires enum camera movement option)
-	void ProcessKeyboard(const CameraMovement direction, const float deltaTime);
+	void ProcessKeyboard(const CameraMovement& direction, const float deltaTime);
 
 	// Process input received from a mouse input system (requires offset value in both x and y direction)
 	void ProcessMouseMovement(float xoffset, float yoffset, const bool constrainPitch = true);
@@ -71,4 +72,3 @@ private:
 
 
 #endif // CAMERA_H
-

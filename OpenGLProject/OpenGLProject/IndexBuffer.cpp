@@ -7,6 +7,7 @@
 IndexBuffer::IndexBuffer(const unsigned int* data, const unsigned int count) : count(count)
 {
 	// Precaution at run-time taken just in case the size of an unsigned int is not 4 bytes on some platforms
+	// @todo - See if really needed and if so, see where else we should do this
 	if (sizeof(unsigned int) != sizeof(GLuint))
 	{
 		return;

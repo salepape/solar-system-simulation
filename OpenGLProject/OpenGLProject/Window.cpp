@@ -1,8 +1,10 @@
 #include "Window.h"
 
-#include <iostream>
+#include <glfw3.h>
 
 #include "Camera.h"
+
+
 
 Window::Window(const unsigned int inWidth, const unsigned int inHeight, const char* inTitle) :
 	width(inWidth), height(inHeight), title(inTitle)

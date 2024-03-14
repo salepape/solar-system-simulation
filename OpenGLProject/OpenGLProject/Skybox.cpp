@@ -1,14 +1,16 @@
 #include "Skybox.h"
 
 #include <glad.h>
+#include <glm/vec3.hpp>
 #include <vector>
 
+#include "Mesh.h"
 #include "Renderer.h"
 #include "Texture.h"
 
 
 
-Skybox::Skybox(std::string path)
+Skybox::Skybox(const std::string& path)
 {
 	texture = new Texture(path, GL_TEXTURE_CUBE_MAP, GeometryType::CUBE, MapType::NONE);
 	texture->LoadCubemapDDS();
@@ -93,7 +95,9 @@ Skybox::~Skybox()
 
 void Skybox::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
-	texture->Enable(textureUnit);
-	renderer.Draw(*vao, GL_TRIANGLES, 36);
+	if (texture)
+	{
+		texture->Enable(textureUnit);
+		renderer.Draw(*vao, GL_TRIANGLES, 36);
+	}
 }
-
