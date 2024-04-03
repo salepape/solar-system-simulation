@@ -10,6 +10,7 @@
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
+#include <iostream>
 
 #include "Belt.h"
 #include "Camera.h"

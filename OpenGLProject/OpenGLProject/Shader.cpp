@@ -2,7 +2,9 @@
 
 #include <fstream>
 #include <glad.h>
+#include <glm/gtc/type_ptr.hpp>
 #include <sstream>
+
 
 
 Shader::Shader(const std::string& vsPath, const std::string& fsPath) :
@@ -116,7 +118,7 @@ void Shader::setUniformFloat(const std::string& name, const float value)
 
 void Shader::setUniformVec3(const std::string& name, const glm::vec3& value)
 {
-	glUniform3fv(GetUniformLocation(name), 1, &value[0]);
+	glUniform3fv(GetUniformLocation(name), 1, glm::value_ptr(value));
 }
 
 void Shader::setUniformVec3(const std::string& name, const float x, const float y, const float z)
@@ -126,7 +128,7 @@ void Shader::setUniformVec3(const std::string& name, const float x, const float 
 
 void Shader::setUniformMat4(const std::string& name, const glm::mat4& mat)
 {
-	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
+	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(mat));
 }
 
 void Shader::CheckValidity(const unsigned int ID, const ObjectType objectType)

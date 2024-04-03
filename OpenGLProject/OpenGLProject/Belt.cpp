@@ -64,7 +64,7 @@ void Belt::Compute()
 void Belt::Store()
 {
 	// Configure instanced array
-	VertexBuffer vbo(&modelMatrices[0], instancesCount * sizeof(glm::mat4));
+	VertexBuffer vbo(modelMatrices.data(), instancesCount * sizeof(glm::mat4));
 
 	// Set transformation matrices as an instance vertex attribute (with divisor 1)
 	for (unsigned int i = 0; i < instance.GetMeshes().size(); ++i)
