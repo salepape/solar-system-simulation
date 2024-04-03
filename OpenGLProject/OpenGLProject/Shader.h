@@ -33,6 +33,8 @@ public:
 	void setUniformVec3(const std::string& name, const float x, const float y, const float z);
 	void setUniformMat4(const std::string& name, const glm::mat4& mat);
 
+	unsigned int GetRendererID() const { return rendererID; }
+
 private:
 	unsigned int rendererID{ 0 };
 	std::unordered_map<std::string, int> uniformLocationCache;

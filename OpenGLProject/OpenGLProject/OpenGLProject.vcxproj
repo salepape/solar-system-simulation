@@ -165,6 +165,7 @@
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="UniformBuffer.h" />
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexBufferLayout.h" />
@@ -185,18 +186,19 @@
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="UniformBuffer.cpp" />
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexBufferLayout.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DefaultShader.fs" />
+    <None Include="DefaultShader.vs" />
     <None Include="InstancedModelShader.fs" />
     <None Include="InstancedModelShader.vs" />
     <None Include="SkyboxShader.fs" />
     <None Include="SkyboxShader.vs" />
-    <None Include="DefaultShader.fs" />
-    <None Include="DefaultShader.vs" />
     <None Include="TextShader.fs" />
     <None Include="TextShader.vs" />
   </ItemGroup>
