@@ -15,7 +15,7 @@ public:
 	// Unselect the currently used IBO
 	void Unbind() const;
 
-	inline unsigned int GetCount() const { return count; }
+	unsigned int GetCount() const { return count; }
 
 private:
 	unsigned int rendererID{ 0 };

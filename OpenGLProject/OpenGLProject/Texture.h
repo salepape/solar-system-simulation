@@ -58,8 +58,8 @@ public:
 	// Set everything back to default once texture is configured
 	void Disable();
 
-	inline unsigned int GetRendererID() const { return rendererID; }
-	inline const std::string& GetPath() const { return path; }
+	unsigned int GetRendererID() const { return rendererID; }
+	const std::string& GetPath() const { return path; }
 
 private:
 	unsigned int target{ 0 };

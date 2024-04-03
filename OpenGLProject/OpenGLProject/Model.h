@@ -22,8 +22,8 @@ public:
 	Model(const std::string& inPath, const bool inGammaCorrection = false);
 	~Model();
 
-	inline std::vector<Texture> GetTextures() const { return loadedTextures; }
-	inline std::vector<Mesh> GetMeshes() const { return meshes; }
+	std::vector<Texture> GetTextures() const { return loadedTextures; }
+	std::vector<Mesh> GetMeshes() const { return meshes; }
 
 	void Render(const Renderer& renderer, const unsigned int& textureUnit);
 
