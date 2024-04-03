@@ -9,8 +9,11 @@ out vec3 fPos;
 out vec3 normalCoord;
 out vec2 texCoord;
 
-uniform mat4 projection;
-uniform mat4 view;
+layout (std140) uniform matrices
+{
+    mat4 projection;
+    mat4 view;
+};
 uniform mat4 model;
 
 void main()

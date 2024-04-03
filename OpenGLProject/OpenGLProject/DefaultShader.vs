@@ -1,15 +1,18 @@
 #version 330 core
 
-layout (location = 0) in vec3 vPos;				
-layout (location = 1) in vec3 vNormalCoord;		
-layout (location = 2) in vec2 vTexCoord;		
+layout (location = 0) in vec3 vPos;
+layout (location = 1) in vec3 vNormalCoord;
+layout (location = 2) in vec2 vTexCoord;
 
 out vec3 fPos;
 out vec3 normalCoord;
 out vec2 texCoord;
 
-uniform mat4 projection;
-uniform mat4 view;
+layout (std140) uniform matrices
+{
+    mat4 projection;
+    mat4 view;
+};
 uniform mat4 model;
 
 void main()

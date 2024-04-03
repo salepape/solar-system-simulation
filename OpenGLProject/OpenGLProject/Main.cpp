@@ -5,6 +5,7 @@
 #include <glm/ext/scalar_constants.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/geometric.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <glm/mat3x3.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/trigonometric.hpp>
@@ -22,6 +23,7 @@
 #include "Skybox.h"
 #include "Sphere.h"
 #include "Text.h"
+#include "UniformBuffer.h"
 #include "Window.h"
 
 
@@ -99,6 +101,18 @@ int main()
 
 
 
+	// Compute the data size (in bytes) of each GLSL uniform variable, and their respective offset following the std140 layout base alignement rules 
+	constexpr unsigned int GLSLScalarSize = 4;
+
+	unsigned int uboBlockBindingPoint = 0;
+
+	std::vector<unsigned int> matricesShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID(), textShader.GetRendererID() });
+	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", uboBlockBindingPoint++, 32 * GLSLScalarSize);
+
+
+	
+
+
 	// Create renderer
 	Renderer renderer;
 	renderer.DepthTest();
@@ -112,18 +126,19 @@ int main()
 		renderer.Clear();
 		renderer.Blend();
 
-		// Simulate a zoom - set far plane variable to a sufficiently high value
+		// Simulate a zoom - set far plane variable to a sufficiently high value 
 		const glm::mat4 projectionMatrix = glm::perspective(glm::radians(camera.GetZoom()), static_cast<float>(SCR_WIDTH / SCR_HEIGHT), 0.1f, 1000.0f);
+		uboMatrices.InitSubData(0, 16 * GLSLScalarSize, glm::value_ptr(projectionMatrix));
 
-		// Simulate a camera circling around the scene
+		// Simulate a camera circling around the scene 
 		const glm::mat4 viewMatrix = camera.GetViewMatrix();
+		uboMatrices.InitSubData(16 * GLSLScalarSize, 16 * GLSLScalarSize, glm::value_ptr(viewMatrix));
+
 
 		// Texture sampler ID (one for each object) 
 		unsigned int samplerID = 0;
 
 		defaultShader.Enable();
-		defaultShader.setUniformMat4("projection", projectionMatrix);
-		defaultShader.setUniformMat4("view", viewMatrix);
 		defaultShader.setUniformVec3("material.specular", 0.0f, 0.0f, 0.0f);
 		defaultShader.setUniformFloat("material.shininess", 64.0f);
 		defaultShader.setUniformVec3("light.position", 0.0f, 0.0f, 0.0f);
@@ -250,8 +265,6 @@ int main()
 				textModelMatrix[2] = glm::vec4(look, 0);
 
 				textShader.Enable();
-				textShader.setUniformMat4("projection", projectionMatrix);
-				textShader.setUniformMat4("view", viewMatrix);
 				textShader.setUniformMat4("model", textModelMatrix);
 				textShader.setUniformInt("texSampler", samplerID);
 				textShader.setUniformVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));
@@ -293,8 +306,6 @@ int main()
 
 		// Draw the 2 main belts composed
 		instancedModelShader.Enable();
-		instancedModelShader.setUniformMat4("projection", projectionMatrix);
-		instancedModelShader.setUniformMat4("view", viewMatrix);
 		instancedModelShader.setUniformVec3("material.specular", 0.0f, 0.0f, 0.0f);
 		instancedModelShader.setUniformFloat("material.shininess", 64.0f);
 		instancedModelShader.setUniformVec3("light.position", 0.0f, 0.0f, 0.0f);
@@ -309,7 +320,6 @@ int main()
 		instancedModelShader.setUniformInt("material.diffuse", samplerID);
 		asteroidBelt.Render(renderer, samplerID++);
 
-		instancedModelShader.Enable();
 		instancedModelShader.setUniformInt("material.diffuse", samplerID);
 		kuiperBelt.Render(renderer, samplerID++);
 
@@ -319,9 +329,8 @@ int main()
 
 		// Draw Milky Way skybox
 		renderer.DepthEqual();
+		uboMatrices.InitSubData(16 * GLSLScalarSize, 16 * GLSLScalarSize, glm::value_ptr(glm::mat4(glm::mat3(viewMatrix))));
 		skyboxShader.Enable();
-		skyboxShader.setUniformMat4("projection", projectionMatrix);
-		skyboxShader.setUniformMat4("view", glm::mat4(glm::mat3(viewMatrix)));
 		skyboxShader.setUniformInt("texSampler", samplerID);
 		skybox.Render(renderer, samplerID++);
 		renderer.DepthLess();
