@@ -109,8 +109,20 @@ int main()
 	std::vector<unsigned int> matricesShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID(), textShader.GetRendererID() });
 	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", uboBlockBindingPoint++, 32 * GLSLScalarSize);
 
+	std::vector<unsigned int> entitiesShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
+
+	struct Material
+	{
+		const glm::vec3 specular = { 0.0f, 0.0f, 0.0f };
+		const float shininess = 64.0f;
+	} materialInstance;
+
+	UniformBuffer uboMaterials(entitiesShadersIDs, "materialParameters", uboBlockBindingPoint++, 5 * GLSLScalarSize);
+	uboMaterials.InitSubData(0, 4 * GLSLScalarSize, glm::value_ptr(materialInstance.specular));
+	uboMaterials.InitSubData(4 * GLSLScalarSize, GLSLScalarSize, &materialInstance.shininess);
 
 	
+
 
 
 	// Create renderer
@@ -134,13 +146,10 @@ int main()
 		const glm::mat4 viewMatrix = camera.GetViewMatrix();
 		uboMatrices.InitSubData(16 * GLSLScalarSize, 16 * GLSLScalarSize, glm::value_ptr(viewMatrix));
 
-
 		// Texture sampler ID (one for each object) 
 		unsigned int samplerID = 0;
 
 		defaultShader.Enable();
-		defaultShader.setUniformVec3("material.specular", 0.0f, 0.0f, 0.0f);
-		defaultShader.setUniformFloat("material.shininess", 64.0f);
 		defaultShader.setUniformVec3("light.position", 0.0f, 0.0f, 0.0f);
 		defaultShader.setUniformVec3("light.ambient", 0.2f, 0.2f, 0.2f);
 		defaultShader.setUniformVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
@@ -214,7 +223,7 @@ int main()
 				defaultShader.Enable();
 				defaultShader.setUniformBool("isSun", false);
 				defaultShader.setUniformMat4("model", defaultModelMatrix);
-				defaultShader.setUniformInt("material.diffuse", samplerID);
+				defaultShader.setUniformInt("materialDiffuse", samplerID);
 				saturnRings.Render(renderer, samplerID++);
 			}
 
@@ -222,7 +231,7 @@ int main()
 			defaultModelMatrix = glm::rotate(defaultModelMatrix, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
 			defaultShader.Enable();
-			defaultShader.setUniformInt("material.diffuse", samplerID);
+			defaultShader.setUniformInt("materialDiffuse", samplerID);
 
 			if (it->second.sphere)
 			{
@@ -295,7 +304,7 @@ int main()
 
 				defaultShader.Enable();
 				defaultShader.setUniformMat4("model", orbitModelMatrix);
-				defaultShader.setUniformInt("material.diffuse", samplerID);
+				defaultShader.setUniformInt("materialDiffuse", samplerID);
 				it->second.orbit->Render(renderer, samplerID++);
 			}
 		}
@@ -306,8 +315,6 @@ int main()
 
 		// Draw the 2 main belts composed
 		instancedModelShader.Enable();
-		instancedModelShader.setUniformVec3("material.specular", 0.0f, 0.0f, 0.0f);
-		instancedModelShader.setUniformFloat("material.shininess", 64.0f);
 		instancedModelShader.setUniformVec3("light.position", 0.0f, 0.0f, 0.0f);
 		instancedModelShader.setUniformVec3("light.ambient", 0.2f, 0.2f, 0.2f);
 		instancedModelShader.setUniformVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
@@ -317,10 +324,10 @@ int main()
 		instancedModelShader.setUniformFloat("light.linear", 0.0007f);
 		instancedModelShader.setUniformFloat("light.quadratic", 0.000002f);
 		instancedModelShader.setUniformVec3("viewPos", camera.GetPosition());
-		instancedModelShader.setUniformInt("material.diffuse", samplerID);
+		instancedModelShader.setUniformInt("materialDiffuse", samplerID);
 		asteroidBelt.Render(renderer, samplerID++);
 
-		instancedModelShader.setUniformInt("material.diffuse", samplerID);
+		instancedModelShader.setUniformInt("materialDiffuse", samplerID);
 		kuiperBelt.Render(renderer, samplerID++);
 
 
