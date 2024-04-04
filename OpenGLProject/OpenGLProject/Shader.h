@@ -39,6 +39,9 @@ private:
 	unsigned int rendererID{ 0 };
 	std::unordered_map<std::string, int> uniformLocationCache;
 
+	// Prevent glGetUniformLocation duplicate calls
+	int GetUniformLocation(const std::string& name);
+
 	// Store shader file (.vs or .fs) content into a string (used C code for better efficiency when it comes to read a file)
 	std::string ParseShader(const std::string& path);
 
@@ -50,8 +53,6 @@ private:
 
 	// Utility function to check object compilation/linking errors
 	void CheckValidity(const unsigned int ID, const ObjectType errorCode);
-
-	int GetUniformLocation(const std::string& name);
 };
 
 

@@ -74,7 +74,6 @@ void Shader::CreateProgram(const unsigned int vsID, const unsigned int fsID)
 
 int Shader::GetUniformLocation(const std::string& name)
 {
-	// Prevent glGetUniformLocation duplicate calls
 	if (uniformLocationCache.find(name) != uniformLocationCache.end())
 	{
 		return uniformLocationCache[name];
@@ -83,7 +82,7 @@ int Shader::GetUniformLocation(const std::string& name)
 	const int location = glGetUniformLocation(rendererID, name.c_str());
 	if (location == -1)
 	{
-		std::cout << "ERROR::SHADER - uniform " << name << " doesn't exist !" << std::endl;
+		std::cout << "ERROR::SHADER - uniform " << name << " doesn't exist!" << std::endl;
 	}
 
 	uniformLocationCache[name] = location;

@@ -8,29 +8,29 @@ out vec4 fColor;
 
 layout (std140) uniform materialParameters
 {
-    vec3 materialSpecular;
+    vec4 materialSpecular;
     float materialShininess;
 };
 uniform sampler2D materialDiffuse;
 
-struct Light
+layout (std140) uniform lightParameters
 {
-    vec3 position;
+    vec4 lightPosition;
 
     // Terms of Phong shading formula
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-    bool isBlinn;
+    vec4 lightAmbient;
+    vec4 lightDiffuse;
+    vec4 lightSpecular;
 
     // Terms of attenuation spotlight formula
-    float constant;
-    float linear;
-    float quadratic;
+    float lightConstant;
+    float lightLinear;
+    float lightQuadratic;
+
+    bool isBlinn;
 };
 
 uniform vec3 viewPos;
-uniform Light light;
 
 void main()
 {
@@ -38,18 +38,18 @@ void main()
     vec3 texelSampling = texture(materialDiffuse, vec2(texCoord.x, 1.0 - texCoord.y)).rgb;
 
     // Ambient lighting
-    vec3 ambient = light.ambient * texelSampling;
+    vec3 ambient = lightAmbient.xyz * texelSampling;
     
     // Diffuse lighting
     vec3 normalDir = normalize(normalCoord);
-    vec3 lightDir = normalize(light.position - fPos);
+    vec3 lightDir = normalize(lightPosition.xyz - fPos);
     float diff = max(dot(normalDir, lightDir), 0.0);
-    vec3 diffuse = light.diffuse * diff * texelSampling;
+    vec3 diffuse = lightDiffuse.xyz * diff * texelSampling;
     
     // Specular lighting
     vec3 viewDir = normalize(viewPos - fPos);
     float spec = 0.0f;
-    if(light.isBlinn)
+    if(isBlinn)
     {
         vec3 halfwayDir = normalize(lightDir + viewDir);
         spec = pow(max(dot(normalDir, halfwayDir), 0.0), materialShininess);
@@ -59,10 +59,10 @@ void main()
         vec3 reflectDir = reflect(-lightDir, normalDir);
         spec = pow(max(dot(viewDir, reflectDir), 0.0), materialShininess);
     }
-    vec3 specular = light.specular * (spec * materialSpecular);
+    vec3 specular = lightSpecular.xyz * (spec * materialSpecular.xyz);
 
-    float distance = length(light.position - fPos);
-    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+    float distance = length(lightPosition.xyz - fPos);
+    float attenuation = 1.0 / (lightConstant + lightLinear * distance + lightQuadratic * (distance * distance));
     
     vec3 result = (ambient + diffuse + specular) * attenuation;
     fColor.xyzw = vec4(result, 1.0);

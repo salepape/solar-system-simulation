@@ -121,7 +121,34 @@ int main()
 	uboMaterials.InitSubData(0, 4 * GLSLScalarSize, glm::value_ptr(materialInstance.specular));
 	uboMaterials.InitSubData(4 * GLSLScalarSize, GLSLScalarSize, &materialInstance.shininess);
 
-	
+	struct Light
+	{
+		const glm::vec3 position = { 0.0f, 0.0f, 0.0f };
+
+		// Terms of Phong shading formula 
+		const glm::vec3 ambiant = { 0.2f, 0.2f, 0.2f };
+		const glm::vec3 diffuse = { 0.95f, 0.95f, 0.95f };
+		const glm::vec3 specular = { 1.0f, 1.0f, 1.0f };
+
+		// Terms of attenuation spotlight formula
+		const float constant = 1.0f;
+		const float linear = 0.0007f;
+		const float quadratic = 0.000002f;
+
+		const bool isBlinn = false;
+	} lightInstance;
+
+	UniformBuffer uboLights(entitiesShadersIDs, "lightParameters", uboBlockBindingPoint++, 20 * GLSLScalarSize);
+	uboLights.InitSubData(0, 4 * GLSLScalarSize, glm::value_ptr(lightInstance.position));
+	uboLights.InitSubData(4 * GLSLScalarSize, 4 * GLSLScalarSize, glm::value_ptr(lightInstance.ambiant));
+	uboLights.InitSubData(8 * GLSLScalarSize, 4 * GLSLScalarSize, glm::value_ptr(lightInstance.diffuse));
+	uboLights.InitSubData(12 * GLSLScalarSize, 4 * GLSLScalarSize, glm::value_ptr(lightInstance.specular));
+	uboLights.InitSubData(16 * GLSLScalarSize, GLSLScalarSize, &lightInstance.constant);
+	uboLights.InitSubData(17 * GLSLScalarSize, GLSLScalarSize, &lightInstance.linear);
+	uboLights.InitSubData(18 * GLSLScalarSize, GLSLScalarSize, &lightInstance.quadratic);
+	uboLights.InitSubData(19 * GLSLScalarSize, GLSLScalarSize, &lightInstance.isBlinn);
+
+
 
 
 
@@ -150,14 +177,6 @@ int main()
 		unsigned int samplerID = 0;
 
 		defaultShader.Enable();
-		defaultShader.setUniformVec3("light.position", 0.0f, 0.0f, 0.0f);
-		defaultShader.setUniformVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-		defaultShader.setUniformVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
-		defaultShader.setUniformVec3("light.specular", 1.0f, 1.0f, 1.0f);
-		defaultShader.setUniformFloat("light.isBlinn", false);
-		defaultShader.setUniformFloat("light.constant", 1.0f);
-		defaultShader.setUniformFloat("light.linear", 0.0007f);
-		defaultShader.setUniformFloat("light.quadratic", 0.000002f);
 		defaultShader.setUniformVec3("viewPos", camera.GetPosition());
 
 		// Draw celestial bodies, their orbits and their motion
@@ -315,14 +334,6 @@ int main()
 
 		// Draw the 2 main belts composed
 		instancedModelShader.Enable();
-		instancedModelShader.setUniformVec3("light.position", 0.0f, 0.0f, 0.0f);
-		instancedModelShader.setUniformVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-		instancedModelShader.setUniformVec3("light.diffuse", 0.95f, 0.95f, 0.95f);
-		instancedModelShader.setUniformVec3("light.specular", 1.0f, 1.0f, 1.0f);
-		instancedModelShader.setUniformFloat("light.isBlinn", false);
-		instancedModelShader.setUniformFloat("light.constant", 1.0f);
-		instancedModelShader.setUniformFloat("light.linear", 0.0007f);
-		instancedModelShader.setUniformFloat("light.quadratic", 0.000002f);
 		instancedModelShader.setUniformVec3("viewPos", camera.GetPosition());
 		instancedModelShader.setUniformInt("materialDiffuse", samplerID);
 		asteroidBelt.Render(renderer, samplerID++);
