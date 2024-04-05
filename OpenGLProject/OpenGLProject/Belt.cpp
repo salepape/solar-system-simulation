@@ -67,10 +67,10 @@ void Belt::Store()
 	VertexBuffer vbo(modelMatrices.data(), instancesCount * sizeof(glm::mat4));
 
 	// Set transformation matrices as an instance vertex attribute (with divisor 1)
-	for (unsigned int i = 0; i < instance.GetMeshes().size(); ++i)
+	for (const auto& mesh: instance.GetMeshes())
 	{
 		// Retrieve VAO ID of the rock mesh (we don't create any new VAO ID per belt because of instancing)
-		vao = instance.GetMeshes()[i].GetVaoRef();
+		vao = mesh.GetVaoRef();
 		vao.Bind();
 
 		constexpr int ElementsCount = GetInstanceMatrixElmtsCount();
@@ -94,8 +94,8 @@ void Belt::Render(const Renderer& renderer, const unsigned int& textureUnit)
 		instance.GetTextures()[0].Enable(textureUnit);
 	}
 
-	for (unsigned int i = 0; i < instance.GetMeshes().size(); ++i)
+	for (const auto& mesh: instance.GetMeshes())
 	{
-		renderer.DrawInstanced(vao, static_cast<unsigned int>(instance.GetMeshes()[i].GetIndicesCount()), instancesCount);
+		renderer.DrawInstanced(vao, static_cast<unsigned int>(mesh.GetIndicesCount()), instancesCount);
 	}
 }

@@ -94,9 +94,9 @@ void Mesh::Render(const Renderer& renderer, const unsigned int& textureUnit)
 		return;
 	}
 
-	for (unsigned int i = 0; i < textures.size(); ++i)
+	for (auto& texture: textures)
 	{
-		textures[i].Enable(textureUnit);
+		texture.Enable(textureUnit);
 	}
 
 	renderer.Draw(*vao, *ibo);

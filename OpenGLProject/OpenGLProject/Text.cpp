@@ -2,7 +2,7 @@
 
 #include <freetype/freetype.h>
 #include <glad.h>
-#include <utility>
+#include <vector>
 
 #include "Renderer.h"
 #include "Texture.h"
@@ -33,36 +33,31 @@ Text::Text()
 	// Disable byte-alignment restriction
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-	Texture* characterTexture = nullptr;
-
 	// Load the first 128 characters of ASCII set
-	for (unsigned char c = 0; c < 128; ++c)
+	for (unsigned char charCode = 0; charCode < 128; ++charCode)
 	{
-		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+		if (FT_Load_Char(face, charCode, FT_LOAD_RENDER))
 		{
 			std::cout << "ERROR::FREETYTPE - Failed to load Glyph" << std::endl;
 			continue;
 		}
 
 		// No need to specify image path here since it's a glyph
-		characterTexture = new Texture("", GL_TEXTURE_2D, GeometryType::CHARACTER, MapType::NONE);
-		characterTexture->LoadGlyph(face, GL_RED);
+		Texture characterTexture("", GL_TEXTURE_2D, GeometryType::CHARACTER, MapType::NONE);
+		characterTexture.LoadGlyph(face, GL_RED);
 
 		// Create object storing current ASCII character caracteristics
 		Character character =
 		{
-			characterTexture->GetRendererID(),
+			characterTexture.GetRendererID(),
 			glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
 			glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
 			face->glyph->advance.x
 		};
 
 		// Store character for later use
-		characters.insert(std::pair<char, Character>(c, character));
+		characters.insert(std::pair<char, Character>(charCode, character));
 	}
-
-	// Unbind character textures
-	characterTexture->Unbind();
 
 	// Destroy FreeType once work is finished
 	FT_Done_Face(face);
@@ -101,9 +96,9 @@ void Text::Store()
 float Text::GetBillboardSize(const std::string& text, const float scale)
 {
 	float totalAdvance = 0.0f;
-	for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
+	for (const auto& c: text)
 	{
-		totalAdvance += (characters[*c].advance >> 6) * scale;
+		totalAdvance += (characters[c].advance >> 6) * scale;
 	}
 
 	return totalAdvance;
@@ -117,9 +112,9 @@ void Text::Render(const Renderer& renderer, const std::string text, float x, con
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	vao->Bind();
 
-	for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
+	for (const auto& c : text)
 	{
-		const Character character = characters[*c];
+		const Character character = characters[c];
 
 		// Position of the quad
 		const float xpos = x + character.bearing.x * scale;
@@ -132,12 +127,12 @@ void Text::Render(const Renderer& renderer, const std::string text, float x, con
 		// Update VBO for each character
 		std::vector<float> vertices =
 		{
-			xpos,			ypos + height,  0.0f, 0.0f ,
-			xpos,			ypos,			0.0f, 1.0f ,
-			xpos + width,	ypos,			1.0f, 1.0f ,
+			xpos,			ypos + height,  0.0f, 0.0f,
+			xpos,			ypos,			0.0f, 1.0f,
+			xpos + width,	ypos,			1.0f, 1.0f,
 
-			xpos,			ypos + height,  0.0f, 0.0f ,
-			xpos + width,	ypos,			1.0f, 1.0f ,
+			xpos,			ypos + height,  0.0f, 0.0f,
+			xpos + width,	ypos,			1.0f, 1.0f,
 			xpos + width,	ypos + height,  1.0f, 0.0f
 		};
 
@@ -146,8 +141,7 @@ void Text::Render(const Renderer& renderer, const std::string text, float x, con
 
 		// Update content of VBO memory
 		vbo->Bind();
-		std::vector<std::vector<float>*> verticesAddresses{ &vertices };
-		vbo->InitSubData(verticesAddresses);
+		vbo->InitSubData({ &vertices });
 		vbo->Unbind();
 
 		renderer.Draw(*vao, GL_TRIANGLES, 6);

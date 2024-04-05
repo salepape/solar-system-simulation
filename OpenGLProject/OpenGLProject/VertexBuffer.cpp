@@ -35,12 +35,12 @@ void VertexBuffer::Unbind() const
 void VertexBuffer::InitSubData(const std::vector<std::vector<float>*>& data)
 {
 	unsigned int offset = 0;
-	for (size_t i = 0; i < data.size(); ++i)
+	for (const auto* const subdata : data)
 	{
-		const size_t subdataSize = sizeof(float) * data[i]->size();
+		const size_t subdataSize = sizeof(float) * subdata->size();
 
 		// Update the data stored in the specified subset of memory space (in bytes), avoiding the reallocation cost
-		glBufferSubData(GL_ARRAY_BUFFER, offset, subdataSize, data[i]->data());
+		glBufferSubData(GL_ARRAY_BUFFER, offset, subdataSize, subdata->data());
 
 		offset += static_cast<unsigned int>(subdataSize);
 	}

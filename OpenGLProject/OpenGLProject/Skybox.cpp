@@ -69,22 +69,19 @@ void Skybox::Compute()
 
 	constexpr int facesCount = 6;
 	constexpr int verticesPerFaceCount = 6;
+	
 	int positionIndex = 0;
-
-	for (int i = 0; i < facesCount; ++i)
+	while (positionIndex < facesCount * verticesPerFaceCount * Vertex::GetPositionElmtsCount())
 	{
-		for (int j = 0; j < verticesPerFaceCount; ++j)
-		{
-			Vertex vertex;
-			vertex.Position = glm::vec3(vertCoor[positionIndex], vertCoor[positionIndex + 1], vertCoor[positionIndex + 2]);
-			vertex.Normal = glm::vec3(0.0f, 0.0f, 0.0f);
-			vertex.TexCoords = glm::vec3(0.0f, 0.0f, 0.0f);
-			vertex.Tangent = glm::vec3(0.0f, 0.0f, 0.0f);
-			vertex.Bitangent = glm::vec3(0.0f, 0.0f, 0.0f);
-			vertices.push_back(vertex);
+		Vertex vertex;
+		vertex.Position = glm::vec3(vertCoor[positionIndex], vertCoor[positionIndex + 1], vertCoor[positionIndex + 2]);
+		vertex.Normal = glm::vec3(0.0f, 0.0f, 0.0f);
+		vertex.TexCoords = glm::vec3(0.0f, 0.0f, 0.0f);
+		vertex.Tangent = glm::vec3(0.0f, 0.0f, 0.0f);
+		vertex.Bitangent = glm::vec3(0.0f, 0.0f, 0.0f);
+		vertices.push_back(vertex);
 
-			positionIndex += Vertex::GetPositionElmtsCount();
-		}
+		positionIndex += Vertex::GetPositionElmtsCount();
 	}
 }
 

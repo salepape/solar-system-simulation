@@ -11,7 +11,7 @@ class Texture;
 
 
 
-// Approximation: all planet / moon orbits will be circular (eccentricities close to 0)
+// Approximation: all planet/moon orbits will be circular (eccentricities close to 0)
 class Orbit : public Mesh
 {
 public:
@@ -25,7 +25,7 @@ protected:
 
 private:
 	float radius{ 0.0f };
-	int meridStripsCount{ 100 };
+	int meridianStripsCount{ 100 };
 
 	Texture* texture{ nullptr };
 };

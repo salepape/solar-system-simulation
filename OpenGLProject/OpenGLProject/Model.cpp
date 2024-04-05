@@ -89,7 +89,7 @@ Mesh Model::ProcessMesh(const aiMesh& mesh, const aiScene& scene)
 	std::vector<unsigned int> indices;
 	for (unsigned int i = 0; i < mesh.mNumFaces; ++i)
 	{
-		const aiFace facet = mesh.mFaces[i];
+		const aiFace& facet = mesh.mFaces[i];
 
 		for (unsigned int j = 0; j < facet.mNumIndices; ++j)
 		{
@@ -151,8 +151,8 @@ std::vector<Texture> Model::LoadTextures(const aiMaterial& material, const aiTex
 
 void Model::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
-	for (unsigned int i = 0; i < meshes.size(); ++i)
+	for (auto& mesh: meshes)
 	{
-		meshes[i].Render(renderer, textureUnit);
+		mesh.Render(renderer, textureUnit);
 	}
 }

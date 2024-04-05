@@ -28,9 +28,9 @@ Orbit::~Orbit()
 
 void Orbit::Compute()
 {
-	for (int i = 0; i <= meridStripsCount; ++i)
+	for (int i = 0; i <= meridianStripsCount; ++i)
 	{
-		const float theta = 2.0f * glm::pi<float>() * static_cast<float>(i) / meridStripsCount;
+		const float theta = 2.0f * glm::pi<float>() * static_cast<float>(i) / meridianStripsCount;
 
 		Vertex vertex;
 		vertex.Position = glm::vec3(radius * glm::sin(theta), 0.0f, radius * glm::cos(theta));
@@ -45,5 +45,5 @@ void Orbit::Compute()
 void Orbit::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
 	texture->Enable(textureUnit);
-	renderer.Draw(*vao, GL_LINE_LOOP, meridStripsCount);
+	renderer.Draw(*vao, GL_LINE_LOOP, meridianStripsCount);
 }
