@@ -66,8 +66,8 @@ int main()
 	Model saturnRings("../Models/SaturnRings.obj");
 	Model asteroid("../Models/Asteroid.obj");
 	Model ice("../Models/Ice.obj");
-	Model deimos("../Models/Deimos.obj");
-	Model phobos("../Models/Phobos.obj");
+	//Model deimos("../Models/Deimos.obj");
+	//Model phobos("../Models/Phobos.obj");
 
 
 
@@ -81,11 +81,11 @@ int main()
 		{
 			it->second.sphere = new Sphere(it->second.texturePath, it->second.radius * 0.5f);
 		}
-		else if (it->first == "Deimos" || it->first == "Phobos")
-		{
-			// @todo - Have a reference of the non-spherical satellite (of type Model) in the data structure instead?
-			it->second.orbit = new Orbit(it->second.texturePath, it->second.dist);
-		}
+		//else if (it->first == "Deimos" || it->first == "Phobos")
+		//{
+		//	// @todo - Have a reference of the non-spherical satellite (of type Model) in the data structure instead?
+		//	it->second.orbit = new Orbit(it->second.texturePath, it->second.dist);
+		//}
 		else
 		{
 			it->second.sphere = new Sphere(it->second.texturePath, it->second.radius);
@@ -267,14 +267,14 @@ int main()
 				defaultShader.Enable();
 				defaultShader.setUniformMat4("model", defaultModelMatrix);
 
-				if (it->first == "Deimos")
-				{
-					deimos.Render(renderer, samplerID++);
-				}
-				else if (it->first == "Phobos")
-				{
-					phobos.Render(renderer, samplerID++);
-				}
+				//if (it->first == "Deimos")
+				//{
+				//	deimos.Render(renderer, samplerID++);
+				//}
+				//else if (it->first == "Phobos")
+				//{
+				//	phobos.Render(renderer, samplerID++);
+				//}
 			}
 
 
@@ -297,12 +297,13 @@ int main()
 				textShader.setUniformInt("texSampler", samplerID);
 				textShader.setUniformVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
-				if (it->first == "Deimos" || it->first == "Phobos")
-				{
-					// @todo - Get the bounding box size of models from Mesh class?
-					text.Render(renderer, it->first, 0.0f, it->second.planetInfo->radius * 0.5f, it->second.planetInfo->radius * 0.002f, samplerID++);
-				}
-				else if (it->first != "Sun")
+				//if (it->first == "Deimos" || it->first == "Phobos")
+				//{
+				//	// @todo - Get the bounding box size of models from Mesh class?
+				//	text.Render(renderer, it->first, 0.0f, it->second.planetInfo->radius * 0.5f, it->second.planetInfo->radius * 0.002f, samplerID++);
+				//}
+				//else 
+				if (it->first != "Sun")
 				{
 					text.Render(renderer, it->first, 0.0f, it->second.radius * 1.25f, it->second.radius * 0.01f, samplerID++);
 				}
