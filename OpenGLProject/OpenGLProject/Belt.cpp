@@ -2,6 +2,7 @@
 
 #include <glfw3.h>
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
 
 #include "Mesh.h"
@@ -26,30 +27,35 @@ Belt::~Belt()
 
 void Belt::Compute()
 {
+	const float angleValue = 1.0f / static_cast<float>(instancesCount) * 360.0f;
+	const int divisor = static_cast<int>(2 * minorRadius * 100);
+
 	// Initialise random seed
 	srand(static_cast<unsigned int>(glfwGetTime()));
 
 	// Compute random position for each model instance of the belt tore
+	modelMatrices.reserve(instancesCount);
 	for (unsigned int i = 0; i < instancesCount; ++i)
 	{
 		glm::mat4 modelMatrix = glm::mat4(1.0f);
 
-		const float angle = static_cast<float>(i) / static_cast<float>(instancesCount) * 360.0f;
+		const float angle = static_cast<float>(i) * angleValue;
 
-		const float xOffset = (rand() % static_cast<int>(2 * minorRadius * 100)) / 100.0f - minorRadius;
+		const float xOffset = (rand() % divisor) * 0.01f - minorRadius;
 		const float x = sin(angle) * majorRadius + xOffset;
 
 		// Keep height of model field smaller compared to width of x and z
-		const float yOffset = (rand() % static_cast<int>(2 * minorRadius * 100)) / 100.0f - minorRadius;
+		const float yOffset = (rand() % divisor) * 0.01f - minorRadius;
 		const float y = yOffset * 0.4f;
 
-		const float zOffset = (rand() % static_cast<int>(2 * minorRadius * 100)) / 100.0f - minorRadius;
+		const float zOffset = (rand() % divisor) * 0.01f - minorRadius;
 		const float z = cos(angle) * majorRadius + zOffset;
 
+		// Move along circle with radius in range[-offset, offset]
 		modelMatrix = glm::translate(modelMatrix, glm::vec3(x, y, z));
 
 		// Resize between 0.05 and "0.05 + 0.sizeFactor"
-		const float scale = static_cast<float>(rand() % sizeFactor) / 100.0f + 0.05f;
+		const float scale = static_cast<float>(rand() % sizeFactor) * 0.01f + 0.05f;
 		modelMatrix = glm::scale(modelMatrix, glm::vec3(scale));
 
 		// Add rotation around a randomly picked rotation axis vector
@@ -63,6 +69,8 @@ void Belt::Compute()
 
 void Belt::Store()
 {
+	constexpr int ELEMENTS_COUNT = GetInstanceMatrixElmtsCount();
+
 	// Configure instanced array
 	VertexBuffer vbo(modelMatrices.data(), instancesCount * sizeof(glm::mat4));
 
@@ -73,13 +81,11 @@ void Belt::Store()
 		vao = mesh.GetVaoRef();
 		vao.Bind();
 
-		constexpr int ElementsCount = GetInstanceMatrixElmtsCount();
-
 		VertexBufferLayout vbl;
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, ElementsCount);
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol2, GL_FLOAT, ElementsCount);
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol3, GL_FLOAT, ElementsCount);
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol4, GL_FLOAT, ElementsCount);
+		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, ELEMENTS_COUNT);
+		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol2, GL_FLOAT, ELEMENTS_COUNT);
+		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol3, GL_FLOAT, ELEMENTS_COUNT);
+		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol4, GL_FLOAT, ELEMENTS_COUNT);
 		vao.AddInstancedBuffer(vbo, vbl);
 
 		vao.Unbind();

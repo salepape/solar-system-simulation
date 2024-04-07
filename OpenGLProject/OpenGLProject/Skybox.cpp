@@ -22,6 +22,9 @@ Skybox::Skybox(const std::string& path)
 
 void Skybox::Compute()
 {
+	// FacesCount is 6, verticesPerFaceCount is 6
+	constexpr int VERTICES_COUNT = 36;
+
 	std::vector<float> vertCoor =
 	{
 		-1.0f,  1.0f, -1.0f,
@@ -66,12 +69,10 @@ void Skybox::Compute()
 		-1.0f, -1.0f,  1.0f,
 		 1.0f, -1.0f,  1.0f
 	};
-
-	constexpr int facesCount = 6;
-	constexpr int verticesPerFaceCount = 6;
 	
 	int positionIndex = 0;
-	while (positionIndex < facesCount * verticesPerFaceCount * Vertex::GetPositionElmtsCount())
+	vertices.reserve(VERTICES_COUNT);
+	while (positionIndex < VERTICES_COUNT * Vertex::GetPositionElmtsCount())
 	{
 		Vertex vertex;
 		vertex.Position = glm::vec3(vertCoor[positionIndex], vertCoor[positionIndex + 1], vertCoor[positionIndex + 2]);

@@ -35,6 +35,7 @@ void VertexBuffer::Unbind() const
 void VertexBuffer::InitSubData(const std::vector<std::vector<float>*>& data)
 {
 	unsigned int offset = 0;
+
 	for (const auto* const subdata : data)
 	{
 		const size_t subdataSize = sizeof(float) * subdata->size();

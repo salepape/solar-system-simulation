@@ -20,8 +20,8 @@ Window::Window(const unsigned int inWidth, const unsigned int inHeight, const ch
 	// Provide a Window pointer within the body of GLFW callbacks since we cannot add parameters to these function pointers/has to be non-capturing lambdas
 	glfwSetWindowUserPointer(GLFWWindow, reinterpret_cast<void*>(this));
 
-	lastXPos = width / 2.0f;
-	lastYPos = height / 2.0f;
+	lastXPos = 0.5f * width;
+	lastYPos = 0.5f * height;
 
 	if (MakeContextCurrent() == -1)
 	{
@@ -206,7 +206,7 @@ void Window::ProcessInput(Camera& camera)
 	}
 	if (glfwGetKey(GLFWWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
 	{
-		simuSpeedFactor /= 2.0f;
+		simuSpeedFactor *= 0.5f;
 	}
 }
 

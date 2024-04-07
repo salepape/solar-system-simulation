@@ -28,9 +28,12 @@ Orbit::~Orbit()
 
 void Orbit::Compute()
 {
+	const float thetaAngle = 2.0f * glm::pi<float>() / meridianStripsCount;
+
+	vertices.reserve(meridianStripsCount + 1);
 	for (int i = 0; i <= meridianStripsCount; ++i)
 	{
-		const float theta = 2.0f * glm::pi<float>() * static_cast<float>(i) / meridianStripsCount;
+		const float theta = static_cast<float>(i) * thetaAngle;
 
 		Vertex vertex;
 		vertex.Position = glm::vec3(radius * glm::sin(theta), 0.0f, radius * glm::cos(theta));

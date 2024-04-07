@@ -2,6 +2,7 @@
 
 #include <freetype/freetype.h>
 #include <glad.h>
+#include <utility>
 #include <vector>
 
 #include "Renderer.h"
@@ -46,7 +47,7 @@ Text::Text()
 		Texture characterTexture("", GL_TEXTURE_2D, GeometryType::CHARACTER, MapType::NONE);
 		characterTexture.LoadGlyph(face, GL_RED);
 
-		// Create object storing current ASCII character caracteristics
+		// Create object storing current ASCII character caracteristics (glyph non-null, check passed above)
 		Character character =
 		{
 			characterTexture.GetRendererID(),
@@ -56,7 +57,7 @@ Text::Text()
 		};
 
 		// Store character for later use
-		characters.insert(std::pair<char, Character>(charCode, character));
+		characters.insert(std::make_pair(charCode, character));
 	}
 
 	// Destroy FreeType once work is finished

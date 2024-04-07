@@ -6,6 +6,7 @@
 #include <iostream>
 
 
+
 Camera::Camera(const glm::vec3 inPosition) :
 	position(inPosition), worldUp(glm::vec3(0.0f, 1.0f, 0.0f)), forward(glm::vec3(0.0f, 0.0f, -1.0f))
 {
@@ -20,6 +21,7 @@ glm::mat4 Camera::GetViewMatrix() const
 void Camera::ProcessKeyboard(const CameraMovement& direction, const float deltaTime)
 {
 	const float distance = travelSpeed * deltaTime;
+
 	switch (direction)
 	{
 	case FORWARD:
@@ -86,11 +88,14 @@ void Camera::ProcessMouseScroll(const float yOffset)
 
 void Camera::UpdateCameraVectors()
 {
+	const float YawInRadians = glm::radians(yaw);
+	const float PitchInRadians = glm::radians(pitch);
+
 	// Normalise vectors because their length gets closer to 0 the more you look up or down, which results in slower movement
 	glm::vec3 newForward;
-	newForward.x = glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
-	newForward.y = glm::sin(glm::radians(pitch));
-	newForward.z = glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
+	newForward.x = glm::cos(YawInRadians) * glm::cos(PitchInRadians);
+	newForward.y = glm::sin(PitchInRadians);
+	newForward.z = glm::sin(YawInRadians) * glm::cos(PitchInRadians);
 	forward = glm::normalize(newForward);
 
 	right = glm::normalize(glm::cross(forward, worldUp));
@@ -115,5 +120,5 @@ void Camera::DecreaseSpeed(const float factor)
 		return;
 	}
 
-	travelSpeed /= factor;
+	travelSpeed *= 1.0f / factor;
 }

@@ -6,7 +6,7 @@
 class IndexBuffer
 {
 public:
-	IndexBuffer(const unsigned int* data, const unsigned int count);
+	IndexBuffer(const unsigned int* data, const unsigned int inCount);
 	~IndexBuffer();
 
 	// Select the IBO we want to use

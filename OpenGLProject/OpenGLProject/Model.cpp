@@ -42,6 +42,7 @@ void Model::LoadModel(const std::string& path)
 void Model::ProcessNode(const aiNode& node, const aiScene& scene)
 {
 	// Process each mesh located at the current node
+	meshes.reserve(node.mNumMeshes);
 	for (unsigned int i = 0; i < node.mNumMeshes; ++i)
 	{
 		// Node object only contains indices to index the actual objects in the scene
@@ -121,7 +122,6 @@ Mesh Model::ProcessMesh(const aiMesh& mesh, const aiScene& scene)
 std::vector<Texture> Model::LoadTextures(const aiMaterial& material, const aiTextureType type)
 {
 	std::vector<Texture> textures;
-
 	for (unsigned int i = 0; i < material.GetTextureCount(type); ++i)
 	{
 		aiString TexturePath;

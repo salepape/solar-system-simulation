@@ -37,10 +37,9 @@ void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& l
 	Bind();
 	vbo.Bind();
 
-	const auto& attributeLayouts = layout.GetAttributeLayouts();
 	unsigned int offset = 0;
 
-	for (const auto& attributeLayout: attributeLayouts)
+	for (const auto& attributeLayout: layout.GetAttributeLayouts())
 	{
 		// Enable the attribute index at location i in the vertex shader to be used
 		glEnableVertexAttribArray(attributeLayout.location);
@@ -57,11 +56,10 @@ void VertexArray::AddInstancedBuffer(const VertexBuffer& vbo, const VertexBuffer
 	//Bind();
 	//vbo.Bind();
 
-	const auto& attributeLayouts = layout.GetAttributeLayouts();
 	unsigned int offset = 0;
 
 	// Iterate through the instanced matrix only
-	for (const auto& attributeLayout: attributeLayouts)
+	for (const auto& attributeLayout: layout.GetAttributeLayouts())
 	{
 		// Enable the attribute index at location i in the vertex shader to be used
 		glEnableVertexAttribArray(attributeLayout.location);

@@ -34,6 +34,8 @@ int main()
 {
 	constexpr unsigned int SCR_WIDTH = 1000;
 	constexpr unsigned int SCR_HEIGHT = 1000;
+	const float aspectRatio = static_cast<float>(SCR_WIDTH / SCR_HEIGHT);
+
 	Window window(SCR_WIDTH, SCR_HEIGHT, "Solar System Simulation");
 
 	Camera camera(glm::vec3(0.0f, 50.0f, 200.0f));
@@ -57,7 +59,7 @@ int main()
 	Shader instancedModelShader("InstancedModelShader.vs", "InstancedModelShader.fs");
 
 	// Create Milky Way skybox
-	Skybox skybox = Skybox("../Textures/MilkyWay/stars.dds");
+	Skybox skybox("../Textures/MilkyWay/stars.dds");
 
 	// Create text characters
 	Text text;
@@ -75,23 +77,24 @@ int main()
 
 	// Initialise all celestial bodies and their respective orbit (applying celectial body textures to have some colour consistency)
 	LoadData();
-	for (auto it = data.begin(); it != data.end(); ++it)
+	for (auto& dataInput: data)
 	{
-		if (it->first == "Sun")
+		if (dataInput.first == "Sun")
 		{
-			it->second.sphere = new Sphere(it->second.texturePath, it->second.radius * 0.5f);
+			dataInput.second.sphere = new Sphere(dataInput.second.texturePath, dataInput.second.radius * 0.5f);
 		}
-		//else if (it->first == "Deimos" || it->first == "Phobos")
+		//else if (dataInput.first == "Deimos" || dataInput.first == "Phobos")
 		//{
 		//	// @todo - Have a reference of the non-spherical satellite (of type Model) in the data structure instead?
-		//	it->second.orbit = new Orbit(it->second.texturePath, it->second.dist);
+		//	dataInput.second.orbit = new Orbit(dataInput.second.texturePath, dataInput.second.dist);
 		//}
 		else
 		{
-			it->second.sphere = new Sphere(it->second.texturePath, it->second.radius);
-			it->second.orbit = new Orbit(it->second.texturePath, it->second.dist);
+			dataInput.second.sphere = new Sphere(dataInput.second.texturePath, dataInput.second.radius);
+			dataInput.second.orbit = new Orbit(dataInput.second.texturePath, dataInput.second.dist);
 		}
 	}
+	LoadPreComputations();
 
 	// Do some instancing to build the main Solar Systems rock belts
 	Belt asteroidBelt	{ asteroid, 5000,  10, data["Mars"].dist * 1.1f,	2.75f * DIST_SCALE_FACTOR / 2.5f };
@@ -102,51 +105,62 @@ int main()
 
 
 	// Compute the data size (in bytes) of each GLSL uniform variable, and their respective offset following the std140 layout base alignement rules 
-	constexpr unsigned int GLSLScalarSize = 4;
+	constexpr unsigned int GLSL_SCALAR_SIZE = 4;
 
 	unsigned int uboBlockBindingPoint = 0;
 
 	std::vector<unsigned int> matricesShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID(), textShader.GetRendererID() });
-	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", uboBlockBindingPoint++, 32 * GLSLScalarSize);
+	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", uboBlockBindingPoint++, 32 * GLSL_SCALAR_SIZE);
+	const unsigned int mat4v4Size = 16 * GLSL_SCALAR_SIZE;
 
 	std::vector<unsigned int> entitiesShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
 
 	struct Material
 	{
-		const glm::vec3 specular = { 0.0f, 0.0f, 0.0f };
-		const float shininess = 64.0f;
+		const glm::vec3 specular{ 0.0f, 0.0f, 0.0f };
+		const float shininess{ 64.0f };
 	} materialInstance;
 
-	UniformBuffer uboMaterials(entitiesShadersIDs, "materialParameters", uboBlockBindingPoint++, 5 * GLSLScalarSize);
-	uboMaterials.InitSubData(0, 4 * GLSLScalarSize, glm::value_ptr(materialInstance.specular));
-	uboMaterials.InitSubData(4 * GLSLScalarSize, GLSLScalarSize, &materialInstance.shininess);
+	UniformBuffer uboMaterials(entitiesShadersIDs, "materialParameters", uboBlockBindingPoint++, 5 * GLSL_SCALAR_SIZE);
+	uboMaterials.InitSubData(0, 4 * GLSL_SCALAR_SIZE, glm::value_ptr(materialInstance.specular));
+	uboMaterials.InitSubData(4 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, &materialInstance.shininess);
 
 	struct Light
 	{
-		const glm::vec3 position = { 0.0f, 0.0f, 0.0f };
+		const glm::vec3 position{ 0.0f, 0.0f, 0.0f };
 
 		// Terms of Phong shading formula 
-		const glm::vec3 ambiant = { 0.2f, 0.2f, 0.2f };
-		const glm::vec3 diffuse = { 0.95f, 0.95f, 0.95f };
-		const glm::vec3 specular = { 1.0f, 1.0f, 1.0f };
+		const glm::vec3 ambiant{ 0.2f, 0.2f, 0.2f };
+		const glm::vec3 diffuse{ 0.95f, 0.95f, 0.95f };
+		const glm::vec3 specular{ 1.0f, 1.0f, 1.0f };
 
 		// Terms of attenuation spotlight formula
-		const float constant = 1.0f;
-		const float linear = 0.0007f;
-		const float quadratic = 0.000002f;
+		const float constant{ 1.0f };
+		const float linear{ 0.0007f };
+		const float quadratic{ 0.000002f };
 
-		const bool isBlinn = false;
+		const bool isBlinn{ false };
 	} lightInstance;
 
-	UniformBuffer uboLights(entitiesShadersIDs, "lightParameters", uboBlockBindingPoint++, 20 * GLSLScalarSize);
-	uboLights.InitSubData(0, 4 * GLSLScalarSize, glm::value_ptr(lightInstance.position));
-	uboLights.InitSubData(4 * GLSLScalarSize, 4 * GLSLScalarSize, glm::value_ptr(lightInstance.ambiant));
-	uboLights.InitSubData(8 * GLSLScalarSize, 4 * GLSLScalarSize, glm::value_ptr(lightInstance.diffuse));
-	uboLights.InitSubData(12 * GLSLScalarSize, 4 * GLSLScalarSize, glm::value_ptr(lightInstance.specular));
-	uboLights.InitSubData(16 * GLSLScalarSize, GLSLScalarSize, &lightInstance.constant);
-	uboLights.InitSubData(17 * GLSLScalarSize, GLSLScalarSize, &lightInstance.linear);
-	uboLights.InitSubData(18 * GLSLScalarSize, GLSLScalarSize, &lightInstance.quadratic);
-	uboLights.InitSubData(19 * GLSLScalarSize, GLSLScalarSize, &lightInstance.isBlinn);
+	UniformBuffer uboLights(entitiesShadersIDs, "lightParameters", uboBlockBindingPoint++, 20 * GLSL_SCALAR_SIZE);
+	uboLights.InitSubData(0, 4 * GLSL_SCALAR_SIZE, glm::value_ptr(lightInstance.position));
+	uboLights.InitSubData(4 * GLSL_SCALAR_SIZE, 4 * GLSL_SCALAR_SIZE, glm::value_ptr(lightInstance.ambiant));
+	uboLights.InitSubData(8 * GLSL_SCALAR_SIZE, 4 * GLSL_SCALAR_SIZE, glm::value_ptr(lightInstance.diffuse));
+	uboLights.InitSubData(12 * GLSL_SCALAR_SIZE, 4 * GLSL_SCALAR_SIZE, glm::value_ptr(lightInstance.specular));
+	uboLights.InitSubData(16 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, &lightInstance.constant);
+	uboLights.InitSubData(17 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, &lightInstance.linear);
+	uboLights.InitSubData(18 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, &lightInstance.quadratic);
+	uboLights.InitSubData(19 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, &lightInstance.isBlinn);
+
+
+
+
+
+	const float halfPi = 0.5f * glm::pi<float>();
+	const glm::vec3 backVector(0.0f, 0.0f, 1.0f);
+	const glm::vec3 rightVector(1.0f, 0.0f, 0.0f);
+	const glm::vec3 upVector(0.0f, 1.0f, 0.0f);
+	const glm::vec3 whiteColour(1.0f, 1.0f, 1.0f);
 
 
 
@@ -156,7 +170,7 @@ int main()
 	Renderer renderer;
 	renderer.DepthTest();
 
-	// RENDER LOOP (iterating every frame)
+	// RENDER LOOP (running every frame)
 	while (window.DoNotClose())
 	{
 		window.UpdateFrames();
@@ -165,37 +179,42 @@ int main()
 		renderer.Clear();
 		renderer.Blend();
 
+		const glm::vec3& cameraPosition = camera.GetPosition();
+
 		// Simulate a zoom - set far plane variable to a sufficiently high value 
-		const glm::mat4 projectionMatrix = glm::perspective(glm::radians(camera.GetZoom()), static_cast<float>(SCR_WIDTH / SCR_HEIGHT), 0.1f, 1000.0f);
-		uboMatrices.InitSubData(0, 16 * GLSLScalarSize, glm::value_ptr(projectionMatrix));
+		const glm::mat4& projectionMatrix = glm::perspective(glm::radians(camera.GetZoom()), aspectRatio, 0.1f, 1000.0f);
+		uboMatrices.InitSubData(0, mat4v4Size, glm::value_ptr(projectionMatrix));
 
 		// Simulate a camera circling around the scene 
-		const glm::mat4 viewMatrix = camera.GetViewMatrix();
-		uboMatrices.InitSubData(16 * GLSLScalarSize, 16 * GLSLScalarSize, glm::value_ptr(viewMatrix));
+		const glm::mat4& viewMatrix = camera.GetViewMatrix();
+		uboMatrices.InitSubData(mat4v4Size, mat4v4Size, glm::value_ptr(viewMatrix));
 
 		// Texture sampler ID (one for each object) 
 		unsigned int samplerID = 0;
 
 		defaultShader.Enable();
-		defaultShader.setUniformVec3("viewPos", camera.GetPosition());
+		defaultShader.setUniformVec3("viewPos", cameraPosition);
 
 		// Draw celestial bodies, their orbits and their motion
-		for (auto it = data.begin(); it != data.end(); ++it)
+		for (auto& dataInput: data)
 		{
-			float angleRotInRadians = 0.0f;
-			float angleRotItselfInRadians = 0.0f;
+			// Both angles below are in radians
+			float angleRot = 0.0f;
+			float angleRotItself = 0.0f;
 
-			if (it->first != "Sun")
+			if (dataInput.first != "Sun")
 			{
+				const float windowParams = window.GetCurrentFrame() * window.GetSimuSpeedFactor();
+
 				// Angle of rotation around the sun (resp. planet) for planets (resp. moons) per frame
-				angleRotInRadians = 2.0f * glm::pi<float>() * window.GetCurrentFrame() / it->second.orbPeriod * window.GetSimuSpeedFactor();
-				if (it->second.planetInfo == nullptr)
+				angleRot = preComputations[dataInput.first].angleRotCst * windowParams;
+				if (dataInput.second.parentInfo == nullptr)
 				{
-					it->second.angleRotInRadians = angleRotInRadians;
+					dataInput.second.angleRot = angleRot;
 				}
 
 				// Angle of rotation of the celestial body around itself per frame
-				angleRotItselfInRadians = 2.0f * glm::pi<float>() * window.GetCurrentFrame() * it->second.rotPeriod * window.GetSimuSpeedFactor();
+				angleRotItself = preComputations[dataInput.first].rotPeriodCst * windowParams;
 			
 				defaultShader.Enable();
 				defaultShader.setUniformBool("isSun", false);
@@ -206,38 +225,39 @@ int main()
 				defaultShader.setUniformBool("isSun", true);
 			}
 
-			// Simulate movements that affects the current celestial body
+			// Simulate movements that affects the current celestial bodies
 			glm::mat4 defaultModelMatrix = glm::mat4(1.0f);
 			glm::mat4 orbitModelMatrix = glm::mat4(1.0f);
 			glm::mat4 textModelMatrix = glm::mat4(1.0f);
 
-			// Circular translation around corresponding planet (condition applies for satellites only)
-			if (it->second.planetInfo != nullptr)
+			// Circular translation of satellite around corresponding planet
+			if (const auto& planet = dataInput.second.parentInfo)
 			{
-				const float satteliteOrbInclinationInRadians = glm::radians(it->second.planetInfo->orbInclination);
+				const float sinPlanetAngleRot = sin(planet->angleRot);
+				
 				defaultModelMatrix = glm::translate(defaultModelMatrix, glm::vec3(
-					it->second.planetInfo->dist * cos(satteliteOrbInclinationInRadians) * sin(it->second.planetInfo->angleRotInRadians),
-					it->second.planetInfo->dist * sin(satteliteOrbInclinationInRadians) * sin(it->second.planetInfo->angleRotInRadians),
-					it->second.planetInfo->dist * cos(it->second.planetInfo->angleRotInRadians)));
+					preComputations[dataInput.second.parentName].cosCircularTslCst * sinPlanetAngleRot,
+					preComputations[dataInput.second.parentName].sinCircularTslCst * sinPlanetAngleRot,
+					planet->dist * cos(planet->angleRot)));
 				orbitModelMatrix = defaultModelMatrix;
 			}
 
 			// Orbital tilt (around axis colinear to orbit direction) + Circular translation along the orbit (equidistance to axis normal to orbital plane)
-			const float planetOrbInclinationInRadians = glm::radians(it->second.orbInclination);
+			const float sinAngleRot = sin(angleRot);
 			defaultModelMatrix = glm::translate(defaultModelMatrix, glm::vec3(
-				it->second.dist * cos(planetOrbInclinationInRadians) * sin(angleRotInRadians),
-				it->second.dist * sin(planetOrbInclinationInRadians) * sin(angleRotInRadians),
-				it->second.dist * cos(angleRotInRadians)));
+				preComputations[dataInput.first].cosCircularTslCst * sinAngleRot,
+				preComputations[dataInput.first].sinCircularTslCst * sinAngleRot,
+				dataInput.second.dist * cos(angleRot)));
 			textModelMatrix = defaultModelMatrix;
 
 			// Axis tilt (around axis colinear to orbit direction)
-			defaultModelMatrix = glm::rotate(defaultModelMatrix, glm::radians(it->second.obliquity), glm::vec3(1.0f, 0.0f, 0.0f));
+			defaultModelMatrix = glm::rotate(defaultModelMatrix, preComputations[dataInput.first].obliquityInRad, rightVector);
 
 			// Rotation on itself (around axis normal to orbital plane)
-			defaultModelMatrix = glm::rotate(defaultModelMatrix, angleRotItselfInRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+			defaultModelMatrix = glm::rotate(defaultModelMatrix, angleRotItself, upVector);
 
 			// Draw Saturn rings
-			if (it->first == "Saturn")
+			if (dataInput.first == "Saturn")
 			{
 				defaultShader.Enable();
 				defaultShader.setUniformBool("isSun", false);
@@ -247,35 +267,35 @@ int main()
 			}
 
 			// Rotation on itself (to have celestial body poles vertical)
-			defaultModelMatrix = glm::rotate(defaultModelMatrix, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			defaultModelMatrix = glm::rotate(defaultModelMatrix, halfPi, rightVector);
 
 			defaultShader.Enable();
 			defaultShader.setUniformInt("materialDiffuse", samplerID);
 
-			if (it->second.sphere)
+			if (const auto& sphere = dataInput.second.sphere)
 			{
 				defaultShader.Enable();
 				defaultShader.setUniformMat4("model", defaultModelMatrix);
 
-				it->second.sphere->Render(renderer, samplerID++);
+				sphere->Render(renderer, samplerID++);
 			}
-			// Non-spherical celestial bodies
-			else
-			{
-				defaultModelMatrix = glm::scale(defaultModelMatrix, glm::vec3(0.025f * it->second.planetInfo->radius));
+			//// Non-spherical celestial bodies
+			//else
+			//{
+			//	defaultModelMatrix = glm::scale(defaultModelMatrix, preComputations[dataInput.first].nonSphericalScaling);
 
-				defaultShader.Enable();
-				defaultShader.setUniformMat4("model", defaultModelMatrix);
+			//	defaultShader.Enable();
+			//	defaultShader.setUniformMat4("model", defaultModelMatrix);
 
-				//if (it->first == "Deimos")
-				//{
-				//	deimos.Render(renderer, samplerID++);
-				//}
-				//else if (it->first == "Phobos")
-				//{
-				//	phobos.Render(renderer, samplerID++);
-				//}
-			}
+			//	if (dataInput.first == "Deimos")
+			//	{
+			//		deimos.Render(renderer, samplerID++);
+			//	}
+			//	else if (dataInput.first == "Phobos")
+			//	{
+			//		phobos.Render(renderer, samplerID++);
+			//	}
+			//}
 
 
 
@@ -285,9 +305,9 @@ int main()
 			if (window.IsSimuPaused())
 			{
 				// Orient text to camera position
-				const glm::vec3 look = glm::normalize(camera.GetPosition() - glm::vec3(textModelMatrix[3]));
-				const glm::vec3 right = glm::cross(camera.GetUp(), look);
-				const glm::vec3 up2 = cross(look, right);
+				const glm::vec3& look = glm::normalize(cameraPosition - glm::vec3(textModelMatrix[3]));
+				const glm::vec3& right = glm::cross(camera.GetUp(), look);
+				const glm::vec3& up2 = cross(look, right);
 				textModelMatrix[0] = glm::vec4(right, 0);
 				textModelMatrix[1] = glm::vec4(up2, 0);
 				textModelMatrix[2] = glm::vec4(look, 0);
@@ -295,21 +315,23 @@ int main()
 				textShader.Enable();
 				textShader.setUniformMat4("model", textModelMatrix);
 				textShader.setUniformInt("texSampler", samplerID);
-				textShader.setUniformVec3("textColor", glm::vec3(1.0f, 1.0f, 1.0f));
+				textShader.setUniformVec3("textColor", whiteColour);
 
-				//if (it->first == "Deimos" || it->first == "Phobos")
+				//if (dataInput.first == "Deimos" || dataInput.first == "Phobos")
 				//{
 				//	// @todo - Get the bounding box size of models from Mesh class?
-				//	text.Render(renderer, it->first, 0.0f, it->second.planetInfo->radius * 0.5f, it->second.planetInfo->radius * 0.002f, samplerID++);
+				//	text.Render(renderer, dataInput.first, 0.0f, dataInput.second.planetInfo->radius * 0.5f, dataInput.second.planetInfo->radius * 0.002f, samplerID++);
 				//}
 				//else 
-				if (it->first != "Sun")
+				if (dataInput.first != "Sun")
 				{
-					text.Render(renderer, it->first, 0.0f, it->second.radius * 1.25f, it->second.radius * 0.01f, samplerID++);
+					text.Render(renderer, dataInput.first, 
+						0.0f, preComputations[dataInput.first].textHeight, preComputations[dataInput.first].textScale, samplerID++);
 				}
 				else
 				{
-					text.Render(renderer, it->first, 0.0f, it->second.radius * 1.25f * 0.5f, it->second.radius * 0.003f, samplerID++);
+					text.Render(renderer, dataInput.first, 
+						0.0f, preComputations[dataInput.first].sunTextHeight, preComputations[dataInput.first].sunTextScale, samplerID++);
 				}
 			}
 
@@ -318,14 +340,14 @@ int main()
 
 
 			// Draw planet orbits
-			if (it->first != "Sun")
+			if (dataInput.first != "Sun")
 			{
-				orbitModelMatrix = glm::rotate(orbitModelMatrix, glm::radians(it->second.orbInclination), glm::vec3(0.0f, 0.0f, 1.0f));
+				orbitModelMatrix = glm::rotate(orbitModelMatrix, preComputations[dataInput.first].orbInclinationInRad, backVector);
 
 				defaultShader.Enable();
 				defaultShader.setUniformMat4("model", orbitModelMatrix);
 				defaultShader.setUniformInt("materialDiffuse", samplerID);
-				it->second.orbit->Render(renderer, samplerID++);
+				dataInput.second.orbit->Render(renderer, samplerID++);
 			}
 		}
 
@@ -335,7 +357,7 @@ int main()
 
 		// Draw the 2 main belts composed
 		instancedModelShader.Enable();
-		instancedModelShader.setUniformVec3("viewPos", camera.GetPosition());
+		instancedModelShader.setUniformVec3("viewPos", cameraPosition);
 		instancedModelShader.setUniformInt("materialDiffuse", samplerID);
 		asteroidBelt.Render(renderer, samplerID++);
 
@@ -348,7 +370,7 @@ int main()
 
 		// Draw Milky Way skybox
 		renderer.DepthEqual();
-		uboMatrices.InitSubData(16 * GLSLScalarSize, 16 * GLSLScalarSize, glm::value_ptr(glm::mat4(glm::mat3(viewMatrix))));
+		uboMatrices.InitSubData(mat4v4Size, mat4v4Size, glm::value_ptr(glm::mat4(glm::mat3(viewMatrix))));
 		skyboxShader.Enable();
 		skyboxShader.setUniformInt("texSampler", samplerID);
 		skybox.Render(renderer, samplerID++);

@@ -10,8 +10,8 @@
 Shader::Shader(const std::string& vsPath, const std::string& fsPath) :
 	rendererID(0)
 {
-	const std::string vsCode = ParseShader(vsPath);
-	const std::string fsCode = ParseShader(fsPath);
+	const std::string& vsCode = ParseShader(vsPath);
+	const std::string& fsCode = ParseShader(fsPath);
 
 	const unsigned int vsID = CreateShader(GL_VERTEX_SHADER, vsCode);
 	const unsigned int fsID = CreateShader(GL_FRAGMENT_SHADER, fsCode);
