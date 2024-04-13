@@ -43,7 +43,7 @@ Texture::~Texture()
 
 }
 
-void Texture::LoadTextureImage(const unsigned int channel)
+void Texture::LoadTextureImage(const unsigned int channel) const
 {
 	int width = 0;
 	int height = 0;
@@ -87,7 +87,7 @@ void Texture::LoadTextureImage(const unsigned int channel)
 	SOIL_free_image_data(data);
 }
 
-void Texture::LoadGlyph(const FT_Face face, const unsigned int format)
+void Texture::LoadGlyph(const FT_Face face, const unsigned int format) const
 {
 	if (face == false)
 	{
@@ -124,7 +124,7 @@ void Texture::LoadCubemapDDS()
 	Bind();
 }
 
-void Texture::SetWraps(const unsigned int wrapType)
+void Texture::SetWraps(const unsigned int wrapType) const
 {
 	if (target == GL_TEXTURE_CUBE_MAP)
 	{
@@ -136,25 +136,25 @@ void Texture::SetWraps(const unsigned int wrapType)
 	}
 }
 
-void Texture::SetWraps(const unsigned int s, const unsigned int t)
+void Texture::SetWraps(const unsigned int s, const unsigned int t) const
 {
 	glTexParameteri(target, GL_TEXTURE_WRAP_S, s);
 	glTexParameteri(target, GL_TEXTURE_WRAP_T, t);
 }
 
-void Texture::SetWraps(const unsigned int s, const unsigned int t, const unsigned int r)
+void Texture::SetWraps(const unsigned int s, const unsigned int t, const unsigned int r) const
 {
 	glTexParameteri(target, GL_TEXTURE_WRAP_S, s);
 	glTexParameteri(target, GL_TEXTURE_WRAP_T, t);
 	glTexParameteri(target, GL_TEXTURE_WRAP_R, r);
 }
 
-void Texture::SetFilters(const unsigned int filterType)
+void Texture::SetFilters(const unsigned int filterType) const
 {
 	SetFilters(filterType, filterType);
 }
 
-void Texture::SetFilters(const unsigned int min, const unsigned int mag)
+void Texture::SetFilters(const unsigned int min, const unsigned int mag) const
 {
 	glTexParameteri(target, GL_TEXTURE_MIN_FILTER, min);
 	glTexParameteri(target, GL_TEXTURE_MAG_FILTER, mag);
@@ -170,13 +170,13 @@ void Texture::Unbind() const
 	glBindTexture(target, 0);
 }
 
-void Texture::Enable(unsigned int textUnit)
+void Texture::Enable(unsigned int textUnit) const
 {
 	glActiveTexture(GL_TEXTURE0 + textUnit);
 	Bind();
 }
 
-void Texture::Disable()
+void Texture::Disable() const
 {
 	glActiveTexture(0);
 	Unbind();

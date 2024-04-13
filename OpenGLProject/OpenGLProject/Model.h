@@ -22,8 +22,8 @@ public:
 	Model(const std::string& inPath, const bool inGammaCorrection = false);
 	~Model();
 
-	std::vector<Texture> GetTextures() const { return loadedTextures; }
-	std::vector<Mesh> GetMeshes() const { return meshes; }
+	const std::vector<Texture>& GetTextures() const { return loadedTextures; }
+	const std::vector<Mesh>& GetMeshes() const { return meshes; }
 
 	void Render(const Renderer& renderer, const unsigned int& textureUnit);
 
@@ -40,7 +40,7 @@ private:
 	void ProcessNode(const aiNode& node, const aiScene& scene);
 	Mesh ProcessMesh(const aiMesh& mesh, const aiScene& scene);
 
-	// Check all textures of a given type for a given material and loads them if they're not loaded yet
+	// Check all textures of a given type for a given material and load them if not done yet
 	std::vector<Texture> LoadTextures(const aiMaterial& material, const aiTextureType type);
 };
 

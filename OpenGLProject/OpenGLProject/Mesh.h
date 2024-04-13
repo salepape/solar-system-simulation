@@ -35,7 +35,7 @@ public:
 	// Built in code
 	Mesh();
 	// Built by parsing the model coming from a 3D modeling software
-	Mesh(const std::vector<Vertex> inVertices, const std::vector<unsigned int> inIndices, const std::vector<Texture> inTextures);
+	Mesh(const std::vector<Vertex>& inVertices, const std::vector<unsigned int>& inIndices, const std::vector<Texture>& inTextures);
 	virtual ~Mesh();
 
 	virtual void Render(const Renderer& renderer, const unsigned int& textureUnit);

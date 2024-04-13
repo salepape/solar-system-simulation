@@ -29,13 +29,17 @@ void Sphere::Compute()
 {
 	vertices.reserve((parallelStripsCount + 1) * (meridianStripsCount + 1));
 
+	const float pi = glm::pi<float>();
+	const float doublePi = 2.0f * pi;
+
 	const float invMeridianStripsCount = 1.0f / static_cast<float>(meridianStripsCount);
 	const float invParallelStripsCount = 1.0f / static_cast<float>(parallelStripsCount);
 	const float invRadius = 1.0f / radius;
 
+	const glm::vec3 zeroVector(0.0f, 0.0f, 0.0f);
+
 	for (int i = 0; i <= parallelStripsCount; ++i)
 	{
-		const float pi = glm::pi<float>();
 		const float iInvParallelStripsCount = static_cast<float>(i) * invParallelStripsCount;
 
 		// Angle between two squares of one parallel strip (in radians)
@@ -47,7 +51,7 @@ void Sphere::Compute()
 		{
 			// Angle between two squares of one meridian strip (in radians)
 			const float jInvMeridianStripsCount = static_cast<float>(j) * invMeridianStripsCount;
-			const float phi = 2.0f * pi * jInvMeridianStripsCount;
+			const float phi = doublePi * jInvMeridianStripsCount;
 			const float xCoor = rCosTheta * glm::cos(phi);
 			const float yCoor = rCosTheta * glm::sin(phi);
 
@@ -55,8 +59,8 @@ void Sphere::Compute()
 			vertex.Position = glm::vec3(xCoor, yCoor, zCoor);
 			vertex.Normal = glm::vec3(xCoor * invRadius, yCoor * invRadius, zCoor * invRadius);
 			vertex.TexCoords = glm::vec2(jInvMeridianStripsCount, iInvParallelStripsCount);
-			vertex.Tangent = glm::vec3(0.0f, 0.0f, 0.0f);
-			vertex.Bitangent = glm::vec3(0.0f, 0.0f, 0.0f);
+			vertex.Tangent = zeroVector;
+			vertex.Bitangent = zeroVector;
 			vertices.push_back(vertex);
 		}
 	}

@@ -28,7 +28,9 @@ Orbit::~Orbit()
 
 void Orbit::Compute()
 {
-	const float thetaAngle = 2.0f * glm::pi<float>() / meridianStripsCount;
+	const float thetaAngle = 2.0f * glm::pi<float>() * 1.0f / meridianStripsCount;
+
+	const glm::vec3 zeroVector(0.0f, 0.0f, 0.0f);
 
 	vertices.reserve(meridianStripsCount + 1);
 	for (int i = 0; i <= meridianStripsCount; ++i)
@@ -37,16 +39,19 @@ void Orbit::Compute()
 
 		Vertex vertex;
 		vertex.Position = glm::vec3(radius * glm::sin(theta), 0.0f, radius * glm::cos(theta));
-		vertex.Normal = glm::vec3(0.0f, 0.0f, 0.0f);
-		vertex.TexCoords = glm::vec3(0.0f, 0.0f, 0.0f);
-		vertex.Tangent = glm::vec3(0.0f, 0.0f, 0.0f);
-		vertex.Bitangent = glm::vec3(0.0f, 0.0f, 0.0f);
+		vertex.Normal = zeroVector;
+		vertex.TexCoords = zeroVector;
+		vertex.Tangent = zeroVector;
+		vertex.Bitangent = zeroVector;
 		vertices.push_back(vertex);
 	}
 }
 
 void Orbit::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
-	texture->Enable(textureUnit);
-	renderer.Draw(*vao, GL_LINE_LOOP, meridianStripsCount);
+	if (texture)
+	{
+		texture->Enable(textureUnit);
+		renderer.Draw(*vao, GL_LINE_LOOP, meridianStripsCount);
+	}
 }

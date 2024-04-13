@@ -16,7 +16,7 @@ Mesh::Mesh()
 
 }
 
-Mesh::Mesh(const std::vector<Vertex> inVertices, const std::vector<unsigned int> inIndices, const std::vector<Texture> inTextures) :
+Mesh::Mesh(const std::vector<Vertex>& inVertices, const std::vector<unsigned int>& inIndices, const std::vector<Texture>& inTextures) :
 	vertices(inVertices), indices(inIndices), textures(inTextures)
 {
 	Compute();

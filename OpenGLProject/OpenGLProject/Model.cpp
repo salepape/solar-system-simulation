@@ -62,6 +62,8 @@ Mesh Model::ProcessMesh(const aiMesh& mesh, const aiScene& scene)
 {
 	// ASSIMP doesn't use glm::vec3 class, so we store all the vertex information into one
 	std::vector<Vertex> vertices;
+	vertices.reserve(mesh.mNumVertices);
+
 	for (unsigned int i = 0; i < mesh.mNumVertices; ++i)
 	{
 		Vertex vertex;
@@ -104,16 +106,16 @@ Mesh Model::ProcessMesh(const aiMesh& mesh, const aiScene& scene)
 	std::vector<Texture> textures;
 	const aiMaterial* material = scene.mMaterials[mesh.mMaterialIndex];
 
-	const std::vector<Texture> diffuseMaps = LoadTextures(*material, aiTextureType_DIFFUSE);
+	const std::vector<Texture>& diffuseMaps = LoadTextures(*material, aiTextureType_DIFFUSE);
 	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-	const std::vector<Texture> specularMaps = LoadTextures(*material, aiTextureType_SPECULAR);
+	const std::vector<Texture>& specularMaps = LoadTextures(*material, aiTextureType_SPECULAR);
 	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
-	const std::vector<Texture> normalMaps = LoadTextures(*material, aiTextureType_NORMALS);
+	const std::vector<Texture>& normalMaps = LoadTextures(*material, aiTextureType_NORMALS);
 	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 
-	const std::vector<Texture> heightMaps = LoadTextures(*material, aiTextureType_HEIGHT);
+	const std::vector<Texture>& heightMaps = LoadTextures(*material, aiTextureType_HEIGHT);
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
 	return Mesh(vertices, indices, textures);
@@ -122,6 +124,8 @@ Mesh Model::ProcessMesh(const aiMesh& mesh, const aiScene& scene)
 std::vector<Texture> Model::LoadTextures(const aiMaterial& material, const aiTextureType type)
 {
 	std::vector<Texture> textures;
+	textures.reserve(material.GetTextureCount(type));
+
 	for (unsigned int i = 0; i < material.GetTextureCount(type); ++i)
 	{
 		aiString TexturePath;

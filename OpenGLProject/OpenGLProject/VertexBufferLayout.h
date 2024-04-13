@@ -38,7 +38,7 @@ public:
 
 	void AddAttributeLayout(const VertexAttributeLocation index, const unsigned int type, const unsigned int count);
 
-	const std::vector<VertexAttributeLayout> GetAttributeLayouts() const { return attributeLayouts; }
+	const std::vector<VertexAttributeLayout>& GetAttributeLayouts() const { return attributeLayouts; }
 
 	unsigned int GetStride() const { return stride; }
 

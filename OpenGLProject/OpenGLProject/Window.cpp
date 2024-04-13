@@ -18,7 +18,7 @@ Window::Window(const unsigned int inWidth, const unsigned int inHeight, const ch
 	}
 
 	// Provide a Window pointer within the body of GLFW callbacks since we cannot add parameters to these function pointers/has to be non-capturing lambdas
-	glfwSetWindowUserPointer(GLFWWindow, reinterpret_cast<void*>(this));
+	glfwSetWindowUserPointer(GLFWWindow, static_cast<void*>(this));
 
 	lastXPos = 0.5f * width;
 	lastYPos = 0.5f * height;
@@ -86,7 +86,7 @@ void Window::SetCursorPositionCallback()
 {
 	glfwSetCursorPosCallback(GLFWWindow, [](GLFWwindow* window, const double xPos, const double yPos)
 	{
-		auto* const self = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+		auto* const self = static_cast<Window*>(glfwGetWindowUserPointer(window));
 		if (self == nullptr)
 		{
 			std::cout << "ERROR::WINDOW - Failed to reinterpret cast glfwGetWindowUserPointer()" << std::endl;
@@ -120,7 +120,7 @@ void Window::SetScrollCallback()
 {
 	glfwSetScrollCallback(GLFWWindow, [](GLFWwindow* window, double xOffset, double yOffset)
 	{
-		auto* const self = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+		auto* const self = static_cast<Window*>(glfwGetWindowUserPointer(window));
 		if (self == nullptr)
 		{
 			std::cout << "ERROR::WINDOW - Failed to reinterpret cast glfwGetWindowUserPointer()" << std::endl;

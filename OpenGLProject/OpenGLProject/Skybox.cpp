@@ -69,6 +69,8 @@ void Skybox::Compute()
 		-1.0f, -1.0f,  1.0f,
 		 1.0f, -1.0f,  1.0f
 	};
+
+	const glm::vec3 zeroVector(0.0f, 0.0f, 0.0f);
 	
 	int positionIndex = 0;
 	vertices.reserve(VERTICES_COUNT);
@@ -76,10 +78,10 @@ void Skybox::Compute()
 	{
 		Vertex vertex;
 		vertex.Position = glm::vec3(vertCoor[positionIndex], vertCoor[positionIndex + 1], vertCoor[positionIndex + 2]);
-		vertex.Normal = glm::vec3(0.0f, 0.0f, 0.0f);
-		vertex.TexCoords = glm::vec3(0.0f, 0.0f, 0.0f);
-		vertex.Tangent = glm::vec3(0.0f, 0.0f, 0.0f);
-		vertex.Bitangent = glm::vec3(0.0f, 0.0f, 0.0f);
+		vertex.Normal = zeroVector;
+		vertex.TexCoords = zeroVector;
+		vertex.Tangent = zeroVector;
+		vertex.Bitangent = zeroVector;
 		vertices.push_back(vertex);
 
 		positionIndex += Vertex::GetPositionElmtsCount();
