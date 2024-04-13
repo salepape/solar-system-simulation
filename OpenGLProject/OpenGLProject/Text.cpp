@@ -142,7 +142,7 @@ void Text::Render(const Renderer& renderer, const std::string text, float x, con
 
 		// Update content of VBO memory
 		vbo->Bind();
-		vbo->InitSubData({ &vertices });
+		vbo->InitSubData({ { static_cast<const void*>(vertices.data()), static_cast<unsigned int>(vertices.size()) * sizeof(float) } });
 		vbo->Unbind();
 
 		renderer.Draw(*vao, GL_TRIANGLES, 6);

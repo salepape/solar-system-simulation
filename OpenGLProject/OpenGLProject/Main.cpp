@@ -122,8 +122,8 @@ int main()
 	} materialInstance;
 
 	UniformBuffer uboMaterials(entitiesShadersIDs, "materialParameters", uboBlockBindingPoint++, 5 * GLSL_SCALAR_SIZE);
-	uboMaterials.InitSubData(0, 4 * GLSL_SCALAR_SIZE, glm::value_ptr(materialInstance.specular));
-	uboMaterials.InitSubData(4 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, &materialInstance.shininess);
+	uboMaterials.InitSubData(0, 4 * GLSL_SCALAR_SIZE, static_cast<const void*>(glm::value_ptr(materialInstance.specular)));
+	uboMaterials.InitSubData(4 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, static_cast<const void*>(&materialInstance.shininess));
 
 	struct Light
 	{
@@ -143,14 +143,14 @@ int main()
 	} lightInstance;
 
 	UniformBuffer uboLights(entitiesShadersIDs, "lightParameters", uboBlockBindingPoint++, 20 * GLSL_SCALAR_SIZE);
-	uboLights.InitSubData(0, 4 * GLSL_SCALAR_SIZE, glm::value_ptr(lightInstance.position));
-	uboLights.InitSubData(4 * GLSL_SCALAR_SIZE, 4 * GLSL_SCALAR_SIZE, glm::value_ptr(lightInstance.ambiant));
-	uboLights.InitSubData(8 * GLSL_SCALAR_SIZE, 4 * GLSL_SCALAR_SIZE, glm::value_ptr(lightInstance.diffuse));
-	uboLights.InitSubData(12 * GLSL_SCALAR_SIZE, 4 * GLSL_SCALAR_SIZE, glm::value_ptr(lightInstance.specular));
-	uboLights.InitSubData(16 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, &lightInstance.constant);
-	uboLights.InitSubData(17 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, &lightInstance.linear);
-	uboLights.InitSubData(18 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, &lightInstance.quadratic);
-	uboLights.InitSubData(19 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, &lightInstance.isBlinn);
+	uboLights.InitSubData(0, 4 * GLSL_SCALAR_SIZE, static_cast<const void*>(glm::value_ptr(lightInstance.position)));
+	uboLights.InitSubData(4 * GLSL_SCALAR_SIZE, 4 * GLSL_SCALAR_SIZE, static_cast<const void*>(glm::value_ptr(lightInstance.ambiant)));
+	uboLights.InitSubData(8 * GLSL_SCALAR_SIZE, 4 * GLSL_SCALAR_SIZE, static_cast<const void*>(glm::value_ptr(lightInstance.diffuse)));
+	uboLights.InitSubData(12 * GLSL_SCALAR_SIZE, 4 * GLSL_SCALAR_SIZE, static_cast<const void*>(glm::value_ptr(lightInstance.specular)));
+	uboLights.InitSubData(16 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, static_cast<const void*>(&lightInstance.constant));
+	uboLights.InitSubData(17 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, static_cast<const void*>(&lightInstance.linear));
+	uboLights.InitSubData(18 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, static_cast<const void*>(&lightInstance.quadratic));
+	uboLights.InitSubData(19 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, static_cast<const void*>(&lightInstance.isBlinn));
 
 
 

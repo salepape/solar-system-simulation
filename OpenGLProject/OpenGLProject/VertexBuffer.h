@@ -6,6 +6,12 @@
 
 
 
+struct SubData
+{
+	const void* data{ nullptr };
+	unsigned int size{ 0 };
+};
+
 class VertexBuffer
 {
 public:
@@ -18,7 +24,7 @@ public:
 	// Unselect the currently used VBO
 	void Unbind() const;
 
-	void InitSubData(const std::vector<std::vector<float>*>& data);
+	void InitSubData(const std::vector<SubData>& data);
 
 private:
 	unsigned int rendererID{ 0 };

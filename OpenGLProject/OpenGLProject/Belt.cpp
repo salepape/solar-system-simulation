@@ -72,7 +72,7 @@ void Belt::Store()
 	constexpr int ELEMENTS_COUNT = GetInstanceMatrixElmtsCount();
 
 	// Configure instanced array
-	VertexBuffer vbo(modelMatrices.data(), instancesCount * sizeof(glm::mat4));
+	VertexBuffer vbo(static_cast<const void*>(modelMatrices.data()), instancesCount * sizeof(glm::mat4));
 
 	// Set transformation matrices as an instance vertex attribute (with divisor 1)
 	for (const auto& mesh: instance.GetMeshes())

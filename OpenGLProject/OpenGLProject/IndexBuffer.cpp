@@ -4,7 +4,7 @@
 
 
 
-IndexBuffer::IndexBuffer(const unsigned int* data, const unsigned int inCount) : count(inCount)
+IndexBuffer::IndexBuffer(const void* data, const unsigned int inCount) : count(inCount)
 {
 	// Reserve an ID available to be used by the BO as a binding point
 	glGenBuffers(1, &rendererID);
