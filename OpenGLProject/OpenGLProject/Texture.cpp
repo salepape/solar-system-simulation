@@ -25,7 +25,7 @@ Texture::Texture(const std::string& inPath, const unsigned int InTarget, const G
 		SetFilters(GL_LINEAR);
 		break;
 	}
-	case GeometryType::CHARACTER:
+	case GeometryType::GLYPH:
 	{
 		// Generate then bind Texture Object (= TO) to the OpenGL TO type we want 
 		glGenTextures(1, &rendererID);
@@ -43,12 +43,12 @@ Texture::~Texture()
 
 }
 
-void Texture::LoadTextureImage(const unsigned int channel) const
+void Texture::LoadSprite(const unsigned int channel) const
 {
 	int width = 0;
 	int height = 0;
 	int channelsCount = 0;
-	
+
 	unsigned char* data = SOIL_load_image(path.c_str(), &width, &height, &channelsCount, channel);
 	if (data == nullptr)
 	{
@@ -87,14 +87,12 @@ void Texture::LoadTextureImage(const unsigned int channel) const
 	SOIL_free_image_data(data);
 }
 
-void Texture::LoadGlyph(const FT_Face face, const unsigned int format) const
+void Texture::LoadFTBitmap(const FT_Bitmap bitmap, const unsigned int format) const
 {
-	if (face == false)
-	{
-		return;
-	}
-
-	glTexImage2D(target, 0, format, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, format, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
+	// Generate texture image on the currently bound TO at the active texture unit
+	glTexImage2D(target, 0, format, bitmap.width, bitmap.rows, 0, format, GL_UNSIGNED_BYTE, bitmap.buffer);
+	
+	// Generate all mipmap levels for the previous currently bound TO
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
 

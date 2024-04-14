@@ -6,6 +6,9 @@
 #include <iostream>
 #include <string>
 
+enum class GeometryType;
+enum class MapType;
+
 
 
 enum class GeometryType
@@ -15,7 +18,7 @@ enum class GeometryType
 	SPHERE,	
 	CUBE,
 
-	CHARACTER,
+	GLYPH,
 	MODEL,
 };
 
@@ -34,8 +37,8 @@ public:
 	Texture(const std::string& path, const unsigned int target, const GeometryType geometryType, const MapType textureType);
 	~Texture();
 
-	void LoadTextureImage(const unsigned int channel) const;
-	void LoadGlyph(const FT_Face face, const unsigned int channel) const;
+	void LoadSprite(const unsigned int channel) const;
+	void LoadFTBitmap(const FT_Bitmap bitmap, const unsigned int channel) const;
 	void LoadDDS();
 	void LoadCubemapDDS();
 

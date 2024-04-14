@@ -61,8 +61,8 @@ int main()
 	// Create Milky Way skybox
 	Skybox skybox("../Textures/MilkyWay/stars.dds");
 
-	// Create text characters
-	Text text;
+	// Load the first 128 ASCII characters
+	Text text(128);
 
 	// Load models (meshes with textures applied)
 	Model saturnRings("../Models/SaturnRings.obj");

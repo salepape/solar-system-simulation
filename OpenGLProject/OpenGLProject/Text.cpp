@@ -13,58 +13,10 @@
 
 
 
-Text::Text()
+Text::Text(const int count)
 {
-	FT_Library FreeTypeLibrary;
-	if (FT_Init_FreeType(&FreeTypeLibrary))
-	{
-		std::cout << "ERROR::FREETYPE - Could not init FreeType Library" << std::endl;
-	}
-
-	// Load font as face object
-	FT_Face face;
-	if (FT_New_Face(FreeTypeLibrary, "../Fonts/arial.ttf", 0, &face))
-	{
-		std::cout << "ERROR::FREETYPE - Failed to load font" << std::endl;
-	}
-
-	// Set pixel font size to extract from face (render quality)
-	FT_Set_Pixel_Sizes(face, 0, 100);
-
-	// Disable byte-alignment restriction
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-	// Load the first 128 characters of ASCII set
-	for (unsigned char charCode = 0; charCode < 128; ++charCode)
-	{
-		if (FT_Load_Char(face, charCode, FT_LOAD_RENDER))
-		{
-			std::cout << "ERROR::FREETYTPE - Failed to load Glyph" << std::endl;
-			continue;
-		}
-
-		// No need to specify image path here since it's a glyph
-		Texture characterTexture("", GL_TEXTURE_2D, GeometryType::CHARACTER, MapType::NONE);
-		characterTexture.LoadGlyph(face, GL_RED);
-
-		// Create object storing current ASCII character caracteristics (glyph non-null, check passed above)
-		Character character =
-		{
-			characterTexture.GetRendererID(),
-			glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-			glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-			face->glyph->advance.x
-		};
-
-		// Store character for later use
-		characters.insert(std::make_pair(charCode, character));
-	}
-
-	// Destroy FreeType once work is finished
-	FT_Done_Face(face);
-	FT_Done_FreeType(FreeTypeLibrary);
-
-	Store();
+	LoadASCIICharacters(count);
+	AllocateBufferObjects();
 }
 
 Text::~Text()
@@ -80,14 +32,72 @@ Text::~Text()
 	}
 }
 
-void Text::Store()
+void Text::LoadASCIICharacters(const int count)
+{
+	FT_Library FreeTypeLibrary;
+	if (FT_Init_FreeType(&FreeTypeLibrary))
+	{
+		std::cout << "ERROR::FREETYPE - Failed to initialise FreeType Library" << std::endl;
+	}
+
+	// Load font as face object
+	FT_Face face;
+	if (FT_New_Face(FreeTypeLibrary, "../Fonts/arial.ttf", 0, &face))
+	{
+		std::cout << "ERROR::FREETYPE - Failed to load the font" << std::endl;
+	}
+
+	// Set pixel font size to extract from face (render quality)
+	FT_Set_Pixel_Sizes(face, 0, 100);
+
+	// Disable byte-alignment restriction
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	for (unsigned char charCode = 0; charCode < count; ++charCode)
+	{
+		if (FT_Load_Char(face, charCode, FT_LOAD_RENDER))
+		{
+			std::cout << "ERROR::FREETYTPE - Failed to load the face object glyph" << std::endl;
+			continue;
+		}
+
+		FT_GlyphSlot glyph = face->glyph;
+		if (glyph == nullptr)
+		{
+			std::cout << "ERROR::FREETYPE - Glyph slot is abnormally empty" << std::endl;
+			continue;
+		}
+
+		// No need to specify image path here since the glyph bitmap directly contains the data
+		Texture glyphTexture("", GL_TEXTURE_2D, GeometryType::GLYPH, MapType::NONE);
+		glyphTexture.LoadFTBitmap(glyph->bitmap, GL_RED);
+
+		// Create object storing current ASCII character glyph caracteristics
+		GlyphParams glyphParams =
+		{
+			glyphTexture.GetRendererID(),
+			glm::ivec2(glyph->bitmap.width, glyph->bitmap.rows),
+			glm::ivec2(glyph->bitmap_left, glyph->bitmap_top),
+			face->glyph->advance.x
+		};
+
+		// Store character for later use
+		characters.insert(std::make_pair(charCode, glyphParams));
+	}
+
+	// Destroy FreeType once work is finished
+	FT_Done_Face(face);
+	FT_Done_FreeType(FreeTypeLibrary);
+}
+
+void Text::AllocateBufferObjects()
 {
 	// Configure VAO/VBO for 2D quads in which we will render character textures
 	vao = new VertexArray();
-	vbo = new VertexBuffer(nullptr, sizeof(float) * 6 * 4);
+	vbo = new VertexBuffer(nullptr, sizeof(float) * VERTICES_COUNT * QUAD_ELMTS_COUNT);
 
 	VertexBufferLayout vbl;
-	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, GetPositionElmtsCount());
+	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, QUAD_ELMTS_COUNT);
 	vao->AddBuffer(*vbo, vbl);
 
 	vbo->Unbind();
@@ -99,10 +109,16 @@ float Text::GetBillboardSize(const std::string& text, const float scale)
 	float totalAdvance = 0.0f;
 	for (const auto& c: text)
 	{
-		totalAdvance += (characters[c].advance >> 6) * scale;
+		totalAdvance += GetGlyphAdvance(characters[c], scale);
 	}
 
 	return totalAdvance;
+}
+
+float Text::GetGlyphAdvance(const GlyphParams& glyphParams, const float scale) const
+{
+	// Bitshift by VERTICES_COUNT to get value in pixels (2^VERTICES_COUNT = 64, so we divide 1/64th pixels by 64 to get the amount of pixels))
+	return (glyphParams.advance >> VERTICES_COUNT) * scale;
 }
 
 void Text::Render(const Renderer& renderer, const std::string text, float x, const float y, const float scale, const unsigned int& textureUnit)
@@ -115,18 +131,18 @@ void Text::Render(const Renderer& renderer, const std::string text, float x, con
 
 	for (const auto& c : text)
 	{
-		const Character character = characters[c];
+		const GlyphParams& glyphParams = characters[c];
 
 		// Position of the quad
-		const float xpos = x + character.bearing.x * scale;
-		const float ypos = y - (character.size.y - character.bearing.y) * scale;
+		const float xpos = x + glyphParams.bearing.x * scale;
+		const float ypos = y - (glyphParams.size.y - glyphParams.bearing.y) * scale;
 
 		// Size of the quad
-		const float width = character.size.x * scale;
-		const float height = character.size.y * scale;
+		const float width = glyphParams.size.x * scale;
+		const float height = glyphParams.size.y * scale;
 
-		// Update VBO for each character
-		std::vector<float> vertices =
+		// Vector contains VERTICES_COUNT * QUAD_ELMTS_COUNT
+		std::vector<float> verticesQuad =
 		{
 			xpos,			ypos + height,  0.0f, 0.0f,
 			xpos,			ypos,			0.0f, 1.0f,
@@ -138,18 +154,16 @@ void Text::Render(const Renderer& renderer, const std::string text, float x, con
 		};
 
 		// Render glyph texture over quad
-		glBindTexture(GL_TEXTURE_2D, character.rendererID);
+		glBindTexture(GL_TEXTURE_2D, glyphParams.rendererID);
 
 		// Update content of VBO memory
 		vbo->Bind();
-		vbo->InitSubData({ { static_cast<const void*>(vertices.data()), static_cast<unsigned int>(vertices.size()) * sizeof(float) } });
+		vbo->InitSubData({ { static_cast<const void*>(verticesQuad.data()), static_cast<unsigned int>(verticesQuad.size()) * sizeof(float) } });
 		vbo->Unbind();
 
-		renderer.Draw(*vao, GL_TRIANGLES, 6);
+		renderer.Draw(*vao, GL_TRIANGLES, VERTICES_COUNT);
 
-		// Advance cursors for next glyph (note that advance is number of 1/64 pixels)
-		// bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
-		x += (character.advance >> 6) * scale;
+		x += GetGlyphAdvance(glyphParams, scale);
 	}
 
 	vao->Unbind();
