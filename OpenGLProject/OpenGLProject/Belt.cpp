@@ -1,5 +1,6 @@
 #include "Belt.h"
 
+#include <algorithm>
 #include <glfw3.h>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
@@ -13,11 +14,11 @@
 
 
 
-Belt::Belt(const Model inInstance, const unsigned int inInstancesCount, const int inSizeFactor, const float inMajorRadius, const float inMinorRadius) :
-	instance(inInstance), instancesCount(inInstancesCount), sizeFactor(inSizeFactor), majorRadius(inMajorRadius), minorRadius(inMinorRadius)
+Belt::Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams) :
+	instanceParams(inInstanceParams), torusParams(inTorusParams)
 {
-	Compute();
-	Store();
+	ComputeModelMatrices();
+	StoreModelMatrices();
 }
 
 Belt::~Belt()
@@ -25,41 +26,44 @@ Belt::~Belt()
 
 }
 
-void Belt::Compute()
+void Belt::ComputeModelMatrices()
 {
-	const float angleValue = 1.0f / static_cast<float>(instancesCount) * 360.0f;
-	const int divisor = static_cast<int>(2 * minorRadius * 100);
+	const float angleValue = 1.0f / static_cast<float>(instanceParams.count) * 360.0f;
+	
+	const float lowerBoundOffset = - torusParams.minorRadius;
+	const float upperBoundOffset = torusParams.minorRadius + 1.0f;
+	const int rangeSpanOffset = static_cast<int>(upperBoundOffset - lowerBoundOffset);
 
 	// Initialise random seed
 	srand(static_cast<unsigned int>(glfwGetTime()));
 
-	// Compute random position for each model instance of the belt tore
-	modelMatrices.reserve(instancesCount);
-	for (unsigned int i = 0; i < instancesCount; ++i)
+	modelMatrices.reserve(instanceParams.count);
+	for (unsigned int i = 0; i < instanceParams.count; ++i)
 	{
-		glm::mat4 modelMatrix = glm::mat4(1.0f);
+		glm::mat4 modelMatrix(1.0f);
 
 		const float angle = static_cast<float>(i) * angleValue;
 
-		const float xOffset = (rand() % divisor) * 0.01f - minorRadius;
-		const float x = sin(angle) * majorRadius + xOffset;
+		const float xOffset = lowerBoundOffset + static_cast<float>(rand() % rangeSpanOffset);
+		const float x = sin(angle) * torusParams.majorRadius + xOffset;
 
 		// Keep height of model field smaller compared to width of x and z
-		const float yOffset = (rand() % divisor) * 0.01f - minorRadius;
-		const float y = yOffset * 0.4f;
+		const float yOffset = lowerBoundOffset + static_cast<float>(rand() % rangeSpanOffset);
+		const float y = yOffset * torusParams.flatnessFactor;
 
-		const float zOffset = (rand() % divisor) * 0.01f - minorRadius;
-		const float z = cos(angle) * majorRadius + zOffset;
+		const float zOffset = lowerBoundOffset + static_cast<float>(rand() % rangeSpanOffset);
+		const float z = cos(angle) * torusParams.majorRadius + zOffset;
 
-		// Move along circle with radius in range[-offset, offset]
+		// Move instance along circle of radius majorRadius in [-minorRadius, minorRadius]
+		// (added the range lower bound to the random number modulo by the range span to get a random value in range [lowerBound, lowerBound + rangeSpan])
 		modelMatrix = glm::translate(modelMatrix, glm::vec3(x, y, z));
 
-		// Resize between 0.05 and "0.05 + 0.sizeFactor"
-		const float scale = static_cast<float>(rand() % sizeFactor) * 0.01f + 0.05f;
+		// Resize instance in range [sizeRangeLowerBound, "sizeRangeLowerBound + 0.sizeRangeSpan"]
+		const float scale = instanceParams.sizeRangeLowerBound + 0.01f * static_cast<float>(rand() % instanceParams.sizeRangeSpan);
 		modelMatrix = glm::scale(modelMatrix, glm::vec3(scale));
 
-		// Add rotation around a randomly picked rotation axis vector
-		const float rotAngle = static_cast<float>(rand() % 360);
+		// Rotate instance by num degrees in range [0, 360] around a pre-determined axis
+		const float rotAngle = static_cast<float>(rand() % 361);
 		modelMatrix = glm::rotate(modelMatrix, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
 
 		// Add current model matrix to the list
@@ -67,25 +71,23 @@ void Belt::Compute()
 	}
 }
 
-void Belt::Store()
+void Belt::StoreModelMatrices()
 {
-	constexpr int ELEMENTS_COUNT = GetInstanceMatrixElmtsCount();
-
 	// Configure instanced array
-	VertexBuffer vbo(static_cast<const void*>(modelMatrices.data()), instancesCount * sizeof(glm::mat4));
+	VertexBuffer vbo(static_cast<const void*>(modelMatrices.data()), instanceParams.count * sizeof(glm::mat4));
 
 	// Set transformation matrices as an instance vertex attribute (with divisor 1)
-	for (const auto& mesh: instance.GetMeshes())
+	for (const auto& mesh: instanceParams.model.GetMeshes())
 	{
 		// Retrieve VAO ID of the rock mesh (we don't create any new VAO ID per belt because of instancing)
 		vao = mesh.GetVaoRef();
 		vao.Bind();
 
 		VertexBufferLayout vbl;
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, ELEMENTS_COUNT);
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol2, GL_FLOAT, ELEMENTS_COUNT);
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol3, GL_FLOAT, ELEMENTS_COUNT);
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol4, GL_FLOAT, ELEMENTS_COUNT);
+		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, INSTANCE_MATRIX_ELMTS_COUNT);
+		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol2, GL_FLOAT, INSTANCE_MATRIX_ELMTS_COUNT);
+		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol3, GL_FLOAT, INSTANCE_MATRIX_ELMTS_COUNT);
+		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol4, GL_FLOAT, INSTANCE_MATRIX_ELMTS_COUNT);
 		vao.AddInstancedBuffer(vbo, vbl);
 
 		vao.Unbind();
@@ -94,14 +96,13 @@ void Belt::Store()
 
 void Belt::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
-	if (instance.GetTextures().empty() == false)
+	for (const auto& texture : instanceParams.model.GetTextures())
 	{
-		// Note that we are assuming that a single texture will be stored in the model
-		instance.GetTextures()[0].Enable(textureUnit);
+		texture.Enable(textureUnit);
 	}
 
-	for (const auto& mesh: instance.GetMeshes())
+	for (const auto& mesh: instanceParams.model.GetMeshes())
 	{
-		renderer.DrawInstanced(vao, static_cast<unsigned int>(mesh.GetIndicesCount()), instancesCount);
+		renderer.DrawInstanced(vao, static_cast<unsigned int>(mesh.GetIndicesCount()), instanceParams.count);
 	}
 }

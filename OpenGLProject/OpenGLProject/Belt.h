@@ -12,30 +12,50 @@ class Renderer;
 
 
 
+// Instance is an asteroid for a belt
+struct InstanceParams
+{
+	const Model& model;
+
+	const unsigned int count{ 0 };
+
+	// Range from where a random number will be picked from to determine the model size
+	const float sizeRangeLowerBound{ 0.0f };
+	const unsigned int sizeRangeSpan{ 0 };
+};
+
+// Torus built with instances (not with vertices like a real geometrical shape)
+struct TorusParams
+{
+	// Distance tube center - torus center
+	const float majorRadius{ 0.0f };
+
+	// Tube radius
+	const float minorRadius{ 0.0f };
+
+	// Factor reducing y-coordinate value for each instance
+	const float flatnessFactor{ 0.0f };
+};
+
 class Belt
 {
 public:
-	Belt(const Model inInstanceModel, const unsigned int inInstancesCount, const int inSizeFactor, const float inMajorRadius, const float inMinorRadius);
+	Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams);
 	~Belt();
 
 	void Render(const Renderer& renderer, const unsigned int& textureUnit);
 
 private:
-	unsigned int instancesCount{ 0 };
-	int sizeFactor{ 1 };
-	float majorRadius{ 0.0f };
-	float minorRadius{ 0.0f };
-	Model instance;
+	InstanceParams instanceParams;
+	TorusParams torusParams;
 	std::vector<glm::mat4> modelMatrices;
 
 	VertexArray vao;
 
-	void Compute();
+	void ComputeModelMatrices();
+	void StoreModelMatrices();
 
-	// We could instantiate several belts with the same model (ie its VAO ID) if modelMatrices gathered data of all belts
-	void Store();
-
-	static constexpr int GetInstanceMatrixElmtsCount() { return 4; }
+	static constexpr int INSTANCE_MATRIX_ELMTS_COUNT = 4;
 };
 
 

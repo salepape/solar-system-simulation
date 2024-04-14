@@ -97,8 +97,8 @@ int main()
 	LoadPreComputations();
 
 	// Do some instancing to build the main Solar Systems rock belts
-	Belt asteroidBelt	{ asteroid, 5000,  10, data["Mars"].dist * 1.1f,	2.75f * DIST_SCALE_FACTOR / 2.5f };
-	Belt kuiperBelt		{ ice,		20000, 20, data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR };
+	Belt asteroidBelt	{ {asteroid, 5000,  0.05f, 10},	{data["Mars"].dist * 1.1f,	  2.75f * DIST_SCALE_FACTOR / 2.5f,	0.4f} };
+	Belt kuiperBelt		{ {ice,		 20000, 0.05f, 20},	{data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR,		0.4f} };
 
 
 
@@ -226,9 +226,9 @@ int main()
 			}
 
 			// Simulate movements that affects the current celestial bodies
-			glm::mat4 defaultModelMatrix = glm::mat4(1.0f);
-			glm::mat4 orbitModelMatrix = glm::mat4(1.0f);
-			glm::mat4 textModelMatrix = glm::mat4(1.0f);
+			glm::mat4 defaultModelMatrix(1.0f);
+			glm::mat4 orbitModelMatrix(1.0f);
+			glm::mat4 textModelMatrix(1.0f);
 
 			// Circular translation of satellite around corresponding planet
 			if (const auto& planet = dataInput.second.parentInfo)
