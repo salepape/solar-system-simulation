@@ -7,7 +7,6 @@
 #include "Mesh.h"
 
 class Renderer;
-class Texture;
 
 
 
@@ -15,19 +14,17 @@ class Texture;
 class Orbit : public Mesh
 {
 public:
-	Orbit(std::string texturePath, const float inRadius);
+	Orbit(const std::string& texturePath, const float inRadius);
 	~Orbit();
 
 	void Render(const Renderer& renderer, const unsigned int& textureUnit) override;
 
 protected:
-	void Compute() override;
+	void ComputeVertices() override;
 
 private:
 	float radius{ 0.0f };
 	int meridianStripsCount{ 100 };
-
-	Texture* texture{ nullptr };
 };
 
 

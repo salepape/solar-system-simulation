@@ -16,11 +16,18 @@ Mesh::Mesh()
 
 }
 
+Mesh::Mesh(const std::string& texturePath, int textureType, GeometryType geometryType, MapType mapType)
+{
+	Texture texture(texturePath, textureType, geometryType, mapType);
+	texture.LoadDDS();
+	textures.push_back(texture);
+}
+
 Mesh::Mesh(const std::vector<Vertex>& inVertices, const std::vector<unsigned int>& inIndices, const std::vector<Texture>& inTextures) :
 	vertices(inVertices), indices(inIndices), textures(inTextures)
 {
-	Compute();
-	Store();
+	ComputeVertices();
+	StoreVertices();
 }
 
 Mesh::~Mesh()
@@ -41,43 +48,45 @@ Mesh::~Mesh()
 	//}
 }
 
-void Mesh::Compute()
+void Mesh::ComputeVertices()
 {
 
 }
 
-void Mesh::Store()
+void Mesh::StoreVertices()
 {
 	if (vertices.empty())
 	{
 		std::cout << "ERROR::MESH - No vertices found!" << std::endl;
 		return;
 	}
+	const bool isIndexBuffer = indices.empty() == false;
 
 	vao = new VertexArray();
-	vbo = new VertexBuffer(static_cast<const void*>(vertices.data()), static_cast<unsigned int>(vertices.size()) * sizeof(Vertex));
-	
-	if (indices.empty() == false)
+
+	VertexBuffer vbo(static_cast<const void*>(vertices.data()), static_cast<unsigned int>(vertices.size()) * sizeof(Vertex));
+
+	if (isIndexBuffer)
 	{
 		ibo = new IndexBuffer(static_cast<const void*>(indices.data()), static_cast<unsigned int>(indices.size()));
 	}
 
 	vao->Bind();
 
-	if (indices.empty() == false)
+	if (isIndexBuffer)
 	{
 		ibo->Bind();
 	}
 
 	VertexBufferLayout vbl;
-	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, Vertex::GetPositionElmtsCount());
-	vbl.AddAttributeLayout(VertexAttributeLocation::Normal, GL_FLOAT, Vertex::GetNormalElmtsCount());
-	vbl.AddAttributeLayout(VertexAttributeLocation::TextCoord, GL_FLOAT, Vertex::GetTexCoordsElmtsCount());
-	vbl.AddAttributeLayout(VertexAttributeLocation::Tangent, GL_FLOAT, Vertex::GetTangentElmtsCount());
-	vbl.AddAttributeLayout(VertexAttributeLocation::Bitangent, GL_FLOAT, Vertex::GetBitangentElmtsCount());
-	vao->AddBuffer(*vbo, vbl);
+	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, Vertex::POSITION_ELMTS_COUNT);
+	vbl.AddAttributeLayout(VertexAttributeLocation::Normal, GL_FLOAT, Vertex::NORMAL_ELMTS_COUNT);
+	vbl.AddAttributeLayout(VertexAttributeLocation::TextCoord, GL_FLOAT, Vertex::TEXCOORDS_ELMTS_COUNT);
+	vbl.AddAttributeLayout(VertexAttributeLocation::Tangent, GL_FLOAT, Vertex::TANGENT_ELMTS_COUNT);
+	vbl.AddAttributeLayout(VertexAttributeLocation::Bitangent, GL_FLOAT, Vertex::BITANGENT_ELMTS_COUNT);
+	vao->AddBuffer(vbo, vbl);
 
-	if (indices.empty() == false)
+	if (isIndexBuffer)
 	{
 		// @todo - Figure out why not commenting this line screw up instancing
 		//ibo->Unbind();
@@ -94,7 +103,7 @@ void Mesh::Render(const Renderer& renderer, const unsigned int& textureUnit)
 		return;
 	}
 
-	for (auto& texture: textures)
+	for (const auto& texture: textures)
 	{
 		texture.Enable(textureUnit);
 	}

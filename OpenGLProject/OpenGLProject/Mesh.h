@@ -6,7 +6,9 @@
 #include <iostream>
 #include <vector>
 
+enum class GeometryType;
 class IndexBuffer;
+enum class MapType;
 class Renderer;
 class Texture;
 class VertexArray;
@@ -22,18 +24,18 @@ struct Vertex
 	glm::vec3 Tangent;
 	glm::vec3 Bitangent;
 
-	static constexpr int GetPositionElmtsCount() { return 3; }
-	static constexpr int GetNormalElmtsCount() { return 3; }
-	static constexpr int GetTexCoordsElmtsCount() { return 2; }
-	static constexpr int GetTangentElmtsCount() { return 3; }
-	static constexpr int GetBitangentElmtsCount() { return 3; }
+	static constexpr int POSITION_ELMTS_COUNT = 3;
+	static constexpr int NORMAL_ELMTS_COUNT = 3;
+	static constexpr int TEXCOORDS_ELMTS_COUNT = 2;
+	static constexpr int TANGENT_ELMTS_COUNT = 3;
+	static constexpr int BITANGENT_ELMTS_COUNT = 3;
 };
 
 class Mesh
 {
 public:
-	// Built in code
 	Mesh();
+	Mesh(const std::string& texturePath, int textureType, GeometryType geometryType, MapType mapType);
 	// Built by parsing the model coming from a 3D modeling software
 	Mesh(const std::vector<Vertex>& inVertices, const std::vector<unsigned int>& inIndices, const std::vector<Texture>& inTextures);
 	virtual ~Mesh();
@@ -49,14 +51,13 @@ protected:
 	std::vector<Texture> textures;
 
 	VertexArray* vao{ nullptr };
-	VertexBuffer* vbo{ nullptr };
 	IndexBuffer* ibo{ nullptr };
 
 	// Compute each vertex of the mesh mathematically in code
-	virtual void Compute();
+	virtual void ComputeVertices();
 
 	// Set vertex buffers and its attribute pointers once we have all required data
-	virtual void Store();
+	virtual void StoreVertices();
 };
 
 

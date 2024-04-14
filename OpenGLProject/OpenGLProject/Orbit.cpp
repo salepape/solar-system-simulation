@@ -11,22 +11,20 @@
 
 
 
-Orbit::Orbit(std::string texturePath, const float inRadius) : radius(inRadius)
+Orbit::Orbit(const std::string& texturePath, const float inRadius) :
+	radius(inRadius),
+	Mesh(texturePath, GL_TEXTURE_2D, GeometryType::CIRCLE, MapType::NONE)
 {
-	texture = new Texture(texturePath, GL_TEXTURE_2D, GeometryType::CIRCLE, MapType::NONE);
-	texture->LoadDDS();
-	textures.push_back(*texture);
-
-	Compute();
-	Store();
+	ComputeVertices();
+	StoreVertices();
 }
 
 Orbit::~Orbit()
 {
-	delete texture;
+
 }
 
-void Orbit::Compute()
+void Orbit::ComputeVertices()
 {
 	const float thetaAngle = 2.0f * glm::pi<float>() * 1.0f / meridianStripsCount;
 
@@ -49,9 +47,10 @@ void Orbit::Compute()
 
 void Orbit::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
-	if (texture)
+	for (const auto& texture : textures)
 	{
-		texture->Enable(textureUnit);
-		renderer.Draw(*vao, GL_LINE_LOOP, meridianStripsCount);
+		texture.Enable(textureUnit);
 	}
+	
+	renderer.Draw(*vao, GL_LINE_LOOP, meridianStripsCount);
 }

@@ -16,7 +16,8 @@ public:
 
 protected:
 	// Note that we call square the zone created by the intersection between one meridian strip and one parallel strip
-	void Compute() override;
+	void ComputeVertices() override;
+	void ComputeIndices();
 
 private:
 	float radius{ 0.0f };

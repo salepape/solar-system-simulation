@@ -7,23 +7,19 @@
 #include "Mesh.h"
 
 class Renderer;
-class Texture;
 
 
 
 class Skybox : public Mesh
 {
 public:
-	Skybox(const std::string& path);
+	Skybox(const std::string& texturePath);
 	~Skybox();
 
 	void Render(const Renderer& renderer, const unsigned int& textureUnit) override;
 
 protected:
-	void Compute() override;
-
-private:
-	Texture* texture{ nullptr };
+	void ComputeVertices() override;
 };
 
 

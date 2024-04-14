@@ -43,16 +43,16 @@ private:
 	int GetUniformLocation(const std::string& name);
 
 	// Store shader file (.vs or .fs) content into a string (used C code for better efficiency when it comes to read a file)
-	std::string ParseShader(const std::string& path);
+	std::string ParseShader(const std::string& path) const;
 
 	// Create and compile a shader object
-	unsigned int CreateShader(const unsigned int type, const std::string& source);
+	unsigned int CreateShader(const unsigned int type, const std::string& source) const;
 
 	// Create a program object on which we attach shaders
 	void CreateProgram(const unsigned int vsID, const unsigned int fsID);
 
 	// Utility function to check object compilation/linking errors
-	void CheckValidity(const unsigned int ID, const ObjectType errorCode);
+	void CheckValidity(const unsigned int ID, const ObjectType errorCode) const;
 };
 
 

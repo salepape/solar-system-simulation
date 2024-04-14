@@ -24,7 +24,7 @@ Shader::~Shader()
 	glDeleteProgram(rendererID);
 }
 
-std::string Shader::ParseShader(const std::string& path)
+std::string Shader::ParseShader(const std::string& path) const
 {
 	std::ifstream shaderFile(path);
 	if (!shaderFile)
@@ -42,7 +42,7 @@ std::string Shader::ParseShader(const std::string& path)
 	return shaderStream.str();
 }
 
-unsigned int Shader::CreateShader(const unsigned int type, const std::string& content)
+unsigned int Shader::CreateShader(const unsigned int type, const std::string& content) const
 {
 	const unsigned int shaderID = glCreateShader(type);
 	const char* contentRawPointer = content.c_str();
@@ -130,7 +130,7 @@ void Shader::setUniformMat4(const std::string& name, const glm::mat4& mat)
 	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(mat));
 }
 
-void Shader::CheckValidity(const unsigned int ID, const ObjectType objectType)
+void Shader::CheckValidity(const unsigned int ID, const ObjectType objectType) const
 {
 	switch (objectType)
 	{

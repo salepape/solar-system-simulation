@@ -10,17 +10,17 @@
 
 
 
-Skybox::Skybox(const std::string& path)
+Skybox::Skybox(const std::string& texturePath)
 {
-	texture = new Texture(path, GL_TEXTURE_CUBE_MAP, GeometryType::CUBE, MapType::NONE);
-	texture->LoadCubemapDDS();
-	textures.push_back(*texture);
+	Texture texture(texturePath, GL_TEXTURE_CUBE_MAP, GeometryType::CUBE, MapType::NONE);
+	texture.LoadCubemapDDS();
+	textures.push_back(texture);
 
-	Compute();
-	Store();
+	ComputeVertices();
+	StoreVertices();
 };
 
-void Skybox::Compute()
+void Skybox::ComputeVertices()
 {
 	// FacesCount is 6, verticesPerFaceCount is 6
 	constexpr int VERTICES_COUNT = 36;
@@ -74,7 +74,7 @@ void Skybox::Compute()
 	
 	int positionIndex = 0;
 	vertices.reserve(VERTICES_COUNT);
-	while (positionIndex < VERTICES_COUNT * Vertex::GetPositionElmtsCount())
+	while (positionIndex < VERTICES_COUNT * Vertex::POSITION_ELMTS_COUNT)
 	{
 		Vertex vertex;
 		vertex.Position = glm::vec3(vertCoor[positionIndex], vertCoor[positionIndex + 1], vertCoor[positionIndex + 2]);
@@ -84,20 +84,21 @@ void Skybox::Compute()
 		vertex.Bitangent = zeroVector;
 		vertices.push_back(vertex);
 
-		positionIndex += Vertex::GetPositionElmtsCount();
+		positionIndex += Vertex::POSITION_ELMTS_COUNT;
 	}
 }
 
 Skybox::~Skybox()
 {
-	delete texture;
+
 }
 
 void Skybox::Render(const Renderer& renderer, const unsigned int& textureUnit)
 {
-	if (texture)
+	for (const auto& texture : textures)
 	{
-		texture->Enable(textureUnit);
-		renderer.Draw(*vao, GL_TRIANGLES, 36);
+		texture.Enable(textureUnit);
 	}
+	
+	renderer.Draw(*vao, GL_TRIANGLES, 36);
 }

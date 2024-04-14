@@ -10,14 +10,12 @@
 
 
 Sphere::Sphere(const std::string& inTexturePath, const float inRadius, const int inMeridianStripsCount, const int inParallelStripsCount) :
-	radius(inRadius), meridianStripsCount(inMeridianStripsCount), parallelStripsCount(inParallelStripsCount)
+	radius(inRadius), meridianStripsCount(inMeridianStripsCount), parallelStripsCount(inParallelStripsCount),
+	Mesh(inTexturePath, GL_TEXTURE_2D, GeometryType::SPHERE, MapType::NONE)
 {
-	Texture texture(inTexturePath, GL_TEXTURE_2D, GeometryType::SPHERE, MapType::NONE);
-	texture.LoadDDS();
-	textures.push_back(texture);
-
-	Compute();
-	Store();
+	ComputeVertices();
+	ComputeIndices();
+	StoreVertices();
 }
 
 Sphere::~Sphere()
@@ -25,10 +23,8 @@ Sphere::~Sphere()
 
 }
 
-void Sphere::Compute()
+void Sphere::ComputeVertices()
 {
-	vertices.reserve((parallelStripsCount + 1) * (meridianStripsCount + 1));
-
 	const float pi = glm::pi<float>();
 	const float doublePi = 2.0f * pi;
 
@@ -38,6 +34,7 @@ void Sphere::Compute()
 
 	const glm::vec3 zeroVector(0.0f, 0.0f, 0.0f);
 
+	vertices.reserve((parallelStripsCount + 1) * (meridianStripsCount + 1));
 	for (int i = 0; i <= parallelStripsCount; ++i)
 	{
 		const float iInvParallelStripsCount = static_cast<float>(i) * invParallelStripsCount;
@@ -64,12 +61,16 @@ void Sphere::Compute()
 			vertices.push_back(vertex);
 		}
 	}
+}
 
-	// Indices
-	//  k1--k1+1
-	//  |  / |
-	//  | /  |
-	//  k2--k2+1
+void Sphere::ComputeIndices()
+{
+	// Indices matrix shape
+	// k1--k1+1
+	// |  / |
+	// | /  |
+	// k2--k2+1
+
 	indices.reserve(meridianStripsCount * meridianStripsCount);
 	for (int i = 0; i < meridianStripsCount; ++i)
 	{
