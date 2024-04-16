@@ -32,19 +32,14 @@ Mesh::Mesh(const std::vector<Vertex>& inVertices, const std::vector<unsigned int
 
 Mesh::~Mesh()
 {
-	//if (ibo)
-	//{
-	//	ibo->~IndexBuffer();
-	//}
-
-	//if (vbo)
-	//{
-	//	vbo->~VertexBuffer();
-	//}
-
 	//if (vao)
 	//{
-	//	vao->~VertexArray();
+	//	delete vao;
+	//}
+	//
+	//if (ibo)
+	//{
+	//	delete ibo;
 	//}
 }
 
@@ -63,19 +58,10 @@ void Mesh::StoreVertices()
 	const bool isIndexBuffer = indices.empty() == false;
 
 	vao = new VertexArray();
-
-	VertexBuffer vbo(static_cast<const void*>(vertices.data()), static_cast<unsigned int>(vertices.size()) * sizeof(Vertex));
-
+	VertexBuffer vbo(static_cast<const void*>(vertices.data()), static_cast<size_t>(vertices.size()) * sizeof(Vertex));
 	if (isIndexBuffer)
 	{
 		ibo = new IndexBuffer(static_cast<const void*>(indices.data()), static_cast<unsigned int>(indices.size()));
-	}
-
-	vao->Bind();
-
-	if (isIndexBuffer)
-	{
-		ibo->Bind();
 	}
 
 	VertexBufferLayout vbl;
@@ -86,13 +72,13 @@ void Mesh::StoreVertices()
 	vbl.AddAttributeLayout(VertexAttributeLocation::Bitangent, GL_FLOAT, Vertex::BITANGENT_ELMTS_COUNT);
 	vao->AddBuffer(vbo, vbl);
 
+	// Do NOT unbind IBO before VAO since the latter contains references to IBO BindBuffer
+	vao->Unbind();
+	vbo.Unbind();
 	if (isIndexBuffer)
 	{
-		// @todo - Figure out why not commenting this line screw up instancing
-		//ibo->Unbind();
+		ibo->Unbind();
 	}
-
-	vao->Unbind();
 }
 
 void Mesh::Render(const Renderer& renderer, const unsigned int& textureUnit)

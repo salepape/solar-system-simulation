@@ -21,15 +21,15 @@ Text::Text(const int count)
 
 Text::~Text()
 {
-	if (vbo)
-	{
-		vbo->~VertexBuffer();
-	}
+	//if (vao)
+	//{
+	//	delete vao;
+	//}
 
-	if (vao)
-	{
-		vao->~VertexArray();
-	}
+	//if (vbo)
+	//{
+	//	delete vbo;
+	//}
 }
 
 void Text::LoadASCIICharacters(const int count)
@@ -94,14 +94,14 @@ void Text::AllocateBufferObjects()
 {
 	// Configure VAO/VBO for 2D quads in which we will render character textures
 	vao = new VertexArray();
-	vbo = new VertexBuffer(nullptr, sizeof(float) * VERTICES_COUNT * QUAD_ELMTS_COUNT);
+	vbo = new VertexBuffer(nullptr, static_cast<size_t>(sizeof(float) * VERTICES_COUNT * QUAD_ELMTS_COUNT));
 
 	VertexBufferLayout vbl;
 	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, QUAD_ELMTS_COUNT);
 	vao->AddBuffer(*vbo, vbl);
 
-	vbo->Unbind();
 	vao->Unbind();
+	vbo->Unbind();
 }
 
 float Text::GetBillboardSize(const std::string& text, const float scale)
@@ -128,6 +128,8 @@ void Text::Render(const Renderer& renderer, const std::string text, float x, con
 
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	vao->Bind();
+
+	const size_t verticesQuadSize = VERTICES_COUNT * QUAD_ELMTS_COUNT * sizeof(float);
 
 	for (const auto& c : text)
 	{
@@ -157,9 +159,7 @@ void Text::Render(const Renderer& renderer, const std::string text, float x, con
 		glBindTexture(GL_TEXTURE_2D, glyphParams.rendererID);
 
 		// Update content of VBO memory
-		vbo->Bind();
-		vbo->InitSubData({ { static_cast<const void*>(verticesQuad.data()), static_cast<unsigned int>(verticesQuad.size()) * sizeof(float) } });
-		vbo->Unbind();
+		vbo->InitSubData({ { static_cast<const void*>(verticesQuad.data()), verticesQuadSize } });
 
 		renderer.Draw(*vao, GL_TRIANGLES, VERTICES_COUNT);
 

@@ -48,19 +48,12 @@ void Renderer::SetColor()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-void Renderer::DrawInstanced(const VertexArray& vao, const unsigned int iboCount, const unsigned int count) const
+void Renderer::Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count) const
 {
 	vao.Bind();
-	glDrawElementsInstanced(GL_TRIANGLES, iboCount, GL_UNSIGNED_INT, 0, count);
-	vao.Unbind();
-}
 
-void Renderer::Draw(const VertexArray& vao, const IndexBuffer& ibo, const unsigned int mode, const unsigned int count) const
-{
-	vao.Bind();
-	ibo.Bind();
 	glDrawArrays(mode, 0, count);
-	ibo.Unbind();
+
 	vao.Unbind();
 }
 
@@ -68,14 +61,19 @@ void Renderer::Draw(const VertexArray& vao, const IndexBuffer& ibo) const
 {
 	vao.Bind();
 	ibo.Bind();
-	glDrawElements(GL_TRIANGLES, ibo.GetCount(), GL_UNSIGNED_INT, nullptr);
-	ibo.Unbind();
+
+	glDrawElements(GL_TRIANGLES, ibo.GetCount(), GL_UNSIGNED_INT, nullptr);	
+
+	// Do NOT unbind IBO before VAO since the latter contains references to IBO BindBuffer
 	vao.Unbind();
+	ibo.Unbind();
 }
 
-void Renderer::Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count) const
+void Renderer::DrawInstances(const VertexArray& vao, const unsigned int iboCount, const unsigned int count) const
 {
 	vao.Bind();
-	glDrawArrays(mode, 0, count);
+
+	glDrawElementsInstanced(GL_TRIANGLES, iboCount, GL_UNSIGNED_INT, 0, count);
+
 	vao.Unbind();
 }

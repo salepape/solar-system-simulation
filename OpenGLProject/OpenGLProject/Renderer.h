@@ -9,6 +9,8 @@ class VertexArray;
 class Renderer
 {
 public:
+	// @todo - Add default constructor/destructor?
+
 	// Clear the depth buffer
 	void Clear() const;
 
@@ -31,17 +33,14 @@ public:
 	// Set "RGB + alpha" coefficients for background color
 	void SetColor();
 
-	// For belts
-	void DrawInstanced(const VertexArray& vao, const unsigned int iboCount, const unsigned int count) const;
+	// Draw arrays (e.g. for Orbit, Skybox and Text instances)
+	void Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count) const;
 
-	// For skybox and text
-	void Draw(const VertexArray& vao, const IndexBuffer& ibo, const unsigned int mode, const unsigned int count) const;
-
-	// For meshes
+	// Draw elements using an IBO (e.g. for Mesh instances)
 	void Draw(const VertexArray& vao, const IndexBuffer& ibo) const;
 
-	// For orbits
-	void Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count) const;
+	// Draw elements (e.g. for Belt instances)
+	void DrawInstances(const VertexArray& vao, const unsigned int iboCount, const unsigned int count) const;
 };
 
 

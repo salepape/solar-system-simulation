@@ -50,8 +50,6 @@ private:
 	TorusParams torusParams;
 	std::vector<glm::mat4> modelMatrices;
 
-	VertexArray vao;
-
 	void ComputeModelMatrices();
 	void StoreModelMatrices();
 

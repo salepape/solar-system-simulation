@@ -42,7 +42,7 @@ public:
 
 	virtual void Render(const Renderer& renderer, const unsigned int& textureUnit);
 
-	const VertexArray& GetVaoRef() const { return *vao; };
+	VertexArray& GetVAO() const { return *vao; };
 	size_t GetIndicesCount() const { return indices.size(); }
 
 protected:

@@ -18,9 +18,14 @@ class VertexBuffer;
 struct GlyphParams
 {
 	unsigned int rendererID;
+
 	glm::ivec2 size;
-	glm::ivec2 bearing;			// Offset from baseline to left/top of glyph
-	FT_Pos advance;				// Horizontal offset to advance to start next glyph
+
+	// Offset from baseline to left/top of glyph
+	glm::ivec2 bearing;
+
+	// Horizontal offset to advance to start next glyph
+	FT_Pos advance;
 };
 
 // Text encompassing all texts (name of each celestial body) appearing within the simulation

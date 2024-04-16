@@ -40,11 +40,11 @@ public:
 
 	const std::vector<VertexAttributeLayout>& GetAttributeLayouts() const { return attributeLayouts; }
 
-	unsigned int GetStride() const { return stride; }
+	size_t GetStride() const { return stride; }
 
 private:
 	std::vector<VertexAttributeLayout> attributeLayouts;
-	unsigned int stride;
+	size_t stride{ 0 };
 };
 
 

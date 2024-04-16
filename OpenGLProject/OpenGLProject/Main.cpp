@@ -97,21 +97,22 @@ int main()
 	LoadPreComputations();
 
 	// Do some instancing to build the main Solar Systems rock belts
-	Belt asteroidBelt	{ {asteroid, 5000,  0.05f, 10},	{data["Mars"].dist * 1.1f,	  2.75f * DIST_SCALE_FACTOR / 2.5f,	0.4f} };
-	Belt kuiperBelt		{ {ice,		 20000, 0.05f, 20},	{data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR,		0.4f} };
+	Belt asteroidBelt	{ {asteroid, 5000,  0.05f, 10},	{data["Mars"].dist * 1.1f,	  2.75f * DIST_SCALE_FACTOR * 1.0f / 2.5f,	0.4f} };
+	Belt kuiperBelt		{ {ice,		 20000, 0.05f, 20},	{data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR,				0.4f} };
 
 
 
 
 
 	// Compute the data size (in bytes) of each GLSL uniform variable, and their respective offset following the std140 layout base alignement rules 
-	constexpr unsigned int GLSL_SCALAR_SIZE = 4;
+	constexpr size_t GLSL_SCALAR_SIZE = 4;
+	const size_t vec4Size = 4 * GLSL_SCALAR_SIZE;
+	const size_t mat4v4Size = 16 * GLSL_SCALAR_SIZE;
 
 	unsigned int uboBlockBindingPoint = 0;
 
 	std::vector<unsigned int> matricesShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID(), textShader.GetRendererID() });
-	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", uboBlockBindingPoint++, 32 * GLSL_SCALAR_SIZE);
-	const unsigned int mat4v4Size = 16 * GLSL_SCALAR_SIZE;
+	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", uboBlockBindingPoint++, static_cast <size_t>(2 * mat4v4Size));
 
 	std::vector<unsigned int> entitiesShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
 
@@ -121,9 +122,11 @@ int main()
 		const float shininess{ 64.0f };
 	} materialInstance;
 
-	UniformBuffer uboMaterials(entitiesShadersIDs, "materialParameters", uboBlockBindingPoint++, 5 * GLSL_SCALAR_SIZE);
-	uboMaterials.InitSubData(0, 4 * GLSL_SCALAR_SIZE, static_cast<const void*>(glm::value_ptr(materialInstance.specular)));
-	uboMaterials.InitSubData(4 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, static_cast<const void*>(&materialInstance.shininess));
+	UniformBuffer uboMaterials(entitiesShadersIDs, "materialParameters", uboBlockBindingPoint++, static_cast<size_t>(mat4v4Size + GLSL_SCALAR_SIZE));
+	uboMaterials.InitSubData({
+		{ static_cast<const void*>(glm::value_ptr(materialInstance.specular)), vec4Size },
+		{ static_cast<const void*>(&materialInstance.shininess), GLSL_SCALAR_SIZE }
+		});
 
 	struct Light
 	{
@@ -142,15 +145,17 @@ int main()
 		const bool isBlinn{ false };
 	} lightInstance;
 
-	UniformBuffer uboLights(entitiesShadersIDs, "lightParameters", uboBlockBindingPoint++, 20 * GLSL_SCALAR_SIZE);
-	uboLights.InitSubData(0, 4 * GLSL_SCALAR_SIZE, static_cast<const void*>(glm::value_ptr(lightInstance.position)));
-	uboLights.InitSubData(4 * GLSL_SCALAR_SIZE, 4 * GLSL_SCALAR_SIZE, static_cast<const void*>(glm::value_ptr(lightInstance.ambiant)));
-	uboLights.InitSubData(8 * GLSL_SCALAR_SIZE, 4 * GLSL_SCALAR_SIZE, static_cast<const void*>(glm::value_ptr(lightInstance.diffuse)));
-	uboLights.InitSubData(12 * GLSL_SCALAR_SIZE, 4 * GLSL_SCALAR_SIZE, static_cast<const void*>(glm::value_ptr(lightInstance.specular)));
-	uboLights.InitSubData(16 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, static_cast<const void*>(&lightInstance.constant));
-	uboLights.InitSubData(17 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, static_cast<const void*>(&lightInstance.linear));
-	uboLights.InitSubData(18 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, static_cast<const void*>(&lightInstance.quadratic));
-	uboLights.InitSubData(19 * GLSL_SCALAR_SIZE, GLSL_SCALAR_SIZE, static_cast<const void*>(&lightInstance.isBlinn));
+	UniformBuffer uboLights(entitiesShadersIDs, "lightParameters", uboBlockBindingPoint++, static_cast<size_t>(4 * vec4Size + 4 * GLSL_SCALAR_SIZE));
+	uboLights.InitSubData({
+		{ static_cast<const void*>(glm::value_ptr(lightInstance.position)), vec4Size },
+		{ static_cast<const void*>(glm::value_ptr(lightInstance.ambiant)), vec4Size },
+		{ static_cast<const void*>(glm::value_ptr(lightInstance.diffuse)), vec4Size },
+		{ static_cast<const void*>(glm::value_ptr(lightInstance.specular)), vec4Size },
+		{ static_cast<const void*>(&lightInstance.constant), GLSL_SCALAR_SIZE },
+		{ static_cast<const void*>(&lightInstance.linear), GLSL_SCALAR_SIZE },
+		{ static_cast<const void*>(&lightInstance.quadratic), GLSL_SCALAR_SIZE },
+		{ static_cast<const void*>(&lightInstance.isBlinn), GLSL_SCALAR_SIZE }
+		});
 
 
 
@@ -183,11 +188,14 @@ int main()
 
 		// Simulate a zoom - set far plane variable to a sufficiently high value 
 		const glm::mat4& projectionMatrix = glm::perspective(glm::radians(camera.GetZoom()), aspectRatio, 0.1f, 1000.0f);
-		uboMatrices.InitSubData(0, mat4v4Size, glm::value_ptr(projectionMatrix));
 
 		// Simulate a camera circling around the scene 
 		const glm::mat4& viewMatrix = camera.GetViewMatrix();
-		uboMatrices.InitSubData(mat4v4Size, mat4v4Size, glm::value_ptr(viewMatrix));
+
+		uboMatrices.InitSubData({
+			{ static_cast<const void*>(glm::value_ptr(projectionMatrix)), mat4v4Size },
+			{ static_cast<const void*>(glm::value_ptr(viewMatrix)), mat4v4Size }
+			});
 
 		// Texture sampler ID (one for each object) 
 		unsigned int samplerID = 0;
@@ -370,7 +378,7 @@ int main()
 
 		// Draw Milky Way skybox
 		renderer.DepthEqual();
-		uboMatrices.InitSubData(mat4v4Size, mat4v4Size, glm::value_ptr(glm::mat4(glm::mat3(viewMatrix))));
+		uboMatrices.InitSubData({ {glm::value_ptr(glm::mat4(glm::mat3(viewMatrix))), mat4v4Size} }, mat4v4Size);
 		skyboxShader.Enable();
 		skyboxShader.setUniformInt("texSampler", samplerID);
 		skybox.Render(renderer, samplerID++);
