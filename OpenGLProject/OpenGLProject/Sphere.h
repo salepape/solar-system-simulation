@@ -12,7 +12,7 @@ class Sphere: public Mesh
 {
 public:
 	Sphere(const std::string& inTexturePath, const float inRadius, const int inMeridianStripsCount = 100, const int inParallelStripsCount = 100);
-	~Sphere();
+	~Sphere() override;
 
 protected:
 	// Note that we call square the zone created by the intersection between one meridian strip and one parallel strip

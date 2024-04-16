@@ -51,7 +51,7 @@ public:
 	void SetFilters(const unsigned int filterType) const;
 	void SetFilters(const unsigned int min, const unsigned int mag) const;
 
-	// Bind texture name to the OpenGL target we want (expl : a 2D texture called GL_TEXTURE_2D)
+	// Bind texture name to the OpenGL target we want (e.g. a 2D texture called GL_TEXTURE_2D)
 	void Bind() const;
 	void Unbind() const;
 

@@ -15,7 +15,7 @@ class Orbit : public Mesh
 {
 public:
 	Orbit(const std::string& texturePath, const float inRadius);
-	~Orbit();
+	~Orbit() override;
 
 	void Render(const Renderer& renderer, const unsigned int& textureUnit) override;
 
