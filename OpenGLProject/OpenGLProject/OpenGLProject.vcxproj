@@ -155,6 +155,7 @@
     <ClInclude Include="Belt.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Data.h" />
+    <ClInclude Include="DataBuffer.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
@@ -174,6 +175,7 @@
   <ItemGroup>
     <ClCompile Include="Belt.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DataBuffer.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="Main.cpp" />
