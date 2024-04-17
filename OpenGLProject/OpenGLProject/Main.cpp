@@ -191,6 +191,10 @@ int main()
 
 		const glm::vec3& cameraPosition = camera.GetPosition();
 
+		defaultShader.Enable();
+		defaultShader.setUniformVec3("viewPos", cameraPosition);
+		defaultShader.Disable();
+
 		// Simulate a zoom - set far plane variable to a sufficiently high value 
 		const glm::mat4& projectionMatrix = glm::perspective(glm::radians(camera.GetZoom()), aspectRatio, 0.1f, 1000.0f);
 
@@ -205,11 +209,8 @@ int main()
 		// Texture sampler ID (one for each object) 
 		unsigned int samplerID = 0;
 
-		defaultShader.Enable();
-		defaultShader.setUniformVec3("viewPos", cameraPosition);
-
 		// Draw celestial bodies, their orbits and their motion
-		for (auto& dataInput: data)
+		for (auto& dataInput : data)
 		{
 			// Both angles below are in radians
 			float angleRot = 0.0f;
@@ -268,6 +269,7 @@ int main()
 				defaultShader.setUniformMat4("model", defaultModelMatrix);
 				defaultShader.setUniformInt("materialDiffuse", samplerID);
 				saturnRings.Render(renderer, samplerID++);
+				defaultShader.Disable();
 			}
 
 			// Rotation on itself (to have celestial body poles vertical)
@@ -277,12 +279,14 @@ int main()
 			{
 				sunShader.Enable();
 				sunShader.setUniformInt("materialDiffuse", samplerID);
+				sunShader.Disable();
 			}
 			else
 			{
 				defaultShader.Enable();
 				defaultShader.setUniformInt("materialDiffuse", samplerID);
-			}	
+				defaultShader.Disable();
+			}
 
 			// Spherical celestial bodies
 			if (const auto& sphere = dataInput.second.sphere)
@@ -291,14 +295,16 @@ int main()
 				{
 					sunShader.Enable();
 					sunShader.setUniformMat4("model", defaultModelMatrix);
+					sphere->Render(renderer, samplerID++);
+					sunShader.Disable();
 				}
 				else
 				{
 					defaultShader.Enable();
 					defaultShader.setUniformMat4("model", defaultModelMatrix);
+					sphere->Render(renderer, samplerID++);
+					defaultShader.Disable();
 				}
-
-				sphere->Render(renderer, samplerID++);
 			}
 			//// Non-spherical celestial bodies
 			//else
@@ -307,7 +313,6 @@ int main()
 
 			//	defaultShader.Enable();
 			//	defaultShader.setUniformMat4("model", defaultModelMatrix);
-
 			//	if (dataInput.first == "Deimos")
 			//	{
 			//		deimos.Render(renderer, samplerID++);
@@ -316,6 +321,7 @@ int main()
 			//	{
 			//		phobos.Render(renderer, samplerID++);
 			//	}
+			//	defaultShader.Disable();
 			//}
 
 
@@ -346,14 +352,16 @@ int main()
 				//else 
 				if (dataInput.first != "Sun")
 				{
-					text.Render(renderer, dataInput.first, 
+					text.Render(renderer, dataInput.first,
 						0.0f, preComputations[dataInput.first].textHeight, preComputations[dataInput.first].textScale, samplerID++);
 				}
 				else
 				{
-					text.Render(renderer, dataInput.first, 
+					text.Render(renderer, dataInput.first,
 						0.0f, preComputations[dataInput.first].sunTextHeight, preComputations[dataInput.first].sunTextScale, samplerID++);
 				}
+
+				textShader.Disable();
 			}
 
 
@@ -369,6 +377,7 @@ int main()
 				defaultShader.setUniformMat4("model", orbitModelMatrix);
 				defaultShader.setUniformInt("materialDiffuse", samplerID);
 				dataInput.second.orbit->Render(renderer, samplerID++);
+				defaultShader.Disable();
 			}
 		}
 
@@ -381,21 +390,23 @@ int main()
 		instancedModelShader.setUniformVec3("viewPos", cameraPosition);
 		instancedModelShader.setUniformInt("materialDiffuse", samplerID);
 		asteroidBelt.Render(renderer, samplerID++);
-
 		instancedModelShader.setUniformInt("materialDiffuse", samplerID);
 		kuiperBelt.Render(renderer, samplerID++);
+		instancedModelShader.Disable();
 
 
 
 
 
 		// Draw Milky Way skybox
-		renderer.DepthEqual();
 		uboMatrices.InitSubData({ {glm::value_ptr(glm::mat4(glm::mat3(viewMatrix))), mat4v4Size} }, mat4v4Size);
+
 		skyboxShader.Enable();
 		skyboxShader.setUniformInt("texSampler", samplerID);
+		renderer.DepthEqual();
 		skybox.Render(renderer, samplerID++);
 		renderer.DepthLess();
+		skyboxShader.Disable();
 
 
 
