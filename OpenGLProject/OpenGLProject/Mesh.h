@@ -6,11 +6,10 @@
 #include <iostream>
 #include <vector>
 
-enum class GeometryType;
 class IndexBuffer;
-enum class MapType;
 class Renderer;
 class Texture;
+enum class TextureType;
 class VertexArray;
 class VertexBuffer;
 
@@ -35,8 +34,9 @@ class Mesh
 {
 public:
 	Mesh();
-	Mesh(const std::string& texturePath, int textureType, GeometryType geometryType, MapType mapType);
-	// Built by parsing the model coming from a 3D modeling software
+	// Constructor used when computing mesh vertices/texture coordinates from scratch
+	Mesh(const std::string& path, const int target, const unsigned int wrapType, const unsigned int filterType, const TextureType textureType);
+	// Constructor used when parsing a pre-made 3D model (i.e. a mesh with textures applied on it) 
 	Mesh(const std::vector<Vertex>& inVertices, const std::vector<unsigned int>& inIndices, const std::vector<Texture>& inTextures);
 	virtual ~Mesh();
 
@@ -54,7 +54,7 @@ protected:
 	IndexBuffer* ibo{ nullptr };
 
 	// Compute each vertex of the mesh mathematically in code
-	virtual void ComputeVertices();
+	virtual void ComputeVertices() {};
 
 	// Set vertex buffers and its attribute pointers once we have all required data
 	virtual void StoreVertices();

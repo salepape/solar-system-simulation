@@ -16,9 +16,9 @@ Mesh::Mesh()
 
 }
 
-Mesh::Mesh(const std::string& texturePath, int textureType, GeometryType geometryType, MapType mapType)
+Mesh::Mesh(const std::string& texturePath, const int textureTarget, const unsigned int textureWrapOption, const unsigned int textureFilterOption, const TextureType textureType)
 {
-	Texture texture(texturePath, textureType, geometryType, mapType);
+	Texture texture(texturePath, textureTarget, textureWrapOption, textureFilterOption, textureType);
 	texture.LoadDDS();
 	textures.push_back(texture);
 }
@@ -26,7 +26,6 @@ Mesh::Mesh(const std::string& texturePath, int textureType, GeometryType geometr
 Mesh::Mesh(const std::vector<Vertex>& inVertices, const std::vector<unsigned int>& inIndices, const std::vector<Texture>& inTextures) :
 	vertices(inVertices), indices(inIndices), textures(inTextures)
 {
-	ComputeVertices();
 	StoreVertices();
 }
 
@@ -41,11 +40,6 @@ Mesh::~Mesh()
 	//{
 	//	delete ibo;
 	//}
-}
-
-void Mesh::ComputeVertices()
-{
-
 }
 
 void Mesh::StoreVertices()

@@ -5,37 +5,11 @@
 
 
 
-// @todo - Implement effect of mapType of Texture object
-Texture::Texture(const std::string& inPath, const unsigned int InTarget, const GeometryType geometryType, const MapType InMapType) :
-	path(inPath), target(InTarget), mapType(InMapType)
+Texture::Texture(const std::string& inPath, const unsigned int inTarget, const unsigned int wrapOption, const unsigned int filterOption, const TextureType inTextureType) :
+	path(inPath), target(inTarget), textureType(inTextureType)
 {
-	switch (geometryType)
-	{
-	case GeometryType::CIRCLE:
-	case GeometryType::SPHERE:
-	case GeometryType::MODEL:
-	{
-		SetWraps(GL_REPEAT);
-		SetFilters(GL_LINEAR);
-		break;
-	}
-	case GeometryType::CUBE:
-	{
-		SetWraps(GL_CLAMP_TO_EDGE);
-		SetFilters(GL_LINEAR);
-		break;
-	}
-	case GeometryType::GLYPH:
-	{
-		// Generate then bind Texture Object (= TO) to the OpenGL TO type we want 
-		glGenTextures(1, &rendererID);
-		glBindTexture(target, rendererID);
-
-		SetWraps(GL_CLAMP_TO_EDGE);
-		SetFilters(GL_LINEAR);
-		break;
-	}
-	}
+	SetWraps(wrapOption);
+	SetFilters(filterOption);
 }
 
 Texture::~Texture()
@@ -43,57 +17,20 @@ Texture::~Texture()
 
 }
 
-void Texture::LoadSprite(const unsigned int channel) const
+void Texture::LoadFTBitmap(const FT_Bitmap bitmap, const unsigned int format)
 {
-	int width = 0;
-	int height = 0;
-	int channelsCount = 0;
-
-	unsigned char* data = SOIL_load_image(path.c_str(), &width, &height, &channelsCount, channel);
-	if (data == nullptr)
-	{
-		std::cout << "ERROR::SOIL - Failed to load entity sprite at path " << path << std::endl;
-		return;
-	}
-
-	unsigned int format = GL_RGBA;
-	switch (channelsCount)
-	{
-	case 1:
-	{
-		format = GL_RED;
-		break;
-	}
-	case 3:
-	{
-		format = GL_RGB;
-		break;
-	}
-	case 4:
-	{
-		format = GL_RGBA;
-		break;
-	}
-	}
+	// Generate then bind Texture Object (= TO) to the OpenGL TO type we want 
+	glGenTextures(1, &rendererID);
 
 	Bind();
 
 	// Generate texture image on the currently bound TO at the active texture unit
-	glTexImage2D(target, 0, format, width, height, channelsCount, format, GL_UNSIGNED_BYTE, data);
-
-	// Generate all mipmap levels for the previous currently bound TO
-	glGenerateMipmap(target);
-
-	SOIL_free_image_data(data);
-}
-
-void Texture::LoadFTBitmap(const FT_Bitmap bitmap, const unsigned int format) const
-{
-	// Generate texture image on the currently bound TO at the active texture unit
 	glTexImage2D(target, 0, format, bitmap.width, bitmap.rows, 0, format, GL_UNSIGNED_BYTE, bitmap.buffer);
 	
 	// Generate all mipmap levels for the previous currently bound TO
-	glGenerateMipmap(GL_TEXTURE_2D);
+	glGenerateMipmap(target);
+
+	Unbind();
 }
 
 void Texture::LoadDDS()
@@ -105,8 +42,6 @@ void Texture::LoadDDS()
 	{
 		printf("ERROR::SOIL - Loading error: '%s'\n", SOIL_last_result());
 	}
-
-	Bind();
 }
 
 void Texture::LoadCubemapDDS()
@@ -118,19 +53,17 @@ void Texture::LoadCubemapDDS()
 	{
 		printf("ERROR::SOIL - Loading error: '%s'\n", SOIL_last_result());
 	}
-
-	Bind();
 }
 
-void Texture::SetWraps(const unsigned int wrapType) const
+void Texture::SetWraps(const unsigned int wrapOption) const
 {
 	if (target == GL_TEXTURE_CUBE_MAP)
 	{
-		SetWraps(wrapType, wrapType, wrapType);
+		SetWraps(wrapOption, wrapOption, wrapOption);
 	}
 	else
 	{
-		SetWraps(wrapType, wrapType);
+		SetWraps(wrapOption, wrapOption);
 	}
 }
 
@@ -147,9 +80,9 @@ void Texture::SetWraps(const unsigned int s, const unsigned int t, const unsigne
 	glTexParameteri(target, GL_TEXTURE_WRAP_R, r);
 }
 
-void Texture::SetFilters(const unsigned int filterType) const
+void Texture::SetFilters(const unsigned int filterOption) const
 {
-	SetFilters(filterType, filterType);
+	SetFilters(filterOption, filterOption);
 }
 
 void Texture::SetFilters(const unsigned int min, const unsigned int mag) const
@@ -171,11 +104,13 @@ void Texture::Unbind() const
 void Texture::Enable(unsigned int textUnit) const
 {
 	glActiveTexture(GL_TEXTURE0 + textUnit);
+
 	Bind();
 }
 
 void Texture::Disable() const
 {
 	glActiveTexture(0);
+
 	Unbind();
 }

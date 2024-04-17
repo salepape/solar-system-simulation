@@ -9,9 +9,10 @@
 #include "Texture.h"
 
 
+
 Sphere::Sphere(const std::string& inTexturePath, const float inRadius, const int inMeridianStripsCount, const int inParallelStripsCount) :
 	radius(inRadius), meridianStripsCount(inMeridianStripsCount), parallelStripsCount(inParallelStripsCount),
-	Mesh(inTexturePath, GL_TEXTURE_2D, GeometryType::SPHERE, MapType::NONE)
+	Mesh(inTexturePath, GL_TEXTURE_2D, GL_REPEAT, GL_LINEAR, TextureType::NONE)
 {
 	ComputeVertices();
 	ComputeIndices();

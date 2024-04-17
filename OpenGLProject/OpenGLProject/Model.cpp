@@ -28,14 +28,15 @@ Model::~Model()
 void Model::LoadModel(const std::string& path)
 {
 	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+
+	const aiScene* const scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 	if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
 	{
 		std::cout << "ERROR::ASSIMP - Error when reading file: " << importer.GetErrorString() << std::endl;
 		return;
 	}
 
-	// Process ASSIMP's root node recursively
+	// Process ASSIMP root node recursively
 	ProcessNode(*scene->mRootNode, *scene);
 }
 
@@ -45,13 +46,18 @@ void Model::ProcessNode(const aiNode& node, const aiScene& scene)
 	meshes.reserve(node.mNumMeshes);
 	for (unsigned int i = 0; i < node.mNumMeshes; ++i)
 	{
-		// Node object only contains indices to index the actual objects in the scene
-		// Scene contains all the data, node is just to keep stuff organised (like relations between nodes)
-		const aiMesh* mesh = scene.mMeshes[node.mMeshes[i]];
+		// Get mesh from the scene (that contains data), node object only indexes scene objects
+		const aiMesh* const mesh = scene.mMeshes[node.mMeshes[i]];
+		if (mesh == nullptr)
+		{
+			std::cout << "ERROR::ASSIMP - No mesh found in array mMeshes index " << node.mMeshes[i] << std::endl;
+			continue;
+		}
+
 		meshes.push_back(ProcessMesh(*mesh, scene));
 	}
 
-	// Process ASSIMP's children nodes recursively
+	// Process ASSIMP children nodes recursively
 	for (unsigned int i = 0; i < node.mNumChildren; ++i)
 	{
 		ProcessNode(*node.mChildren[i], scene);
@@ -60,10 +66,17 @@ void Model::ProcessNode(const aiNode& node, const aiScene& scene)
 
 Mesh Model::ProcessMesh(const aiMesh& mesh, const aiScene& scene)
 {
-	// ASSIMP doesn't use glm::vec3 class, so we store all the vertex information into one
+	const std::vector<Vertex>& vertices = GetMeshVertices(mesh);
+	const std::vector<unsigned int>& indices = GetMeshIndices(mesh);
+	GetMeshTextures(mesh, scene);
+
+	return Mesh(vertices, indices, textures);
+}
+
+std::vector<Vertex> Model::GetMeshVertices(const aiMesh& mesh)
+{
 	std::vector<Vertex> vertices;
 	vertices.reserve(mesh.mNumVertices);
-
 	for (unsigned int i = 0; i < mesh.mNumVertices; ++i)
 	{
 		Vertex vertex;
@@ -73,8 +86,7 @@ Mesh Model::ProcessMesh(const aiMesh& mesh, const aiScene& scene)
 
 		if (mesh.mTextureCoords[0])
 		{
-			// A vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
-			// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
+			// Only supporting models with a single set of texture coordinates (out of 8 theoretically) for now
 			vertex.TexCoords = glm::vec2(mesh.mTextureCoords[0][i].x, mesh.mTextureCoords[0][i].y);
 		}
 		else
@@ -88,7 +100,11 @@ Mesh Model::ProcessMesh(const aiMesh& mesh, const aiScene& scene)
 		vertices.push_back(vertex);
 	}
 
-	// Store the indices of each mesh facet
+	return vertices;
+}
+
+std::vector<unsigned int> Model::GetMeshIndices(const aiMesh& mesh)
+{
 	std::vector<unsigned int> indices;
 	for (unsigned int i = 0; i < mesh.mNumFaces; ++i)
 	{
@@ -100,57 +116,47 @@ Mesh Model::ProcessMesh(const aiMesh& mesh, const aiScene& scene)
 		}
 	}
 
-	// We assume a convention for sampler names in the shaders. Each diffuse texture should be named
-	// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
-	// Same applies to specular and normal textures.
-	std::vector<Texture> textures;
-	const aiMaterial* material = scene.mMaterials[mesh.mMaterialIndex];
-
-	const std::vector<Texture>& diffuseMaps = LoadTextures(*material, aiTextureType_DIFFUSE);
-	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-
-	const std::vector<Texture>& specularMaps = LoadTextures(*material, aiTextureType_SPECULAR);
-	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-
-	const std::vector<Texture>& normalMaps = LoadTextures(*material, aiTextureType_NORMALS);
-	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-
-	const std::vector<Texture>& heightMaps = LoadTextures(*material, aiTextureType_HEIGHT);
-	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-
-	return Mesh(vertices, indices, textures);
+	return indices;
 }
 
-std::vector<Texture> Model::LoadTextures(const aiMaterial& material, const aiTextureType type)
+void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 {
-	std::vector<Texture> textures;
-	textures.reserve(material.GetTextureCount(type));
-
-	for (unsigned int i = 0; i < material.GetTextureCount(type); ++i)
+	const aiMaterial* const material = scene.mMaterials[mesh.mMaterialIndex];
+	if (material == nullptr)
 	{
-		aiString TexturePath;
-		material.GetTexture(type, i, &TexturePath);
-
-		// Skip texture creation if it has already been loaded
-		const auto loadedTextureIt = find_if(loadedTextures.begin(), loadedTextures.end(), [TexturePath](const Texture& loadedTexture)
-		{
-			return std::string(TexturePath.C_Str(), TexturePath.length) == loadedTexture.GetPath();
-		});
-
-		if (loadedTextureIt != loadedTextures.end())
-		{
-			textures.push_back(*loadedTextureIt);
-			continue;
-		}
-		
-		// @todo - Implement correspondance aiTextureType and MapType enums
-		Texture texture(std::string(TexturePath.C_Str(), TexturePath.length), GL_TEXTURE_2D, GeometryType::MODEL, MapType::NONE);
-		texture.LoadDDS();
-		textures.push_back(texture);
-		loadedTextures.push_back(texture);
+		std::cout << "ERROR::ASSIMP - No materials found in array mMaterials index " << mesh.mMaterialIndex << std::endl;
+		return;
 	}
 
-	return textures;
+	const std::vector<aiTextureType> textureTypes{ aiTextureType_AMBIENT, aiTextureType_DIFFUSE, aiTextureType_SPECULAR };
+	for (const auto& type : textureTypes)
+	{
+		const unsigned int textureCount = material->GetTextureCount(type);
+		textures.reserve(textureCount);
+		for (unsigned int i = 0; i < textureCount; ++i)
+		{
+			// Get texture path
+			aiString texturePath;
+			material->GetTexture(type, i, &texturePath);
+			const std::string& textureStringPath = std::string(texturePath.C_Str(), texturePath.length);
+
+			// Skip texture creation if already done
+			const auto loadedTextureIt = find_if(textures.begin(), textures.end(), [&textureStringPath](const Texture& loadedTexture)
+			{
+				return textureStringPath == loadedTexture.GetPath();
+			});
+
+			if (loadedTextureIt != textures.end())
+			{
+				continue;
+			}
+
+			// Create a DDS texture from the ASSIMP one
+			Texture texture(textureStringPath, GL_TEXTURE_2D, GL_REPEAT, GL_LINEAR, static_cast<TextureType>(type));
+			texture.LoadDDS();
+			textures.push_back(texture);
+		}
+	}
 }
 
 void Model::Render(const Renderer& renderer, const unsigned int& textureUnit)
