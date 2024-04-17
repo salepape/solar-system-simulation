@@ -16,9 +16,9 @@ Mesh::Mesh()
 
 }
 
-Mesh::Mesh(const std::string& texturePath, const int textureTarget, const unsigned int textureWrapOption, const unsigned int textureFilterOption, const TextureType textureType)
+Mesh::Mesh(const std::string& texturePath, const unsigned int textureTarget, const WrapOptions& textureWrapOptions, const FilterOptions& textureFilterOptions, const TextureType& textureType)
 {
-	Texture texture(texturePath, textureTarget, textureWrapOption, textureFilterOption, textureType);
+	Texture texture(texturePath, textureTarget, textureWrapOptions, textureFilterOptions, textureType);
 	texture.LoadDDS();
 	textures.push_back(texture);
 }

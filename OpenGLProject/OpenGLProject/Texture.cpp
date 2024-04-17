@@ -5,11 +5,11 @@
 
 
 
-Texture::Texture(const std::string& inPath, const unsigned int inTarget, const unsigned int wrapOption, const unsigned int filterOption, const TextureType inTextureType) :
+Texture::Texture(const std::string& inPath, const unsigned int inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType) :
 	path(inPath), target(inTarget), textureType(inTextureType)
 {
-	SetWraps(wrapOption);
-	SetFilters(filterOption);
+	SetWraps(wrapOptions);
+	SetFilters(filterOptions);
 }
 
 Texture::~Texture()
@@ -55,40 +55,21 @@ void Texture::LoadCubemapDDS()
 	}
 }
 
-void Texture::SetWraps(const unsigned int wrapOption) const
+void Texture::SetWraps(const WrapOptions& wrapOptions) const
 {
+	glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapOptions.s);
+	glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapOptions.t);
+
 	if (target == GL_TEXTURE_CUBE_MAP)
 	{
-		SetWraps(wrapOption, wrapOption, wrapOption);
-	}
-	else
-	{
-		SetWraps(wrapOption, wrapOption);
+		glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapOptions.r);
 	}
 }
 
-void Texture::SetWraps(const unsigned int s, const unsigned int t) const
+void Texture::SetFilters(const FilterOptions& filterOptions) const
 {
-	glTexParameteri(target, GL_TEXTURE_WRAP_S, s);
-	glTexParameteri(target, GL_TEXTURE_WRAP_T, t);
-}
-
-void Texture::SetWraps(const unsigned int s, const unsigned int t, const unsigned int r) const
-{
-	glTexParameteri(target, GL_TEXTURE_WRAP_S, s);
-	glTexParameteri(target, GL_TEXTURE_WRAP_T, t);
-	glTexParameteri(target, GL_TEXTURE_WRAP_R, r);
-}
-
-void Texture::SetFilters(const unsigned int filterOption) const
-{
-	SetFilters(filterOption, filterOption);
-}
-
-void Texture::SetFilters(const unsigned int min, const unsigned int mag) const
-{
-	glTexParameteri(target, GL_TEXTURE_MIN_FILTER, min);
-	glTexParameteri(target, GL_TEXTURE_MAG_FILTER, mag);
+	glTexParameteri(target, GL_TEXTURE_MIN_FILTER, filterOptions.min);
+	glTexParameteri(target, GL_TEXTURE_MAG_FILTER, filterOptions.mag);
 }
 
 void Texture::Bind() const

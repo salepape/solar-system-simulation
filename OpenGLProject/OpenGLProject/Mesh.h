@@ -6,12 +6,14 @@
 #include <iostream>
 #include <vector>
 
+struct FilterOptions;
 class IndexBuffer;
 class Renderer;
 class Texture;
 enum class TextureType;
 class VertexArray;
 class VertexBuffer;
+struct WrapOptions;
 
 
 
@@ -35,7 +37,7 @@ class Mesh
 public:
 	Mesh();
 	// Constructor used when computing mesh vertices/texture coordinates from scratch
-	Mesh(const std::string& path, const int target, const unsigned int wrapType, const unsigned int filterType, const TextureType textureType);
+	Mesh(const std::string& texturePath, const unsigned int textureTarget, const WrapOptions& textureWrapOptions, const FilterOptions& textureFilterOptions, const TextureType& textureType);
 	// Constructor used when parsing a pre-made 3D model (i.e. a mesh with textures applied on it) 
 	Mesh(const std::vector<Vertex>& inVertices, const std::vector<unsigned int>& inIndices, const std::vector<Texture>& inTextures);
 	virtual ~Mesh();

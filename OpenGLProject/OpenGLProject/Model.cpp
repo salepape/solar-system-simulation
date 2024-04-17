@@ -152,7 +152,7 @@ void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 			}
 
 			// Create a DDS texture from the ASSIMP one
-			Texture texture(textureStringPath, GL_TEXTURE_2D, GL_REPEAT, GL_LINEAR, static_cast<TextureType>(type));
+			Texture texture(textureStringPath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, static_cast<TextureType>(type));
 			texture.LoadDDS();
 			textures.push_back(texture);
 		}

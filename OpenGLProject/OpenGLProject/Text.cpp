@@ -69,7 +69,7 @@ void Text::LoadASCIICharacters(const int count)
 		}
 
 		// No need to specify image path here since the glyph bitmap directly contains the data
-		Texture glyphTexture("", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE, GL_LINEAR, TextureType::NONE);
+		Texture glyphTexture("", GL_TEXTURE_2D, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::NONE);
 		glyphTexture.LoadFTBitmap(glyph->bitmap, GL_RED);
 
 		// Create object storing current ASCII character glyph caracteristics
