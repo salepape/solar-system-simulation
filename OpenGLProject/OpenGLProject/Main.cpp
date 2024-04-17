@@ -54,9 +54,14 @@ int main()
 
 	// Build and compile shader programs
 	Shader defaultShader("DefaultShader.vs", "DefaultShader.fs");
+	Shader sunShader("SunShader.vs", "SunShader.fs");
 	Shader textShader("TextShader.vs", "TextShader.fs");
+	Shader instancedModelShader("InstancedModelShader.vs", "DefaultShader.fs");
 	Shader skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
-	Shader instancedModelShader("InstancedModelShader.vs", "InstancedModelShader.fs");
+	
+	
+
+	
 
 	// Create Milky Way skybox
 	Skybox skybox("../Textures/MilkyWay/stars.dds");
@@ -111,7 +116,7 @@ int main()
 
 	unsigned int uboBlockBindingPoint = 0;
 
-	std::vector<unsigned int> matricesShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID(), textShader.GetRendererID() });
+	std::vector<unsigned int> matricesShadersIDs({ defaultShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID() });
 	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", uboBlockBindingPoint++, static_cast <size_t>(2 * mat4v4Size));
 
 	std::vector<unsigned int> entitiesShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
@@ -223,14 +228,6 @@ int main()
 
 				// Angle of rotation of the celestial body around itself per frame
 				angleRotItself = preComputations[dataInput.first].rotPeriodCst * windowParams;
-			
-				defaultShader.Enable();
-				defaultShader.setUniformBool("isSun", false);
-			}
-			else
-			{
-				defaultShader.Enable();
-				defaultShader.setUniformBool("isSun", true);
 			}
 
 			// Simulate movements that affects the current celestial bodies
@@ -239,14 +236,14 @@ int main()
 			glm::mat4 textModelMatrix(1.0f);
 
 			// Circular translation of satellite around corresponding planet
-			if (const auto& planet = dataInput.second.parentInfo)
+			if (const auto& satelliteParent = dataInput.second.parentInfo)
 			{
-				const float sinPlanetAngleRot = sin(planet->angleRot);
-				
+				const float sinPlanetAngleRot = sin(satelliteParent->angleRot);
+
 				defaultModelMatrix = glm::translate(defaultModelMatrix, glm::vec3(
 					preComputations[dataInput.second.parentName].cosCircularTslCst * sinPlanetAngleRot,
 					preComputations[dataInput.second.parentName].sinCircularTslCst * sinPlanetAngleRot,
-					planet->dist * cos(planet->angleRot)));
+					satelliteParent->dist * cos(satelliteParent->angleRot)));
 				orbitModelMatrix = defaultModelMatrix;
 			}
 
@@ -268,7 +265,6 @@ int main()
 			if (dataInput.first == "Saturn")
 			{
 				defaultShader.Enable();
-				defaultShader.setUniformBool("isSun", false);
 				defaultShader.setUniformMat4("model", defaultModelMatrix);
 				defaultShader.setUniformInt("materialDiffuse", samplerID);
 				saturnRings.Render(renderer, samplerID++);
@@ -277,13 +273,30 @@ int main()
 			// Rotation on itself (to have celestial body poles vertical)
 			defaultModelMatrix = glm::rotate(defaultModelMatrix, halfPi, rightVector);
 
-			defaultShader.Enable();
-			defaultShader.setUniformInt("materialDiffuse", samplerID);
-
-			if (const auto& sphere = dataInput.second.sphere)
+			if (dataInput.first == "Sun")
+			{
+				sunShader.Enable();
+				sunShader.setUniformInt("materialDiffuse", samplerID);
+			}
+			else
 			{
 				defaultShader.Enable();
-				defaultShader.setUniformMat4("model", defaultModelMatrix);
+				defaultShader.setUniformInt("materialDiffuse", samplerID);
+			}	
+
+			// Spherical celestial bodies
+			if (const auto& sphere = dataInput.second.sphere)
+			{
+				if (dataInput.first == "Sun")
+				{
+					sunShader.Enable();
+					sunShader.setUniformMat4("model", defaultModelMatrix);
+				}
+				else
+				{
+					defaultShader.Enable();
+					defaultShader.setUniformMat4("model", defaultModelMatrix);
+				}
 
 				sphere->Render(renderer, samplerID++);
 			}

@@ -178,9 +178,6 @@
     <None Include="TextShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="InstancedModelShader.fs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="InstancedModelShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
@@ -188,6 +185,12 @@
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="DefaultShader.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="SunShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="SunShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>

@@ -197,10 +197,11 @@
   <ItemGroup>
     <None Include="DefaultShader.fs" />
     <None Include="DefaultShader.vs" />
-    <None Include="InstancedModelShader.fs" />
     <None Include="InstancedModelShader.vs" />
     <None Include="SkyboxShader.fs" />
     <None Include="SkyboxShader.vs" />
+    <None Include="SunShader.fs" />
+    <None Include="SunShader.vs" />
     <None Include="TextShader.fs" />
     <None Include="TextShader.vs" />
   </ItemGroup>
