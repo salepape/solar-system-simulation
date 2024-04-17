@@ -5,6 +5,11 @@
 
 
 
+Texture::Texture()
+{
+
+}
+
 Texture::Texture(const std::string& inPath, const unsigned int inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType) :
 	path(inPath), target(inTarget), textureType(inTextureType)
 {

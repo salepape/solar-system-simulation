@@ -53,4 +53,9 @@ void Orbit::Render(const Renderer& renderer, const unsigned int& textureUnit)
 	}
 	
 	renderer.Draw(*vao, GL_LINE_LOOP, meridianStripsCount);
+
+	for (const auto& texture : textures)
+	{
+		texture.Disable();
+	}
 }

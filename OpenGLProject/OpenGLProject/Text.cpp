@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "Renderer.h"
-#include "Texture.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
@@ -68,18 +67,17 @@ void Text::LoadASCIICharacters(const int count)
 			continue;
 		}
 
-		// No need to specify image path here since the glyph bitmap directly contains the data
+		// No need to specify an image path here since the glyph bitmap directly contains the data
 		Texture glyphTexture("", GL_TEXTURE_2D, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::NONE);
 		glyphTexture.LoadFTBitmap(glyph->bitmap, GL_RED);
 
 		// Create object storing current ASCII character glyph caracteristics
-		GlyphParams glyphParams =
-		{
-			glyphTexture.GetRendererID(),
+		GlyphParams glyphParams(
+			glyphTexture,
 			glm::ivec2(glyph->bitmap.width, glyph->bitmap.rows),
 			glm::ivec2(glyph->bitmap_left, glyph->bitmap_top),
 			face->glyph->advance.x
-		};
+		);
 
 		// Store character for later use
 		characters.insert(std::make_pair(charCode, glyphParams));
@@ -126,7 +124,6 @@ void Text::Render(const Renderer& renderer, const std::string text, float x, con
 	// Shift billboard to left in order to center it to the concerned celestial body
 	x = -GetBillboardSize(text, scale) * 0.5f;
 
-	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	vao->Bind();
 
 	const size_t verticesQuadSize = VERTICES_COUNT * QUAD_ELMTS_COUNT * sizeof(float);
@@ -155,17 +152,16 @@ void Text::Render(const Renderer& renderer, const std::string text, float x, con
 			xpos + width,	ypos + height,  1.0f, 0.0f
 		};
 
-		// Render glyph texture over quad
-		glBindTexture(GL_TEXTURE_2D, glyphParams.rendererID);
-
 		// Update content of VBO memory
 		vbo->InitSubData({ { static_cast<const void*>(verticesQuad.data()), verticesQuadSize } });
 
+		// Render glyph texture over quad
+		glyphParams.texture.Enable(textureUnit);
 		renderer.Draw(*vao, GL_TRIANGLES, VERTICES_COUNT);
+		glyphParams.texture.Disable();
 
 		x += GetGlyphAdvance(glyphParams, scale);
 	}
 
 	vao->Unbind();
-	glBindTexture(GL_TEXTURE_2D, 0);
 }

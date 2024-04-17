@@ -90,5 +90,8 @@ void Mesh::Render(const Renderer& renderer, const unsigned int& textureUnit)
 
 	renderer.Draw(*vao, *ibo);
 
-	//glActiveTexture(GL_TEXTURE0);
+	for (const auto& texture : textures)
+	{
+		texture.Disable();
+	}
 }

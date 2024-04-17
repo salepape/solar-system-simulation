@@ -101,4 +101,9 @@ void Belt::Render(const Renderer& renderer, const unsigned int& textureUnit)
 	{
 		renderer.DrawInstances(mesh.GetVAO(), static_cast<unsigned int>(mesh.GetIndicesCount()), instanceParams.count);
 	}
+
+	for (const auto& texture : instanceParams.model.GetTextures())
+	{
+		texture.Disable();
+	}
 }

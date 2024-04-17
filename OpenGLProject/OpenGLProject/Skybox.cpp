@@ -22,9 +22,6 @@ Skybox::Skybox(const std::string& texturePath)
 
 void Skybox::ComputeVertices()
 {
-	// FacesCount is 6, verticesPerFaceCount is 6
-	constexpr int VERTICES_COUNT = 36;
-
 	std::vector<float> vertCoor =
 	{
 		-1.0f,  1.0f, -1.0f,
@@ -100,5 +97,10 @@ void Skybox::Render(const Renderer& renderer, const unsigned int& textureUnit)
 		texture.Enable(textureUnit);
 	}
 	
-	renderer.Draw(*vao, GL_TRIANGLES, 36);
+	renderer.Draw(*vao, GL_TRIANGLES, VERTICES_COUNT);
+
+	for (const auto& texture : textures)
+	{
+		texture.Disable();
+	}
 }

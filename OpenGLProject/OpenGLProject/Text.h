@@ -8,16 +8,18 @@
 #include <map>
 #include <string>
 
+#include "Texture.h"
+
 class Renderer;
 class VertexArray;
 class VertexBuffer;
 
 
 
-// Holds all state information relevant to a glyph as loaded using FreeType (including metrics)
+// Hold all texture/metrics information relevant to a loaded glyph (using FreeType)
 struct GlyphParams
 {
-	unsigned int rendererID;
+	Texture texture;
 
 	glm::ivec2 size;
 
@@ -26,9 +28,13 @@ struct GlyphParams
 
 	// Horizontal offset to advance to start next glyph
 	FT_Pos advance;
+
+	GlyphParams() {};
+	GlyphParams(Texture inTexture, const glm::ivec2& inSize, const glm::ivec2& inBearing, const FT_Pos inAdvance) :
+		texture(inTexture), size(inSize), bearing(inBearing), advance(inAdvance) {};
 };
 
-// Text encompassing all texts (name of each celestial body) appearing within the simulation
+// Text class which build a Texture object for each main ASCII character, and using them to render each celestial body name
 class Text
 {
 public:

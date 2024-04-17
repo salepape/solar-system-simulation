@@ -20,6 +20,10 @@ public:
 
 protected:
 	void ComputeVertices() override;
+
+private:
+	// FacesCount is 6, verticesPerFaceCount is 6
+	static constexpr int VERTICES_COUNT = 36;
 };
 
 
