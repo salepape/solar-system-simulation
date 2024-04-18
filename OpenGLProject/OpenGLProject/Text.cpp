@@ -12,6 +12,11 @@
 
 
 
+Text::Text()
+{
+
+}
+
 Text::Text(const int count)
 {
 	LoadASCIICharacters(count);

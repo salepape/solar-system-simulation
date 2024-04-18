@@ -12,6 +12,7 @@ struct GLFWwindow;
 class Window
 {
 public:
+	Window();
 	Window(const unsigned int inWidth, const unsigned int inHeight, const char* inTitle);
 	~Window();
 

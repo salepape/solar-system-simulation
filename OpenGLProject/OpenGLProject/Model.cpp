@@ -15,6 +15,11 @@
 
 
 
+Model::Model()
+{
+
+}
+
 Model::Model(const std::string& inPath, const bool inGammaCorrection) : gammaCorrection(inGammaCorrection)
 {
 	LoadModel(inPath);

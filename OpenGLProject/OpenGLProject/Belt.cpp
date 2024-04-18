@@ -14,6 +14,11 @@
 
 
 
+Belt::Belt()
+{
+
+}
+
 Belt::Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams) :
 	instanceParams(inInstanceParams), torusParams(inTorusParams)
 {

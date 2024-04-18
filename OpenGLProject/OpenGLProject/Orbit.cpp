@@ -11,6 +11,11 @@
 
 
 
+Orbit::Orbit()
+{
+
+}
+
 Orbit::Orbit(const std::string& texturePath, const float inRadius) :
 	radius(inRadius),
 	Mesh(texturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::NONE)

@@ -38,6 +38,7 @@ struct GlyphParams
 class Text
 {
 public:
+	Text();
 	Text(const int inCount);
 	~Text();
 

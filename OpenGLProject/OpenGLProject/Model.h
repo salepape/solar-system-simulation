@@ -20,6 +20,7 @@ struct Vertex;
 class Model
 {
 public:
+	Model();
 	Model(const std::string& inPath, const bool inGammaCorrection = false);
 	~Model();
 

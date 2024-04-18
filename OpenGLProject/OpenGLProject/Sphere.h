@@ -11,6 +11,7 @@
 class Sphere: public Mesh
 {
 public:
+	Sphere();
 	Sphere(const std::string& inTexturePath, const float inRadius, const int inMeridianStripsCount = 100, const int inParallelStripsCount = 100);
 	~Sphere() override;
 

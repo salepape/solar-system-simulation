@@ -10,6 +10,11 @@
 
 
 
+Skybox::Skybox()
+{
+
+}
+
 Skybox::Skybox(const std::string& texturePath)
 {
 	Texture texture(texturePath, GL_TEXTURE_CUBE_MAP, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::NONE);

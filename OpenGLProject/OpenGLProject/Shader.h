@@ -18,6 +18,7 @@ enum class ObjectType
 class Shader
 {
 public:
+	Shader();
 	Shader(const std::string& vsPath, const std::string& fsPath);
 	~Shader();
 
