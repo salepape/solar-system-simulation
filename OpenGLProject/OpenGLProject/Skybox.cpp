@@ -20,6 +20,11 @@ Skybox::Skybox(const std::string& texturePath)
 	StoreVertices();
 };
 
+Skybox::~Skybox()
+{
+
+}
+
 void Skybox::ComputeVertices()
 {
 	std::vector<float> vertCoor =
@@ -83,11 +88,6 @@ void Skybox::ComputeVertices()
 
 		positionIndex += Vertex::POSITION_ELMTS_COUNT;
 	}
-}
-
-Skybox::~Skybox()
-{
-
 }
 
 void Skybox::Render(const Renderer& renderer, const unsigned int& textureUnit)

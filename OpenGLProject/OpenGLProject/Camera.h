@@ -22,6 +22,7 @@ class Camera
 {
 public:
 	Camera(const glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f));
+	~Camera();
 
 	// Process input received from any keyboard-like input system (requires enum camera movement option)
 	void ProcessKeyboard(const CameraMovement& direction, const float deltaTime);

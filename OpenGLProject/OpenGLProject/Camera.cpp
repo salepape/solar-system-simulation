@@ -13,6 +13,11 @@ Camera::Camera(const glm::vec3 inPosition) :
 	UpdateCameraVectors();
 }
 
+Camera::~Camera()
+{
+
+}
+
 glm::mat4 Camera::GetViewMatrix() const
 {
 	return glm::lookAt(position, position + forward, up);
