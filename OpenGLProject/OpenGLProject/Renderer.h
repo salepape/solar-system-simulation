@@ -9,7 +9,8 @@ class VertexArray;
 class Renderer
 {
 public:
-	// @todo - Add default constructor/destructor?
+	Renderer();
+	~Renderer();
 
 	// Clear the depth buffer
 	void Clear() const;
