@@ -10,8 +10,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
-#include "Mesh.h"
-#include "Texture.h"
+#include "VertexBuffer.h"
 
 
 
@@ -164,10 +163,42 @@ void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 	}
 }
 
-void Model::Render(const Renderer& renderer, const unsigned int& textureUnit)
+void Model::StoreModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t size)
 {
-	for (auto& mesh: meshes)
+	// Configure instanced array
+	VertexBuffer vbo(static_cast<const void*>(modelMatrices.data()), size);
+
+	// Set transformation matrices as an instance vertex attribute for each mesh VAO already created
+	for (auto& mesh : meshes)
+	{
+		mesh.StoreModelMatrices(vbo);
+	}
+
+	vbo.Unbind();
+}
+
+void Model::Render(const Renderer& renderer, const unsigned int textureUnit)
+{
+	for (auto& mesh : meshes)
 	{
 		mesh.Render(renderer, textureUnit);
+	}
+}
+
+void Model::RenderInstances(const Renderer& renderer, const unsigned int textureUnit, const unsigned int instanceCount)
+{
+	for (const auto& texture : textures)
+	{
+		texture.Enable(textureUnit);
+	}
+
+	for (auto& mesh : meshes)
+	{
+		mesh.RenderInstances(renderer, instanceCount);
+	}
+
+	for (const auto& texture : textures)
+	{
+		texture.Disable();
 	}
 }

@@ -79,11 +79,11 @@ void Renderer::Draw(const VertexArray& vao, const IndexBuffer& ibo) const
 	ibo.Unbind();
 }
 
-void Renderer::DrawInstances(const VertexArray& vao, const unsigned int iboCount, const unsigned int count) const
+void Renderer::DrawInstances(const VertexArray& vao, const unsigned int iboCount, const unsigned int instanceCount) const
 {
 	vao.Bind();
 
-	glDrawElementsInstanced(GL_TRIANGLES, iboCount, GL_UNSIGNED_INT, 0, count);
+	glDrawElementsInstanced(GL_TRIANGLES, iboCount, GL_UNSIGNED_INT, 0, instanceCount);
 
 	vao.Unbind();
 }

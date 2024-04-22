@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "Model.h"
-#include "VertexArray.h"
 
 class Renderer;
 
@@ -48,7 +47,7 @@ public:
 	Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams);
 	~Belt();
 
-	void Render(const Renderer& renderer, const unsigned int& textureUnit);
+	void Render(const Renderer& renderer, const unsigned int textureUnit);
 
 private:
 	InstanceParams instanceParams;
@@ -57,8 +56,6 @@ private:
 
 	void ComputeModelMatrices();
 	void StoreModelMatrices();
-
-	static constexpr int INSTANCE_MATRIX_ELMTS_COUNT = 4;
 };
 
 

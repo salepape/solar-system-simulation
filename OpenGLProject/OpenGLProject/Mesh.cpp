@@ -4,7 +4,6 @@
 
 #include "IndexBuffer.h"
 #include "Renderer.h"
-#include "Texture.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
@@ -75,7 +74,17 @@ void Mesh::StoreVertices()
 	}
 }
 
-void Mesh::Render(const Renderer& renderer, const unsigned int& textureUnit)
+void Mesh::StoreModelMatrices(const VertexBuffer& vbo)
+{
+	VertexBufferLayout vbl;
+	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, Vertex::INSTANCE_MATRIX_ELMTS_COUNT);
+	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol2, GL_FLOAT, Vertex::INSTANCE_MATRIX_ELMTS_COUNT);
+	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol3, GL_FLOAT, Vertex::INSTANCE_MATRIX_ELMTS_COUNT);
+	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol4, GL_FLOAT, Vertex::INSTANCE_MATRIX_ELMTS_COUNT);
+	vao->AddInstancedBuffer(vbo, vbl);
+}
+
+void Mesh::Render(const Renderer& renderer, const unsigned int textureUnit)
 {
 	if (indices.empty())
 	{
@@ -94,4 +103,9 @@ void Mesh::Render(const Renderer& renderer, const unsigned int& textureUnit)
 	{
 		texture.Disable();
 	}
+}
+
+void Mesh::RenderInstances(const Renderer& renderer, const unsigned int instanceCount)
+{
+	renderer.DrawInstances(*vao, static_cast<unsigned int>(ibo->GetCount()), instanceCount);
 }

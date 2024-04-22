@@ -6,10 +6,12 @@
 #include <iostream>
 #include <vector>
 
+#include "Mesh.h"
+#include "Texture.h"
+
 struct FilterOptions;
 class IndexBuffer;
 class Renderer;
-class Texture;
 enum class TextureType;
 class VertexArray;
 class VertexBuffer;
@@ -30,6 +32,8 @@ struct Vertex
 	static constexpr int TEXCOORDS_ELMTS_COUNT = 2;
 	static constexpr int TANGENT_ELMTS_COUNT = 3;
 	static constexpr int BITANGENT_ELMTS_COUNT = 3;
+
+	static constexpr int INSTANCE_MATRIX_ELMTS_COUNT = 4;
 };
 
 class Mesh
@@ -42,10 +46,10 @@ public:
 	Mesh(const std::vector<Vertex>& inVertices, const std::vector<unsigned int>& inIndices, const std::vector<Texture>& inTextures);
 	virtual ~Mesh();
 
-	virtual void Render(const Renderer& renderer, const unsigned int& textureUnit);
+	void StoreModelMatrices(const VertexBuffer& vbo);
 
-	VertexArray& GetVAO() const { return *vao; };
-	size_t GetIndicesCount() const { return indices.size(); }
+	virtual void Render(const Renderer& renderer, const unsigned int textureUnit);
+	void RenderInstances(const Renderer& renderer, const unsigned int instanceCount);
 
 protected:
 	std::vector<Vertex> vertices;

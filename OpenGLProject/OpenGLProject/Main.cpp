@@ -102,8 +102,8 @@ int main()
 	LoadPreComputations();
 
 	// Do some instancing to build the main Solar Systems rock belts
-	Belt asteroidBelt	{ {asteroid, 5000,  0.05f, 10},	{data["Mars"].dist * 1.1f,	  2.75f * DIST_SCALE_FACTOR * 1.0f / 2.5f,	0.4f} };
-	Belt kuiperBelt		{ {ice,		 20000, 0.05f, 20},	{data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR,				0.4f} };
+	Belt asteroidBelt	( {asteroid, 5000,  0.05f, 10},	{data["Mars"].dist * 1.1f,	  2.75f * DIST_SCALE_FACTOR * 1.0f / 2.5f,	0.4f} );
+	Belt kuiperBelt		( {ice,		 20000, 0.05f, 20},	{data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR,				0.4f} );
 
 
 

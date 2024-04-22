@@ -41,7 +41,7 @@ public:
 	void Draw(const VertexArray& vao, const IndexBuffer& ibo) const;
 
 	// Draw elements (e.g. for Belt instances)
-	void DrawInstances(const VertexArray& vao, const unsigned int iboCount, const unsigned int count) const;
+	void DrawInstances(const VertexArray& vao, const unsigned int iboCount, const unsigned int instanceCount) const;
 };
 
 

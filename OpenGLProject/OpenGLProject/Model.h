@@ -2,17 +2,19 @@
 #define MODEL_H
 
 #include <assimp/material.h>
+#include <glm/ext/matrix_transform.hpp>
 #include <iostream>
 #include <string>
 #include <vector>
+
+#include "Mesh.h"
+#include "Texture.h"
 
 struct aiMaterial;
 struct aiMesh;
 struct aiNode;
 struct aiScene;
-class Mesh;
 class Renderer;
-class Texture;
 struct Vertex;
 
 
@@ -24,10 +26,10 @@ public:
 	Model(const std::string& inPath, const bool inGammaCorrection = false);
 	~Model();
 
-	const std::vector<Mesh>& GetMeshes() const { return meshes; }
-	const std::vector<Texture>& GetTextures() const { return textures; }
+	void StoreModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t size);
 
-	void Render(const Renderer& renderer, const unsigned int& textureUnit);
+	void Render(const Renderer& renderer, const unsigned int textureUnit);
+	void RenderInstances(const Renderer& renderer, const unsigned int textureUnit, const unsigned int instanceCount);
 
 private:
 	std::vector<Mesh> meshes;

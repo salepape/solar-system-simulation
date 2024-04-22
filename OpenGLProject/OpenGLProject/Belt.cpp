@@ -6,11 +6,7 @@
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
 
-#include "Mesh.h"
 #include "Renderer.h"
-#include "Texture.h"
-#include "VertexBuffer.h"
-#include "VertexBufferLayout.h"
 
 
 
@@ -78,37 +74,10 @@ void Belt::ComputeModelMatrices()
 
 void Belt::StoreModelMatrices()
 {
-	// Configure instanced array
-	VertexBuffer vbo(static_cast<const void*>(modelMatrices.data()), static_cast<size_t>(instanceParams.count * sizeof(glm::mat4)));
-
-	// Set transformation matrices as an instance vertex attribute for each mesh VAO already created
-	for (const auto& mesh: instanceParams.model.GetMeshes())
-	{
-		VertexBufferLayout vbl;
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, INSTANCE_MATRIX_ELMTS_COUNT);
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol2, GL_FLOAT, INSTANCE_MATRIX_ELMTS_COUNT);
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol3, GL_FLOAT, INSTANCE_MATRIX_ELMTS_COUNT);
-		vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol4, GL_FLOAT, INSTANCE_MATRIX_ELMTS_COUNT);
-		mesh.GetVAO().AddInstancedBuffer(vbo, vbl);
-	}
-
-	vbo.Unbind();
+	instanceParams.model.StoreModelMatrices(modelMatrices, static_cast<size_t>(instanceParams.count * sizeof(glm::mat4)));
 }
 
-void Belt::Render(const Renderer& renderer, const unsigned int& textureUnit)
+void Belt::Render(const Renderer& renderer, const unsigned int textureUnit)
 {
-	for (const auto& texture : instanceParams.model.GetTextures())
-	{
-		texture.Enable(textureUnit);
-	}
-
-	for (const auto& mesh: instanceParams.model.GetMeshes())
-	{
-		renderer.DrawInstances(mesh.GetVAO(), static_cast<unsigned int>(mesh.GetIndicesCount()), instanceParams.count);
-	}
-
-	for (const auto& texture : instanceParams.model.GetTextures())
-	{
-		texture.Disable();
-	}
+	instanceParams.model.RenderInstances(renderer, textureUnit, instanceParams.count);
 }
