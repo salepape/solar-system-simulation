@@ -40,9 +40,9 @@ struct FilterOptions
 class Texture
 {
 public:
-	Texture();
+	// Default constructor needed for GlyphParams struct declaration
+	Texture() = default;
 	Texture(const std::string& inPath, const unsigned int inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType);
-	~Texture();
 
 	void LoadFTBitmap(const FT_Bitmap bitmap, const unsigned int channel);
 	void LoadDDS();

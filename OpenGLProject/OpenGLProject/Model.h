@@ -21,9 +21,7 @@ struct Vertex;
 class Model
 {
 public:
-	Model();
 	Model(const std::string& inPath, const bool inGammaCorrection = false);
-	~Model();
 
 	void StoreModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t size) const;
 

@@ -12,7 +12,6 @@ class UniformBuffer : public DataBuffer
 {
 public:
 	UniformBuffer(std::vector<unsigned int>& shaderIDs, const std::string& uniformName, const int blockBindingPoint, const size_t size);
-	~UniformBuffer() override;
 };
 
 

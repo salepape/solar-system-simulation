@@ -14,19 +14,9 @@
 
 
 
-Model::Model()
-{
-
-}
-
 Model::Model(const std::string& inPath, const bool inGammaCorrection) : gammaCorrection(inGammaCorrection)
 {
 	LoadModel(inPath);
-}
-
-Model::~Model()
-{
-
 }
 
 void Model::LoadModel(const std::string& path)

@@ -9,7 +9,6 @@ class VertexBuffer : public DataBuffer
 {
 public:
 	VertexBuffer(const void* data, const size_t size);
-	~VertexBuffer() override;
 };
 
 

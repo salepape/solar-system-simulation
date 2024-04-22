@@ -7,11 +7,6 @@
 
 
 
-Shader::Shader()
-{
-
-}
-
 Shader::Shader(const std::string& vsPath, const std::string& fsPath) :
 	rendererID(0)
 {

@@ -33,9 +33,6 @@ struct VertexAttributeLayout
 class VertexBufferLayout
 {
 public:
-	VertexBufferLayout();
-	~VertexBufferLayout();
-
 	void AddAttributeLayout(const VertexAttributeLocation index, const unsigned int type, const unsigned int count);
 
 	const std::vector<VertexAttributeLayout>& GetAttributeLayouts() const { return attributeLayouts; }

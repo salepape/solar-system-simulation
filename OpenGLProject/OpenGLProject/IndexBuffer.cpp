@@ -9,8 +9,3 @@ DataBuffer(data, static_cast<size_t>(inCount * sizeof(unsigned int)), GL_ELEMENT
 {
 
 }
-
-IndexBuffer::~IndexBuffer()
-{
-	
-}

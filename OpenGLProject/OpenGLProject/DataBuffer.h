@@ -15,9 +15,10 @@ struct SubData
 class DataBuffer
 {
 public:
-	DataBuffer();
+	// Default constructor needed for UniformBuffer constructor not using DataBuffer user-defined one
+	DataBuffer() = default;
 	DataBuffer(const void* data, const size_t size, const int inTarget);
-	virtual ~DataBuffer();
+	~DataBuffer();
 
 	// Select the VBO we want to use
 	void Bind() const;

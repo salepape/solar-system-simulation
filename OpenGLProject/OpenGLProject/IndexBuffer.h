@@ -9,7 +9,6 @@ class IndexBuffer : public DataBuffer
 {
 public:
 	IndexBuffer(const void* data, const unsigned int inCount);
-	~IndexBuffer() override;
 
 	unsigned int GetCount() const { return count; }
 

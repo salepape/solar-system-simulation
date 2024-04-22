@@ -10,11 +10,6 @@
 
 
 
-Mesh::Mesh()
-{
-
-}
-
 Mesh::Mesh(const std::string& texturePath, const unsigned int textureTarget, const WrapOptions& textureWrapOptions, const FilterOptions& textureFilterOptions, const TextureType& textureType)
 {
 	Texture texture(texturePath, textureTarget, textureWrapOptions, textureFilterOptions, textureType);

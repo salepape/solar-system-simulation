@@ -4,11 +4,6 @@
 
 
 
-DataBuffer::DataBuffer()
-{
-
-}
-
 DataBuffer::DataBuffer(const void* data, const size_t size, const int inTarget): target(inTarget)
 {
 	// Reserve an ID available to be used by the BO as a binding point

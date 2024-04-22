@@ -18,8 +18,8 @@ enum class ObjectType
 class Shader
 {
 public:
-	Shader();
 	Shader(const std::string& vsPath, const std::string& fsPath);
+	Shader(const Shader&) = delete;
 	~Shader();
 
 	// Needs to be called before we initialise a uniform of the shader
@@ -38,6 +38,7 @@ public:
 
 private:
 	unsigned int rendererID{ 0 };
+
 	std::unordered_map<std::string, int> uniformLocationCache;
 
 	// Prevent glGetUniformLocation duplicate calls

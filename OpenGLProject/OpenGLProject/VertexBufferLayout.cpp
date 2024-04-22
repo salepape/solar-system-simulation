@@ -4,16 +4,6 @@
 
 
 
-VertexBufferLayout::VertexBufferLayout()
-{
-
-}
-
-VertexBufferLayout::~VertexBufferLayout()
-{
-
-}
-
 void VertexBufferLayout::AddAttributeLayout(const VertexAttributeLocation location, const unsigned int type, const unsigned int count)
 {
 	VertexAttributeLayout attributeLayout;

@@ -7,20 +7,10 @@
 
 
 
-Camera::Camera()
-{
-
-}
-
 Camera::Camera(const glm::vec3 inPosition) :
 	position(inPosition), worldUp(glm::vec3(0.0f, 1.0f, 0.0f)), forward(glm::vec3(0.0f, 0.0f, -1.0f))
 {
 	UpdateCameraVectors();
-}
-
-Camera::~Camera()
-{
-
 }
 
 glm::mat4 Camera::GetViewMatrix() const

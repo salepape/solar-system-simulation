@@ -39,9 +39,7 @@ struct TorusParams
 class Belt
 {
 public:
-	Belt();
 	Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams);
-	~Belt();
 
 	void Render(const Renderer& renderer, const unsigned int textureUnit) const;
 

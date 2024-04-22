@@ -5,21 +5,11 @@
 
 
 
-Texture::Texture()
-{
-
-}
-
 Texture::Texture(const std::string& inPath, const unsigned int inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType) :
 	path(inPath), target(inTarget), textureType(inTextureType)
 {
 	SetWraps(wrapOptions);
 	SetFilters(filterOptions);
-}
-
-Texture::~Texture()
-{
-
 }
 
 void Texture::LoadFTBitmap(const FT_Bitmap bitmap, const unsigned int format)

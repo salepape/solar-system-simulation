@@ -10,11 +10,6 @@
 
 
 
-Sphere::Sphere()
-{
-
-}
-
 Sphere::Sphere(const std::string& inTexturePath, const float inRadius, const int inMeridianStripsCount, const int inParallelStripsCount) :
 	radius(inRadius), meridianStripsCount(inMeridianStripsCount), parallelStripsCount(inParallelStripsCount),
 	Mesh(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::NONE)
@@ -22,11 +17,6 @@ Sphere::Sphere(const std::string& inTexturePath, const float inRadius, const int
 	ComputeVertices();
 	ComputeIndices();
 	StoreVertices();
-}
-
-Sphere::~Sphere()
-{
-
 }
 
 void Sphere::ComputeVertices()

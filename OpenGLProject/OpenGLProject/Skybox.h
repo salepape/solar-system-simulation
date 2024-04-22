@@ -13,9 +13,7 @@ class Renderer;
 class Skybox : public Mesh
 {
 public:
-	Skybox();
 	Skybox(const std::string& texturePath);
-	~Skybox() override;
 
 	void Render(const Renderer& renderer, const unsigned int textureUnit) const override;
 

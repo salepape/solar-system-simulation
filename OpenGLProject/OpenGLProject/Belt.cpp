@@ -10,21 +10,11 @@
 
 
 
-Belt::Belt()
-{
-
-}
-
 Belt::Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams) :
 	instanceParams(inInstanceParams), torusParams(inTorusParams)
 {
 	ComputeModelMatrices();
 	StoreModelMatrices();
-}
-
-Belt::~Belt()
-{
-
 }
 
 void Belt::ComputeModelMatrices()

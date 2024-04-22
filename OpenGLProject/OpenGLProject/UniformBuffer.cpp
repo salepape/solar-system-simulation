@@ -26,8 +26,3 @@ UniformBuffer::UniformBuffer(std::vector<unsigned int>& shaderIDs, const std::st
 	// Define the range of the buffer that links to a uniform binding point
 	glBindBufferRange(target, blockBindingPoint, rendererID, 0, size);
 }
-
-UniformBuffer::~UniformBuffer()
-{
-
-}

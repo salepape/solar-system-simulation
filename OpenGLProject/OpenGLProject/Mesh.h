@@ -37,12 +37,13 @@ struct Vertex
 class Mesh
 {
 public:
-	Mesh();
-	// Constructor used when computing mesh vertices/texture coordinates from scratch
+	// Default constructor needed for Skybox class constructor not using Mesh user-defined one
+	Mesh() = default;
+	// User-defined constructor used when computing mesh vertices/texture coordinates from scratch
 	Mesh(const std::string& texturePath, const unsigned int textureTarget, const WrapOptions& textureWrapOptions, const FilterOptions& textureFilterOptions, const TextureType& textureType);
-	// Constructor used when parsing a pre-made 3D model (i.e. a mesh with textures applied on it) 
+	// User-defined constructor used when parsing a pre-made 3D model (i.e. a mesh with textures applied on it) 
 	Mesh(const std::vector<Vertex>& inVertices, const std::vector<unsigned int>& inIndices, const std::vector<Texture>& inTextures);
-	virtual ~Mesh();
+	~Mesh();
 
 	void StoreModelMatrices(const VertexBuffer& vbo) const;
 
