@@ -7,16 +7,6 @@
 
 
 
-Renderer::Renderer()
-{
-
-}
-
-Renderer::~Renderer()
-{
-
-}
-
 void Renderer::Clear() const
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -27,20 +17,10 @@ void Renderer::DepthTest() const
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Renderer::DepthClamp() const
-{
-	glEnable(GL_DEPTH_CLAMP);
-}
-
 void Renderer::Blend() const
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-void Renderer::CullFace() const
-{
-	glEnable(GL_CULL_FACE);
 }
 
 void Renderer::DepthEqual() const
@@ -51,11 +31,6 @@ void Renderer::DepthEqual() const
 void Renderer::DepthLess() const
 {
 	glDepthFunc(GL_LESS);
-}
-
-void Renderer::SetColor() const
-{
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 void Renderer::Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count) const
