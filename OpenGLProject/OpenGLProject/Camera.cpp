@@ -3,6 +3,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/geometric.hpp>
 #include <glm/trigonometric.hpp>
+#include <glm/common.hpp>
 #include <iostream>
 
 
@@ -68,8 +69,8 @@ void Camera::ProcessMouseMovement(float xOffset, float yOffset, const bool const
 	// Make sure that when Pitch is out of bounds, screen doesn't get flipped
 	if (constrainPitch)
 	{
-		pitch = std::fmin(pitch, 89.0f);
-		pitch = std::fmax(pitch, -89.0f);
+		pitch = glm::min(pitch, 89.0f);
+		pitch = glm::max(pitch, -89.0f);
 	}
 
 	UpdateCameraVectors();
@@ -82,8 +83,8 @@ void Camera::ProcessMouseScroll(const float yOffset)
 		zoom -= yOffset;
 	}
 
-	zoom = std::fmax(zoom, -1.0f);
-	zoom = std::fmin(zoom, 45.0f);
+	zoom = glm::max(zoom, -1.0f);
+	zoom = glm::min(zoom, 45.0f);
 }
 
 void Camera::UpdateCameraVectors()
