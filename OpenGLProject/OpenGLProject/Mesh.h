@@ -9,13 +9,11 @@
 #include "Mesh.h"
 #include "Texture.h"
 
-struct FilterOptions;
 class IndexBuffer;
 class Renderer;
 enum class TextureType;
 class VertexArray;
 class VertexBuffer;
-struct WrapOptions;
 
 
 

@@ -10,7 +10,6 @@
 #include "Mesh.h"
 #include "Texture.h"
 
-struct aiMaterial;
 struct aiMesh;
 struct aiNode;
 struct aiScene;

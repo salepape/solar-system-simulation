@@ -16,7 +16,7 @@ class VertexBuffer;
 
 
 
-// Hold all texture/metrics information relevant to a loaded glyph (using FreeType)
+// Hold all texture/metrics information relevant to a loaded ASCII character glyph (using FreeType)
 struct GlyphParams
 {
 	Texture texture;
@@ -28,10 +28,6 @@ struct GlyphParams
 
 	// Horizontal offset to advance to start next glyph
 	FT_Pos advance;
-
-	GlyphParams() {};
-	GlyphParams(Texture inTexture, const glm::ivec2& inSize, const glm::ivec2& inBearing, const FT_Pos inAdvance) :
-		texture(inTexture), size(inSize), bearing(inBearing), advance(inAdvance) {};
 };
 
 // Text class which build a Texture object for each main ASCII character, and using them to render each celestial body name
