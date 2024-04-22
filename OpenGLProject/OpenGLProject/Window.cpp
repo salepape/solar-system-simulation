@@ -6,12 +6,7 @@
 
 
 
-Window::Window()
-{
-
-}
-
-Window::Window(const unsigned int inWidth, const unsigned int inHeight, const char* inTitle) :
+Window::Window(const unsigned int inWidth, const unsigned int inHeight, const std::string& inTitle) :
 	width(inWidth), height(inHeight), title(inTitle)
 {
 	GLFWWindow = initGLFWWindow();
@@ -40,12 +35,7 @@ Window::Window(const unsigned int inWidth, const unsigned int inHeight, const ch
 	SetInputMode();
 }
 
-Window::~Window()
-{
-
-}
-
-GLFWwindow* Window::initGLFWWindow()
+GLFWwindow* const Window::initGLFWWindow()
 {
 	// Initialization of a GLFW window
 	glfwInit();
@@ -62,7 +52,7 @@ GLFWwindow* Window::initGLFWWindow()
 #endif
 
 	// Creation of a GLFW window of size "width x height", its title appearing on a top bar
-	return glfwCreateWindow(width, height, title, nullptr, nullptr);
+	return glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 }
 
 int Window::MakeContextCurrent()
@@ -114,9 +104,9 @@ void Window::SetCursorPositionCallback()
 		self->lastXPos = xPos;
 		self->lastYPos = yPos;
 
-		if (self->camera)
+		if (auto* const selfCamera = self->camera)
 		{
-			self->camera->ProcessMouseMovement(xOffset, yOffset, self->firstMouseInput);
+			selfCamera->ProcessMouseMovement(xOffset, yOffset, self->firstMouseInput);
 		}
 	});
 }
@@ -132,9 +122,9 @@ void Window::SetScrollCallback()
 			return;
 		}
 
-		if (self->camera)
+		if (auto* const selfCamera = self->camera)
 		{
-			self->camera->ProcessMouseScroll(static_cast<float>(yOffset));
+			selfCamera->ProcessMouseScroll(static_cast<float>(yOffset));
 		}
 	});
 }
@@ -231,6 +221,11 @@ void Window::UpdateFrames()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 	}
+}
+
+float Window::GetFrameRate() const
+{
+	return currentFrame * simuSpeedFactor;
 }
 
 void Window::PollEvents()

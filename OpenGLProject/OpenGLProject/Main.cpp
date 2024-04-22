@@ -218,17 +218,17 @@ int main()
 
 			if (dataInput.first != "Sun")
 			{
-				const float windowParams = window.GetCurrentFrame() * window.GetSimuSpeedFactor();
+				const float frameRate = window.GetFrameRate();
 
 				// Angle of rotation around the sun (resp. planet) for planets (resp. moons) per frame
-				angleRot = preComputations[dataInput.first].angleRotCst * windowParams;
+				angleRot = preComputations[dataInput.first].angleRotCst * frameRate;
 				if (dataInput.second.parentInfo == nullptr)
 				{
 					dataInput.second.angleRot = angleRot;
 				}
 
 				// Angle of rotation of the celestial body around itself per frame
-				angleRotItself = preComputations[dataInput.first].rotPeriodCst * windowParams;
+				angleRotItself = preComputations[dataInput.first].rotPeriodCst * frameRate;
 			}
 
 			// Simulate movements that affects the current celestial bodies
