@@ -87,9 +87,9 @@ void Texture::Unbind() const
 	glBindTexture(target, 0);
 }
 
-void Texture::Enable(unsigned int textUnit) const
+void Texture::Enable(const unsigned int textureUnit) const
 {
-	glActiveTexture(GL_TEXTURE0 + textUnit);
+	glActiveTexture(GL_TEXTURE0 + textureUnit);
 
 	Bind();
 }

@@ -5,7 +5,6 @@
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
 
-#include "Mesh.h"
 #include "Renderer.h"
 #include "Texture.h"
 
@@ -50,7 +49,7 @@ void Orbit::ComputeVertices()
 	}
 }
 
-void Orbit::Render(const Renderer& renderer, const unsigned int& textureUnit)
+void Orbit::Render(const Renderer& renderer, const unsigned int textureUnit)
 {
 	for (const auto& texture : textures)
 	{

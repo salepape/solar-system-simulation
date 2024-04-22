@@ -4,7 +4,6 @@
 #include <glm/vec3.hpp>
 #include <vector>
 
-#include "Mesh.h"
 #include "Renderer.h"
 #include "Texture.h"
 
@@ -95,7 +94,7 @@ void Skybox::ComputeVertices()
 	}
 }
 
-void Skybox::Render(const Renderer& renderer, const unsigned int& textureUnit)
+void Skybox::Render(const Renderer& renderer, const unsigned int textureUnit)
 {
 	for (const auto& texture : textures)
 	{

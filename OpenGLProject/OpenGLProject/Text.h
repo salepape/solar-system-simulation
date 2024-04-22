@@ -43,7 +43,7 @@ public:
 	~Text();
 
 	// Update VBO for each character of the text provided as input
-	void Render(const Renderer& renderer, const std::string text, float x, const float y, const float scale, const unsigned int& textUnit);
+	void Render(const Renderer& renderer, const std::string text, float x, const float y, const float scale, const unsigned int textureUnit);
 
 private:
 	std::map<char, GlyphParams> characters;

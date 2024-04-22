@@ -59,7 +59,7 @@ public:
 	void Unbind() const;
 
 	// Activate the texture unit then bind texture
-	void Enable(unsigned int textUnit) const;
+	void Enable(const unsigned int textureUnit) const;
 
 	// Set everything back to default once texture is configured
 	void Disable() const;

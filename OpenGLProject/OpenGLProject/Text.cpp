@@ -124,7 +124,7 @@ float Text::GetGlyphAdvance(const GlyphParams& glyphParams, const float scale) c
 	return (glyphParams.advance >> VERTICES_COUNT) * scale;
 }
 
-void Text::Render(const Renderer& renderer, const std::string text, float x, const float y, const float scale, const unsigned int& textureUnit)
+void Text::Render(const Renderer& renderer, const std::string text, float x, const float y, const float scale, const unsigned int textureUnit)
 {
 	// Shift billboard to left in order to center it to the concerned celestial body
 	x = -GetBillboardSize(text, scale) * 0.5f;

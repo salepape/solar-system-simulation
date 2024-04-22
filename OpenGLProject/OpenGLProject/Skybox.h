@@ -17,7 +17,7 @@ public:
 	Skybox(const std::string& texturePath);
 	~Skybox() override;
 
-	void Render(const Renderer& renderer, const unsigned int& textureUnit) override;
+	void Render(const Renderer& renderer, const unsigned int textureUnit) override;
 
 protected:
 	void ComputeVertices() override;
