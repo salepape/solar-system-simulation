@@ -18,7 +18,7 @@ public:
 	Orbit(const std::string& texturePath, const float inRadius);
 	~Orbit() override;
 
-	void Render(const Renderer& renderer, const unsigned int textureUnit) override;
+	void Render(const Renderer& renderer, const unsigned int textureUnit) const override;
 
 protected:
 	void ComputeVertices() override;

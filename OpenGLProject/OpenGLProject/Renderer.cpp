@@ -53,7 +53,7 @@ void Renderer::DepthLess() const
 	glDepthFunc(GL_LESS);
 }
 
-void Renderer::SetColor()
+void Renderer::SetColor() const
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }

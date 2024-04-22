@@ -72,12 +72,12 @@ void Belt::ComputeModelMatrices()
 	}
 }
 
-void Belt::StoreModelMatrices()
+void Belt::StoreModelMatrices() const
 {
 	instanceParams.model.StoreModelMatrices(modelMatrices, static_cast<size_t>(instanceParams.count * sizeof(glm::mat4)));
 }
 
-void Belt::Render(const Renderer& renderer, const unsigned int textureUnit)
+void Belt::Render(const Renderer& renderer, const unsigned int textureUnit) const
 {
 	instanceParams.model.RenderInstances(renderer, textureUnit, instanceParams.count);
 }

@@ -26,10 +26,10 @@ public:
 	Model(const std::string& inPath, const bool inGammaCorrection = false);
 	~Model();
 
-	void StoreModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t size);
+	void StoreModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t size) const;
 
-	void Render(const Renderer& renderer, const unsigned int textureUnit);
-	void RenderInstances(const Renderer& renderer, const unsigned int textureUnit, const unsigned int instanceCount);
+	void Render(const Renderer& renderer, const unsigned int textureUnit) const;
+	void RenderInstances(const Renderer& renderer, const unsigned int textureUnit, const unsigned int instanceCount) const;
 
 private:
 	std::vector<Mesh> meshes;

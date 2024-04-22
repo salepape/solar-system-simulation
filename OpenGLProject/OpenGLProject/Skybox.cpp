@@ -94,7 +94,7 @@ void Skybox::ComputeVertices()
 	}
 }
 
-void Skybox::Render(const Renderer& renderer, const unsigned int textureUnit)
+void Skybox::Render(const Renderer& renderer, const unsigned int textureUnit) const
 {
 	for (const auto& texture : textures)
 	{

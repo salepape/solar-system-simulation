@@ -47,7 +47,7 @@ public:
 	Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams);
 	~Belt();
 
-	void Render(const Renderer& renderer, const unsigned int textureUnit);
+	void Render(const Renderer& renderer, const unsigned int textureUnit) const;
 
 private:
 	InstanceParams instanceParams;
@@ -55,7 +55,7 @@ private:
 	std::vector<glm::mat4> modelMatrices;
 
 	void ComputeModelMatrices();
-	void StoreModelMatrices();
+	void StoreModelMatrices() const;
 };
 
 

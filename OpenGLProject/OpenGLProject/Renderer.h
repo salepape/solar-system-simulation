@@ -32,7 +32,7 @@ public:
 	void DepthLess() const;
 
 	// Set "RGB + alpha" coefficients for background color
-	void SetColor();
+	void SetColor() const;
 
 	// Draw arrays (e.g. for Orbit, Skybox and Text instances)
 	void Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count) const;

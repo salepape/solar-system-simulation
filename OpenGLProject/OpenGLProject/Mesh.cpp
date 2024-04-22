@@ -74,7 +74,7 @@ void Mesh::StoreVertices()
 	}
 }
 
-void Mesh::StoreModelMatrices(const VertexBuffer& vbo)
+void Mesh::StoreModelMatrices(const VertexBuffer& vbo) const
 {
 	VertexBufferLayout vbl;
 	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, Vertex::INSTANCE_MATRIX_ELMTS_COUNT);
@@ -84,7 +84,7 @@ void Mesh::StoreModelMatrices(const VertexBuffer& vbo)
 	vao->AddInstancedBuffer(vbo, vbl);
 }
 
-void Mesh::Render(const Renderer& renderer, const unsigned int textureUnit)
+void Mesh::Render(const Renderer& renderer, const unsigned int textureUnit) const
 {
 	if (indices.empty())
 	{
@@ -105,7 +105,7 @@ void Mesh::Render(const Renderer& renderer, const unsigned int textureUnit)
 	}
 }
 
-void Mesh::RenderInstances(const Renderer& renderer, const unsigned int instanceCount)
+void Mesh::RenderInstances(const Renderer& renderer, const unsigned int instanceCount) const
 {
 	renderer.DrawInstances(*vao, static_cast<unsigned int>(ibo->GetCount()), instanceCount);
 }

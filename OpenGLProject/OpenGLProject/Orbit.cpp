@@ -49,7 +49,7 @@ void Orbit::ComputeVertices()
 	}
 }
 
-void Orbit::Render(const Renderer& renderer, const unsigned int textureUnit)
+void Orbit::Render(const Renderer& renderer, const unsigned int textureUnit) const
 {
 	for (const auto& texture : textures)
 	{

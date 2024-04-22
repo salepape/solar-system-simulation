@@ -46,10 +46,10 @@ public:
 	Mesh(const std::vector<Vertex>& inVertices, const std::vector<unsigned int>& inIndices, const std::vector<Texture>& inTextures);
 	virtual ~Mesh();
 
-	void StoreModelMatrices(const VertexBuffer& vbo);
+	void StoreModelMatrices(const VertexBuffer& vbo) const;
 
-	virtual void Render(const Renderer& renderer, const unsigned int textureUnit);
-	void RenderInstances(const Renderer& renderer, const unsigned int instanceCount);
+	virtual void Render(const Renderer& renderer, const unsigned int textureUnit) const;
+	void RenderInstances(const Renderer& renderer, const unsigned int instanceCount) const;
 
 protected:
 	std::vector<Vertex> vertices;
