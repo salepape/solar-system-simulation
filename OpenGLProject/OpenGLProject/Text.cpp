@@ -10,17 +10,17 @@
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 
+bool Text::isCharactersEmpty = true;
 
 
-Text::Text()
-{
-
-}
 
 Text::Text(const int count)
 {
-	LoadASCIICharacters(count);
-	AllocateBufferObjects();
+	if (isCharactersEmpty)
+	{
+		LoadASCIICharacters(count);
+		AllocateBufferObjects();
+	}
 }
 
 Text::~Text()
@@ -87,6 +87,8 @@ void Text::LoadASCIICharacters(const int count)
 		// Store character for later use
 		characters.insert(std::make_pair(charCode, glyphParams));
 	}
+
+	Text::isCharactersEmpty = false;
 
 	// Destroy FreeType once work is finished
 	FT_Done_Face(face);

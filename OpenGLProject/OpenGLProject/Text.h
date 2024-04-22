@@ -30,19 +30,24 @@ struct GlyphParams
 	FT_Pos advance;
 };
 
-// Text class which build a Texture object for each main ASCII character, and using them to render each celestial body name
+// Singleton Text class which build a Texture object for each main ASCII character, and using them to render each celestial body name
 class Text
 {
 public:
-	Text();
 	Text(const int inCount);
+	Text(const Text&) = delete;
 	~Text();
 
 	// Update VBO for each character of the text provided as input
 	void Render(const Renderer& renderer, const std::string text, float x, const float y, const float scale, const unsigned int textureUnit);
 
 private:
+	static constexpr int VERTICES_COUNT = 6;
+	static constexpr int QUAD_ELMTS_COUNT = 4;
+
 	std::map<char, GlyphParams> characters;
+	static bool isCharactersEmpty;
+
 	VertexArray* vao{ nullptr };
 	VertexBuffer* vbo{ nullptr };
 
@@ -57,9 +62,6 @@ private:
 
 	// Get the advance value (number of 1/64 pixels)
 	float GetGlyphAdvance(const GlyphParams& c, const float scale) const;
-
-	static constexpr int VERTICES_COUNT = 6;
-	static constexpr int QUAD_ELMTS_COUNT = 4;
 };
 
 
