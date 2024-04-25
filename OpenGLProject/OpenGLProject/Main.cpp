@@ -106,10 +106,8 @@ int main()
 
 
 
-	unsigned int uboBlockBindingPoint = 0;
-
 	std::vector<unsigned int> matricesShadersIDs({ defaultShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID() });
-	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", uboBlockBindingPoint++, static_cast <size_t>(2 * Utils::mat4v4Size));
+	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", static_cast <size_t>(2 * Utils::mat4v4Size));
 
 	std::vector<unsigned int> entitiesShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
 
@@ -119,7 +117,7 @@ int main()
 		const float shininess{ 64.0f };
 	} materialInstance;
 
-	UniformBuffer uboMaterials(entitiesShadersIDs, "materialParameters", uboBlockBindingPoint++, static_cast<size_t>(Utils::mat4v4Size + Utils::scalarSize));
+	UniformBuffer uboMaterials(entitiesShadersIDs, "materialParameters", static_cast<size_t>(Utils::mat4v4Size + Utils::scalarSize));
 	uboMaterials.InitSubData({
 		{ static_cast<const void*>(glm::value_ptr(materialInstance.specular)), Utils::vec4Size },
 		{ static_cast<const void*>(&materialInstance.shininess), Utils::scalarSize }
@@ -142,7 +140,7 @@ int main()
 		const bool isBlinn{ false };
 	} lightInstance;
 
-	UniformBuffer uboLights(entitiesShadersIDs, "lightParameters", uboBlockBindingPoint++, static_cast<size_t>(4 * Utils::vec4Size + 4 * Utils::scalarSize));
+	UniformBuffer uboLights(entitiesShadersIDs, "lightParameters", static_cast<size_t>(4 * Utils::vec4Size + 4 * Utils::scalarSize));
 	uboLights.InitSubData({
 		{ static_cast<const void*>(glm::value_ptr(lightInstance.position)), Utils::vec4Size },
 		{ static_cast<const void*>(glm::value_ptr(lightInstance.ambiant)), Utils::vec4Size },

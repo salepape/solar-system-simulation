@@ -2,9 +2,11 @@
 
 #include <glad/glad.h>
 
+int UniformBuffer::blockBindingPoint = 0;
 
 
-UniformBuffer::UniformBuffer(std::vector<unsigned int>& shaderIDs, const std::string& uniformName, const int blockBindingPoint, const size_t size)
+
+UniformBuffer::UniformBuffer(const std::vector<unsigned int>& shaderIDs, const std::string& uniformName, const size_t size)
 {
 	target = GL_UNIFORM_BUFFER;
 
@@ -24,5 +26,5 @@ UniformBuffer::UniformBuffer(std::vector<unsigned int>& shaderIDs, const std::st
 	glBufferData(target, size, nullptr, GL_STATIC_DRAW);
 
 	// Define the range of the buffer that links to a uniform binding point
-	glBindBufferRange(target, blockBindingPoint, rendererID, 0, size);
+	glBindBufferRange(target, blockBindingPoint++, rendererID, 0, size);
 }

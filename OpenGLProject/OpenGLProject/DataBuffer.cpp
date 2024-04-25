@@ -34,15 +34,11 @@ void DataBuffer::Unbind() const
 	glBindBuffer(target, 0);
 }
 
-void DataBuffer::InitSubData(const std::vector<SubData>& data, const unsigned int dataOffset)
+void DataBuffer::InitSubData(const std::vector<SubData>& data, const unsigned int dataStart)
 {
 	Bind();
 
-	unsigned int offset = 0;
-	if (dataOffset > 0)
-	{
-		offset = dataOffset;
-	}
+	unsigned int offset = dataStart;
 
 	for (const auto& subdata : data)
 	{

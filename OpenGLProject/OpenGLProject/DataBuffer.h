@@ -26,7 +26,8 @@ public:
 	// Unselect the currently used VBO
 	void Unbind() const;
 
-	void InitSubData(const std::vector<SubData>& data, const unsigned int dataOffset = 0);
+	// Set data in the memory region starting after the indicated amount of bytes
+	void InitSubData(const std::vector<SubData>& data, const unsigned int dataStart = 0);
 
 protected:
 	unsigned int rendererID{ 0 };
