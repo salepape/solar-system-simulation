@@ -21,7 +21,7 @@ Skybox::Skybox(const std::string& texturePath)
 
 void Skybox::ComputeVertices()
 {
-	std::vector<float> vertCoor =
+	std::vector<float> vertexCoor =
 	{
 		-1.0f,  1.0f, -1.0f,
 		-1.0f, -1.0f, -1.0f,
@@ -73,7 +73,7 @@ void Skybox::ComputeVertices()
 	while (positionIndex < VERTICES_COUNT * Vertex::POSITION_ELMTS_COUNT)
 	{
 		Vertex vertex;
-		vertex.Position = glm::vec3(vertCoor[positionIndex], vertCoor[positionIndex + 1], vertCoor[positionIndex + 2]);
+		vertex.Position = glm::vec3(vertexCoor[positionIndex], vertexCoor[positionIndex + 1], vertexCoor[positionIndex + 2]);
 		vertex.Normal = zeroVector;
 		vertex.TexCoords = zeroVector;
 		vertex.Tangent = zeroVector;

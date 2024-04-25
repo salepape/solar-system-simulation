@@ -21,7 +21,7 @@
 #include "Shader.h"
 #include "Skybox.h"
 #include "Sphere.h"
-#include "Text.h"
+#include "TextRenderer.h"
 #include "UniformBuffer.h"
 #include "Utils.h"
 #include "Window.h"
@@ -56,15 +56,12 @@ int main()
 	Shader instancedModelShader("InstancedModelShader.vs", "DefaultShader.fs");
 	Shader skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
 	
-	
+	TextRenderer textRenderer;
 
 	
 
 	// Create Milky Way skybox
 	Skybox skybox("../Textures/MilkyWay/stars.dds");
-
-	// Load the first 128 ASCII characters
-	Text text(128);
 
 	// Load models (meshes with textures applied)
 	Model saturnRings("../Models/SaturnRings.obj");
@@ -95,7 +92,10 @@ int main()
 			dataInput.second.sphere = new Sphere(dataInput.second.texturePath, dataInput.second.radius);
 			dataInput.second.orbit = new Orbit(dataInput.second.texturePath, dataInput.second.dist);
 		}
+
+		textRenderer.LoadASCIICharacters(dataInput.first);
 	}
+	textRenderer.FreeFTResources();
 	LoadPreComputations();
 
 	// Do some instancing to build the main Solar Systems rock belts
@@ -332,12 +332,12 @@ int main()
 				//else 
 				if (dataInput.first != "Sun")
 				{
-					text.Render(renderer, dataInput.first,
+					textRenderer.Render(renderer, dataInput.first,
 						0.0f, preComputations[dataInput.first].textHeight, preComputations[dataInput.first].textScale, samplerID++);
 				}
 				else
 				{
-					text.Render(renderer, dataInput.first,
+					textRenderer.Render(renderer, dataInput.first,
 						0.0f, preComputations[dataInput.first].sunTextHeight, preComputations[dataInput.first].sunTextScale, samplerID++);
 				}
 
