@@ -15,6 +15,8 @@
 #include "Belt.h"
 #include "Camera.h"
 #include "Data.h"
+#include "Light.h"
+#include "Material.h"
 #include "Model.h"
 #include "Orbit.h"
 #include "Renderer.h"
@@ -102,50 +104,15 @@ int main()
 
 
 	std::vector<unsigned int> matricesShadersIDs({ defaultShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID() });
-	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", static_cast <size_t>(2 * Utils::mat4v4Size));
+	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", static_cast<size_t>(2 * Utils::mat4v4Size));
 
 	std::vector<unsigned int> entitiesShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
 
-	struct Material
-	{
-		const glm::vec3 specular{ 0.0f, 0.0f, 0.0f };
-		const float shininess{ 64.0f };
-	} materialInstance;
+	Material material;
+	material.Store(entitiesShadersIDs);
 
-	UniformBuffer uboMaterials(entitiesShadersIDs, "materialParameters", static_cast<size_t>(Utils::mat4v4Size + Utils::scalarSize));
-	uboMaterials.InitSubData({
-		{ static_cast<const void*>(glm::value_ptr(materialInstance.specular)), Utils::vec4Size },
-		{ static_cast<const void*>(&materialInstance.shininess), Utils::scalarSize }
-		});
-
-	struct Light
-	{
-		const glm::vec3 position{ 0.0f, 0.0f, 0.0f };
-
-		// Terms of Phong shading formula 
-		const glm::vec3 ambiant{ 0.2f, 0.2f, 0.2f };
-		const glm::vec3 diffuse{ 0.95f, 0.95f, 0.95f };
-		const glm::vec3 specular{ 1.0f, 1.0f, 1.0f };
-
-		// Terms of attenuation spotlight formula
-		const float constant{ 1.0f };
-		const float linear{ 0.0007f };
-		const float quadratic{ 0.000002f };
-
-		const bool isBlinn{ false };
-	} lightInstance;
-
-	UniformBuffer uboLights(entitiesShadersIDs, "lightParameters", static_cast<size_t>(4 * Utils::vec4Size + 4 * Utils::scalarSize));
-	uboLights.InitSubData({
-		{ static_cast<const void*>(glm::value_ptr(lightInstance.position)), Utils::vec4Size },
-		{ static_cast<const void*>(glm::value_ptr(lightInstance.ambiant)), Utils::vec4Size },
-		{ static_cast<const void*>(glm::value_ptr(lightInstance.diffuse)), Utils::vec4Size },
-		{ static_cast<const void*>(glm::value_ptr(lightInstance.specular)), Utils::vec4Size },
-		{ static_cast<const void*>(&lightInstance.constant), Utils::scalarSize },
-		{ static_cast<const void*>(&lightInstance.linear), Utils::scalarSize },
-		{ static_cast<const void*>(&lightInstance.quadratic), Utils::scalarSize },
-		{ static_cast<const void*>(&lightInstance.isBlinn), Utils::scalarSize }
-		});
+	Light light;
+	light.Store(entitiesShadersIDs);
 
 
 
