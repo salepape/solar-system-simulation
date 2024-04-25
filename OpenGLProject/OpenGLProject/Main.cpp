@@ -55,10 +55,12 @@ int main()
 	Shader textShader("TextShader.vs", "TextShader.fs");
 	Shader instancedModelShader("InstancedModelShader.vs", "DefaultShader.fs");
 	Shader skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
-	
+
 	TextRenderer textRenderer;
 
-	
+
+
+
 
 	// Create Milky Way skybox
 	Skybox skybox("../Textures/MilkyWay/stars.dds");
@@ -67,8 +69,6 @@ int main()
 	Model saturnRings("../Models/SaturnRings.obj");
 	Model asteroid("../Models/Asteroid.obj");
 	Model ice("../Models/Ice.obj");
-	//Model deimos("../Models/Deimos.obj");
-	//Model phobos("../Models/Phobos.obj");
 
 
 
@@ -76,17 +76,12 @@ int main()
 
 	// Initialise all celestial bodies and their respective orbit (applying celectial body textures to have some colour consistency)
 	LoadData();
-	for (auto& dataInput: data)
+	for (auto& dataInput : data)
 	{
 		if (dataInput.first == "Sun")
 		{
 			dataInput.second.sphere = new Sphere(dataInput.second.texturePath, dataInput.second.radius * 0.5f);
 		}
-		//else if (dataInput.first == "Deimos" || dataInput.first == "Phobos")
-		//{
-		//	// @todo - Have a reference of the non-spherical satellite (of type Model) in the data structure instead?
-		//	dataInput.second.orbit = new Orbit(dataInput.second.texturePath, dataInput.second.dist);
-		//}
 		else
 		{
 			dataInput.second.sphere = new Sphere(dataInput.second.texturePath, dataInput.second.radius);
@@ -156,7 +151,6 @@ int main()
 
 
 
-	// Create renderer
 	Renderer renderer;
 	renderer.DepthTest();
 
@@ -286,23 +280,6 @@ int main()
 					defaultShader.Disable();
 				}
 			}
-			//// Non-spherical celestial bodies
-			//else
-			//{
-			//	defaultModelMatrix = glm::scale(defaultModelMatrix, preComputations[dataInput.first].nonSphericalScaling);
-
-			//	defaultShader.Enable();
-			//	defaultShader.setUniformMat4("model", defaultModelMatrix);
-			//	if (dataInput.first == "Deimos")
-			//	{
-			//		deimos.Render(renderer, samplerID++);
-			//	}
-			//	else if (dataInput.first == "Phobos")
-			//	{
-			//		phobos.Render(renderer, samplerID++);
-			//	}
-			//	defaultShader.Disable();
-			//}
 
 
 
@@ -324,12 +301,6 @@ int main()
 				textShader.setUniformInt("texSampler", samplerID);
 				textShader.setUniformVec3("textColor", Utils::whiteColour);
 
-				//if (dataInput.first == "Deimos" || dataInput.first == "Phobos")
-				//{
-				//	// @todo - Get the bounding box size of models from Mesh class?
-				//	text.Render(renderer, dataInput.first, 0.0f, dataInput.second.planetInfo->radius * 0.5f, dataInput.second.planetInfo->radius * 0.002f, samplerID++);
-				//}
-				//else 
 				if (dataInput.first != "Sun")
 				{
 					textRenderer.Render(renderer, dataInput.first,
