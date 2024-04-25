@@ -2,7 +2,6 @@
 #include <glad.h>
 #include <glfw3.h>
 #include <glm/ext/matrix_clip_space.hpp>
-#include <glm/ext/scalar_constants.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/geometric.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -24,6 +23,7 @@
 #include "Sphere.h"
 #include "Text.h"
 #include "UniformBuffer.h"
+#include "Utils.h"
 #include "Window.h"
 
 
@@ -32,11 +32,8 @@
 
 int main()
 {
-	constexpr unsigned int SCR_WIDTH = 1000;
-	constexpr unsigned int SCR_HEIGHT = 1000;
-	const float aspectRatio = static_cast<float>(SCR_WIDTH / SCR_HEIGHT);
-
-	Window window(SCR_WIDTH, SCR_HEIGHT, "Solar System Simulation");
+	Window window(1000, 1000, "Solar System Simulation");
+	const float aspectRatio = window.GetAspectRatio();
 
 	Camera camera(glm::vec3(0.0f, 50.0f, 200.0f));
 	window.camera = &camera;
@@ -109,15 +106,10 @@ int main()
 
 
 
-	// Compute the data size (in bytes) of each GLSL uniform variable, and their respective offset following the std140 layout base alignement rules 
-	constexpr size_t GLSL_SCALAR_SIZE = 4;
-	const size_t vec4Size = 4 * GLSL_SCALAR_SIZE;
-	const size_t mat4v4Size = 16 * GLSL_SCALAR_SIZE;
-
 	unsigned int uboBlockBindingPoint = 0;
 
 	std::vector<unsigned int> matricesShadersIDs({ defaultShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID() });
-	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", uboBlockBindingPoint++, static_cast <size_t>(2 * mat4v4Size));
+	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", uboBlockBindingPoint++, static_cast <size_t>(2 * Utils::mat4v4Size));
 
 	std::vector<unsigned int> entitiesShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
 
@@ -127,10 +119,10 @@ int main()
 		const float shininess{ 64.0f };
 	} materialInstance;
 
-	UniformBuffer uboMaterials(entitiesShadersIDs, "materialParameters", uboBlockBindingPoint++, static_cast<size_t>(mat4v4Size + GLSL_SCALAR_SIZE));
+	UniformBuffer uboMaterials(entitiesShadersIDs, "materialParameters", uboBlockBindingPoint++, static_cast<size_t>(Utils::mat4v4Size + Utils::scalarSize));
 	uboMaterials.InitSubData({
-		{ static_cast<const void*>(glm::value_ptr(materialInstance.specular)), vec4Size },
-		{ static_cast<const void*>(&materialInstance.shininess), GLSL_SCALAR_SIZE }
+		{ static_cast<const void*>(glm::value_ptr(materialInstance.specular)), Utils::vec4Size },
+		{ static_cast<const void*>(&materialInstance.shininess), Utils::scalarSize }
 		});
 
 	struct Light
@@ -150,27 +142,17 @@ int main()
 		const bool isBlinn{ false };
 	} lightInstance;
 
-	UniformBuffer uboLights(entitiesShadersIDs, "lightParameters", uboBlockBindingPoint++, static_cast<size_t>(4 * vec4Size + 4 * GLSL_SCALAR_SIZE));
+	UniformBuffer uboLights(entitiesShadersIDs, "lightParameters", uboBlockBindingPoint++, static_cast<size_t>(4 * Utils::vec4Size + 4 * Utils::scalarSize));
 	uboLights.InitSubData({
-		{ static_cast<const void*>(glm::value_ptr(lightInstance.position)), vec4Size },
-		{ static_cast<const void*>(glm::value_ptr(lightInstance.ambiant)), vec4Size },
-		{ static_cast<const void*>(glm::value_ptr(lightInstance.diffuse)), vec4Size },
-		{ static_cast<const void*>(glm::value_ptr(lightInstance.specular)), vec4Size },
-		{ static_cast<const void*>(&lightInstance.constant), GLSL_SCALAR_SIZE },
-		{ static_cast<const void*>(&lightInstance.linear), GLSL_SCALAR_SIZE },
-		{ static_cast<const void*>(&lightInstance.quadratic), GLSL_SCALAR_SIZE },
-		{ static_cast<const void*>(&lightInstance.isBlinn), GLSL_SCALAR_SIZE }
+		{ static_cast<const void*>(glm::value_ptr(lightInstance.position)), Utils::vec4Size },
+		{ static_cast<const void*>(glm::value_ptr(lightInstance.ambiant)), Utils::vec4Size },
+		{ static_cast<const void*>(glm::value_ptr(lightInstance.diffuse)), Utils::vec4Size },
+		{ static_cast<const void*>(glm::value_ptr(lightInstance.specular)), Utils::vec4Size },
+		{ static_cast<const void*>(&lightInstance.constant), Utils::scalarSize },
+		{ static_cast<const void*>(&lightInstance.linear), Utils::scalarSize },
+		{ static_cast<const void*>(&lightInstance.quadratic), Utils::scalarSize },
+		{ static_cast<const void*>(&lightInstance.isBlinn), Utils::scalarSize }
 		});
-
-
-
-
-
-	const float halfPi = 0.5f * glm::pi<float>();
-	const glm::vec3 backVector(0.0f, 0.0f, 1.0f);
-	const glm::vec3 rightVector(1.0f, 0.0f, 0.0f);
-	const glm::vec3 upVector(0.0f, 1.0f, 0.0f);
-	const glm::vec3 whiteColour(1.0f, 1.0f, 1.0f);
 
 
 
@@ -202,8 +184,8 @@ int main()
 		const glm::mat4& viewMatrix = camera.GetViewMatrix();
 
 		uboMatrices.InitSubData({
-			{ static_cast<const void*>(glm::value_ptr(projectionMatrix)), mat4v4Size },
-			{ static_cast<const void*>(glm::value_ptr(viewMatrix)), mat4v4Size }
+			{ static_cast<const void*>(glm::value_ptr(projectionMatrix)), Utils::mat4v4Size },
+			{ static_cast<const void*>(glm::value_ptr(viewMatrix)), Utils::mat4v4Size }
 			});
 
 		// Texture sampler ID (one for each object) 
@@ -257,10 +239,10 @@ int main()
 			textModelMatrix = defaultModelMatrix;
 
 			// Axis tilt (around axis colinear to orbit direction)
-			defaultModelMatrix = glm::rotate(defaultModelMatrix, preComputations[dataInput.first].obliquityInRad, rightVector);
+			defaultModelMatrix = glm::rotate(defaultModelMatrix, preComputations[dataInput.first].obliquityInRad, Utils::rightVector);
 
 			// Rotation on itself (around axis normal to orbital plane)
-			defaultModelMatrix = glm::rotate(defaultModelMatrix, angleRotItself, upVector);
+			defaultModelMatrix = glm::rotate(defaultModelMatrix, angleRotItself, Utils::upVector);
 
 			// Draw Saturn rings
 			if (dataInput.first == "Saturn")
@@ -273,7 +255,7 @@ int main()
 			}
 
 			// Rotation on itself (to have celestial body poles vertical)
-			defaultModelMatrix = glm::rotate(defaultModelMatrix, halfPi, rightVector);
+			defaultModelMatrix = glm::rotate(defaultModelMatrix, Utils::halfPi, Utils::rightVector);
 
 			if (dataInput.first == "Sun")
 			{
@@ -342,7 +324,7 @@ int main()
 				textShader.Enable();
 				textShader.setUniformMat4("model", textModelMatrix);
 				textShader.setUniformInt("texSampler", samplerID);
-				textShader.setUniformVec3("textColor", whiteColour);
+				textShader.setUniformVec3("textColor", Utils::whiteColour);
 
 				//if (dataInput.first == "Deimos" || dataInput.first == "Phobos")
 				//{
@@ -371,7 +353,7 @@ int main()
 			// Draw planet orbits
 			if (dataInput.first != "Sun")
 			{
-				orbitModelMatrix = glm::rotate(orbitModelMatrix, preComputations[dataInput.first].orbInclinationInRad, backVector);
+				orbitModelMatrix = glm::rotate(orbitModelMatrix, preComputations[dataInput.first].orbInclinationInRad, Utils::backVector);
 
 				defaultShader.Enable();
 				defaultShader.setUniformMat4("model", orbitModelMatrix);
@@ -399,7 +381,7 @@ int main()
 
 
 		// Draw Milky Way skybox
-		uboMatrices.InitSubData({ {glm::value_ptr(glm::mat4(glm::mat3(viewMatrix))), mat4v4Size} }, mat4v4Size);
+		uboMatrices.InitSubData({ {glm::value_ptr(glm::mat4(glm::mat3(viewMatrix))), Utils::mat4v4Size} }, Utils::mat4v4Size);
 
 		skyboxShader.Enable();
 		skyboxShader.setUniformInt("texSampler", samplerID);

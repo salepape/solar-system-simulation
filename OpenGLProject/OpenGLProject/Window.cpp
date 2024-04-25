@@ -237,3 +237,12 @@ void Window::FreeUpResources()
 {
 	glfwTerminate();
 }
+
+float Window::GetAspectRatio() const
+{
+	int width;
+	int height;
+	glfwGetWindowSize(GLFWWindow, &width, &height);
+
+	return static_cast<float>(width) * 1.0f / height;
+}

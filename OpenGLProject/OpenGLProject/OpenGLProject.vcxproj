@@ -167,6 +167,7 @@
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="UniformBuffer.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexBufferLayout.h" />

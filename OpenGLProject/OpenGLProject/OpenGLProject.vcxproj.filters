@@ -99,7 +99,10 @@
     <ClInclude Include="Belt.h">
       <Filter>Header Files\Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="Text.h">
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files\Storage files</Filter>
+    </ClInclude>
+    <ClInclude Include="Quad.h">
       <Filter>Header Files\Meshes</Filter>
     </ClInclude>
   </ItemGroup>

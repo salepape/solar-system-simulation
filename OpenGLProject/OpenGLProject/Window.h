@@ -41,6 +41,8 @@ public:
 
 	bool IsSimuPaused() const { return simuPaused; }
 
+	float GetAspectRatio() const;
+
 private:
 	int width{ 0 };
 	int height{ 0 };
