@@ -4,17 +4,17 @@
 #include <glad.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <sstream>
+#include <string>
 
 
 
-Shader::Shader(const std::string& vsPath, const std::string& fsPath) :
-	rendererID(0)
+Shader::Shader(const std::string& vsPath, const std::string& fsPath)
 {
-	const std::string& vsCode = ParseShader(vsPath);
-	const std::string& fsCode = ParseShader(fsPath);
+	const std::string& vsContent = ParseShader(vsPath);
+	const std::string& fsContent = ParseShader(fsPath);
 
-	const unsigned int vsID = CreateShader(GL_VERTEX_SHADER, vsCode);
-	const unsigned int fsID = CreateShader(GL_FRAGMENT_SHADER, fsCode);
+	const unsigned int vsID = CreateShader(GL_VERTEX_SHADER, vsContent);
+	const unsigned int fsID = CreateShader(GL_FRAGMENT_SHADER, fsContent);
 
 	CreateProgram(vsID, fsID);
 }
@@ -46,30 +46,30 @@ unsigned int Shader::CreateShader(const unsigned int type, const std::string& co
 {
 	const unsigned int shaderID = glCreateShader(type);
 	const char* contentRawPointer = content.c_str();
-
 	glShaderSource(shaderID, 1, &contentRawPointer, nullptr);
+
 	glCompileShader(shaderID);
 
-	CheckValidity(shaderID, ObjectType::SHADER);
+	CheckValidity(shaderID, ShaderProcessStage::COMPILATION);
 
 	return shaderID;
 }
 
-void Shader::CreateProgram(const unsigned int vsID, const unsigned int fsID)
+void Shader::CreateProgram(const unsigned int vertexShaderID, const unsigned int fragmentShaderID)
 {
 	rendererID = glCreateProgram();
 
-	glAttachShader(rendererID, vsID);
-	glAttachShader(rendererID, fsID);
+	glAttachShader(rendererID, vertexShaderID);
+	glAttachShader(rendererID, fragmentShaderID);
 
 	glLinkProgram(rendererID);
 	glValidateProgram(rendererID);
 
-	CheckValidity(rendererID, ObjectType::PROGRAM);
+	CheckValidity(rendererID, ShaderProcessStage::LINKING);
 
 	// Delete the shaders as they're linked into our program now and no longer necessary
-	glDeleteShader(vsID);
-	glDeleteShader(fsID);
+	glDeleteShader(vertexShaderID);
+	glDeleteShader(fragmentShaderID);
 }
 
 int Shader::GetUniformLocation(const std::string& name)
@@ -79,15 +79,15 @@ int Shader::GetUniformLocation(const std::string& name)
 		return uniformLocationCache[name];
 	}
 
-	const int location = glGetUniformLocation(rendererID, name.c_str());
-	if (location == -1)
+	const int uniformLocation = glGetUniformLocation(rendererID, name.c_str());
+	if (uniformLocation == -1)
 	{
 		std::cout << "ERROR::SHADER - uniform " << name << " doesn't exist!" << std::endl;
 	}
 
-	uniformLocationCache[name] = location;
+	uniformLocationCache[name] = uniformLocation;
 
-	return location;
+	return uniformLocation;
 }
 
 void Shader::Enable() const
@@ -130,44 +130,40 @@ void Shader::setUniformMat4(const std::string& name, const glm::mat4& mat)
 	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(mat));
 }
 
-void Shader::CheckValidity(const unsigned int ID, const ObjectType objectType) const
+void Shader::CheckValidity(const unsigned int ID, const ShaderProcessStage processStage) const
 {
-	switch (objectType)
+	switch (processStage)
 	{
-	case ObjectType::SHADER:
+	case ShaderProcessStage::COMPILATION:
 	{
-		int isCompiled;
-		glGetShaderiv(ID, GL_COMPILE_STATUS, &isCompiled);
-		if (isCompiled == GL_FALSE)
+		int compileStatus;
+		glGetShaderiv(ID, GL_COMPILE_STATUS, &compileStatus);
+		if (compileStatus == false)
 		{
-			int length = 0;
-			glGetShaderiv(ID, GL_INFO_LOG_LENGTH, &length);
+			int logLength = 0;
+			glGetShaderiv(ID, GL_INFO_LOG_LENGTH, &logLength);
 
-			// Need to heap allocate since we can't stack allocate a char*, alloca is dangerous and std::string is const
-			char* errorMessage = new char[length + 1];
-			glGetShaderInfoLog(ID, length, &length, errorMessage);
+			// We can't stack-allocate a char* and std::string is const, but we can use std::vector instead of heap-allocate
+			std::vector<char> errorMessage(logLength);
+			glGetShaderInfoLog(ID, logLength, &logLength, errorMessage.data());
 
-			std::cout << "ERROR::SHADER - Error: " << errorMessage << std::endl;
-
-			delete[] errorMessage;
+			std::cout << "ERROR::SHADER - Error: " << errorMessage.data() << std::endl;
 		}
 	}
-	case ObjectType::PROGRAM:
+	case ShaderProcessStage::LINKING:
 	{
-		int isLinked;
-		glGetProgramiv(ID, GL_LINK_STATUS, &isLinked);
-		if (isLinked == GL_FALSE)
+		int linkStatus;
+		glGetProgramiv(ID, GL_LINK_STATUS, &linkStatus);
+		if (linkStatus == false)
 		{
-			int length = 0;
-			glGetProgramiv(ID, GL_INFO_LOG_LENGTH, &length);
+			int logLength = 0;
+			glGetProgramiv(ID, GL_INFO_LOG_LENGTH, &logLength);
 
-			// Need to heap allocate since we can't stack allocate a char*, alloca is dangerous and std::string is const
-			char* errorMessage = new char[length + 1];
-			glGetProgramInfoLog(ID, length, &length, errorMessage);
+			// We can't stack-allocate a char* and std::string is const, but we can use std::vector instead of heap-allocate
+			std::vector<char> errorMessage(logLength);
+			glGetProgramInfoLog(ID, logLength, &logLength, errorMessage.data());
 
-			std::cout << "ERROR::PROGRAM - Error: " << errorMessage << std::endl;
-
-			delete[] errorMessage;
+			std::cout << "ERROR::PROGRAM - Error: " << errorMessage.data() << std::endl;
 		}
 	}
 	}

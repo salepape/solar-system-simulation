@@ -8,10 +8,10 @@
 
 
 
-enum class ObjectType
+enum class ShaderProcessStage
 {
-	SHADER,
-	PROGRAM,
+	COMPILATION,
+	LINKING,
 };
 
 // Class dealing with vertex and fragment GLSL shaders
@@ -50,11 +50,11 @@ private:
 	// Create and compile a shader object
 	unsigned int CreateShader(const unsigned int type, const std::string& source) const;
 
-	// Create a program object on which we attach shaders
+	// Create a program object on which we attach each created shader
 	void CreateProgram(const unsigned int vsID, const unsigned int fsID);
 
 	// Utility function to check object compilation/linking errors
-	void CheckValidity(const unsigned int ID, const ObjectType errorCode) const;
+	void CheckValidity(const unsigned int ID, const ShaderProcessStage shaderProcessStage) const;
 };
 
 
