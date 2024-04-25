@@ -30,9 +30,7 @@ struct GlyphParams
 	FT_Pos advance;
 };
 
-// Singleton Text class which build a Texture object for each main ASCII character, and using them to render each celestial body name
-
-// @todo - Rename this class to something like TextRenderer
+// Build a Texture instance for each needed ASCII character, and using them to render celestial body names
 class TextRenderer
 {
 public:
@@ -40,7 +38,7 @@ public:
 	TextRenderer(const TextRenderer&) = delete;
 	~TextRenderer();
 
-	// Load ASCII characters (data + texture creation), up to the number indicated in input
+	// Load ASCII characters (data + texture creation) of the text provided as input
 	void LoadASCIICharacters(const std::string& text);
 	void FreeFTResources() const;
 
