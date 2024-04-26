@@ -54,7 +54,7 @@ int main()
 
 	// Build and compile shader programs
 	Shader defaultShader("DefaultShader.vs", "DefaultShader.fs");
-	Shader sunShader("SunShader.vs", "SunShader.fs");
+	Shader sunShader("DefaultShader.vs", "SunShader.fs");
 	Shader textShader("TextShader.vs", "TextShader.fs");
 	Shader instancedModelShader("InstancedModelShader.vs", "DefaultShader.fs");
 	Shader skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
