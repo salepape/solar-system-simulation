@@ -1,19 +1,19 @@
 #version 330 core
 
-layout(location = 0) in vec4 vertex;		// <vec2 vPos, vec2 vTexCoord>
+layout(location = 0) in vec4 va_Quad;		// <vec2 va_Position, vec2 va_TexCoords>
 
-out vec2 texCoord;
+out vec2 vo_TexCoords;
 
 layout (std140) uniform matrices
 {
-    mat4 projection;
-    mat4 view;
+    mat4 vu_Projection;
+    mat4 vu_View;
 };
-uniform mat4 model;
+uniform mat4 vu_Model;
 
 void main()
 {
-	texCoord = vertex.zw;
+	vo_TexCoords = va_Quad.zw;
 	
-	gl_Position = projection * view * model * vec4(vertex.xy, 0.0f, 1.0f);
+	gl_Position = vu_Projection * vu_View * vu_Model * vec4(va_Quad.xy, 0.0f, 1.0f);
 }

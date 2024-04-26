@@ -149,6 +149,8 @@ void Shader::CheckValidity(const unsigned int ID, const ShaderProcessStage proce
 
 			std::cout << "ERROR::SHADER - Error: " << errorMessage.data() << std::endl;
 		}
+
+		break;
 	}
 	case ShaderProcessStage::LINKING:
 	{
@@ -165,6 +167,8 @@ void Shader::CheckValidity(const unsigned int ID, const ShaderProcessStage proce
 
 			std::cout << "ERROR::PROGRAM - Error: " << errorMessage.data() << std::endl;
 		}
+
+		break;
 	}
 	}
 }

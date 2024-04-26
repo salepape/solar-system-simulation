@@ -1,69 +1,70 @@
 #version 330 core
 
-in vec3 fPos;
-in vec3 normalCoord;
-in vec2 texCoord;
+in vec3 vo_Position;
+in vec3 vo_Normal;
+in vec2 vo_TexCoords;
 
-out vec4 fColor;
+out vec4 fo_Colour;
 
-layout (std140) uniform materialParameters
+// See C++ class Material
+uniform sampler2D fu_DiffuseMat;
+layout (std140) uniform specularMatParams
 {
-    vec4 materialSpecular;
-    float materialShininess;
-};
-uniform sampler2D materialDiffuse;
+    vec4 fu_SpecularColour;
 
-layout (std140) uniform lightParameters
-{
-    vec4 lightPosition;
-
-    // Terms of Phong shading formula
-    vec4 lightAmbient;
-    vec4 lightDiffuse;
-    vec4 lightSpecular;
-
-    // Terms of attenuation spotlight formula
-    float lightConstant;
-    float lightLinear;
-    float lightQuadratic;
-
-    bool isBlinn;
+    float fu_Shininess;
 };
 
-uniform vec3 viewPos;
+// See C++ class PointLight
+layout (std140) uniform pointLightParams
+{
+    vec4 fu_LightPosition;
+
+    vec4 fu_AmbientReflectCoef;
+    vec4 fu_DiffuseReflectCoef;
+    vec4 fu_SpecularReflectCoef;
+
+    float fu_AttenuationCstTerm;
+    float fu_AttenuationLinTerm;
+    float fu_AttenuationQuadTerm;
+
+    bool fu_IsBlinn;
+};
+
+uniform vec3 fu_ViewPosition;
 
 void main()
 {
-    // uv coordinates need to be inversed due to DDS textures use
-    vec3 texelSampling = texture(materialDiffuse, vec2(texCoord.x, 1.0 - texCoord.y)).rgb;
+    // uv-coordinates need to be inversed due to DDS compressing
+    vec3 diffuseTex = texture(fu_DiffuseMat, vec2(vo_TexCoords.x, 1.0 - vo_TexCoords.y)).rgb;
 
-    // Ambient lighting
-    vec3 ambient = lightAmbient.xyz * texelSampling;
+    // Ambient component
+    vec3 ambientIntensity = fu_AmbientReflectCoef.xyz * diffuseTex;
         
-    // Diffuse lighting
-    vec3 normalDir = normalize(normalCoord);
-    vec3 lightDir = normalize(lightPosition.xyz - fPos);
-    float diff = max(dot(normalDir, lightDir), 0.0);
-    vec3 diffuse = lightDiffuse.xyz * diff * texelSampling;
+    // Diffuse component
+    vec3 normalDir = normalize(vo_Normal);
+    vec3 lightDir = normalize(fu_LightPosition.xyz - vo_Position);
+    float diffuseImpact = max(0.0, dot(normalDir, lightDir));
+    vec3 diffuseIntensity = fu_DiffuseReflectCoef.xyz * diffuseImpact * diffuseTex;
         
-    // Specular lighting
-    vec3 viewDir = normalize(viewPos - fPos);
-    float spec = 0.0f;
-    if(isBlinn)
+    // Specular component
+    vec3 viewDir = normalize(fu_ViewPosition - vo_Position);
+    float specularHighlight = 0.0f;
+    if(fu_IsBlinn)
     {
         vec3 halfwayDir = normalize(lightDir + viewDir);
-        spec = pow(max(dot(normalDir, halfwayDir), 0.0), materialShininess);
+        specularHighlight = pow(max(0.0, dot(normalDir, halfwayDir)), fu_Shininess);
     }
     else
     {
         vec3 reflectDir = reflect(-lightDir, normalDir);
-        spec = pow(max(dot(viewDir, reflectDir), 0.0), materialShininess);
+        specularHighlight = pow(max(0.0, dot(viewDir, reflectDir)), fu_Shininess);
     }
-    vec3 specular = lightSpecular.xyz * (spec * materialSpecular.xyz);
+    vec3 specularIntensity = fu_SpecularReflectCoef.xyz * specularHighlight * fu_SpecularColour.xyz;
 
-    float distance = length(lightPosition.xyz - fPos);
-    float attenuation = 1.0 / (lightConstant + lightLinear * distance + lightQuadratic * (distance * distance));
+    float distFragLight = length(fu_LightPosition.xyz - vo_Position);
+    float attenuation = 1.0 / (fu_AttenuationCstTerm + (fu_AttenuationLinTerm * distFragLight) + (fu_AttenuationQuadTerm * distFragLight * distFragLight));
         
-    vec3 result = (ambient + diffuse + specular) * attenuation;
-    fColor.xyzw = vec4(result, 1.0);
+    vec3 phongIllumination = (ambientIntensity + diffuseIntensity + specularIntensity) * attenuation;
+    fo_Colour.xyzw = vec4(phongIllumination, 1.0);
 }

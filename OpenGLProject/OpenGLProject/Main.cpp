@@ -15,7 +15,8 @@
 #include "Belt.h"
 #include "Camera.h"
 #include "Data.h"
-#include "Light.h"
+#include "DirectionalLight.h"
+#include "PointLight.h"
 #include "Material.h"
 #include "Model.h"
 #include "Orbit.h"
@@ -106,13 +107,17 @@ int main()
 	std::vector<unsigned int> matricesShadersIDs({ defaultShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID() });
 	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", static_cast<size_t>(2 * Utils::mat4v4Size));
 
-	std::vector<unsigned int> entitiesShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
+	std::vector<unsigned int> celestialBodyShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
+	Material celestialBodyMaterial;
+	celestialBodyMaterial.Store(celestialBodyShadersIDs);
+	PointLight celestialBodyLight;
+	celestialBodyLight.Store(celestialBodyShadersIDs);
 
-	Material material;
-	material.Store(entitiesShadersIDs);
-
-	Light light;
-	light.Store(entitiesShadersIDs);
+	std::vector<unsigned int> sunShaderID({ sunShader.GetRendererID() });
+	Material sunMaterial({ 1.0f, 0.0f, 0.0f }, 95.0f);
+	sunMaterial.Store(sunShaderID);
+	DirectionalLight sunLight;
+	sunLight.Store(sunShaderID);
 
 
 
@@ -133,7 +138,7 @@ int main()
 		const glm::vec3& cameraPosition = camera.GetPosition();
 
 		defaultShader.Enable();
-		defaultShader.setUniformVec3("viewPos", cameraPosition);
+		defaultShader.setUniformVec3("fu_ViewPosition", cameraPosition);
 		defaultShader.Disable();
 
 		// Simulate a zoom - set far plane variable to a sufficiently high value 
@@ -207,8 +212,8 @@ int main()
 			if (dataInput.first == "Saturn")
 			{
 				defaultShader.Enable();
-				defaultShader.setUniformMat4("model", defaultModelMatrix);
-				defaultShader.setUniformInt("materialDiffuse", samplerID);
+				defaultShader.setUniformMat4("vu_Model", defaultModelMatrix);
+				defaultShader.setUniformInt("fu_DiffuseMat", samplerID);
 				saturnRings.Render(renderer, samplerID++);
 				defaultShader.Disable();
 			}
@@ -219,13 +224,13 @@ int main()
 			if (dataInput.first == "Sun")
 			{
 				sunShader.Enable();
-				sunShader.setUniformInt("materialDiffuse", samplerID);
+				sunShader.setUniformInt("fu_DiffuseMat", samplerID);
 				sunShader.Disable();
 			}
 			else
 			{
 				defaultShader.Enable();
-				defaultShader.setUniformInt("materialDiffuse", samplerID);
+				defaultShader.setUniformInt("fu_DiffuseMat", samplerID);
 				defaultShader.Disable();
 			}
 
@@ -235,14 +240,14 @@ int main()
 				if (dataInput.first == "Sun")
 				{
 					sunShader.Enable();
-					sunShader.setUniformMat4("model", defaultModelMatrix);
+					sunShader.setUniformMat4("vu_Model", defaultModelMatrix);
 					sphere->Render(renderer, samplerID++);
 					sunShader.Disable();
 				}
 				else
 				{
 					defaultShader.Enable();
-					defaultShader.setUniformMat4("model", defaultModelMatrix);
+					defaultShader.setUniformMat4("vu_Model", defaultModelMatrix);
 					sphere->Render(renderer, samplerID++);
 					defaultShader.Disable();
 				}
@@ -264,9 +269,9 @@ int main()
 				textModelMatrix[2] = glm::vec4(look, 0);
 
 				textShader.Enable();
-				textShader.setUniformMat4("model", textModelMatrix);
-				textShader.setUniformInt("texSampler", samplerID);
-				textShader.setUniformVec3("textColor", Utils::whiteColour);
+				textShader.setUniformMat4("vu_Model", textModelMatrix);
+				textShader.setUniformInt("fu_TexSampler", samplerID);
+				textShader.setUniformVec3("fu_TexColour", Utils::whiteColour);
 
 				if (dataInput.first != "Sun")
 				{
@@ -292,8 +297,8 @@ int main()
 				orbitModelMatrix = glm::rotate(orbitModelMatrix, preComputations[dataInput.first].orbInclinationInRad, Utils::backVector);
 
 				defaultShader.Enable();
-				defaultShader.setUniformMat4("model", orbitModelMatrix);
-				defaultShader.setUniformInt("materialDiffuse", samplerID);
+				defaultShader.setUniformMat4("vu_Model", orbitModelMatrix);
+				defaultShader.setUniformInt("fu_DiffuseMat", samplerID);
 				dataInput.second.orbit->Render(renderer, samplerID++);
 				defaultShader.Disable();
 			}
@@ -305,10 +310,10 @@ int main()
 
 		// Draw the 2 main belts composed
 		instancedModelShader.Enable();
-		instancedModelShader.setUniformVec3("viewPos", cameraPosition);
-		instancedModelShader.setUniformInt("materialDiffuse", samplerID);
+		instancedModelShader.setUniformVec3("fu_ViewPosition", cameraPosition);
+		instancedModelShader.setUniformInt("fu_DiffuseMat", samplerID);
 		asteroidBelt.Render(renderer, samplerID++);
-		instancedModelShader.setUniformInt("materialDiffuse", samplerID);
+		instancedModelShader.setUniformInt("fu_DiffuseMat", samplerID);
 		kuiperBelt.Render(renderer, samplerID++);
 		instancedModelShader.Disable();
 
@@ -320,7 +325,7 @@ int main()
 		uboMatrices.InitSubData({ {glm::value_ptr(glm::mat4(glm::mat3(viewMatrix))), Utils::mat4v4Size} }, Utils::mat4v4Size);
 
 		skyboxShader.Enable();
-		skyboxShader.setUniformInt("texSampler", samplerID);
+		skyboxShader.setUniformInt("fu_TexSampler", samplerID);
 		renderer.DepthEqual();
 		skybox.Render(renderer, samplerID++);
 		renderer.DepthLess();

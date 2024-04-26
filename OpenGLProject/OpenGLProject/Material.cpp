@@ -8,16 +8,16 @@
 
 
 Material::Material(const glm::vec3& inSpecular, const float inShininess) :
-	specular(inSpecular), shininess(inShininess)
+	specularColour(inSpecular), shininess(inShininess)
 {
 
 }
 
 void Material::Store(const std::vector<unsigned int>& entitiesShadersIDs)
 {
-	ubo = new UniformBuffer(entitiesShadersIDs, "materialParameters", static_cast<size_t>(Utils::mat4v4Size + Utils::scalarSize));
+	ubo = new UniformBuffer(entitiesShadersIDs, "specularMatParams", static_cast<size_t>(Utils::vec4Size + Utils::scalarSize));
 	ubo->InitSubData({
-		{ static_cast<const void*>(glm::value_ptr(specular)), Utils::vec4Size },
+		{ static_cast<const void*>(glm::value_ptr(specularColour)), Utils::vec4Size },
 		{ static_cast<const void*>(&shininess), Utils::scalarSize }
 		});
 }

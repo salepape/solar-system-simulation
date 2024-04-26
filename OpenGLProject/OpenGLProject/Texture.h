@@ -14,7 +14,7 @@ enum class TextureType
 	NONE,
 	DIFFUSE,
 	SPECULAR,
-	AMBIANT,
+	AMBIENT,
 };
 
 struct WrapOptions

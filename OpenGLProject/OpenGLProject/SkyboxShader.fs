@@ -1,11 +1,11 @@
 #version 330 core
 
-in vec3 texDir;   
-out vec4 fColor;             
+in vec3 vo_TexDir;
+out vec4 fo_Colour;
 
-uniform samplerCube texSampler;   
+uniform samplerCube fu_TexSampler;
 
 void main()
 {
-    fColor.xyzw = texture(texSampler, texDir.xyz);
+    fo_Colour.xyzw = texture(fu_TexSampler, vo_TexDir.xyz);
 }

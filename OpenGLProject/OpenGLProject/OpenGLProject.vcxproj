@@ -156,8 +156,10 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="DataBuffer.h" />
+    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="IndexBuffer.h" />
-    <ClInclude Include="Light.h" />
+    <ClInclude Include="LightSource.h" />
+    <ClInclude Include="PointLight.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
@@ -180,9 +182,11 @@
     <ClCompile Include="Belt.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DataBuffer.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="IndexBuffer.cpp" />
-    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LightSource.cpp" />
+    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />

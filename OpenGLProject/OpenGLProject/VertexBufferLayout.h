@@ -25,9 +25,9 @@ struct VertexAttributeLayout
 {
 	VertexAttributeLocation location;
 
-	unsigned int type;
-	unsigned int count;
-	unsigned char normalized;
+	unsigned int type{ 0 };
+	unsigned int count{ 0 };
+	unsigned char normalized{ 0 };
 };
 
 class VertexBufferLayout
