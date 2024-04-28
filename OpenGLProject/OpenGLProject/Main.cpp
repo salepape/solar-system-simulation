@@ -52,6 +52,12 @@ int main()
 
 
 
+	Renderer renderer;
+	renderer.DepthTest();
+
+	// Needed for text rendering
+	renderer.Blend();
+
 	// Build and compile shader programs
 	Shader defaultShader("DefaultShader.vs", "DefaultShader.fs");
 	Shader sunShader("DefaultShader.vs", "SunShader.fs");
@@ -123,9 +129,6 @@ int main()
 
 
 
-	Renderer renderer;
-	renderer.DepthTest();
-
 	// RENDER LOOP (running every frame)
 	while (window.DoNotClose())
 	{
@@ -133,13 +136,16 @@ int main()
 		window.ProcessInput(camera);
 
 		renderer.Clear();
-		renderer.Blend();
 
 		const glm::vec3& cameraPosition = camera.GetPosition();
 
 		defaultShader.Enable();
-		defaultShader.setUniformVec3("fu_ViewPosition", cameraPosition);
+		defaultShader.setUniformVec3("fu_CameraPosition", cameraPosition);
 		defaultShader.Disable();
+
+		sunShader.Enable();
+		sunShader.setUniformVec3("fu_CameraPosition", cameraPosition);
+		sunShader.Disable();
 
 		// Simulate a zoom - set far plane variable to a sufficiently high value 
 		const glm::mat4& projectionMatrix = glm::perspective(glm::radians(camera.GetZoom()), aspectRatio, 0.1f, 1000.0f);
@@ -270,8 +276,8 @@ int main()
 
 				textShader.Enable();
 				textShader.setUniformMat4("vu_Model", textModelMatrix);
-				textShader.setUniformInt("fu_TexSampler", samplerID);
-				textShader.setUniformVec3("fu_TexColour", Utils::whiteColour);
+				textShader.setUniformInt("fu_DiffuseMat", samplerID);
+				textShader.setUniformVec3("fu_DiffuseColour", Utils::whiteColour);
 
 				if (dataInput.first != "Sun")
 				{
@@ -310,7 +316,7 @@ int main()
 
 		// Draw the 2 main belts composed
 		instancedModelShader.Enable();
-		instancedModelShader.setUniformVec3("fu_ViewPosition", cameraPosition);
+		instancedModelShader.setUniformVec3("fu_CameraPosition", cameraPosition);
 		instancedModelShader.setUniformInt("fu_DiffuseMat", samplerID);
 		asteroidBelt.Render(renderer, samplerID++);
 		instancedModelShader.setUniformInt("fu_DiffuseMat", samplerID);
@@ -325,7 +331,7 @@ int main()
 		uboMatrices.InitSubData({ {glm::value_ptr(glm::mat4(glm::mat3(viewMatrix))), Utils::mat4v4Size} }, Utils::mat4v4Size);
 
 		skyboxShader.Enable();
-		skyboxShader.setUniformInt("fu_TexSampler", samplerID);
+		skyboxShader.setUniformInt("fu_DiffuseMat", samplerID);
 		renderer.DepthEqual();
 		skybox.Render(renderer, samplerID++);
 		renderer.DepthLess();

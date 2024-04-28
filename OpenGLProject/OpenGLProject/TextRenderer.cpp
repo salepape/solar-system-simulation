@@ -28,11 +28,12 @@ TextRenderer::TextRenderer(const int pixelWidth, const int pixelHeight)
 		std::cout << "ERROR::FREETYPE - Failed to load the font" << std::endl;
 	}
 
-	// Set pixel font size to extract from face (render quality)
+	// Set pixel font size to be retrieved from the face (i.e. render quality)
 	// @todo - Might consider Signed Distance Field Fonts technique instead of hardcode pixel size values 
 	FT_Set_Pixel_Sizes(face, pixelWidth, pixelHeight);
 
-	// Disable byte-alignment restriction
+	// Disable default OpenGL restriction for each texel to be coded as a multiple of 4 bytes (rgba) due to 
+	// each FreeType glyph bitmap colour being coded on 1 byte
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
@@ -88,6 +89,9 @@ void TextRenderer::LoadASCIICharacters(const std::string& text)
 		// No need to specify an image path here since the glyph bitmap directly contains the data
 		// @todo - Store all characters into a single texture atlas/sprite sheet for better performance
 		Texture glyphTexture("", GL_TEXTURE_2D, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::NONE);
+		
+		// FreeType glyph bitmap is a grayscale 8-bit image, each byte representing a colour, so we can just store it in the
+		// first value of vec4 colour, i.e. red
 		glyphTexture.LoadFTBitmap(glyph->bitmap, GL_RED);
 
 		// Use direct-list-initialisation to avoid having to add constrcutors in the plain-old data struct
@@ -150,6 +154,6 @@ float TextRenderer::GetBillboardSize(const std::string& text, const float scale)
 
 float TextRenderer::GetGlyphAdvance(const GlyphParams& glyphParams, const float scale) const
 {
-	// Bitshift by VERTICES_COUNT to get value in pixels (2^VERTICES_COUNT = 64, so we divide 1/64th pixels by 64 to get the amount of pixels))
+	// Bitshift by VERTICES_COUNT to get value in pixels (2^VERTICES_COUNT = 64, so we divide 1/64th pixels by 64 to get the amount of pixels)
 	return (glyphParams.advance >> Quad::VERTICES_COUNT) * scale;
 }

@@ -27,7 +27,7 @@ layout (std140) uniform directionalLightParams
     bool fu_IsBlinn;
 };
 
-uniform vec3 fu_viewPosition;
+uniform vec3 fu_CameraPosition;
 
 void main()
 {
@@ -44,7 +44,7 @@ void main()
     vec3 diffuseIntensity = fu_DiffuseReflectCoef.xyz * diffuseImpact * diffuseTex;
 
     // Specular component
-    vec3 viewDir = normalize(fu_viewPosition - vo_Position);
+    vec3 viewDir = normalize(fu_CameraPosition - vo_Position);
     float specularHighlight = 0.0f;
     if(fu_IsBlinn)
     {

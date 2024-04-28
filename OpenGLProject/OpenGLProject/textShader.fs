@@ -4,13 +4,13 @@ in vec2 vo_TexCoords;
 
 out vec4 fo_Colour;
 
-uniform sampler2D fu_TexSampler;
-uniform vec3 fu_TexColour;
+uniform sampler2D fu_DiffuseMat;
+uniform vec3 fu_DiffuseColour;
 
 void main()
 {
-	// Texture's data is stored in just its red component, we sample the r component of the texture as the sampled alpha value 
-	// (resulting pixel will be transparent for all the glyph's background colours and non-transparent for the actual character pixels)
-	vec4 sampled = vec4(1.0f, 1.0f, 1.0f, texture(fu_TexSampler, vo_TexCoords).r);
-	fo_Colour = vec4(fu_TexColour, 1.0f) * sampled;
+	// FreeType glyph bitmap has only been stored in its red component, so we sample it as the alpha value 
+	// (resulting pixel will be transparent for glyph background colours and visible for character colour)
+    float diffuseTexColour = texture(fu_DiffuseMat, vo_TexCoords).r;
+	fo_Colour = vec4(fu_DiffuseColour, 1.0f) * vec4(1.0f, 1.0f, 1.0f, diffuseTexColour);
 }

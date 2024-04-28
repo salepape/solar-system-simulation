@@ -44,7 +44,7 @@ public:
 	Texture() = default;
 	Texture(const std::string& inPath, const unsigned int inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType);
 
-	void LoadFTBitmap(const FT_Bitmap bitmap, const unsigned int channel);
+	void LoadFTBitmap(const FT_Bitmap bitmap, const unsigned int format);
 	void LoadDDS();
 	void LoadCubemapDDS();
 

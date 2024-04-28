@@ -3,9 +3,9 @@
 in vec3 vo_TexDir;
 out vec4 fo_Colour;
 
-uniform samplerCube fu_TexSampler;
+uniform samplerCube fu_DiffuseMat;
 
 void main()
 {
-    fo_Colour.xyzw = texture(fu_TexSampler, vo_TexDir.xyz);
+    fo_Colour.xyzw = texture(fu_DiffuseMat, vo_TexDir.xyz);
 }
