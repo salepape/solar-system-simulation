@@ -4,12 +4,15 @@
 
 #include "Application.h"
 #include "Camera.h"
+#include "InputHandler.h"
 
 
 
 Window::Window(const unsigned int inWidth, const unsigned int inHeight, const std::string& inTitle) :
 	width(inWidth), height(inHeight), title(inTitle)
 {
+	lastCursorPosition = { 0.5f * width, 0.5f * height };
+
 	GLFWWindow = initGLFWWindow();
 	if (GLFWWindow == nullptr)
 	{
@@ -20,9 +23,6 @@ Window::Window(const unsigned int inWidth, const unsigned int inHeight, const st
 
 	// Provide a Window pointer within the body of GLFW callbacks since we cannot add parameters to these function pointers/has to be non-capturing lambdas
 	glfwSetWindowUserPointer(GLFWWindow, static_cast<void*>(this));
-
-	lastXPos = 0.5f * width;
-	lastYPos = 0.5f * height;
 
 	if (MakeContextCurrent() == -1)
 	{
@@ -80,7 +80,7 @@ void Window::SetFramebufferResizeCallback()
 
 void Window::SetCursorPositionCallback()
 {
-	glfwSetCursorPosCallback(GLFWWindow, [](GLFWwindow* window, const double xPos, const double yPos)
+	glfwSetCursorPosCallback(GLFWWindow, [](GLFWwindow* window, const double xPosition, const double yPosition)
 	{
 		auto* const self = static_cast<Window*>(glfwGetWindowUserPointer(window));
 		if (self == nullptr)
@@ -92,18 +92,18 @@ void Window::SetCursorPositionCallback()
 		// Avoid little jump
 		if (self->firstMouseInput)
 		{
-			self->lastXPos = xPos;
-			self->lastYPos = yPos;
+			self->lastCursorPosition.x = xPosition;
+			self->lastCursorPosition.y = yPosition;
 			self->firstMouseInput = false;
 		}
 
-		const float xOffset = static_cast<float>(xPos - self->lastXPos);
+		const float xOffset = static_cast<float>(xPosition - self->lastCursorPosition.x);
 
 		// Reverse y-coordinates since they go from bottom to top
-		const float yOffset = static_cast<float>(self->lastYPos - yPos);
+		const float yOffset = static_cast<float>(self->lastCursorPosition.y - yPosition);
 
-		self->lastXPos = xPos;
-		self->lastYPos = yPos;
+		self->lastCursorPosition.x = xPosition;
+		self->lastCursorPosition.y = yPosition;
 
 		if (auto* const selfCamera = self->camera)
 		{
@@ -143,63 +143,63 @@ void Window::SwapBuffers()
 void Window::ProcessInput(Camera& camera)
 {
 	// Quit the simulation
-	if (glfwGetKey(GLFWWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_ESCAPE))
 	{
 		Application::GetInstance().Close();
 	}
 
 	// Modify camera speed
-	if (glfwGetKey(GLFWWindow, GLFW_KEY_X) == GLFW_PRESS)
+	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_X))
 	{
 		camera.IncreaseSpeed(2.0f);
 	}
-	if (glfwGetKey(GLFWWindow, GLFW_KEY_X) == GLFW_RELEASE)
+	if (InputHandler::GetInstance().IsKeyReleased(GLFW_KEY_X))
 	{
 		camera.DecreaseSpeed(2.0f);
 	}
 
 	// Enable camera to move forward, backward, up, down, left and right (designed for AZERTY keyboards with corresponding QWERTY GLFW_KEYs)
-	if (glfwGetKey(GLFWWindow, GLFW_KEY_W) == GLFW_PRESS)
+	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_W))
 	{
 		camera.ProcessKeyboard(FORWARD, Application::GetInstance().deltaTime);
 	}
-	if (glfwGetKey(GLFWWindow, GLFW_KEY_S) == GLFW_PRESS)
+	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_S))
 	{
 		camera.ProcessKeyboard(BACKWARD, Application::GetInstance().deltaTime);
 	}
-	if (glfwGetKey(GLFWWindow, GLFW_KEY_A) == GLFW_PRESS)
+	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_A))
 	{
 		camera.ProcessKeyboard(LEFT, Application::GetInstance().deltaTime);
 	}
-	if (glfwGetKey(GLFWWindow, GLFW_KEY_D) == GLFW_PRESS)
+	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_D))
 	{
 		camera.ProcessKeyboard(RIGHT, Application::GetInstance().deltaTime);
 	}
-	if (glfwGetMouseButton(GLFWWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+	if (InputHandler::GetInstance().IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
 	{
 		camera.ProcessKeyboard(UP, Application::GetInstance().deltaTime);
 	}
-	if (glfwGetMouseButton(GLFWWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+	if (InputHandler::GetInstance().IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT))
 	{
 		camera.ProcessKeyboard(DOWN, Application::GetInstance().deltaTime);
 	}
 
 	// Pause/Unpause the simulation
-	if (glfwGetKey(GLFWWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
+	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_SPACE))
 	{
 		Application::GetInstance().Pause(true);
 	}
-	if (glfwGetKey(GLFWWindow, GLFW_KEY_SPACE) == GLFW_RELEASE)
+	if (InputHandler::GetInstance().IsKeyReleased(GLFW_KEY_SPACE))
 	{
 		Application::GetInstance().Pause(false);
 	}
 
 	// Speed up/Slow down the simulation
-	if (glfwGetKey(GLFWWindow, GLFW_KEY_UP) == GLFW_PRESS)
+	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_UP))
 	{
 		Application::GetInstance().ChangeSpeed(2.0f);
 	}
-	if (glfwGetKey(GLFWWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
+	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_DOWN))
 	{
 		Application::GetInstance().ChangeSpeed(0.5f);
 	}

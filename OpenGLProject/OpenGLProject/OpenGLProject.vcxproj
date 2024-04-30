@@ -159,6 +159,7 @@
     <ClInclude Include="DataBuffer.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="IndexBuffer.h" />
+    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Material.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="IndexBuffer.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Main.cpp" />

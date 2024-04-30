@@ -1,6 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include <glm/vec2.hpp>
 #include <iostream>
 #include <string>
 
@@ -42,8 +43,7 @@ private:
 
 	// Variables for mouse callback function
 	bool firstMouseInput{ true };
-	double lastXPos{ 0.0f };
-	double lastYPos{ 0.0f };
+	glm::dvec2 lastCursorPosition;
 
 	GLFWwindow* const initGLFWWindow();
 
