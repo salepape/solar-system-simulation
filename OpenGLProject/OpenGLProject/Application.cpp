@@ -59,6 +59,26 @@ void Application::Run()
 	SimulateSolarSystem();
 }
 
+bool Application::IsNotClosed() const
+{
+	return glfwWindowShouldClose(window->GLFWWindow) == 0;
+}
+
+void Application::Close() const
+{
+	glfwSetWindowShouldClose(window->GLFWWindow, true);
+}
+
+void Application::Pause(const bool inIsPaused)
+{
+	isPaused = inIsPaused;
+
+	if (isPaused == false)
+	{
+		glfwSetTime(lastFrame);
+	}
+}
+
 void Application::SimulateSolarSystem()
 {
 	Camera camera(glm::vec3(0.0f, 50.0f, 200.0f));
@@ -148,9 +168,9 @@ void Application::SimulateSolarSystem()
 
 
 	// RENDER LOOP (running every frame)
-	while (window->DoNotClose())
+	while (IsNotClosed())
 	{
-		window->UpdateFrames();
+		UpdateFrames();
 		window->ProcessInput(camera);
 
 		renderer.Clear();
@@ -188,7 +208,7 @@ void Application::SimulateSolarSystem()
 
 			if (dataInput.first != "Sun")
 			{
-				const float frameRate = window->GetFrameRate();
+				const float frameRate = GetFrameRate();
 
 				// Angle of rotation around the sun (resp. planet) for planets (resp. moons) per frame
 				angleRot = preComputations[dataInput.first].angleRotCst * frameRate;
@@ -282,7 +302,7 @@ void Application::SimulateSolarSystem()
 
 
 			// Draw billboard (containing current celestial body name) on top of current celestial body mesh/model
-			if (window->IsSimuPaused())
+			if (IsPaused())
 			{
 				// Orient text to camera position
 				const glm::vec3& look = glm::normalize(cameraPosition - glm::vec3(textModelMatrix[3]));
@@ -364,4 +384,27 @@ void Application::SimulateSolarSystem()
 	}
 
 	window->FreeUpResources();
+}
+
+double Application::GetTime()
+{
+	return glfwGetTime();
+}
+
+void Application::UpdateFrames()
+{
+	if (isPaused == false)
+	{
+		// Time elapsed since GLFW initialisation [considered as a dimensionless chrono, but in seconds in reality]
+		currentFrame = static_cast<float>(GetTime());
+
+		// Compute delta time in order to reduce differences between computer processing powers
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+	}
+}
+
+float Application::GetFrameRate() const
+{
+	return currentFrame * speedFactor;
 }

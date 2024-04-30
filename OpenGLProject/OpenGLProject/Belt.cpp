@@ -6,6 +6,7 @@
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
 
+#include "Application.h"
 #include "Renderer.h"
 
 
@@ -26,7 +27,7 @@ void Belt::ComputeModelMatrices()
 	const int rangeSpanOffset = static_cast<int>(upperBoundOffset - lowerBoundOffset);
 
 	// Initialise random seed
-	srand(static_cast<unsigned int>(glfwGetTime()));
+	srand(static_cast<unsigned int>(Application::GetInstance().GetTime()));
 
 	modelMatrices.reserve(instanceParams.count);
 	for (unsigned int i = 0; i < instanceParams.count; ++i)

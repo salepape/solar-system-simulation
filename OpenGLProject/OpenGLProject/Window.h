@@ -27,19 +27,11 @@ public:
 	// Check whether a specific key is pressed / released and react accordingly
 	void ProcessInput(Camera& camera);
 
-	// Check if GLFW has been instructed to close
-	bool DoNotClose();
-
-	void UpdateFrames();
-	float GetFrameRate() const;
-
 	// Check if any events are triggered, updates the window states and call the corresponding functions
 	void PollEvents();
 
 	// Clean up properly all previous allocated GLFW resources
 	void FreeUpResources();
-
-	bool IsSimuPaused() const { return simuPaused; }
 
 	float GetAspectRatio() const;
 
@@ -47,15 +39,6 @@ private:
 	int width{ 0 };
 	int height{ 0 };
 	const std::string title;
-
-	// @todo - All variables below plus linked code to be moved in Engine/UserInputHandler (KeyInput + MouseInput) classes?
-
-	// Variables for time related to frames
-	float currentFrame{ 0.0f };
-	float deltaTime{ 0.0f };
-	float lastFrame{ 0.0f };
-	bool simuPaused{ false };
-	float simuSpeedFactor{ 1.0f };
 
 	// Variables for mouse callback function
 	bool firstMouseInput{ true };

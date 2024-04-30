@@ -2,6 +2,7 @@
 
 #include <glfw3.h>
 
+#include "Application.h"
 #include "Camera.h"
 
 
@@ -144,7 +145,7 @@ void Window::ProcessInput(Camera& camera)
 	// Quit the simulation
 	if (glfwGetKey(GLFWWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
-		glfwSetWindowShouldClose(GLFWWindow, true);
+		Application::GetInstance().Close();
 	}
 
 	// Modify camera speed
@@ -160,72 +161,48 @@ void Window::ProcessInput(Camera& camera)
 	// Enable camera to move forward, backward, up, down, left and right (designed for AZERTY keyboards with corresponding QWERTY GLFW_KEYs)
 	if (glfwGetKey(GLFWWindow, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		camera.ProcessKeyboard(FORWARD, deltaTime);
+		camera.ProcessKeyboard(FORWARD, Application::GetInstance().deltaTime);
 	}
 	if (glfwGetKey(GLFWWindow, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		camera.ProcessKeyboard(BACKWARD, deltaTime);
+		camera.ProcessKeyboard(BACKWARD, Application::GetInstance().deltaTime);
 	}
 	if (glfwGetKey(GLFWWindow, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		camera.ProcessKeyboard(LEFT, deltaTime);
+		camera.ProcessKeyboard(LEFT, Application::GetInstance().deltaTime);
 	}
 	if (glfwGetKey(GLFWWindow, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		camera.ProcessKeyboard(RIGHT, deltaTime);
+		camera.ProcessKeyboard(RIGHT, Application::GetInstance().deltaTime);
 	}
 	if (glfwGetMouseButton(GLFWWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
-		camera.ProcessKeyboard(UP, deltaTime);
+		camera.ProcessKeyboard(UP, Application::GetInstance().deltaTime);
 	}
 	if (glfwGetMouseButton(GLFWWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
-		camera.ProcessKeyboard(DOWN, deltaTime);
+		camera.ProcessKeyboard(DOWN, Application::GetInstance().deltaTime);
 	}
 
 	// Pause/Unpause the simulation
 	if (glfwGetKey(GLFWWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		simuPaused = true;
+		Application::GetInstance().Pause(true);
 	}
 	if (glfwGetKey(GLFWWindow, GLFW_KEY_SPACE) == GLFW_RELEASE)
 	{
-		simuPaused = false;
-		glfwSetTime(lastFrame);
+		Application::GetInstance().Pause(false);
 	}
 
 	// Speed up/Slow down the simulation
 	if (glfwGetKey(GLFWWindow, GLFW_KEY_UP) == GLFW_PRESS)
 	{
-		simuSpeedFactor *= 2.0f;
+		Application::GetInstance().ChangeSpeed(2.0f);
 	}
 	if (glfwGetKey(GLFWWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
 	{
-		simuSpeedFactor *= 0.5f;
+		Application::GetInstance().ChangeSpeed(0.5f);
 	}
-}
-
-bool Window::DoNotClose()
-{
-	return glfwWindowShouldClose(GLFWWindow) == 0;
-}
-
-void Window::UpdateFrames()
-{
-	if (simuPaused == false)
-	{
-		// Time elapsed since GLFW initialisation [considered as a dimensionless chrono, but in seconds in reality]
-		currentFrame = static_cast<float>(glfwGetTime());
-
-		// Compute delta time in order to reduce differences between computer processing powers
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
-	}
-}
-
-float Window::GetFrameRate() const
-{
-	return currentFrame * simuSpeedFactor;
 }
 
 void Window::PollEvents()
