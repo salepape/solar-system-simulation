@@ -107,7 +107,7 @@ void Window::SetCursorPositionCallback()
 
 		if (auto* const selfCamera = self->camera)
 		{
-			selfCamera->ProcessMouseMovement(xOffset, yOffset, self->firstMouseInput);
+			selfCamera->ProcessMouseMovement(xOffset, yOffset);
 		}
 	});
 }

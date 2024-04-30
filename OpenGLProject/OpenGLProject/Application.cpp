@@ -186,7 +186,7 @@ void Application::SimulateSolarSystem()
 		sunShader.Disable();
 
 		// Simulate a zoom - set far plane variable to a sufficiently high value 
-		const glm::mat4& projectionMatrix = glm::perspective(glm::radians(camera.GetZoom()), aspectRatio, 0.1f, 1000.0f);
+		const glm::mat4& projectionMatrix = glm::perspective(glm::radians(camera.GetZoomLeft()), aspectRatio, 0.1f, 1000.0f);
 
 		// Simulate a camera circling around the scene 
 		const glm::mat4& viewMatrix = camera.GetViewMatrix();

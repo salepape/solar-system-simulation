@@ -8,9 +8,11 @@
 
 
 
-Camera::Camera(const glm::vec3 inPosition) :
-	position(inPosition), worldUp(glm::vec3(0.0f, 1.0f, 0.0f)), forward(glm::vec3(0.0f, 0.0f, -1.0f))
+Camera::Camera(const glm::vec3 inPosition, const float inZoomMaxLevel) :
+	position(inPosition), worldUp(glm::vec3(0.0f, 1.0f, 0.0f)), forward(glm::vec3(0.0f, 0.0f, -1.0f)), zoomMaxLevel(inZoomMaxLevel)
 {
+	zoomLeft = inZoomMaxLevel;
+
 	UpdateCameraVectors();
 }
 
@@ -58,33 +60,30 @@ void Camera::ProcessKeyboard(const CameraMovement& direction, const float deltaT
 	}
 }
 
-void Camera::ProcessMouseMovement(float xOffset, float yOffset, const bool constrainPitch)
+void Camera::ProcessMouseMovement(float xOffset, float yOffset)
 {
 	xOffset *= mouseSensitivity;
 	yOffset *= mouseSensitivity;
 
 	yaw += xOffset;
-	pitch += yOffset;
 
-	// Make sure that when Pitch is out of bounds, screen doesn't get flipped
-	if (constrainPitch)
-	{
-		pitch = glm::min(pitch, 89.0f);
-		pitch = glm::max(pitch, -89.0f);
-	}
+	// Avoid screen getting flipped by bounding pitch value
+	constexpr float maxPitchBeforeFlip = 89.0f;
+	pitch = glm::clamp(pitch + yOffset, -maxPitchBeforeFlip, maxPitchBeforeFlip);
 
 	UpdateCameraVectors();
 }
 
 void Camera::ProcessMouseScroll(const float yOffset)
 {
-	if (zoom >= 1.0f && zoom <= 45.0f)
+	constexpr float zoomMinLevel = 1.0f;
+
+	if (zoomLeft >= zoomMinLevel && zoomLeft <= zoomMaxLevel)
 	{
-		zoom -= yOffset;
+		zoomLeft -= yOffset;
 	}
 
-	zoom = glm::max(zoom, -1.0f);
-	zoom = glm::min(zoom, 45.0f);
+	zoomLeft = glm::clamp(zoomLeft, zoomMinLevel, zoomMaxLevel);
 }
 
 void Camera::UpdateCameraVectors()
