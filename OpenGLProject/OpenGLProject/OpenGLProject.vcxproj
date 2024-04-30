@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Application.h" />
     <ClInclude Include="Belt.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Data.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="Belt.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DataBuffer.cpp" />

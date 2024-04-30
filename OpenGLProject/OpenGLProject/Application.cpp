@@ -32,7 +32,7 @@
 #include "Utils.h"
 #include "Window.h"
 
-Application* Application::instance = new Application();
+Application* Application::instance = nullptr;
 
 
 
@@ -45,6 +45,8 @@ Application::Application()
 	{
 		std::cout << "ERROR::GLAD - Failed to initialise GLAD" << std::endl;
 	}
+
+	instance = this;
 }
 
 Application::~Application()
