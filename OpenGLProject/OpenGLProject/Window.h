@@ -1,8 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <glm/ext/vector_double2.hpp>
-#include <iostream>
+#include <glm/vec2.hpp>
 #include <string>
 
 class Controller;
@@ -17,6 +16,8 @@ public:
 
 	GLFWwindow* GLFWWindow{ nullptr };
 
+	// Needed unfortunately, to be able to access it from a GLFWwindow scroll and cursor position callbacks
+	// @todo - Implement a custom event system, to get rid of this pointer?
 	Controller* controller{ nullptr };
 
 	// Tell GLFW that we want the window context to be the main one on the current thread
@@ -33,6 +34,8 @@ public:
 
 	float GetAspectRatio() const;
 
+	const glm::vec2& GetOffsetFromLastCursorPosition(const double xPosition, const double yPosition);
+
 private:
 	int width{ 0 };
 	int height{ 0 };
@@ -40,18 +43,13 @@ private:
 
 	// Variables for mouse callback function
 	bool firstMouseInput{ true };
-	glm::dvec2 lastCursorPosition;
+	glm::vec2 lastCursorPositionCache;
+	glm::vec2 offsetFromLastCursorPosition;
 
 	GLFWwindow* const initGLFWWindow();
 
 	// Adapt the viewport size whenever the window size has been changed (by OS or the user)
-	void SetFramebufferResizeCallback();
-
-	// Detect if any mouse movement is made and react accordingly
-	void SetCursorPositionCallback();
-
-	// Detect if any mouse wheel movement is made and react accordingly
-	void SetScrollCallback();
+	void Callback_SetFramebufferResize();
 
 	// Make the cursor invisible to the player and allow movements even if cursor is theorically outside the window
 	void SetInputMode();

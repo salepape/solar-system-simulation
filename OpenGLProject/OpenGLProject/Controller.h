@@ -16,16 +16,7 @@ public:
 	// Process controller input received from any keyboard-like input system
 	void ProcessInput(const float deltaTime);
 
-	// Process input received from a mouse input system
-	void ProcessMouseMovement(float xoffset, float yoffset);
-
-	// Process input received from a mouse scroll-wheel event (vertical wheel-axis to be considered only)
-	void ProcessMouseScroll(const float yoffset);
-
-	void IncreaseSpeed(const float factor);
-	void DecreaseSpeed(const float factor);
-
-	const Camera& GetCamera() const { return camera; }
+	Camera& GetCamera() { return camera; }
 
 	float GetZoomLeft() const { return zoomLeft; }
 
@@ -42,6 +33,18 @@ private:
 	// [in degrees]
 	float zoomLeft{ 0.0f };
 	float zoomMaxLevel{ 45.0f };
+
+	// Process input received from a mouse scroll-wheel event (vertical wheel-axis to be considered only)
+	void UpdateZoomLeft(const float yoffset);
+
+	void IncreaseSpeed(const float factor);
+	void DecreaseSpeed(const float factor);
+
+	// Detect if any mouse movement is masde and react accordingly
+	void Callback_SetCursorPosition();
+
+	// Detect if any mouse wheel movement is made and react accordingly
+	void Callback_SetScroll();
 };
 
 

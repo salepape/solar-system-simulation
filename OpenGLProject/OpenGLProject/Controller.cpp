@@ -2,15 +2,20 @@
 
 #include <glfw3.h>
 #include <glm/common.hpp>
+#include <iostream>
 
 #include "Application.h"
 #include "InputHandler.h"
+#include "Window.h"
 
 
 
 Controller::Controller(const glm::vec3& inPosition, const float inZoomMaxLevel) : camera({ inPosition }), zoomMaxLevel(inZoomMaxLevel)
 {
 	zoomLeft = inZoomMaxLevel;
+
+	Callback_SetCursorPosition();
+	Callback_SetScroll();
 }
 
 void Controller::ProcessInput(const float deltaTime)
@@ -79,15 +84,7 @@ void Controller::ProcessInput(const float deltaTime)
 	}
 }
 
-void Controller::ProcessMouseMovement(float xOffset, float yOffset)
-{
-	xOffset *= mouseSensitivity;
-	yOffset *= mouseSensitivity;
-
-	camera.UpdateRotation(xOffset, yOffset);
-}
-
-void Controller::ProcessMouseScroll(const float yOffset)
+void Controller::UpdateZoomLeft(const float yOffset)
 {
 	constexpr float zoomMinLevel = 1.0f;
 	if (zoomLeft >= zoomMinLevel && zoomLeft <= zoomMaxLevel)
@@ -116,4 +113,44 @@ void Controller::DecreaseSpeed(const float factor)
 	}
 
 	travelSpeed *= 1.0f / factor;
+}
+
+void Controller::Callback_SetCursorPosition()
+{
+	glfwSetCursorPosCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* window, const double xPosition, const double yPosition)
+	{
+		// Access contextual data from within GLFWwindow callback
+		auto* const currentWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+		if (currentWindow == nullptr)
+		{
+			std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()" << std::endl;
+			return;
+		}
+
+		const auto& offset = currentWindow->GetOffsetFromLastCursorPosition(static_cast<float>(xPosition), static_cast<float>(yPosition));
+
+		if (auto* const currentController = currentWindow->controller)
+		{
+			currentController->GetCamera().UpdateRotation(offset * currentController->mouseSensitivity);
+		}
+	});
+}
+
+void Controller::Callback_SetScroll()
+{
+	glfwSetScrollCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* window, double xOffset, double yOffset)
+	{
+		// Access contextual data from within GLFWwindow callback
+		auto* const currentWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+		if (currentWindow == nullptr)
+		{
+			std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()" << std::endl;
+			return;
+		}
+
+		if (auto* const currentController = currentWindow->controller)
+		{
+			currentController->UpdateZoomLeft(static_cast<float>(yOffset));
+		}
+	});
 }

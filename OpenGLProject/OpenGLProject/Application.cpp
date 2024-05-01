@@ -82,14 +82,13 @@ void Application::Pause(const bool inIsPaused)
 
 void Application::SimulateSolarSystem()
 {
+	const float aspectRatio = window->GetAspectRatio();
+
 	Controller controller({ 0.0f, 50.0f, 200.0f });
 	window->controller = &controller;
 
 	const Camera& camera = controller.GetCamera();
 	
-
-	const float aspectRatio = window->GetAspectRatio();
-
 
 
 

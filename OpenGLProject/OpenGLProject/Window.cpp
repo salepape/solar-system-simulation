@@ -1,17 +1,14 @@
 #include "Window.h"
 
 #include <glfw3.h>
-
-#include "Application.h"
-#include "Controller.h"
-#include "InputHandler.h"
+#include <iostream>
 
 
 
 Window::Window(const unsigned int inWidth, const unsigned int inHeight, const std::string& inTitle) :
 	width(inWidth), height(inHeight), title(inTitle)
 {
-	lastCursorPosition = { 0.5f * width, 0.5f * height };
+	lastCursorPositionCache = { 0.5f * width, 0.5f * height };
 
 	GLFWWindow = initGLFWWindow();
 	if (GLFWWindow == nullptr)
@@ -21,7 +18,7 @@ Window::Window(const unsigned int inWidth, const unsigned int inHeight, const st
 		return;
 	}
 
-	// Provide a Window pointer within the body of GLFW callbacks since we cannot add parameters to these function pointers/has to be non-capturing lambdas
+	// Register contextual data to access it from within GLFWwindow callbacks (their prototype cannot be modified at all) later
 	glfwSetWindowUserPointer(GLFWWindow, static_cast<void*>(this));
 
 	if (MakeContextCurrent() == -1)
@@ -29,9 +26,7 @@ Window::Window(const unsigned int inWidth, const unsigned int inHeight, const st
 		return;
 	}
 
-	SetFramebufferResizeCallback();
-	SetCursorPositionCallback();
-	SetScrollCallback();
+	Callback_SetFramebufferResize();
 
 	SetInputMode();
 }
@@ -47,10 +42,6 @@ GLFWwindow* const Window::initGLFWWindow()
 
 	// Tell explicitly GLFW that we want to use core-profile 
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#ifdef __APPLE__
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
 
 	// Creation of a GLFW window of size "width x height", its title appearing on a top bar
 	return glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
@@ -69,64 +60,12 @@ int Window::MakeContextCurrent()
 	return 0;
 }
 
-void Window::SetFramebufferResizeCallback()
+void Window::Callback_SetFramebufferResize()
 {
-	glfwSetFramebufferSizeCallback(GLFWWindow, [](GLFWwindow* window, int width, int height)
+	glfwSetFramebufferSizeCallback(GLFWWindow, [](GLFWwindow* /*window*/, int width, int height)
 	{
 		// Make sure the viewport matches the new window dimensions
 		glViewport(0, 0, width, height);
-	});
-}
-
-void Window::SetCursorPositionCallback()
-{
-	glfwSetCursorPosCallback(GLFWWindow, [](GLFWwindow* window, const double xPosition, const double yPosition)
-	{
-		auto* const self = static_cast<Window*>(glfwGetWindowUserPointer(window));
-		if (self == nullptr)
-		{
-			std::cout << "ERROR::WINDOW - Failed to reinterpret cast glfwGetWindowUserPointer()" << std::endl;
-			return;
-		}
-
-		// Avoid little jump
-		if (self->firstMouseInput)
-		{
-			self->lastCursorPosition.x = xPosition;
-			self->lastCursorPosition.y = yPosition;
-			self->firstMouseInput = false;
-		}
-
-		const float xOffset = static_cast<float>(xPosition - self->lastCursorPosition.x);
-
-		// Reverse y-coordinates since they go from bottom to top
-		const float yOffset = static_cast<float>(self->lastCursorPosition.y - yPosition);
-
-		self->lastCursorPosition.x = xPosition;
-		self->lastCursorPosition.y = yPosition;
-
-		if (auto* const selfController = self->controller)
-		{
-			selfController->ProcessMouseMovement(xOffset, yOffset);
-		}
-	});
-}
-
-void Window::SetScrollCallback()
-{
-	glfwSetScrollCallback(GLFWWindow, [](GLFWwindow* window, double xOffset, double yOffset)
-	{
-		auto* const self = static_cast<Window*>(glfwGetWindowUserPointer(window));
-		if (self == nullptr)
-		{
-			std::cout << "ERROR::WINDOW - Failed to reinterpret cast glfwGetWindowUserPointer()" << std::endl;
-			return;
-		}
-
-		if (auto* const selfController = self->controller)
-		{
-			selfController->ProcessMouseScroll(static_cast<float>(yOffset));
-		}
 	});
 }
 
@@ -157,4 +96,21 @@ float Window::GetAspectRatio() const
 	glfwGetWindowSize(GLFWWindow, &width, &height);
 
 	return static_cast<float>(width) * 1.0f / height;
+}
+
+const glm::vec2& Window::GetOffsetFromLastCursorPosition(const double xPosition, const double yPosition)
+{
+	// Avoid little jump
+	if (firstMouseInput)
+	{
+		lastCursorPositionCache = { xPosition, yPosition };
+		firstMouseInput = false;
+	}
+
+	// Reverse y-coordinates since they go from bottom to top 
+	offsetFromLastCursorPosition = { xPosition - lastCursorPositionCache.x, lastCursorPositionCache.y - yPosition };
+
+	lastCursorPositionCache = { xPosition, yPosition };
+
+	return offsetFromLastCursorPosition;
 }

@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include <glm/mat4x4.hpp>
+#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
 
@@ -19,10 +20,7 @@ public:
 	void UpdateForwardPosition(const float distance);
 	void UpdateUpPosition(const float distance);
 	void UpdateRightPosition(const float distance);
-	void UpdateRotation(const float xOffset, const float yOffset);
-
-	// Compute new Forward, Right and Up vectors from new Euler Angles
-	void UpdateCameraVectors();
+	void UpdateRotation(const glm::vec2& offset);
 
 private:
 	glm::vec3 position;
@@ -36,6 +34,9 @@ private:
 
 	// [in degrees]
 	float pitch{ 0.0f };
+
+	// Compute new Forward, Right and Up vectors from new Euler Angles
+	void UpdateCameraVectors();
 };
 
 

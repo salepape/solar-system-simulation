@@ -32,13 +32,13 @@ void Camera::UpdateRightPosition(const float distance)
 	position += distance * right;
 }
 
-void Camera::UpdateRotation(const float xOffset, const float yOffset)
+void Camera::UpdateRotation(const glm::vec2& offset)
 {
-	yaw += xOffset;
+	yaw += offset.x;
 
 	// Avoid screen getting flipped by bounding pitch value
 	constexpr float maxPitchBeforeFlip = 89.0f;
-	pitch = glm::clamp(pitch + yOffset, -maxPitchBeforeFlip, maxPitchBeforeFlip);
+	pitch = glm::clamp(pitch + offset.y, -maxPitchBeforeFlip, maxPitchBeforeFlip);
 
 	UpdateCameraVectors();
 }
