@@ -10,8 +10,6 @@ class Application
 public:
 	Application();
 	~Application();
-
-	float deltaTime{ 0.0f };
 	
 	static Application& GetInstance() { return *instance; }
 	Window& GetWindow() const { return *window; }
@@ -36,6 +34,7 @@ private:
 	// Variables for time related to frames
 	float currentFrame{ 0.0f };
 	float lastFrame{ 0.0f };
+	float deltaTime{ 0.0f };
 	bool isPaused{ false };
 	float speedFactor{ 1.0f };
 

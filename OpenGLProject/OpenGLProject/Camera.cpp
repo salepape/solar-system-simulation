@@ -1,18 +1,14 @@
 #include "Camera.h"
 
+#include <glm/common.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/geometric.hpp>
 #include <glm/trigonometric.hpp>
-#include <glm/common.hpp>
-#include <iostream>
 
 
 
-Camera::Camera(const glm::vec3 inPosition, const float inZoomMaxLevel) :
-	position(inPosition), worldUp(glm::vec3(0.0f, 1.0f, 0.0f)), forward(glm::vec3(0.0f, 0.0f, -1.0f)), zoomMaxLevel(inZoomMaxLevel)
+Camera::Camera(const glm::vec3& inPosition) : position(inPosition), forward({ 0.0f, 0.0f, -1.0f })
 {
-	zoomLeft = inZoomMaxLevel;
-
 	UpdateCameraVectors();
 }
 
@@ -21,50 +17,23 @@ glm::mat4 Camera::GetViewMatrix() const
 	return glm::lookAt(position, position + forward, up);
 }
 
-void Camera::ProcessKeyboard(const CameraMovement& direction, const float deltaTime)
+void Camera::UpdateForwardPosition(const float distance)
 {
-	const float distance = travelSpeed * deltaTime;
-
-	switch (direction)
-	{
-	case FORWARD:
-	{
-		position += forward * distance;
-		break;
-	}
-	case BACKWARD:
-	{
-		position -= forward * distance;
-		break;
-	}
-	case RIGHT:
-	{
-		position += right * distance;
-		break;
-	}
-	case LEFT:
-	{
-		position -= right * distance;
-		break;
-	}
-	case UP:
-	{
-		position += up * distance;
-		break;
-	}
-	case DOWN:
-	{
-		position -= up * distance;
-		break;
-	}
-	}
+	position += distance * forward;
 }
 
-void Camera::ProcessMouseMovement(float xOffset, float yOffset)
+void Camera::UpdateUpPosition(const float distance)
 {
-	xOffset *= mouseSensitivity;
-	yOffset *= mouseSensitivity;
+	position += distance * up;
+}
 
+void Camera::UpdateRightPosition(const float distance)
+{
+	position += distance * right;
+}
+
+void Camera::UpdateRotation(const float xOffset, const float yOffset)
+{
 	yaw += xOffset;
 
 	// Avoid screen getting flipped by bounding pitch value
@@ -72,18 +41,6 @@ void Camera::ProcessMouseMovement(float xOffset, float yOffset)
 	pitch = glm::clamp(pitch + yOffset, -maxPitchBeforeFlip, maxPitchBeforeFlip);
 
 	UpdateCameraVectors();
-}
-
-void Camera::ProcessMouseScroll(const float yOffset)
-{
-	constexpr float zoomMinLevel = 1.0f;
-
-	if (zoomLeft >= zoomMinLevel && zoomLeft <= zoomMaxLevel)
-	{
-		zoomLeft -= yOffset;
-	}
-
-	zoomLeft = glm::clamp(zoomLeft, zoomMinLevel, zoomMaxLevel);
 }
 
 void Camera::UpdateCameraVectors()
@@ -98,27 +55,7 @@ void Camera::UpdateCameraVectors()
 	newForward.z = glm::sin(YawInRadians) * glm::cos(PitchInRadians);
 	forward = glm::normalize(newForward);
 
-	right = glm::normalize(glm::cross(forward, worldUp));
+	right = glm::normalize(glm::cross(forward, { 0.0f, 1.0f, 0.0f }));
 
 	up = glm::normalize(glm::cross(right, forward));
-}
-
-void Camera::IncreaseSpeed(const float factor)
-{
-	if (travelSpeed > factor * travelSpeedDefault)
-	{
-		return;
-	}
-
-	travelSpeed *= factor;
-}
-
-void Camera::DecreaseSpeed(const float factor)
-{
-	if (travelSpeed < travelSpeedDefault)
-	{
-		return;
-	}
-
-	travelSpeed *= 1.0f / factor;
 }

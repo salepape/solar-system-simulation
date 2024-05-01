@@ -138,6 +138,9 @@
     <ClInclude Include="InputHandler.h">
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
+	<ClInclude Include="Controller.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -219,6 +222,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InputHandler.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
+	<ClCompile Include="Controller.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
   </ItemGroup>

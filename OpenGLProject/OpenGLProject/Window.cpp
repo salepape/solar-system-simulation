@@ -3,7 +3,7 @@
 #include <glfw3.h>
 
 #include "Application.h"
-#include "Camera.h"
+#include "Controller.h"
 #include "InputHandler.h"
 
 
@@ -105,9 +105,9 @@ void Window::SetCursorPositionCallback()
 		self->lastCursorPosition.x = xPosition;
 		self->lastCursorPosition.y = yPosition;
 
-		if (auto* const selfCamera = self->camera)
+		if (auto* const selfController = self->controller)
 		{
-			selfCamera->ProcessMouseMovement(xOffset, yOffset);
+			selfController->ProcessMouseMovement(xOffset, yOffset);
 		}
 	});
 }
@@ -123,9 +123,9 @@ void Window::SetScrollCallback()
 			return;
 		}
 
-		if (auto* const selfCamera = self->camera)
+		if (auto* const selfController = self->controller)
 		{
-			selfCamera->ProcessMouseScroll(static_cast<float>(yOffset));
+			selfController->ProcessMouseScroll(static_cast<float>(yOffset));
 		}
 	});
 }
@@ -138,71 +138,6 @@ void Window::SetInputMode()
 void Window::SwapBuffers()
 {
 	glfwSwapBuffers(GLFWWindow);
-}
-
-void Window::ProcessInput(Camera& camera)
-{
-	// Quit the simulation
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_ESCAPE))
-	{
-		Application::GetInstance().Close();
-	}
-
-	// Modify camera speed
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_X))
-	{
-		camera.IncreaseSpeed(2.0f);
-	}
-	if (InputHandler::GetInstance().IsKeyReleased(GLFW_KEY_X))
-	{
-		camera.DecreaseSpeed(2.0f);
-	}
-
-	// Enable camera to move forward, backward, up, down, left and right (designed for AZERTY keyboards with corresponding QWERTY GLFW_KEYs)
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_W))
-	{
-		camera.ProcessKeyboard(FORWARD, Application::GetInstance().deltaTime);
-	}
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_S))
-	{
-		camera.ProcessKeyboard(BACKWARD, Application::GetInstance().deltaTime);
-	}
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_A))
-	{
-		camera.ProcessKeyboard(LEFT, Application::GetInstance().deltaTime);
-	}
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_D))
-	{
-		camera.ProcessKeyboard(RIGHT, Application::GetInstance().deltaTime);
-	}
-	if (InputHandler::GetInstance().IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
-	{
-		camera.ProcessKeyboard(UP, Application::GetInstance().deltaTime);
-	}
-	if (InputHandler::GetInstance().IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT))
-	{
-		camera.ProcessKeyboard(DOWN, Application::GetInstance().deltaTime);
-	}
-
-	// Pause/Unpause the simulation
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_SPACE))
-	{
-		Application::GetInstance().Pause(true);
-	}
-	if (InputHandler::GetInstance().IsKeyReleased(GLFW_KEY_SPACE))
-	{
-		Application::GetInstance().Pause(false);
-	}
-
-	// Speed up/Slow down the simulation
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_UP))
-	{
-		Application::GetInstance().ChangeSpeed(2.0f);
-	}
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_DOWN))
-	{
-		Application::GetInstance().ChangeSpeed(0.5f);
-	}
 }
 
 void Window::PollEvents()

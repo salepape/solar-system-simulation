@@ -17,6 +17,7 @@
 #include "Application.h"
 #include "Belt.h"
 #include "Camera.h"
+#include "Controller.h"
 #include "Data.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
@@ -81,8 +82,11 @@ void Application::Pause(const bool inIsPaused)
 
 void Application::SimulateSolarSystem()
 {
-	Camera camera(glm::vec3(0.0f, 50.0f, 200.0f));
-	window->camera = &camera;
+	Controller controller({ 0.0f, 50.0f, 200.0f });
+	window->controller = &controller;
+
+	const Camera& camera = controller.GetCamera();
+	
 
 	const float aspectRatio = window->GetAspectRatio();
 
@@ -171,7 +175,7 @@ void Application::SimulateSolarSystem()
 	while (IsNotClosed())
 	{
 		UpdateFrames();
-		window->ProcessInput(camera);
+		controller.ProcessInput(deltaTime);
 
 		renderer.Clear();
 
@@ -186,7 +190,7 @@ void Application::SimulateSolarSystem()
 		sunShader.Disable();
 
 		// Simulate a zoom - set far plane variable to a sufficiently high value 
-		const glm::mat4& projectionMatrix = glm::perspective(glm::radians(camera.GetZoomLeft()), aspectRatio, 0.1f, 1000.0f);
+		const glm::mat4& projectionMatrix = glm::perspective(glm::radians(controller.GetZoomLeft()), aspectRatio, 0.1f, 1000.0f);
 
 		// Simulate a camera circling around the scene 
 		const glm::mat4& viewMatrix = camera.GetViewMatrix();
