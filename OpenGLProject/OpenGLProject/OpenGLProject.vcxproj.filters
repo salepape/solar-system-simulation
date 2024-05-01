@@ -138,7 +138,7 @@
     <ClInclude Include="InputHandler.h">
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
-	<ClInclude Include="Controller.h">
+    <ClInclude Include="Controller.h">
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
   </ItemGroup>
@@ -224,7 +224,7 @@
     <ClCompile Include="InputHandler.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
-	<ClCompile Include="Controller.cpp">
+    <ClCompile Include="Controller.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
   </ItemGroup>
@@ -251,9 +251,6 @@
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="SunShader.fs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="SunShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>

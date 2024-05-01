@@ -3,10 +3,8 @@
 #include <iostream>
 #include <glad.h>
 #include <glfw3.h>
-#include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/geometric.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <glm/mat3x3.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/trigonometric.hpp>
@@ -29,7 +27,6 @@
 #include "Skybox.h"
 #include "Sphere.h"
 #include "TextRenderer.h"
-#include "UniformBuffer.h"
 #include "Utils.h"
 #include "Window.h"
 
@@ -84,11 +81,6 @@ void Application::SimulateSolarSystem()
 {
 	const float aspectRatio = window->GetAspectRatio();
 
-	Controller controller({ 0.0f, 50.0f, 200.0f });
-	window->controller = &controller;
-
-	const Camera& camera = controller.GetCamera();
-	
 
 
 
@@ -151,8 +143,9 @@ void Application::SimulateSolarSystem()
 
 
 
-	std::vector<unsigned int> matricesShadersIDs({ defaultShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID() });
-	UniformBuffer uboMatrices(matricesShadersIDs, "matrices", static_cast<size_t>(2 * Utils::mat4v4Size));
+	std::vector<unsigned int> allShadersIDs({ defaultShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID() });
+	Controller controller({ 0.0f, 50.0f, 200.0f }, 45.0f, allShadersIDs);
+	window->controller = &controller;
 
 	std::vector<unsigned int> celestialBodyShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
 	Material celestialBodyMaterial;
@@ -178,26 +171,12 @@ void Application::SimulateSolarSystem()
 
 		renderer.Clear();
 
-		const glm::vec3& cameraPosition = camera.GetPosition();
+		const glm::vec3& cameraPosition = controller.GetCamera().GetPosition();
 
-		defaultShader.Enable();
-		defaultShader.setUniformVec3("fu_CameraPosition", cameraPosition);
-		defaultShader.Disable();
-
-		sunShader.Enable();
-		sunShader.setUniformVec3("fu_CameraPosition", cameraPosition);
-		sunShader.Disable();
-
-		// Simulate a zoom - set far plane variable to a sufficiently high value 
-		const glm::mat4& projectionMatrix = glm::perspective(glm::radians(controller.GetZoomLeft()), aspectRatio, 0.1f, 1000.0f);
-
-		// Simulate a camera circling around the scene 
-		const glm::mat4& viewMatrix = camera.GetViewMatrix();
-
-		uboMatrices.InitSubData({
-			{ static_cast<const void*>(glm::value_ptr(projectionMatrix)), Utils::mat4v4Size },
-			{ static_cast<const void*>(glm::value_ptr(viewMatrix)), Utils::mat4v4Size }
-			});
+		controller.GetCamera().SetPositionUniform(defaultShader);
+		controller.GetCamera().SetPositionUniform(sunShader);
+		controller.GetCamera().SetPositionUniform(instancedModelShader);
+		controller.GetCamera().SetProjectionViewUniform(aspectRatio);
 
 		// Texture sampler ID (one for each object) 
 		unsigned int samplerID = 0;
@@ -309,7 +288,7 @@ void Application::SimulateSolarSystem()
 			{
 				// Orient text to camera position
 				const glm::vec3& look = glm::normalize(cameraPosition - glm::vec3(textModelMatrix[3]));
-				const glm::vec3& right = glm::cross(camera.GetUp(), look);
+				const glm::vec3& right = glm::cross(controller.GetCamera().GetUp(), look);
 				const glm::vec3& up2 = cross(look, right);
 				textModelMatrix[0] = glm::vec4(right, 0);
 				textModelMatrix[1] = glm::vec4(up2, 0);
@@ -369,8 +348,7 @@ void Application::SimulateSolarSystem()
 
 
 		// Draw Milky Way skybox
-		uboMatrices.InitSubData({ {glm::value_ptr(glm::mat4(glm::mat3(viewMatrix))), Utils::mat4v4Size} }, Utils::mat4v4Size);
-
+		controller.GetCamera().SetInfiniteProjectionViewUniform(aspectRatio);
 		skyboxShader.Enable();
 		skyboxShader.setUniformInt("fu_DiffuseMat", samplerID);
 		renderer.DepthEqual();

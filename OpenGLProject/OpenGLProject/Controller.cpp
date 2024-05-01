@@ -10,7 +10,8 @@
 
 
 
-Controller::Controller(const glm::vec3& inPosition, const float inZoomMaxLevel) : camera({ inPosition }), zoomMaxLevel(inZoomMaxLevel)
+Controller::Controller(const glm::vec3& inPosition, const float inZoomMaxLevel, const std::vector<unsigned int>& shaderIDs) :
+	camera({ inPosition, inZoomMaxLevel, shaderIDs }), zoomMaxLevel(inZoomMaxLevel)
 {
 	zoomLeft = inZoomMaxLevel;
 
@@ -138,7 +139,7 @@ void Controller::Callback_SetCursorPosition()
 
 void Controller::Callback_SetScroll()
 {
-	glfwSetScrollCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* window, double xOffset, double yOffset)
+	glfwSetScrollCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* window, double /*xOffset*/, double yOffset)
 	{
 		// Access contextual data from within GLFWwindow callback
 		auto* const currentWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
@@ -151,6 +152,7 @@ void Controller::Callback_SetScroll()
 		if (auto* const currentController = currentWindow->controller)
 		{
 			currentController->UpdateZoomLeft(static_cast<float>(yOffset));
+			currentController->GetCamera().SetFovY(currentController->zoomLeft);
 		}
 	});
 }

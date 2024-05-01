@@ -11,7 +11,7 @@
 class Controller
 {
 public:
-	Controller(const glm::vec3& position, const float inZoomMaxLevel = 45.0f);
+	Controller(const glm::vec3& position, const float inZoomMaxLevel, const std::vector<unsigned int>& shaderIDs);
 
 	// Process controller input received from any keyboard-like input system
 	void ProcessInput(const float deltaTime);

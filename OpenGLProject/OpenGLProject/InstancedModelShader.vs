@@ -9,12 +9,10 @@ out vec3 vo_Position;
 out vec3 vo_Normal;
 out vec2 vo_TexCoords;
 
-layout (std140) uniform matrices
+layout (std140) uniform ubo_ProjectionView
 {
-    mat4 vu_Projection;
-    mat4 vu_View;
+    mat4 vu_ProjectionView;
 };
-uniform mat4 vu_Model;		// @todo - Unused
 
 void main()
 {
@@ -22,5 +20,5 @@ void main()
 	vo_Normal.xyz = mat3(transpose(inverse(va_InstanceMatrix))) * va_Normal.xyz;
     vo_TexCoords.xy = va_TexCoords.xy;
 
-	gl_Position.xyzw = vu_Projection * vu_View * va_InstanceMatrix * vec4(va_Position.xyz, 1.0f);
+	gl_Position.xyzw = vu_ProjectionView * va_InstanceMatrix * vec4(va_Position.xyz, 1.0f);
 }
