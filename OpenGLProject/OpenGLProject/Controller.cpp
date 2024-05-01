@@ -58,11 +58,11 @@ void Controller::ProcessInput(const float deltaTime)
 	}
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_A))
 	{
-		camera.UpdateRightPosition(distance);
+		camera.UpdateRightPosition(-distance);
 	}
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_D))
 	{
-		camera.UpdateRightPosition(-distance);
+		camera.UpdateRightPosition(distance);
 	}
 	if (InputHandler::GetInstance().IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
 	{
