@@ -27,7 +27,7 @@ struct VertexAttributeLayout
 
 	uint32_t type{ 0 };
 	uint32_t count{ 0 };
-	unsigned char normalized{ 0 };
+	uint8_t normalised{ 0 };
 };
 
 class VertexBufferLayout

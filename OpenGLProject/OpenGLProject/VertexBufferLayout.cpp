@@ -10,7 +10,7 @@ void VertexBufferLayout::AddAttributeLayout(const VertexAttributeLocation locati
 	attributeLayout.location = location;
 	attributeLayout.type = type;
 	attributeLayout.count = count;
-	attributeLayout.normalized = GL_FALSE;
+	attributeLayout.normalised = false;
 	attributeLayouts.push_back(attributeLayout);
 
 	stride += static_cast<size_t>(count * sizeof(type));

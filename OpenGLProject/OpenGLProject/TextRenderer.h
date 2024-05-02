@@ -52,7 +52,7 @@ private:
 	VertexArray* vao{ nullptr };
 	VertexBuffer* vbo{ nullptr };
 
-	std::unordered_map<char, GlyphParams> ASCIICharacterCache;
+	std::unordered_map<int8_t, GlyphParams> ASCIICharacterCache;
 
 	// Only allocate VBO and VAO (will be filled with subdata later) 
 	void AllocateBufferObjects();
