@@ -47,5 +47,5 @@ To be able to explore the Solar System, the user should use the following contro
 ## Resources
 
 * Scientific data and some models has been retrieved from NASA website mainly (National Space Science Data Center),
-* Textures have been downloaded from https://www.solarsystemscope.com/textures/, http://planetpixelemporium.com/planets.html and websites of passionate people,
-* Some parts of OpenGL code have been inspired from https://learnopengl.com/ (from Joey De Vries) and https://www.youtube.com/user/TheChernoProject (from Yan Chernikov, aka TheCherno) mainly; http://www.opengl-tutorial.org/ and https://open.gl/ to a lesser extent.
+* Textures have been downloaded from https://www.solarsystemscope.com/textures/, https://planetpixelemporium.com/planets.html and websites of passionate people,
+* Some parts of OpenGL code have been inspired from https://learnopengl.com (from Joey De Vries) and https://www.youtube.com/user/TheChernoProject (from Yan Chernikov, aka TheCherno) mainly; http://www.opengl-tutorial.org and https://open.gl to a lesser extent.
