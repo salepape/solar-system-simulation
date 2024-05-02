@@ -2,42 +2,50 @@
 
 ## Introduction
 
-This project is the main one I realised after obtaining my double diploma in Computer Science. Its main objective was to learn about OpenGL and the modern rendering techniques. To do that, I decided to model and simulate the 3D Solar System. The project is still under development, and hopefully will make the simulation more and more realistic. 
-Some comments within the codebase describe more precisely how it works (algorithmics, decisions taken and so on..)
-
-## Features
-
-The user can move within a reconstructed Solar System composed of its celestial bodies (planets, main dwarf planets and moons) moving along their orbits, as well as the main belts (asteroid and Kuiper ones), Milky Way in background. It is also possible to make celestial body names appear at the top of each of then by pausing the simulation. 
-
-## Controls
-
-To be able to discover the Solar System, the user should use the following controls:
-* <kbd>Z</kbd>, <kbd>Q</kbd>, <kbd>S</kbd>, <kbd>D</kbd>, <kbd>left mouse button</kbd>, <kbd>right mouse button</kbd> to move the camera respectively forward, backward, left, right, up or down,
-* <kbd>X</kbd> to increase camera speed when moving,
-* <kbd>mouse scroll wheel</kbd> to zoom in/out on the scene,
-* <kbd>up arrow</kbd> and <kbd>down arrow</kbd> to accelerate or decelerate the simulation,
-* <kbd>space</kbd> to pause the simulation and make information appear,
-* <kbd>Esc</kbd> to quit the simulation.
+Here is a simulation of the Solar System in 3D! This project mainly originates from a strong interest for the Universe that surrounds us, and Graphics programming. I familiarised myself with the OpenGL specification and some classic Rendering techniques. 
+The development of this project is still ongoing...
 
 ## Technologies
 
-The project is developed under Visual Studio (VS) 17 and Windows 10 environment. It uses OpenGL 3.2 (core profile) API, C/C++ code + GLSL shaders, as well as a set of libraries:
-* GLFW3 to intialise a window and input handling,
-* Glad to get function pointers,
-* GLM for maths,
-* FreeType to render text characters,
+The project is using Visual Studio 17 and Windows 10 environment. It has been implemented in C++11/GLSL, uses OpenGL 3.2 (Core profile) specification, as well as a set of libraries:
+* Glad to get Core OpenGL function pointers,
+* GLFW3 to intialise a window and handle user input,
+* GLM for mathematical utility functions,
 * SOIL2 to load textures in different formats,
-* Assimp to load models.
+* Assimp to load 3D models,
+* FreeType to render 2D text characters.
+
+## Features
+
+Below are the main features implemented:
+* Solar System simulation in 3D, composed of its spherical celestial bodies (planets, main dwarf planets and moons) moving along their circular orbits, as well as the main belts (asteroid and Kuiper ones), Milky Way in background. 
+* Camera/Controller/Input system using GLFW3,
+* Model Loader for asteroids and Saturn rings using Assimp,
+* 3D Mesh Renderer, including instanced rendering to draw the belts efficiently,
+* 2D Text renderer using FreeType,
+* Phong Illumination model done on the GPU via shaders, for all objects of the scene, with a directional light for the Sun, and point lights for the other celestial bodies.
+Comments within the codebase describe more specifically how it works (algorithmics, decisions taken etc...)
 
 ## Setup
 
+* Project is available on Windows only, on architecture x64 and x86, in Release and Debug modes.
 You can either clone the repo to your computer or download the .zip file. Then:
-* If you want to run an executable, drag one of them (stored in OpenGLProject/Output, according to the computer architecture/build type) to the main VS folder (OpenGLProject/OpenGLProject) before double-clicking on it,
-* If you have Visual Studio installed, you can go to OpenGLProject/OpenGLProject and open OpenGLProject.sln, then click on the green arrow button to launch the simulation. 
-Compilation and execution of the program should require about 5 seconds before starting. Enjoy!
+* If you want to run an executable, drag one of them (stored in <i>OpenGLProject/Output</i>, according to the computer architecture/build type) to the main Visual Studio folder (called <i>OpenGLProject/OpenGLProject</i>) before double-clicking on it (otherwise it won't work, the program stating that it didn't find ASSIMP library),
+* If you have Visual Studio 17 installed, you can go to <i>OpenGLProject/OpenGLProject</i> and open OpenGLProject.sln, choose the configutation you want, then click on the green arrow button to launch the simulation. 
+Compilation and execution of the program should require about 3 seconds in Release mode, and 5 seconds in Debug mode before starting. Enjoy!
+
+## Controls
+
+To be able to explore the Solar System, the user should use the following controls:
+* <kbd>Z</kbd>, <kbd>Q</kbd>, <kbd>S</kbd>, <kbd>D</kbd> (for an AZERTY keyboard), <kbd>left mouse button</kbd>, <kbd>right mouse button</kbd> to move forward, backward, left, right, up or down respectively,
+* <kbd>X</kbd> to increase speed when moving,
+* <kbd>mouse scroll wheel</kbd> to zoom in/out,
+* <kbd>up arrow</kbd> and <kbd>down arrow</kbd> to speed up/slow down the simulation,
+* <kbd>space</kbd> (keep pressing) to pause the simulation and make celestial body names appear above them,
+* <kbd>Esc</kbd> to quit the simulation.
 
 ## Resources
 
 * Scientific data and some models has been retrieved from NASA website mainly (National Space Science Data Center),
 * Textures have been downloaded from https://www.solarsystemscope.com/textures/, http://planetpixelemporium.com/planets.html and websites of passionate people,
-* Some parts of OpenGL code have been inspired from https://learnopengl.com/ (from Joey De Vries) and https://youtu.be/W3gAzLwfIP0?feature=shared (from Yan Chernikov, aka TheCherno) mainly; http://www.opengl-tutorial.org/ and https://open.gl/ to a lesser extent.
+* Some parts of OpenGL code have been inspired from https://learnopengl.com/ (from Joey De Vries) and https://www.youtube.com/user/TheChernoProject (from Yan Chernikov, aka TheCherno) mainly; http://www.opengl-tutorial.org/ and https://open.gl/ to a lesser extent.
