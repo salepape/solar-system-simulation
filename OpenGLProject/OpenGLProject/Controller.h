@@ -40,11 +40,22 @@ private:
 	void IncreaseSpeed(const float factor);
 	void DecreaseSpeed(const float factor);
 
+	// Cache used to avoid detecting the button release happening after a button press if quick
+	double pauseStartTime{ 0.0 };
+
+	double displayLegendStartTime{ 0.0 };
+
+	// Duration needed before a button release is detected
+	double detectedButtonReleaseMinDuration{ 1.0 };
+
 	// Detect if any mouse movement is masde and react accordingly
 	void Callback_SetCursorPosition();
 
 	// Detect if any mouse wheel movement is made and react accordingly
 	void Callback_SetScroll();
+
+	// Detect when the pause button is pressed/released properly
+	void Callback_SetPause();
 };
 
 

@@ -284,7 +284,7 @@ void Application::SimulateSolarSystem()
 
 
 			// Draw billboard (containing current celestial body name) on top of current celestial body mesh/model
-			if (IsPaused())
+			if (IsLegend())
 			{
 				// Orient text to camera position
 				const glm::vec3& look = glm::normalize(cameraPosition - glm::vec3(textModelMatrix[3]));

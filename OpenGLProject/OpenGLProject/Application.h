@@ -23,6 +23,9 @@ public:
 	bool IsPaused() const { return isPaused; }
 	void Pause(const bool inIsPaused);
 
+	bool IsLegend() const { return isLegend; }
+	void DisplayLegend(const bool inIsLegend) { isLegend = inIsLegend; }
+
 	void ChangeSpeed(const float inSpeedFactor) { speedFactor *= inSpeedFactor; }
 
 	double GetTime();
@@ -37,6 +40,8 @@ private:
 	float deltaTime{ 0.0f };
 	bool isPaused{ false };
 	float speedFactor{ 1.0f };
+
+	bool isLegend{ false };
 
 	// @todo - Create a specific SolarSystem solution to use the generic "OpenGL engine" code
 	void SimulateSolarSystem();

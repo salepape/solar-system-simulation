@@ -44,8 +44,9 @@ To be able to explore the Solar System, the user should use the following contro
 * <kbd>Z</kbd>, <kbd>Q</kbd>, <kbd>S</kbd>, <kbd>D</kbd> (for an AZERTY keyboard), <kbd>left mouse button</kbd>, <kbd>right mouse button</kbd> to move forward, backward, left, right, up or down respectively,
 * <kbd>X</kbd> to increase speed when moving,
 * <kbd>mouse scroll wheel</kbd> to zoom in/out,
+* <kbd>L</kbd> to make celestial body names appear above them,
 * <kbd>up arrow</kbd> and <kbd>down arrow</kbd> to speed up/slow down the simulation,
-* <kbd>space</kbd> (keep pressing) to pause the simulation and make celestial body names appear above them,
+* <kbd>space</kbd> to pause/unpause the simulation,
 * <kbd>Esc</kbd> to quit the simulation.
 
 P.S. Press <kbd>Win</kbd> to background the simulation while it runs.

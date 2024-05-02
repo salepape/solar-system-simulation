@@ -17,6 +17,7 @@ Controller::Controller(const glm::vec3& inPosition, const float inZoomMaxLevel, 
 
 	Callback_SetCursorPosition();
 	Callback_SetScroll();
+	Callback_SetPause();
 }
 
 void Controller::ProcessInput(const float deltaTime)
@@ -25,16 +26,6 @@ void Controller::ProcessInput(const float deltaTime)
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_ESCAPE))
 	{
 		Application::GetInstance().Close();
-	}
-
-	// Pause/Unpause the simulation
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_SPACE))
-	{
-		Application::GetInstance().Pause(true);
-	}
-	if (InputHandler::GetInstance().IsKeyReleased(GLFW_KEY_SPACE))
-	{
-		Application::GetInstance().Pause(false);
 	}
 
 	// Speed up/Slow down the simulation
@@ -124,7 +115,7 @@ void Controller::Callback_SetCursorPosition()
 		auto* const currentWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
 		if (currentWindow == nullptr)
 		{
-			std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()" << std::endl;
+			std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
 			return;
 		}
 
@@ -145,7 +136,7 @@ void Controller::Callback_SetScroll()
 		auto* const currentWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
 		if (currentWindow == nullptr)
 		{
-			std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()" << std::endl;
+			std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
 			return;
 		}
 
@@ -153,6 +144,60 @@ void Controller::Callback_SetScroll()
 		{
 			currentController->UpdateZoomLeft(static_cast<float>(yOffset));
 			currentController->GetCamera().SetFovY(currentController->zoomLeft);
+		}
+	});
+}
+
+void Controller::Callback_SetPause()
+{
+	glfwSetKeyCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* window, const int32_t key, const int32_t /*scanCode*/, const int32_t action, const int32_t /*mods*/)
+	{
+		auto GetCurrentController = [&window]() -> Controller*
+		{
+			// Access contextual data from within GLFWwindow callback
+			auto* const currentWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			if (currentWindow == nullptr)
+			{
+				std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()" << std::endl;
+			}
+
+			if (auto* const currentController = currentWindow->controller)
+			{
+				return currentController;
+			}
+
+			return nullptr;
+		};
+
+		if (key == GLFW_KEY_SPACE)
+		{
+			const auto& currentController = GetCurrentController();
+			if (action == GLFW_PRESS && currentController && currentController->pauseStartTime == 0.0)
+			{
+				Application::GetInstance().Pause(true);
+				currentController->pauseStartTime = Application::GetInstance().GetTime();
+			}
+
+			if (action == GLFW_RELEASE && currentController && Application::GetInstance().GetTime() - currentController->pauseStartTime > currentController->detectedButtonReleaseMinDuration)
+			{
+				Application::GetInstance().Pause(false);
+				currentController->pauseStartTime = 0.0;
+			}
+		}
+		else if (key == GLFW_KEY_L)
+		{
+			const auto& currentController = GetCurrentController();
+			if (action == GLFW_PRESS && currentController && currentController->displayLegendStartTime == 0.0)
+			{
+				Application::GetInstance().DisplayLegend(true);
+				currentController->displayLegendStartTime = Application::GetInstance().GetTime();
+			}
+
+			if (action == GLFW_RELEASE && currentController && Application::GetInstance().GetTime() - currentController->displayLegendStartTime > currentController->detectedButtonReleaseMinDuration)
+			{
+				Application::GetInstance().DisplayLegend(false);
+				currentController->displayLegendStartTime = 0.0;
+			}
 		}
 	});
 }
