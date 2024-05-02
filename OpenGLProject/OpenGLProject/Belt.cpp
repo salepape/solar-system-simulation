@@ -20,7 +20,7 @@ Belt::Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusPar
 
 void Belt::ComputeModelMatrices()
 {
-	const float angleValue = 1.0f / static_cast<float>(instanceParams.count) * 360.0f;
+	const float angleValue = 1.0f / instanceParams.count * 360.0f;
 	
 	const float lowerBoundOffset = - torusParams.minorRadius;
 	const float upperBoundOffset = torusParams.minorRadius + 1.0f;
@@ -34,7 +34,7 @@ void Belt::ComputeModelMatrices()
 	{
 		glm::mat4 modelMatrix(1.0f);
 
-		const float angle = static_cast<float>(i) * angleValue;
+		const float angle = i * angleValue;
 
 		const float xOffset = lowerBoundOffset + static_cast<float>(rand() % rangeSpanOffset);
 		const float x = sin(angle) * torusParams.majorRadius + xOffset;
@@ -65,7 +65,7 @@ void Belt::ComputeModelMatrices()
 
 void Belt::StoreModelMatrices() const
 {
-	instanceParams.model.StoreModelMatrices(modelMatrices, static_cast<size_t>(instanceParams.count * sizeof(glm::mat4)));
+	instanceParams.model.StoreModelMatrices(modelMatrices, static_cast<size_t>(instanceParams.count) * sizeof(glm::mat4));
 }
 
 void Belt::Render(const Renderer& renderer, const uint32_t textureUnit) const

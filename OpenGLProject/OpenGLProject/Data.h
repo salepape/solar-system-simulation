@@ -1,3 +1,5 @@
+#pragma once
+
 #include <array>
 #include <glm/vec3.hpp>
 #include <iostream>
@@ -8,6 +10,7 @@
 #include "Orbit.h"
 #include "Sphere.h"
 #include "Texture.h"
+#include "Utils.h"
 
 constexpr uint32_t BODIES_COUNT = 19;
 constexpr float DIST_SCALE_FACTOR = 10.0f;
@@ -131,8 +134,6 @@ void LoadData()
 
 void LoadPreComputations()
 {
-	const float doublePi = 2.0f * glm::pi<float>();
-
 	using preComputationsElmt = std::pair<std::string, PreComputations>;
 	for (const auto& dataInput : data)
 	{
@@ -141,9 +142,9 @@ void LoadPreComputations()
 
 		PreComputations preComp
 		{
-			doublePi * 1.0f / dataInput.second.orbPeriod,
-			doublePi * dataInput.second.orbPeriod,
-			doublePi * dataInput.second.rotPeriod,
+			Utils::doublePi * 1.0f / dataInput.second.orbPeriod,
+			Utils::doublePi * dataInput.second.orbPeriod,
+			Utils::doublePi * dataInput.second.rotPeriod,
 
 			orbInclination,
 			dataInput.second.dist * cos(orbInclination),

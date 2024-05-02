@@ -46,7 +46,7 @@ void Mesh::StoreVertices()
 	const bool isIndexBuffer = indices.empty() == false;
 
 	vao = new VertexArray();
-	VertexBuffer vbo(static_cast<const void*>(vertices.data()), static_cast<size_t>(vertices.size()) * sizeof(Vertex));
+	VertexBuffer vbo(static_cast<const void*>(vertices.data()), vertices.size() * sizeof(Vertex));
 	if (isIndexBuffer)
 	{
 		ibo = new IndexBuffer(static_cast<const void*>(indices.data()), static_cast<uint32_t>(indices.size()));
@@ -102,5 +102,5 @@ void Mesh::Render(const Renderer& renderer, const uint32_t textureUnit) const
 
 void Mesh::RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const
 {
-	renderer.DrawInstances(*vao, static_cast<uint32_t>(ibo->GetCount()), instanceCount);
+	renderer.DrawInstances(*vao, ibo->GetCount(), instanceCount);
 }

@@ -26,7 +26,7 @@ public:
 
 	static constexpr int32_t VERTICES_COUNT = 6;
 	static constexpr int32_t QUAD_ELMTS_COUNT = 4;
-	static constexpr size_t GetSize() { return static_cast<size_t>(sizeof(float) * Quad::VERTICES_COUNT * Quad::QUAD_ELMTS_COUNT); }
+	static constexpr size_t GetSize() { return static_cast<size_t>(Quad::VERTICES_COUNT * Quad::QUAD_ELMTS_COUNT) * sizeof(float); }
 
 private:
 	const Texture& texture;

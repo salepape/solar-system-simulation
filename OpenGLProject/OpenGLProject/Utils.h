@@ -3,9 +3,14 @@
 #include <glm/ext/scalar_constants.hpp>
 #include <glm/vec3.hpp>
 
+
+
 namespace Utils
 {
-	const float halfPi = 0.5f * glm::pi<float>();
+	const float unitPi = glm::pi<float>();
+	const float halfPi = 0.5f * unitPi;
+	const float doublePi = 2.0f * unitPi;
+
 	const glm::vec3 backVector(0.0f, 0.0f, 1.0f);
 	const glm::vec3 rightVector(1.0f, 0.0f, 0.0f);
 	const glm::vec3 upVector(0.0f, 1.0f, 0.0f);

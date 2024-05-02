@@ -13,5 +13,5 @@ void VertexBufferLayout::AddAttributeLayout(const VertexAttributeLocation locati
 	attributeLayout.normalised = false;
 	attributeLayouts.push_back(attributeLayout);
 
-	stride += static_cast<size_t>(count * sizeof(type));
+	stride += count * static_cast<uint32_t>(sizeof(type));
 }

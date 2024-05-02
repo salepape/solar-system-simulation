@@ -1,12 +1,12 @@
 #include "Sphere.h"
 
 #include <glad.h>
-#include <glm/ext/scalar_constants.hpp>
 #include <glm/trigonometric.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
 #include "Texture.h"
+#include "Utils.h"
 
 
 
@@ -21,11 +21,8 @@ Sphere::Sphere(const std::string& inTexturePath, const float inRadius, const uin
 
 void Sphere::ComputeVertices()
 {
-	const float pi = glm::pi<float>();
-	const float doublePi = 2.0f * pi;
-
-	const float invMeridianStripsCount = 1.0f / static_cast<float>(meridianStripsCount);
-	const float invParallelStripsCount = 1.0f / static_cast<float>(parallelStripsCount);
+	const float invMeridianStripsCount = 1.0f / meridianStripsCount;
+	const float invParallelStripsCount = 1.0f / parallelStripsCount;
 	const float invRadius = 1.0f / radius;
 
 	const glm::vec3 zeroVector(0.0f, 0.0f, 0.0f);
@@ -33,18 +30,18 @@ void Sphere::ComputeVertices()
 	vertices.reserve((parallelStripsCount + 1) * (meridianStripsCount + 1));
 	for (uint32_t i = 0; i <= parallelStripsCount; ++i)
 	{
-		const float iInvParallelStripsCount = static_cast<float>(i) * invParallelStripsCount;
+		const float iInvParallelStripsCount = i * invParallelStripsCount;
 
 		// Angle between two squares of one parallel strip (in radians)
-		const float theta = pi * (0.5f - iInvParallelStripsCount);
+		const float theta = Utils::unitPi * (0.5f - iInvParallelStripsCount);
 		const float rCosTheta = radius * glm::cos(theta);
 		const float zCoor = radius * glm::sin(theta);
 
 		for (uint32_t j = 0; j <= meridianStripsCount; ++j)
 		{
 			// Angle between two squares of one meridian strip (in radians)
-			const float jInvMeridianStripsCount = static_cast<float>(j) * invMeridianStripsCount;
-			const float phi = doublePi * jInvMeridianStripsCount;
+			const float jInvMeridianStripsCount = j * invMeridianStripsCount;
+			const float phi = Utils::doublePi * jInvMeridianStripsCount;
 			const float xCoor = rCosTheta * glm::cos(phi);
 			const float yCoor = rCosTheta * glm::sin(phi);
 

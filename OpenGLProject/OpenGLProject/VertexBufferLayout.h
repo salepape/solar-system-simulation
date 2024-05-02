@@ -37,11 +37,13 @@ public:
 
 	const std::vector<VertexAttributeLayout>& GetAttributeLayouts() const { return attributeLayouts; }
 
-	size_t GetStride() const { return stride; }
+	uint32_t GetStride() const { return stride; }
 
 private:
 	std::vector<VertexAttributeLayout> attributeLayouts;
-	size_t stride{ 0 };
+
+	// Note we are not storing the stride as a size_t since the OpenGL function needing this parameter requires a GLsizei, i.e. an int
+	uint32_t stride{ 0 };
 };
 
 

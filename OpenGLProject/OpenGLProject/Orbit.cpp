@@ -1,12 +1,12 @@
 #include "Orbit.h"
 
 #include <glad.h>
-#include <glm/ext/scalar_constants.hpp>
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
 
 #include "Renderer.h"
 #include "Texture.h"
+#include "Utils.h"
 
 
 
@@ -20,14 +20,14 @@ Orbit::Orbit(const std::string& texturePath, const float inRadius) :
 
 void Orbit::ComputeVertices()
 {
-	const float thetaAngle = 2.0f * glm::pi<float>() * 1.0f / meridianStripsCount;
+	const float thetaAngle = Utils::doublePi * 1.0f / meridianStripsCount;
 
 	const glm::vec3 zeroVector(0.0f, 0.0f, 0.0f);
 
 	vertices.reserve(meridianStripsCount + 1);
 	for (uint32_t i = 0; i <= meridianStripsCount; ++i)
 	{
-		const float theta = static_cast<float>(i) * thetaAngle;
+		const float theta = i * thetaAngle;
 
 		Vertex vertex;
 		vertex.Position = glm::vec3(radius * glm::sin(theta), 0.0f, radius * glm::cos(theta));

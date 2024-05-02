@@ -95,7 +95,7 @@ float Window::GetAspectRatio() const
 	int32_t height;
 	glfwGetWindowSize(GLFWWindow, &width, &height);
 
-	return static_cast<float>(width) * 1.0f / height;
+	return width * 1.0f / height;
 }
 
 const glm::vec2& Window::GetOffsetFromLastCursorPosition(const double xPosition, const double yPosition)

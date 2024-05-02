@@ -48,7 +48,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& l
 		// Store in the VAO how we want OpenGL to interpret the VBO data relative to the attribute index (layout)
 		glVertexAttribPointer(attributeLayout.location, attributeLayout.count, attributeLayout.type, attributeLayout.normalised, layout.GetStride(), reinterpret_cast<const void*>(offset));
 
-		offset += static_cast<size_t>(attributeLayout.count * sizeof(attributeLayout.type));
+		offset += static_cast<size_t>(attributeLayout.count) * sizeof(attributeLayout.type);
 	}
 }
 
@@ -56,8 +56,8 @@ void VertexArray::AddInstancedBuffer(const VertexBuffer& vbo, const VertexBuffer
 {
 	Bind();
 
-	const size_t mat4Size = static_cast<size_t>(sizeof(glm::mat4));
-	const size_t vec4size = static_cast<size_t>(sizeof(glm::vec4));
+	const size_t mat4Size = sizeof(glm::mat4);
+	const size_t vec4size = sizeof(glm::vec4);
 	size_t offset = 0;
 
 	// Iterate through the instanced matrix only
