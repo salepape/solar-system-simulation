@@ -90,9 +90,11 @@ struct PreComputations
 	glm::vec3 nonSphericalScaling;
 
 	float textHeight{ 0.0f };
+	float satelliteTextHeight{ 0.0f };
 	float sunTextHeight{ 0.0f };
 
 	float textScale{ 0.0f };
+	float satelliteTextScale{ 0.0f };
 	float sunTextScale{ 0.0f };
 };
 
@@ -154,10 +156,12 @@ void LoadPreComputations()
 
 			nonSphericalScale,
 
-			dataInput.second.radius * 1.25f,
-			dataInput.second.radius * 1.25f * 0.5f,
+			dataInput.second.radius * 1.5f,
+			dataInput.second.radius * 3.5f,
+			dataInput.second.radius * 0.625f,
 
 			dataInput.second.radius * 0.01f,
+			dataInput.second.radius * 0.03f,
 			dataInput.second.radius * 0.003f
 		};
 

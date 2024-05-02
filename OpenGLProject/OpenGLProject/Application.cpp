@@ -299,16 +299,25 @@ void Application::SimulateSolarSystem()
 				textShader.setUniformInt("fu_DiffuseMat", samplerID);
 				textShader.setUniformVec3("fu_DiffuseColour", Utils::whiteColour);
 
-				if (dataInput.first != "Sun")
+				float textHeight = 0.0f;
+				float textScale = 0.0f;
+				if (dataInput.first == "Sun")
 				{
-					textRenderer.Render(renderer, dataInput.first,
-						0.0f, preComputations[dataInput.first].textHeight, preComputations[dataInput.first].textScale, samplerID++);
+					textHeight = preComputations[dataInput.first].sunTextHeight;
+					textScale = preComputations[dataInput.first].sunTextScale;
+				}
+				// If this is a satellite (i.e. has a parent)
+				else if (dataInput.second.parentInfo)
+				{
+					textHeight = preComputations[dataInput.first].satelliteTextHeight;
+					textScale = preComputations[dataInput.first].satelliteTextScale;
 				}
 				else
 				{
-					textRenderer.Render(renderer, dataInput.first,
-						0.0f, preComputations[dataInput.first].sunTextHeight, preComputations[dataInput.first].sunTextScale, samplerID++);
+					textHeight = preComputations[dataInput.first].textHeight;
+					textScale = preComputations[dataInput.first].textScale;
 				}
+				textRenderer.Render(renderer, dataInput.first, 0.0f, textHeight, textScale, samplerID++);
 
 				textShader.Disable();
 			}
