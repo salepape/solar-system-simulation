@@ -25,13 +25,13 @@ struct Vertex
 	glm::vec3 Tangent;
 	glm::vec3 Bitangent;
 
-	static constexpr int POSITION_ELMTS_COUNT = 3;
-	static constexpr int NORMAL_ELMTS_COUNT = 3;
-	static constexpr int TEXCOORDS_ELMTS_COUNT = 2;
-	static constexpr int TANGENT_ELMTS_COUNT = 3;
-	static constexpr int BITANGENT_ELMTS_COUNT = 3;
+	static constexpr uint32_t POSITION_ELMTS_COUNT = 3;
+	static constexpr uint32_t NORMAL_ELMTS_COUNT = 3;
+	static constexpr uint32_t TEXCOORDS_ELMTS_COUNT = 2;
+	static constexpr uint32_t TANGENT_ELMTS_COUNT = 3;
+	static constexpr uint32_t BITANGENT_ELMTS_COUNT = 3;
 
-	static constexpr int INSTANCE_MATRIX_ELMTS_COUNT = 4;
+	static constexpr uint32_t INSTANCE_MATRIX_ELMTS_COUNT = 4;
 };
 
 class Mesh

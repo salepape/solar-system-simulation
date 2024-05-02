@@ -79,7 +79,7 @@ int Shader::GetUniformLocation(const std::string& name)
 		return uniformLocationCache[name];
 	}
 
-	const int uniformLocation = glGetUniformLocation(rendererID, name.c_str());
+	const int32_t uniformLocation = glGetUniformLocation(rendererID, name.c_str());
 	if (uniformLocation == -1)
 	{
 		std::cout << "ERROR::SHADER - uniform " << name << " doesn't exist!" << std::endl;
@@ -102,10 +102,10 @@ void Shader::Disable() const
 
 void Shader::setUniformBool(const std::string& name, const bool value)
 {
-	glUniform1i(GetUniformLocation(name), static_cast<int>(value));
+	glUniform1i(GetUniformLocation(name), static_cast<int32_t>(value));
 }
 
-void Shader::setUniformInt(const std::string& name, const int value)
+void Shader::setUniformInt(const std::string& name, const int32_t value)
 {
 	glUniform1i(GetUniformLocation(name), value);
 }
@@ -136,11 +136,11 @@ void Shader::CheckValidity(const uint32_t ID, const ShaderProcessStage processSt
 	{
 	case ShaderProcessStage::COMPILATION:
 	{
-		int compileStatus;
+		int32_t compileStatus;
 		glGetShaderiv(ID, GL_COMPILE_STATUS, &compileStatus);
 		if (compileStatus == false)
 		{
-			int logLength = 0;
+			int32_t logLength = 0;
 			glGetShaderiv(ID, GL_INFO_LOG_LENGTH, &logLength);
 
 			// We can't stack-allocate a char* and std::string is const, but we can use std::vector instead of heap-allocate
@@ -154,11 +154,11 @@ void Shader::CheckValidity(const uint32_t ID, const ShaderProcessStage processSt
 	}
 	case ShaderProcessStage::LINKING:
 	{
-		int linkStatus;
+		int32_t linkStatus;
 		glGetProgramiv(ID, GL_LINK_STATUS, &linkStatus);
 		if (linkStatus == false)
 		{
-			int logLength = 0;
+			int32_t logLength = 0;
 			glGetProgramiv(ID, GL_INFO_LOG_LENGTH, &logLength);
 
 			// We can't stack-allocate a char* and std::string is const, but we can use std::vector instead of heap-allocate

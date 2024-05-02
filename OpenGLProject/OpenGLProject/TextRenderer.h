@@ -34,7 +34,7 @@ struct GlyphParams
 class TextRenderer
 {
 public:
-	TextRenderer(const int pixelWidth = 0, const int pixelHeight = 100);
+	TextRenderer(const uint32_t pixelWidth = 0, const uint32_t pixelHeight = 100);
 	TextRenderer(const TextRenderer&) = delete;
 	~TextRenderer();
 

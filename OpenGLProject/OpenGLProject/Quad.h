@@ -24,8 +24,8 @@ public:
 	// Render texture over the quad (e.g. the one of a character glyph)
 	void Render(const Renderer& renderer, const VertexArray& vao, const uint32_t textureUnit);
 
-	static constexpr int VERTICES_COUNT = 6;
-	static constexpr int QUAD_ELMTS_COUNT = 4;
+	static constexpr int32_t VERTICES_COUNT = 6;
+	static constexpr int32_t QUAD_ELMTS_COUNT = 4;
 	static constexpr size_t GetSize() { return static_cast<size_t>(sizeof(float) * Quad::VERTICES_COUNT * Quad::QUAD_ELMTS_COUNT); }
 
 private:

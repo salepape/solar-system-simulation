@@ -10,7 +10,7 @@
 
 
 
-Sphere::Sphere(const std::string& inTexturePath, const float inRadius, const int inMeridianStripsCount, const int inParallelStripsCount) :
+Sphere::Sphere(const std::string& inTexturePath, const float inRadius, const uint32_t inMeridianStripsCount, const uint32_t inParallelStripsCount) :
 	radius(inRadius), meridianStripsCount(inMeridianStripsCount), parallelStripsCount(inParallelStripsCount),
 	Mesh(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::NONE)
 {
@@ -31,7 +31,7 @@ void Sphere::ComputeVertices()
 	const glm::vec3 zeroVector(0.0f, 0.0f, 0.0f);
 
 	vertices.reserve((parallelStripsCount + 1) * (meridianStripsCount + 1));
-	for (int i = 0; i <= parallelStripsCount; ++i)
+	for (uint32_t i = 0; i <= parallelStripsCount; ++i)
 	{
 		const float iInvParallelStripsCount = static_cast<float>(i) * invParallelStripsCount;
 
@@ -40,7 +40,7 @@ void Sphere::ComputeVertices()
 		const float rCosTheta = radius * glm::cos(theta);
 		const float zCoor = radius * glm::sin(theta);
 
-		for (int j = 0; j <= meridianStripsCount; ++j)
+		for (uint32_t j = 0; j <= meridianStripsCount; ++j)
 		{
 			// Angle between two squares of one meridian strip (in radians)
 			const float jInvMeridianStripsCount = static_cast<float>(j) * invMeridianStripsCount;
@@ -68,12 +68,12 @@ void Sphere::ComputeIndices()
 	// k2--k2+1
 
 	indices.reserve(meridianStripsCount * meridianStripsCount);
-	for (int i = 0; i < meridianStripsCount; ++i)
+	for (uint32_t i = 0; i < meridianStripsCount; ++i)
 	{
 		uint32_t parallelStripIndice = i * (parallelStripsCount + 1);
 		uint32_t nextParallelStripIndice = parallelStripIndice + meridianStripsCount + 1;
 
-		for (int j = 0; j < meridianStripsCount; ++j, ++parallelStripIndice, ++nextParallelStripIndice)
+		for (uint32_t j = 0; j < meridianStripsCount; ++j, ++parallelStripIndice, ++nextParallelStripIndice)
 		{
 			// 2 triangles per square except for those formed by first (top) and last (bottom) parallel strips
 			if (i != 0)

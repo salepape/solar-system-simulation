@@ -17,7 +17,7 @@ class DataBuffer
 public:
 	// Default constructor needed for UniformBuffer constructor not using DataBuffer user-defined one
 	DataBuffer() = default;
-	DataBuffer(const void* data, const size_t size, const int inTarget);
+	DataBuffer(const void* data, const size_t size, const uint32_t inTarget);
 	~DataBuffer();
 
 	// Select the VBO we want to use
@@ -31,7 +31,7 @@ public:
 
 protected:
 	uint32_t rendererID{ 0 };
-	int target{ 0 };
+	uint32_t target{ 0 };
 };
 
 

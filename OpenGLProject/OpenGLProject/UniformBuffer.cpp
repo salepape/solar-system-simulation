@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-int UniformBuffer::blockBindingPoint = 0;
+uint32_t UniformBuffer::blockBindingPoint = 0;
 
 
 

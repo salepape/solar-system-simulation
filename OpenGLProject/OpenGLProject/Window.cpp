@@ -47,7 +47,7 @@ GLFWwindow* const Window::initGLFWWindow()
 	return glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 }
 
-int Window::MakeContextCurrent()
+int32_t Window::MakeContextCurrent()
 {
 	glfwMakeContextCurrent(GLFWWindow);
 
@@ -62,7 +62,7 @@ int Window::MakeContextCurrent()
 
 void Window::Callback_SetFramebufferResize()
 {
-	glfwSetFramebufferSizeCallback(GLFWWindow, [](GLFWwindow* /*window*/, int width, int height)
+	glfwSetFramebufferSizeCallback(GLFWWindow, [](GLFWwindow* /*window*/, int32_t width, int32_t height)
 	{
 		// Make sure the viewport matches the new window dimensions
 		glViewport(0, 0, width, height);
@@ -91,8 +91,8 @@ void Window::FreeUpResources()
 
 float Window::GetAspectRatio() const
 {
-	int width;
-	int height;
+	int32_t width;
+	int32_t height;
 	glfwGetWindowSize(GLFWWindow, &width, &height);
 
 	return static_cast<float>(width) * 1.0f / height;

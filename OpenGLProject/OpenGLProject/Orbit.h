@@ -23,7 +23,7 @@ protected:
 
 private:
 	float radius{ 0.0f };
-	int meridianStripsCount{ 100 };
+	uint32_t meridianStripsCount{ 100 };
 };
 
 

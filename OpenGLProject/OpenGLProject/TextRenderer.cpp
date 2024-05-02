@@ -13,7 +13,7 @@
 
 
 
-TextRenderer::TextRenderer(const int pixelWidth, const int pixelHeight)
+TextRenderer::TextRenderer(const uint32_t pixelWidth, const uint32_t pixelHeight)
 {
 	AllocateBufferObjects();
 

@@ -4,7 +4,7 @@
 
 
 
-DataBuffer::DataBuffer(const void* data, const size_t size, const int inTarget): target(inTarget)
+DataBuffer::DataBuffer(const void* data, const size_t size, const uint32_t inTarget): target(inTarget)
 {
 	// Reserve an ID available to be used by the BO as a binding point
 	glGenBuffers(1, &rendererID);

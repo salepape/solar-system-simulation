@@ -68,7 +68,7 @@ void Skybox::ComputeVertices()
 
 	const glm::vec3 zeroVector(0.0f, 0.0f, 0.0f);
 	
-	int positionIndex = 0;
+	uint32_t positionIndex = 0;
 	vertices.reserve(VERTICES_COUNT);
 	while (positionIndex < VERTICES_COUNT * Vertex::POSITION_ELMTS_COUNT)
 	{

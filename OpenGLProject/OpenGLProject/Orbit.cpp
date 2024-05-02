@@ -25,7 +25,7 @@ void Orbit::ComputeVertices()
 	const glm::vec3 zeroVector(0.0f, 0.0f, 0.0f);
 
 	vertices.reserve(meridianStripsCount + 1);
-	for (int i = 0; i <= meridianStripsCount; ++i)
+	for (uint32_t i = 0; i <= meridianStripsCount; ++i)
 	{
 		const float theta = static_cast<float>(i) * thetaAngle;
 

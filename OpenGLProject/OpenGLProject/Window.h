@@ -21,7 +21,7 @@ public:
 	Controller* controller{ nullptr };
 
 	// Tell GLFW that we want the window context to be the main one on the current thread
-	int MakeContextCurrent();
+	int32_t MakeContextCurrent();
 
 	// Swap font and back buffers (we sent to the screen the updated buffer)
 	void SwapBuffers();
@@ -37,8 +37,8 @@ public:
 	const glm::vec2& GetOffsetFromLastCursorPosition(const double xPosition, const double yPosition);
 
 private:
-	int width{ 0 };
-	int height{ 0 };
+	int32_t width{ 0 };
+	int32_t height{ 0 };
 	const std::string title;
 
 	// Variables for mouse callback function

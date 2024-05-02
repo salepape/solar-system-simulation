@@ -9,7 +9,7 @@
 #include "Sphere.h"
 #include "Texture.h"
 
-constexpr int BODIES_COUNT = 19;
+constexpr uint32_t BODIES_COUNT = 19;
 constexpr float DIST_SCALE_FACTOR = 10.0f;
 
 

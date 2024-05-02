@@ -24,7 +24,7 @@ void Belt::ComputeModelMatrices()
 	
 	const float lowerBoundOffset = - torusParams.minorRadius;
 	const float upperBoundOffset = torusParams.minorRadius + 1.0f;
-	const int rangeSpanOffset = static_cast<int>(upperBoundOffset - lowerBoundOffset);
+	const int32_t rangeSpanOffset = static_cast<int32_t>(upperBoundOffset - lowerBoundOffset);
 
 	// Initialise random seed
 	srand(static_cast<uint32_t>(Application::GetInstance().GetTime()));

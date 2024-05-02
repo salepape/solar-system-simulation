@@ -14,7 +14,7 @@ public:
 	UniformBuffer(const std::vector<uint32_t>& shaderIDs, const std::string& uniformName, const size_t size);
 
 private:
-	static int blockBindingPoint;
+	static uint32_t blockBindingPoint;
 };
 
 

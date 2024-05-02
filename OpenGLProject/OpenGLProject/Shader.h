@@ -28,7 +28,7 @@ public:
 
 	// Utility uniform setters
 	void setUniformBool(const std::string& name, const bool value);
-	void setUniformInt(const std::string& name, const int value);
+	void setUniformInt(const std::string& name, const int32_t value);
 	void setUniformFloat(const std::string& name, const float value);
 	void setUniformVec3(const std::string& name, const glm::vec3& value);
 	void setUniformVec3(const std::string& name, const float x, const float y, const float z);
@@ -39,7 +39,7 @@ public:
 private:
 	uint32_t rendererID{ 0 };
 
-	std::unordered_map<std::string, int> uniformLocationCache;
+	std::unordered_map<std::string, int32_t> uniformLocationCache;
 
 	// Prevent glGetUniformLocation duplicate calls
 	int GetUniformLocation(const std::string& name);
