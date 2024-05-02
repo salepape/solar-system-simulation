@@ -28,7 +28,7 @@ private:
 	float travelSpeedDefault{ 20.0f };
 
 	// [dimensionless]
-	float mouseSensitivity{ 0.1f };
+	float mouseSensitivity{ 0.05f };
 
 	// [in degrees]
 	float zoomLeft{ 0.0f };
