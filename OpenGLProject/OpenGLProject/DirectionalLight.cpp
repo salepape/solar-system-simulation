@@ -19,7 +19,7 @@ DirectionalLight::DirectionalLight(const glm::vec3& inDirection, const Reflectio
 
 }
 
-void DirectionalLight::Store(const std::vector<unsigned int>& entitiesShadersIDs)
+void DirectionalLight::Store(const std::vector<uint32_t>& entitiesShadersIDs)
 {
 	ubo = new UniformBuffer(entitiesShadersIDs, "directionalLightParams", static_cast<size_t>(4 * Utils::vec4Size + Utils::scalarSize));
 	ubo->InitSubData({

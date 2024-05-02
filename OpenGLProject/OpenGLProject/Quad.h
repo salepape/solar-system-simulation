@@ -22,7 +22,7 @@ public:
 	void Store(VertexBuffer& vbo);
 
 	// Render texture over the quad (e.g. the one of a character glyph)
-	void Render(const Renderer& renderer, const VertexArray& vao, const unsigned int textureUnit);
+	void Render(const Renderer& renderer, const VertexArray& vao, const uint32_t textureUnit);
 
 	static constexpr int VERTICES_COUNT = 6;
 	static constexpr int QUAD_ELMTS_COUNT = 4;

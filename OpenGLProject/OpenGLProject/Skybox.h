@@ -15,7 +15,7 @@ class Skybox : public Mesh
 public:
 	Skybox(const std::string& texturePath);
 
-	void Render(const Renderer& renderer, const unsigned int textureUnit) const override;
+	void Render(const Renderer& renderer, const uint32_t textureUnit) const override;
 
 protected:
 	void ComputeVertices() override;

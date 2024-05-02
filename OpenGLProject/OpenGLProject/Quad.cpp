@@ -32,7 +32,7 @@ void Quad::Store(VertexBuffer& vbo)
 	vbo.InitSubData({ { static_cast<const void*>(quadCoor.data()), Quad::GetSize() } });
 }
 
-void Quad::Render(const Renderer& renderer, const VertexArray& vao, const unsigned int textureUnit)
+void Quad::Render(const Renderer& renderer, const VertexArray& vao, const uint32_t textureUnit)
 {
 	texture.Enable(textureUnit);
 	renderer.Draw(vao, GL_TRIANGLES, Quad::VERTICES_COUNT);

@@ -43,7 +43,7 @@ public:
 	void FreeFTResources() const;
 
 	// Update VBO for each character of the text provided as input
-	void Render(const Renderer& renderer, const std::string& text, float x, const float y, const float scale, const unsigned int textureUnit);
+	void Render(const Renderer& renderer, const std::string& text, float x, const float y, const float scale, const uint32_t textureUnit);
 
 private:
 	FT_Library FreeTypeLibrary;

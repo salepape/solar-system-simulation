@@ -38,7 +38,7 @@ void Model::ProcessNode(const aiNode& node, const aiScene& scene)
 {
 	// Process each mesh located at the current node
 	meshes.reserve(node.mNumMeshes);
-	for (unsigned int i = 0; i < node.mNumMeshes; ++i)
+	for (uint32_t i = 0; i < node.mNumMeshes; ++i)
 	{
 		// Get mesh from the scene (that contains data), node object only indexes scene objects
 		const aiMesh* const mesh = scene.mMeshes[node.mMeshes[i]];
@@ -52,7 +52,7 @@ void Model::ProcessNode(const aiNode& node, const aiScene& scene)
 	}
 
 	// Process ASSIMP children nodes recursively
-	for (unsigned int i = 0; i < node.mNumChildren; ++i)
+	for (uint32_t i = 0; i < node.mNumChildren; ++i)
 	{
 		ProcessNode(*node.mChildren[i], scene);
 	}
@@ -61,7 +61,7 @@ void Model::ProcessNode(const aiNode& node, const aiScene& scene)
 Mesh Model::ProcessMesh(const aiMesh& mesh, const aiScene& scene)
 {
 	const std::vector<Vertex>& vertices = GetMeshVertices(mesh);
-	const std::vector<unsigned int>& indices = GetMeshIndices(mesh);
+	const std::vector<uint32_t>& indices = GetMeshIndices(mesh);
 	GetMeshTextures(mesh, scene);
 
 	return Mesh(vertices, indices, textures);
@@ -71,7 +71,7 @@ std::vector<Vertex> Model::GetMeshVertices(const aiMesh& mesh)
 {
 	std::vector<Vertex> vertices;
 	vertices.reserve(mesh.mNumVertices);
-	for (unsigned int i = 0; i < mesh.mNumVertices; ++i)
+	for (uint32_t i = 0; i < mesh.mNumVertices; ++i)
 	{
 		Vertex vertex;
 
@@ -97,14 +97,14 @@ std::vector<Vertex> Model::GetMeshVertices(const aiMesh& mesh)
 	return vertices;
 }
 
-std::vector<unsigned int> Model::GetMeshIndices(const aiMesh& mesh)
+std::vector<uint32_t> Model::GetMeshIndices(const aiMesh& mesh)
 {
-	std::vector<unsigned int> indices;
-	for (unsigned int i = 0; i < mesh.mNumFaces; ++i)
+	std::vector<uint32_t> indices;
+	for (uint32_t i = 0; i < mesh.mNumFaces; ++i)
 	{
 		const aiFace& facet = mesh.mFaces[i];
 
-		for (unsigned int j = 0; j < facet.mNumIndices; ++j)
+		for (uint32_t j = 0; j < facet.mNumIndices; ++j)
 		{
 			indices.push_back(facet.mIndices[j]);
 		}
@@ -125,9 +125,9 @@ void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 	const std::vector<aiTextureType> textureTypes{ aiTextureType_AMBIENT, aiTextureType_DIFFUSE, aiTextureType_SPECULAR };
 	for (const auto& type : textureTypes)
 	{
-		const unsigned int textureCount = material->GetTextureCount(type);
+		const uint32_t textureCount = material->GetTextureCount(type);
 		textures.reserve(textureCount);
-		for (unsigned int i = 0; i < textureCount; ++i)
+		for (uint32_t i = 0; i < textureCount; ++i)
 		{
 			// Get texture path
 			aiString texturePath;
@@ -167,7 +167,7 @@ void Model::StoreModelMatrices(const std::vector<glm::mat4>& modelMatrices, cons
 	vbo.Unbind();
 }
 
-void Model::Render(const Renderer& renderer, const unsigned int textureUnit) const
+void Model::Render(const Renderer& renderer, const uint32_t textureUnit) const
 {
 	for (const auto& mesh : meshes)
 	{
@@ -175,7 +175,7 @@ void Model::Render(const Renderer& renderer, const unsigned int textureUnit) con
 	}
 }
 
-void Model::RenderInstances(const Renderer& renderer, const unsigned int textureUnit, const unsigned int instanceCount) const
+void Model::RenderInstances(const Renderer& renderer, const uint32_t textureUnit, const uint32_t instanceCount) const
 {
 	for (const auto& texture : textures)
 	{

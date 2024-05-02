@@ -27,10 +27,10 @@ void Belt::ComputeModelMatrices()
 	const int rangeSpanOffset = static_cast<int>(upperBoundOffset - lowerBoundOffset);
 
 	// Initialise random seed
-	srand(static_cast<unsigned int>(Application::GetInstance().GetTime()));
+	srand(static_cast<uint32_t>(Application::GetInstance().GetTime()));
 
 	modelMatrices.reserve(instanceParams.count);
-	for (unsigned int i = 0; i < instanceParams.count; ++i)
+	for (uint32_t i = 0; i < instanceParams.count; ++i)
 	{
 		glm::mat4 modelMatrix(1.0f);
 
@@ -68,7 +68,7 @@ void Belt::StoreModelMatrices() const
 	instanceParams.model.StoreModelMatrices(modelMatrices, static_cast<size_t>(instanceParams.count * sizeof(glm::mat4)));
 }
 
-void Belt::Render(const Renderer& renderer, const unsigned int textureUnit) const
+void Belt::Render(const Renderer& renderer, const uint32_t textureUnit) const
 {
 	instanceParams.model.RenderInstances(renderer, textureUnit, instanceParams.count);
 }

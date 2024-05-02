@@ -14,7 +14,7 @@ public:
 	DirectionalLight();
 	DirectionalLight(const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn);
 
-	void Store(const std::vector<unsigned int>& entitiesShadersIDs);
+	void Store(const std::vector<uint32_t>& entitiesShadersIDs);
 
 private:
 	glm::vec3 direction{ -0.2f, -1.0f, -0.3f };

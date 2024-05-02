@@ -13,7 +13,7 @@ Material::Material(const glm::vec3& inSpecular, const float inShininess) :
 
 }
 
-void Material::Store(const std::vector<unsigned int>& entitiesShadersIDs)
+void Material::Store(const std::vector<uint32_t>& entitiesShadersIDs)
 {
 	ubo = new UniformBuffer(entitiesShadersIDs, "specularMatParams", static_cast<size_t>(Utils::vec4Size + Utils::scalarSize));
 	ubo->InitSubData({

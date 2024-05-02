@@ -6,13 +6,13 @@ int UniformBuffer::blockBindingPoint = 0;
 
 
 
-UniformBuffer::UniformBuffer(const std::vector<unsigned int>& shaderIDs, const std::string& uniformName, const size_t size)
+UniformBuffer::UniformBuffer(const std::vector<uint32_t>& shaderIDs, const std::string& uniformName, const size_t size)
 {
 	target = GL_UNIFORM_BUFFER;
 
 	for (const auto& shaderID : shaderIDs)
 	{
-		const unsigned int uniformBlockIndex = glGetUniformBlockIndex(shaderID, uniformName.c_str());
+		const uint32_t uniformBlockIndex = glGetUniformBlockIndex(shaderID, uniformName.c_str());
 		glUniformBlockBinding(shaderID, uniformBlockIndex, blockBindingPoint);
 	}
 

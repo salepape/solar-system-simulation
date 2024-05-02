@@ -10,14 +10,14 @@
 
 
 
-Mesh::Mesh(const std::string& texturePath, const unsigned int textureTarget, const WrapOptions& textureWrapOptions, const FilterOptions& textureFilterOptions, const TextureType& textureType)
+Mesh::Mesh(const std::string& texturePath, const uint32_t textureTarget, const WrapOptions& textureWrapOptions, const FilterOptions& textureFilterOptions, const TextureType& textureType)
 {
 	Texture texture(texturePath, textureTarget, textureWrapOptions, textureFilterOptions, textureType);
 	texture.LoadDDS();
 	textures.push_back(texture);
 }
 
-Mesh::Mesh(const std::vector<Vertex>& inVertices, const std::vector<unsigned int>& inIndices, const std::vector<Texture>& inTextures) :
+Mesh::Mesh(const std::vector<Vertex>& inVertices, const std::vector<uint32_t>& inIndices, const std::vector<Texture>& inTextures) :
 	vertices(inVertices), indices(inIndices), textures(inTextures)
 {
 	StoreVertices();
@@ -49,7 +49,7 @@ void Mesh::StoreVertices()
 	VertexBuffer vbo(static_cast<const void*>(vertices.data()), static_cast<size_t>(vertices.size()) * sizeof(Vertex));
 	if (isIndexBuffer)
 	{
-		ibo = new IndexBuffer(static_cast<const void*>(indices.data()), static_cast<unsigned int>(indices.size()));
+		ibo = new IndexBuffer(static_cast<const void*>(indices.data()), static_cast<uint32_t>(indices.size()));
 	}
 
 	VertexBufferLayout vbl;
@@ -79,7 +79,7 @@ void Mesh::StoreModelMatrices(const VertexBuffer& vbo) const
 	vao->AddInstancedBuffer(vbo, vbl);
 }
 
-void Mesh::Render(const Renderer& renderer, const unsigned int textureUnit) const
+void Mesh::Render(const Renderer& renderer, const uint32_t textureUnit) const
 {
 	if (indices.empty())
 	{
@@ -100,7 +100,7 @@ void Mesh::Render(const Renderer& renderer, const unsigned int textureUnit) cons
 	}
 }
 
-void Mesh::RenderInstances(const Renderer& renderer, const unsigned int instanceCount) const
+void Mesh::RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const
 {
-	renderer.DrawInstances(*vao, static_cast<unsigned int>(ibo->GetCount()), instanceCount);
+	renderer.DrawInstances(*vao, static_cast<uint32_t>(ibo->GetCount()), instanceCount);
 }

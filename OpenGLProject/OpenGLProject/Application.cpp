@@ -143,17 +143,17 @@ void Application::SimulateSolarSystem()
 
 
 
-	std::vector<unsigned int> allShadersIDs({ defaultShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID() });
+	std::vector<uint32_t> allShadersIDs({ defaultShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID() });
 	Controller controller({ 0.0f, 50.0f, 200.0f }, 45.0f, allShadersIDs);
 	window->controller = &controller;
 
-	std::vector<unsigned int> celestialBodyShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
+	std::vector<uint32_t> celestialBodyShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
 	Material celestialBodyMaterial;
 	celestialBodyMaterial.Store(celestialBodyShadersIDs);
 	PointLight celestialBodyLight;
 	celestialBodyLight.Store(celestialBodyShadersIDs);
 
-	std::vector<unsigned int> sunShaderID({ sunShader.GetRendererID() });
+	std::vector<uint32_t> sunShaderID({ sunShader.GetRendererID() });
 	Material sunMaterial({ 1.0f, 0.0f, 0.0f }, 95.0f);
 	sunMaterial.Store(sunShaderID);
 	DirectionalLight sunLight;
@@ -179,7 +179,7 @@ void Application::SimulateSolarSystem()
 		controller.GetCamera().SetProjectionViewUniform(aspectRatio);
 
 		// Texture sampler ID (one for each object) 
-		unsigned int samplerID = 0;
+		uint32_t samplerID = 0;
 
 		// Draw celestial bodies, their orbits and their motion
 		for (auto& dataInput : data)

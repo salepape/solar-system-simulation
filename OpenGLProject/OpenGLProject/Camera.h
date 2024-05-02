@@ -16,7 +16,7 @@ class UniformBuffer;
 class Camera
 {
 public:
-	Camera(const glm::vec3& inPosition, const float fovY, const std::vector<unsigned int>& shaderIDs);
+	Camera(const glm::vec3& inPosition, const float fovY, const std::vector<uint32_t>& shaderIDs);
 
 	const glm::vec3& GetPosition() const { return position; }
 	const glm::vec3& GetUp() const { return up; }
@@ -56,7 +56,7 @@ private:
 	// Compute new Forward, Right and Up vectors from new Euler Angles
 	void UpdateCameraVectors();
 
-	void AllocateProjectionView(const std::vector<unsigned int>& shaderIDs);
+	void AllocateProjectionView(const std::vector<uint32_t>& shaderIDs);
 };
 
 

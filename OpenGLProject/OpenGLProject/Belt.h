@@ -16,11 +16,11 @@ struct InstanceParams
 {
 	Model model;
 
-	const unsigned int count{ 0 };
+	const uint32_t count{ 0 };
 
 	// Range from where a random number will be picked from to determine the model size
 	const float sizeRangeLowerBound{ 0.0f };
-	const unsigned int sizeRangeSpan{ 0 };
+	const uint32_t sizeRangeSpan{ 0 };
 };
 
 // Torus built with instances (not with vertices like a real geometrical shape)
@@ -41,7 +41,7 @@ class Belt
 public:
 	Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams);
 
-	void Render(const Renderer& renderer, const unsigned int textureUnit) const;
+	void Render(const Renderer& renderer, const uint32_t textureUnit) const;
 
 private:
 	InstanceParams instanceParams;

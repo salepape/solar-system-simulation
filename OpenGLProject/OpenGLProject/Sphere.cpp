@@ -70,8 +70,8 @@ void Sphere::ComputeIndices()
 	indices.reserve(meridianStripsCount * meridianStripsCount);
 	for (int i = 0; i < meridianStripsCount; ++i)
 	{
-		unsigned int parallelStripIndice = i * (parallelStripsCount + 1);
-		unsigned int nextParallelStripIndice = parallelStripIndice + meridianStripsCount + 1;
+		uint32_t parallelStripIndice = i * (parallelStripsCount + 1);
+		uint32_t nextParallelStripIndice = parallelStripIndice + meridianStripsCount + 1;
 
 		for (int j = 0; j < meridianStripsCount; ++j, ++parallelStripIndice, ++nextParallelStripIndice)
 		{

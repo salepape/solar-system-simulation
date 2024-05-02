@@ -5,7 +5,7 @@
 
 
 
-Window::Window(const unsigned int inWidth, const unsigned int inHeight, const std::string& inTitle) :
+Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::string& inTitle) :
 	width(inWidth), height(inHeight), title(inTitle)
 {
 	lastCursorPositionCache = { 0.5f * width, 0.5f * height };

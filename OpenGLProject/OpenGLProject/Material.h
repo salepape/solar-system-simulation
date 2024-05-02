@@ -16,7 +16,7 @@ public:
 	Material() = default;
 	Material(const glm::vec3& inSpecular, const float inShininess);
 
-	void Store(const std::vector<unsigned int>& entitiesShadersIDs);
+	void Store(const std::vector<uint32_t>& entitiesShadersIDs);
 
 private:
 	// DDS texture that will be used as a Sampler2D

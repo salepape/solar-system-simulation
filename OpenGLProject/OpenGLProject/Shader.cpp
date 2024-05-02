@@ -13,8 +13,8 @@ Shader::Shader(const std::string& vsPath, const std::string& fsPath)
 	const std::string& vsContent = ParseShader(vsPath);
 	const std::string& fsContent = ParseShader(fsPath);
 
-	const unsigned int vsID = CreateShader(GL_VERTEX_SHADER, vsContent);
-	const unsigned int fsID = CreateShader(GL_FRAGMENT_SHADER, fsContent);
+	const uint32_t vsID = CreateShader(GL_VERTEX_SHADER, vsContent);
+	const uint32_t fsID = CreateShader(GL_FRAGMENT_SHADER, fsContent);
 
 	CreateProgram(vsID, fsID);
 }
@@ -42,9 +42,9 @@ std::string Shader::ParseShader(const std::string& path) const
 	return shaderStream.str();
 }
 
-unsigned int Shader::CreateShader(const unsigned int type, const std::string& content) const
+uint32_t Shader::CreateShader(const uint32_t type, const std::string& content) const
 {
-	const unsigned int shaderID = glCreateShader(type);
+	const uint32_t shaderID = glCreateShader(type);
 	const char* contentRawPointer = content.c_str();
 	glShaderSource(shaderID, 1, &contentRawPointer, nullptr);
 
@@ -55,7 +55,7 @@ unsigned int Shader::CreateShader(const unsigned int type, const std::string& co
 	return shaderID;
 }
 
-void Shader::CreateProgram(const unsigned int vertexShaderID, const unsigned int fragmentShaderID)
+void Shader::CreateProgram(const uint32_t vertexShaderID, const uint32_t fragmentShaderID)
 {
 	rendererID = glCreateProgram();
 
@@ -130,7 +130,7 @@ void Shader::setUniformMat4(const std::string& name, const glm::mat4& mat)
 	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(mat));
 }
 
-void Shader::CheckValidity(const unsigned int ID, const ShaderProcessStage processStage) const
+void Shader::CheckValidity(const uint32_t ID, const ShaderProcessStage processStage) const
 {
 	switch (processStage)
 	{

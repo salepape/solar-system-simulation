@@ -25,8 +25,8 @@ public:
 
 	void StoreModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t size) const;
 
-	void Render(const Renderer& renderer, const unsigned int textureUnit) const;
-	void RenderInstances(const Renderer& renderer, const unsigned int textureUnit, const unsigned int instanceCount) const;
+	void Render(const Renderer& renderer, const uint32_t textureUnit) const;
+	void RenderInstances(const Renderer& renderer, const uint32_t textureUnit, const uint32_t instanceCount) const;
 
 private:
 	std::vector<Mesh> meshes;
@@ -45,7 +45,7 @@ private:
 	std::vector<Vertex> GetMeshVertices(const aiMesh& mesh);
 
 	// Store the indices of each mesh facet in a proper vector
-	std::vector<unsigned int> GetMeshIndices(const aiMesh& mesh);
+	std::vector<uint32_t> GetMeshIndices(const aiMesh& mesh);
 
 	// Create a Texture instance from each ASSIMP texture referenced in the model and store it in a proper vector
 	void GetMeshTextures(const aiMesh& mesh, const aiScene& scene);

@@ -112,7 +112,7 @@ void TextRenderer::FreeFTResources() const
 	FT_Done_FreeType(FreeTypeLibrary);
 }
 
-void TextRenderer::Render(const Renderer& renderer, const std::string& text, float x, const float y, const float scale, const unsigned int textureUnit)
+void TextRenderer::Render(const Renderer& renderer, const std::string& text, float x, const float y, const float scale, const uint32_t textureUnit)
 {
 	// Left-shift billboard position to half its width to center-align it to the celestial body
 	x = -GetBillboardSize(text, scale) * 0.5f;

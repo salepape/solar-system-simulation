@@ -19,22 +19,22 @@ enum class TextureType
 
 struct WrapOptions
 {
-	const unsigned int s{ 0 };
-	const unsigned int t{ 0 };
-	const unsigned int r{ 0 };
+	const uint32_t s{ 0 };
+	const uint32_t t{ 0 };
+	const uint32_t r{ 0 };
 
-	WrapOptions(const unsigned int inSame) : s(inSame), t(inSame), r(inSame) {};
-	WrapOptions(const unsigned int inS, const unsigned int inT) : s(inS), t(inT) {};
-	WrapOptions(const unsigned int inS, const unsigned int inT, const unsigned int inR) : s(inS), t(inT), r(inR) {};
+	WrapOptions(const uint32_t inSame) : s(inSame), t(inSame), r(inSame) {};
+	WrapOptions(const uint32_t inS, const uint32_t inT) : s(inS), t(inT) {};
+	WrapOptions(const uint32_t inS, const uint32_t inT, const uint32_t inR) : s(inS), t(inT), r(inR) {};
 };
 
 struct FilterOptions
 {
-	const unsigned int min{ 0 };
-	const unsigned int mag{ 0 };
+	const uint32_t min{ 0 };
+	const uint32_t mag{ 0 };
 
-	FilterOptions(const unsigned int inSame) : min(inSame), mag(inSame) {};
-	FilterOptions(const unsigned int inMin, const unsigned int inMag) : min(inMin), mag(inMag) {};
+	FilterOptions(const uint32_t inSame) : min(inSame), mag(inSame) {};
+	FilterOptions(const uint32_t inMin, const uint32_t inMag) : min(inMin), mag(inMag) {};
 };
 
 class Texture
@@ -42,9 +42,9 @@ class Texture
 public:
 	// Default constructor needed for GlyphParams struct declaration
 	Texture() = default;
-	Texture(const std::string& inPath, const unsigned int inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType);
+	Texture(const std::string& inPath, const uint32_t inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType);
 
-	void LoadFTBitmap(const FT_Bitmap bitmap, const unsigned int format);
+	void LoadFTBitmap(const FT_Bitmap bitmap, const uint32_t format);
 	void LoadDDS();
 	void LoadCubemapDDS();
 
@@ -59,17 +59,17 @@ public:
 	void Unbind() const;
 
 	// Activate the texture unit then bind texture
-	void Enable(const unsigned int textureUnit) const;
+	void Enable(const uint32_t textureUnit) const;
 
 	// Set everything back to default once texture is configured
 	void Disable() const;
 
-	unsigned int GetRendererID() const { return rendererID; }
+	uint32_t GetRendererID() const { return rendererID; }
 	const std::string& GetPath() const { return path; }
 
 private:
-	unsigned int target{ 0 };
-	unsigned int rendererID{ 0 };
+	uint32_t target{ 0 };
+	uint32_t rendererID{ 0 };
 	std::string path;
 
 	// @todo - Use this variable to identify the type of the texture used in a specific model and process samplers accordingly in shaders

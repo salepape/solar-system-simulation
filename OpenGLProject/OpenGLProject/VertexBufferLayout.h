@@ -25,15 +25,15 @@ struct VertexAttributeLayout
 {
 	VertexAttributeLocation location;
 
-	unsigned int type{ 0 };
-	unsigned int count{ 0 };
+	uint32_t type{ 0 };
+	uint32_t count{ 0 };
 	unsigned char normalized{ 0 };
 };
 
 class VertexBufferLayout
 {
 public:
-	void AddAttributeLayout(const VertexAttributeLocation index, const unsigned int type, const unsigned int count);
+	void AddAttributeLayout(const VertexAttributeLocation index, const uint32_t type, const uint32_t count);
 
 	const std::vector<VertexAttributeLayout>& GetAttributeLayouts() const { return attributeLayouts; }
 

@@ -34,10 +34,10 @@ public:
 	void setUniformVec3(const std::string& name, const float x, const float y, const float z);
 	void setUniformMat4(const std::string& name, const glm::mat4& mat);
 
-	unsigned int GetRendererID() const { return rendererID; }
+	uint32_t GetRendererID() const { return rendererID; }
 
 private:
-	unsigned int rendererID{ 0 };
+	uint32_t rendererID{ 0 };
 
 	std::unordered_map<std::string, int> uniformLocationCache;
 
@@ -48,13 +48,13 @@ private:
 	std::string ParseShader(const std::string& path) const;
 
 	// Create and compile a shader object
-	unsigned int CreateShader(const unsigned int type, const std::string& source) const;
+	uint32_t CreateShader(const uint32_t type, const std::string& source) const;
 
 	// Create a program object on which we attach each created shader
-	void CreateProgram(const unsigned int vsID, const unsigned int fsID);
+	void CreateProgram(const uint32_t vsID, const uint32_t fsID);
 
 	// Utility function to check object compilation/linking errors
-	void CheckValidity(const unsigned int ID, const ShaderProcessStage shaderProcessStage) const;
+	void CheckValidity(const uint32_t ID, const ShaderProcessStage shaderProcessStage) const;
 };
 
 

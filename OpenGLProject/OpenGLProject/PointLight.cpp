@@ -19,7 +19,7 @@ PointLight::PointLight(const glm::vec3& inPosition, const ReflectionParams& inRe
 
 }
 
-void PointLight::Store(const std::vector<unsigned int>& entitiesShadersIDs)
+void PointLight::Store(const std::vector<uint32_t>& entitiesShadersIDs)
 {
 	ubo = new UniformBuffer(entitiesShadersIDs, "pointLightParams", static_cast<size_t>(4 * Utils::vec4Size + 4 * Utils::scalarSize));
 	ubo->InitSubData({

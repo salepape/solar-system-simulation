@@ -12,7 +12,7 @@
 
 
 
-Camera::Camera(const glm::vec3& inPosition, const float inFovY, const std::vector<unsigned int>& shaderIDs) :
+Camera::Camera(const glm::vec3& inPosition, const float inFovY, const std::vector<uint32_t>& shaderIDs) :
 	position(inPosition), fovY(inFovY), forward({ 0.0f, 0.0f, -1.0f })
 {
 	UpdateCameraVectors();
@@ -72,7 +72,7 @@ void Camera::UpdateCameraVectors()
 	up = glm::normalize(glm::cross(right, forward));
 }
 
-void Camera::AllocateProjectionView(const std::vector<unsigned int>& shaderIDs)
+void Camera::AllocateProjectionView(const std::vector<uint32_t>& shaderIDs)
 {
 	ubo = new UniformBuffer(shaderIDs, "ubo_ProjectionView", static_cast<size_t>(Utils::mat4v4Size));
 }

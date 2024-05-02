@@ -5,14 +5,14 @@
 
 
 
-Texture::Texture(const std::string& inPath, const unsigned int inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType) :
+Texture::Texture(const std::string& inPath, const uint32_t inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType) :
 	path(inPath), target(inTarget), textureType(inTextureType)
 {
 	SetWraps(wrapOptions);
 	SetFilters(filterOptions);
 }
 
-void Texture::LoadFTBitmap(const FT_Bitmap bitmap, const unsigned int format)
+void Texture::LoadFTBitmap(const FT_Bitmap bitmap, const uint32_t format)
 {
 	// Generate then bind Texture Object (= TO) to the OpenGL TO type we want 
 	glGenTextures(1, &rendererID);
@@ -35,7 +35,7 @@ void Texture::LoadDDS()
 
 	if (rendererID == 0)
 	{
-		printf("ERROR::SOIL - Loading error: '%s'\n", SOIL_last_result());
+		std::cout << "ERROR::SOIL - Loading error: '%s'\n" << SOIL_last_result() << std::endl;
 	}
 }
 
@@ -46,7 +46,7 @@ void Texture::LoadCubemapDDS()
 
 	if (rendererID == 0)
 	{
-		printf("ERROR::SOIL - Loading error: '%s'\n", SOIL_last_result());
+		std::cout << "ERROR::SOIL - Loading error: '%s'\n" << SOIL_last_result() << std::endl;
 	}
 }
 
@@ -77,7 +77,7 @@ void Texture::Unbind() const
 	glBindTexture(target, 0);
 }
 
-void Texture::Enable(const unsigned int textureUnit) const
+void Texture::Enable(const uint32_t textureUnit) const
 {
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
 
