@@ -14,5 +14,13 @@ OpenGLProject/.vs/
 # Temporary Debug/Release folders
 OpenGLProject/OpenGLProject/Intermediate/
 
-# Research documents
+# Debug build folder
+OpenGLProject/Output/Debug
+
+# Unnecessary release build files
+OpenGLProject/Output/Release/**/*.iobj
+OpenGLProject/Output/Release/**/*.ipdb
+OpenGLProject/Output/Release/**/*.pdb
+
+# Sciencific research papers
 Documents

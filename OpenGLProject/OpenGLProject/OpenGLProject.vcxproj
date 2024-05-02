@@ -72,26 +72,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)/Tools/Includes;$(SolutionDir)/Tools/Includes/glfw;$(SolutionDir)/Tools/Includes/glad;$(SolutionDir)/Tools/Includes/glm;$(SolutionDir)/Tools/Includes/soil2;$(SolutionDir)/Tools/Includes/assimp;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)/Tools/Libraries/x32;$(SolutionDir)/Tools/Libraries/x32/glfw;$(SolutionDir)/Tools/Libraries/x32/soil2;$(SolutionDir)/Tools/Libraries/x32/assimp;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)Output\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)/Tools/Includes;$(SolutionDir)/Tools/Includes/glfw;$(SolutionDir)/Tools/Includes/glad;$(SolutionDir)/Tools/Includes/glm;$(SolutionDir)/Tools/Includes/soil2;$(SolutionDir)/Tools/Includes/assimp;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)/Tools/Libraries/x64;$(SolutionDir)/Tools/Libraries/x64/glfw;$(SolutionDir)/Tools/Libraries/x64/soil2;$(SolutionDir)/Tools/Libraries/x64/assimp;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)Output\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)/Tools/Includes;$(SolutionDir)/Tools/Includes/glfw;$(SolutionDir)/Tools/Includes/glad;$(SolutionDir)/Tools/Includes/glm;$(SolutionDir)/Tools/Includes/soil2;$(SolutionDir)/Tools/Includes/assimp;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)/Tools/Libraries/x32;$(SolutionDir)/Tools/Libraries/x32/glfw;$(SolutionDir)/Tools/Libraries/x32/soil2;$(SolutionDir)/Tools/Libraries/x32/assimp;$(LibraryPath)</LibraryPath>
-    <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)Output\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
+    <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)/Tools/Includes;$(SolutionDir)/Tools/Includes/glfw;$(SolutionDir)/Tools/Includes/glad;$(SolutionDir)/Tools/Includes/glm;$(SolutionDir)/Tools/Includes/soil2;$(SolutionDir)/Tools/Includes/assimp;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)/Tools/Libraries/x64;$(SolutionDir)/Tools/Libraries/x64/glfw;$(SolutionDir)/Tools/Libraries/x64/soil2;$(SolutionDir)/Tools/Libraries/x64/assimp;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)Output\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
