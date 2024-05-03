@@ -79,12 +79,6 @@ void Application::Pause(const bool inIsPaused)
 
 void Application::SimulateSolarSystem()
 {
-	const float aspectRatio = window->GetAspectRatio();
-
-
-
-
-
 	Renderer renderer;
 	renderer.DepthTest();
 
@@ -176,7 +170,7 @@ void Application::SimulateSolarSystem()
 		controller.GetCamera().SetPositionUniform(defaultShader);
 		controller.GetCamera().SetPositionUniform(sunShader);
 		controller.GetCamera().SetPositionUniform(instancedModelShader);
-		controller.GetCamera().SetProjectionViewUniform(aspectRatio);
+		controller.GetCamera().SetProjectionViewUniform(window->GetAspectRatio());
 
 		// Texture sampler ID (one for each object) 
 		uint32_t samplerID = 0;
@@ -357,7 +351,7 @@ void Application::SimulateSolarSystem()
 
 
 		// Draw Milky Way skybox
-		controller.GetCamera().SetInfiniteProjectionViewUniform(aspectRatio);
+		controller.GetCamera().SetInfiniteProjectionViewUniform(window->GetAspectRatio());
 		skyboxShader.Enable();
 		skyboxShader.setUniformInt("fu_DiffuseMat", samplerID);
 		renderer.DepthEqual();

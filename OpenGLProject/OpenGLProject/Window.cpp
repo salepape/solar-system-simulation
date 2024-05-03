@@ -5,9 +5,10 @@
 
 
 
-Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::string& inTitle) :
-	width(inWidth), height(inHeight), title(inTitle)
+Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::string& inTitle) : title(inTitle)
 {
+	UpdateDimensions(inWidth, inHeight);
+
 	lastCursorPositionCache = { 0.5f * width, 0.5f * height };
 
 	GLFWWindow = initGLFWWindow();
@@ -62,10 +63,19 @@ int32_t Window::MakeContextCurrent()
 
 void Window::Callback_SetFramebufferResize()
 {
-	glfwSetFramebufferSizeCallback(GLFWWindow, [](GLFWwindow* /*window*/, int32_t width, int32_t height)
+	glfwSetFramebufferSizeCallback(GLFWWindow, [](GLFWwindow* window, int32_t width, int32_t height)
 	{
-		// Make sure the viewport matches the new window dimensions
 		glViewport(0, 0, width, height);
+
+		// Access contextual data from within GLFWwindow callback
+		auto* const currentWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+		if (currentWindow == nullptr)
+		{
+			std::cout << "ERROR::WINDOW - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
+			return;
+		}
+
+		currentWindow->UpdateDimensions(width, height);
 	});
 }
 
@@ -89,13 +99,11 @@ void Window::FreeUpResources()
 	glfwTerminate();
 }
 
-float Window::GetAspectRatio() const
+void Window::UpdateDimensions(const uint32_t newWidth, const uint32_t newHeight)
 {
-	int32_t width;
-	int32_t height;
-	glfwGetWindowSize(GLFWWindow, &width, &height);
-
-	return width * 1.0f / height;
+	width = newWidth;
+	height = newHeight;
+	aspectRatio = width * 1.0f / height;
 }
 
 const glm::vec2& Window::GetOffsetFromLastCursorPosition(const double xPosition, const double yPosition)

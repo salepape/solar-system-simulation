@@ -32,14 +32,17 @@ public:
 	// Clean up properly all previous allocated GLFW resources
 	void FreeUpResources();
 
-	float GetAspectRatio() const;
+	float GetAspectRatio() const { return aspectRatio; }
+	void UpdateDimensions(const uint32_t newWidth, const uint32_t newHeight);
 
 	const glm::vec2& GetOffsetFromLastCursorPosition(const double xPosition, const double yPosition);
 
 private:
-	int32_t width{ 0 };
-	int32_t height{ 0 };
+	uint32_t width{ 0 };
+	uint32_t height{ 0 };
 	const std::string title;
+
+	float aspectRatio{ 0.0f };
 
 	// Variables for mouse callback function
 	bool firstMouseInput{ true };
