@@ -42,8 +42,8 @@ private:
 
 	// Cache used to avoid detecting the button release happening after a button press if quick
 	double pauseStartTime{ 0.0 };
-
 	double displayLegendStartTime{ 0.0 };
+	double cursorModeStartTime{ 0.0 };
 
 	// Duration needed before a button release is detected
 	double detectedButtonReleaseMinDuration{ 1.0 };

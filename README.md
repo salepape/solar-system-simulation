@@ -45,8 +45,9 @@ To be able to explore the Solar System, the user should use the following contro
 * <kbd>X</kbd> to increase speed when moving,
 * <kbd>mouse scroll wheel</kbd> to zoom in/out,
 * <kbd>L</kbd> to make celestial body names appear above them,
-* <kbd>up arrow</kbd> and <kbd>down arrow</kbd> to speed up/slow down the simulation,
-* <kbd>space</kbd> to pause/unpause the simulation,
+* <kbd>Up arrow</kbd> and <kbd>down arrow</kbd> to speed up/slow down the simulation,
+* <kbd>Space</kbd> to pause/unpause the simulation,
+* <kbd>Tab</kbd> to switch the application to cursor mode (to resize the window easily for instance),
 * <kbd>Esc</kbd> to quit the simulation.
 
 P.S. Press <kbd>Win</kbd> to background the simulation while it runs.

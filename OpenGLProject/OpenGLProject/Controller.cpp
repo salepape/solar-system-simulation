@@ -184,6 +184,21 @@ void Controller::Callback_SetPause()
 				currentController->pauseStartTime = 0.0;
 			}
 		}
+		else if (key == GLFW_KEY_TAB)
+		{
+			const auto& currentController = GetCurrentController();
+			if (action == GLFW_PRESS && currentController && currentController->cursorModeStartTime == 0.0)
+			{
+				Application::GetInstance().GetWindow().SetCursorMode(GLFW_CURSOR_NORMAL);
+				currentController->cursorModeStartTime = Application::GetInstance().GetTime();
+			}
+
+			if (action == GLFW_RELEASE && currentController && Application::GetInstance().GetTime() - currentController->cursorModeStartTime > currentController->detectedButtonReleaseMinDuration)
+			{
+				Application::GetInstance().GetWindow().SetCursorMode(GLFW_CURSOR_DISABLED);
+				currentController->cursorModeStartTime = 0.0;
+			}
+		}
 		else if (key == GLFW_KEY_L)
 		{
 			const auto& currentController = GetCurrentController();

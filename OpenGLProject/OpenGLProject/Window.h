@@ -37,6 +37,9 @@ public:
 
 	const glm::vec2& GetOffsetFromLastCursorPosition(const double xPosition, const double yPosition);
 
+	// Make the cursor invisible to the player and allow movements even if cursor is theorically outside the window
+	void SetCursorMode(const int modeValue);
+
 private:
 	uint32_t width{ 0 };
 	uint32_t height{ 0 };
@@ -53,9 +56,6 @@ private:
 
 	// Adapt the viewport size whenever the window size has been changed (by OS or the user)
 	void Callback_SetFramebufferResize();
-
-	// Make the cursor invisible to the player and allow movements even if cursor is theorically outside the window
-	void SetInputMode();
 };
 
 

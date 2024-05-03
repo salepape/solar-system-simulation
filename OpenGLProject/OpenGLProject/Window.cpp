@@ -29,7 +29,7 @@ Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::strin
 
 	Callback_SetFramebufferResize();
 
-	SetInputMode();
+	SetCursorMode(GLFW_CURSOR_DISABLED);
 }
 
 GLFWwindow* const Window::initGLFWWindow()
@@ -79,9 +79,9 @@ void Window::Callback_SetFramebufferResize()
 	});
 }
 
-void Window::SetInputMode()
+void Window::SetCursorMode(const int modeValue)
 {
-	glfwSetInputMode(GLFWWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(GLFWWindow, GLFW_CURSOR, modeValue);
 }
 
 void Window::SwapBuffers()
