@@ -2,13 +2,13 @@
 
 ## Introduction
 
-Here is a simulation of the Solar System in 3D! This project mainly originates from a strong interest for the Universe that surrounds us, and Graphics programming. I familiarised myself with the OpenGL specification and some classic Rendering techniques. The development of this project is still ongoing...
+Here is a simulation of the Solar System in 3D! This project mainly originates from a strong interest in the Universe that surrounds us, and Graphics programming. I familiarised myself with the OpenGL specification and some classic Rendering techniques. The development of this project is still ongoing...
 
 ## Technologies
 
 The project is using Visual Studio 17 and Windows 10 environment. It has been implemented in C++17/GLSL, uses OpenGL 3.2 (Core profile) specification, as well as a set of libraries:
 * Glad to get Core OpenGL function pointers,
-* GLFW3 to intialise a window and handle user input,
+* GLFW3 to initialise a window and handle user input,
 * GLM for mathematical utility functions,
 * SOIL2 to load textures in different formats,
 * Assimp to load 3D models,
@@ -32,7 +32,7 @@ Project is available on Windows only, on OS architecture x32 and x64.
 
 You can either clone the repository to your computer, or unzip the corresponding .zip folder after downloading it (it will be called solar-system-simulation-master). Then:
 * If you just want to run the program, pick the executable <b>OpenGLProject.exe</b> you need according to your OS architecture (stored in <i>OpenGLProject/Output/Release/Win32 or x64/</i>), and drag it to the project main folder (called <i>OpenGLProject/OpenGLProject</i>) before double-clicking on it (otherwise it won't work, the program stating that it didn't find ASSIMP library),
-* If you want to run the code, you need to have Visual Studio 17 installed, then go to the project main folder, open <b>OpenGLProject.sln</b> solution, choose the architecture/configutation you want, and click on the green arrow button to launch the simulation.
+* If you want to run the code, you need to have Visual Studio 17 installed, then go to the project main folder, open <b>OpenGLProject.sln</b> solution, choose the architecture/configuration you want, and click on the green arrow button to launch the simulation.
 
 The execution of the program should require around 3 seconds in Release mode, and 5 seconds in Debug mode before starting. Enjoy!
 
