@@ -16,7 +16,7 @@ class UniformBuffer;
 class Camera
 {
 public:
-	Camera(const glm::vec3& inPosition, const float fovY, const std::vector<uint32_t>& shaderIDs);
+	Camera(const glm::vec3& inPosition, const float inFovY, const float inFarPlane, const std::vector<uint32_t>& shaderIDs);
 
 	const glm::vec3& GetPosition() const { return position; }
 	const glm::vec3& GetUp() const { return up; }
@@ -40,6 +40,7 @@ private:
 
 	// Field of view along the y-axis [in degrees]
 	float fovY{ 0.0f };
+	float farPlane{ 0.0f };
 
 	glm::vec3 up;
 	glm::vec3 right;

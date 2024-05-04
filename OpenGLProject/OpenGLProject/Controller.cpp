@@ -10,8 +10,8 @@
 
 
 
-Controller::Controller(const glm::vec3& inPosition, const float inZoomMaxLevel, const std::vector<uint32_t>& shaderIDs) :
-	camera({ inPosition, inZoomMaxLevel, shaderIDs }), zoomMaxLevel(inZoomMaxLevel)
+Controller::Controller(const glm::vec3& inPosition, const float inZoomMaxLevel, const float inFarPlane, const std::vector<uint32_t>& shaderIDs) :
+	camera({ inPosition, inZoomMaxLevel, inFarPlane, shaderIDs }), zoomMaxLevel(inZoomMaxLevel)
 {
 	zoomLeft = inZoomMaxLevel;
 

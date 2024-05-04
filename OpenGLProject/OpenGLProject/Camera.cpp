@@ -12,8 +12,8 @@
 
 
 
-Camera::Camera(const glm::vec3& inPosition, const float inFovY, const std::vector<uint32_t>& shaderIDs) :
-	position(inPosition), fovY(inFovY), forward({ 0.0f, 0.0f, -1.0f })
+Camera::Camera(const glm::vec3& inPosition, const float inFovY, const float inFarPlane, const std::vector<uint32_t>& shaderIDs) :
+	position(inPosition), fovY(inFovY), farPlane(inFarPlane), forward({ 0.0f, 0.0f, -1.0f })
 {
 	UpdateCameraVectors();
 	AllocateProjectionView(shaderIDs);
@@ -21,7 +21,7 @@ Camera::Camera(const glm::vec3& inPosition, const float inFovY, const std::vecto
 
 glm::mat4 Camera::ComputeProjectionMatrix(const float windowAspectRatio) const
 {
-	return glm::perspective(glm::radians(fovY), windowAspectRatio, 0.1f, 1000.0f);
+	return glm::perspective(glm::radians(fovY), windowAspectRatio, 0.1f, farPlane);
 }
 
 glm::mat4 Camera::ComputeViewMatrix() const

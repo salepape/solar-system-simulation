@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
 #include <iostream>
 #include <string>
@@ -18,7 +19,7 @@ constexpr float DIST_SCALE_FACTOR = 10.0f;
 
 
 // Paths to retrieve DDS textures
-std::array<const std::string, BODIES_COUNT> texturePaths
+static std::array<const std::string, BODIES_COUNT> texturePaths
 {
 	// Star
 	"../Textures/Stars/8k_sun.dds",
@@ -72,7 +73,7 @@ struct EntityInfo
 };
 
 // Solar System celestial bodies data
-std::unordered_map<std::string, EntityInfo> data(BODIES_COUNT);
+static std::unordered_map<std::string, EntityInfo> data(BODIES_COUNT);
 
 // Represent all constant formula parts (so we can compute them outside the Render loop)
 struct PreComputations
@@ -99,13 +100,13 @@ struct PreComputations
 };
 
 // Solar System celestial bodies pre-computations
-std::unordered_map<std::string, PreComputations> preComputations(BODIES_COUNT);
+static std::unordered_map<std::string, PreComputations> preComputations(BODIES_COUNT);
 
 
 
 // Fill data structures storing all celestial bodies information/pre-computations (collected from NASA website, wikipedia and passionates)
 // Note: data is scaled so we can visualise the whole Solar System without having to travel too much time.
-void LoadData()
+static void LoadData()
 {
 	using dataElmt = std::pair<std::string, EntityInfo>;
 
@@ -134,7 +135,7 @@ void LoadData()
 	//data.insert(dataElmt("Phobos",		{ texturePaths[19], 0.000f,	data["Mars"].radius + 0.94f * DIST_SCALE_FACTOR,	 0.0f,	 0.319f,    0.319f,  nullptr, nullptr, 28.4f,	"Mars", &data["Mars"])    }));
 }
 
-void LoadPreComputations()
+static void LoadPreComputations()
 {
 	using preComputationsElmt = std::pair<std::string, PreComputations>;
 	for (const auto& dataInput : data)
