@@ -17,7 +17,7 @@ Controller::Controller(const glm::vec3& position, const glm::vec3& rotation, con
 
 	Callback_SetCursorPosition();
 	Callback_SetScroll();
-	Callback_SetPause();
+	Callback_SetKey();
 }
 
 void Controller::ProcessInput(const float deltaTime)
@@ -36,6 +36,11 @@ void Controller::ProcessInput(const float deltaTime)
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_DOWN))
 	{
 		Application::GetInstance().ChangeSpeed(0.5f);
+	}
+
+	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_R))
+	{
+		camera.Reset();
 	}
 
 	// Designed for AZERTY keyboards with corresponding QWERTY GLFW_KEYs
@@ -148,7 +153,7 @@ void Controller::Callback_SetScroll()
 	});
 }
 
-void Controller::Callback_SetPause()
+void Controller::Callback_SetKey()
 {
 	glfwSetKeyCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* window, const int32_t key, const int32_t /*scanCode*/, const int32_t action, const int32_t /*mods*/)
 	{

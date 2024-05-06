@@ -21,6 +21,9 @@ public:
 	const glm::vec3& GetPosition() const { return position; }
 	const glm::vec3& GetUp() const { return up; }
 
+	// Set position/rotation of the camera to their initial values
+	void Reset();
+
 	void UpdateForwardPosition(const float distance);
 	void UpdateUpPosition(const float distance);
 	void UpdateRightPosition(const float distance);
@@ -37,6 +40,8 @@ public:
 
 private:
 	glm::vec3 position;
+	glm::vec3 initialPosition;
+	glm::vec3 initialRotation;
 
 	// Field of view along the y-axis [in degrees]
 	float fovY{ 0.0f };

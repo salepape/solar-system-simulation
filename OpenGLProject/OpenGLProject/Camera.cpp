@@ -15,8 +15,21 @@
 Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane, const std::vector<uint32_t>& shaderIDs) :
 	position(inPosition), pitch(inRotation.y), yaw(inRotation.z), fovY(inFovY), farPlane(inFarPlane), forward({ 0.0f, 0.0f, -1.0f })
 {
+	initialPosition = inPosition;
+	initialRotation = inRotation;
+
 	UpdateCameraVectors();
 	AllocateProjectionView(shaderIDs);
+}
+
+void Camera::Reset()
+{
+	position = initialPosition;
+
+	pitch = initialRotation.y;
+	yaw = initialRotation.z;
+
+	UpdateCameraVectors();
 }
 
 glm::mat4 Camera::ComputeProjectionMatrix(const float windowAspectRatio) const

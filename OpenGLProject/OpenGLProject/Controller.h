@@ -54,8 +54,8 @@ private:
 	// Detect if any mouse wheel movement is made and react accordingly
 	void Callback_SetScroll();
 
-	// Detect when the pause button is pressed/released properly
-	void Callback_SetPause();
+	// Detect when a key is pressed/released
+	void Callback_SetKey();
 };
 
 
