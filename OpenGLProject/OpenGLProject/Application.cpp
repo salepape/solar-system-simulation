@@ -10,7 +10,7 @@
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
-#include <iostream>
+#include <map>
 
 #include "Application.h"
 #include "Belt.h"
@@ -80,10 +80,10 @@ void Application::Pause(const bool inIsPaused)
 void Application::SimulateSolarSystem()
 {
 	Renderer renderer;
-	renderer.DepthTest();
-
-	// Needed for text rendering
-	renderer.Blend();
+	renderer.EnableDepthTesting();
+	renderer.EnableBlending();
+	// @todo - Optimise rendering by activating face culling only when the controller is outside spheres
+	//renderer.EnableFaceCulling();
 
 	// Build and compile shader programs
 	Shader defaultShader("DefaultShader.vs", "DefaultShader.fs");
@@ -106,10 +106,6 @@ void Application::SimulateSolarSystem()
 	Model asteroid("../Models/Asteroid.obj");
 	Model ice("../Models/Ice.obj");
 
-
-
-
-
 	// Initialise all celestial bodies and their respective orbit (applying celectial body textures to have some colour consistency)
 	LoadData();
 	for (auto& dataInput : data)
@@ -130,8 +126,8 @@ void Application::SimulateSolarSystem()
 	LoadPreComputations();
 
 	// Do some instancing to build the main Solar Systems rock belts
-	Belt asteroidBelt({ asteroid, 5000,  0.05f, 10 }, { data["Mars"].dist * 1.1f,	  2.75f * DIST_SCALE_FACTOR * 1.0f / 2.5f,	0.4f });
-	Belt kuiperBelt({ ice,		 20000, 0.05f, 20 }, { data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR,				0.4f });
+	Belt asteroidBelt(	{ asteroid, 5000,  0.05f, 10 },		{ data["Mars"].dist * 1.1f,	  2.75f * DIST_SCALE_FACTOR * 1.0f / 2.5f,	0.4f });
+	Belt kuiperBelt(	{ ice,		 20000, 0.05f, 20 },	{ data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR,				0.4f });
 
 
 
@@ -166,6 +162,7 @@ void Application::SimulateSolarSystem()
 
 		renderer.Clear();
 
+		std::unordered_map<std::string, glm::vec3> bodyPositions;
 		const glm::vec3& cameraPosition = controller.GetCamera().GetPosition();
 
 		controller.GetCamera().SetPositionUniform(defaultShader);
@@ -176,52 +173,50 @@ void Application::SimulateSolarSystem()
 		// Texture sampler ID (one for each object) 
 		uint32_t samplerID = 0;
 
+
+
+
+
 		// Draw celestial bodies, their orbits and their motion
 		for (auto& dataInput : data)
 		{
-			// Both angles below are in radians
-			float angleRot = 0.0f;
-			float angleRotItself = 0.0f;
+			const float frameRate = GetFrameRate();
 
-			if (dataInput.first != "Sun")
+			// Angle of rotation around the sun (resp. planet) for planets (resp. moons) per frame [in radians]
+			const float angleRot = preComputations[dataInput.first].angleRotCst * frameRate;
+			if (dataInput.second.parentInfo == nullptr)
 			{
-				const float frameRate = GetFrameRate();
-
-				// Angle of rotation around the sun (resp. planet) for planets (resp. moons) per frame
-				angleRot = preComputations[dataInput.first].angleRotCst * frameRate;
-				if (dataInput.second.parentInfo == nullptr)
-				{
-					dataInput.second.angleRot = angleRot;
-				}
-
-				// Angle of rotation of the celestial body around itself per frame
-				angleRotItself = preComputations[dataInput.first].rotPeriodCst * frameRate;
+				dataInput.second.angleRot = angleRot;
 			}
+
+			// Angle of rotation of the celestial body around itself per frame [in radians]
+			const float angleRotItself = preComputations[dataInput.first].rotPeriodCst * frameRate;
 
 			// Simulate movements that affects the current celestial bodies
 			glm::mat4 defaultModelMatrix(1.0f);
 			glm::mat4 orbitModelMatrix(1.0f);
-			glm::mat4 textModelMatrix(1.0f);
 
 			// Circular translation of satellite around corresponding planet
 			if (const auto& satelliteParent = dataInput.second.parentInfo)
 			{
-				const float sinPlanetAngleRot = sin(satelliteParent->angleRot);
+				const float sinParentAngleRot = sin(satelliteParent->angleRot);
 
 				defaultModelMatrix = glm::translate(defaultModelMatrix, glm::vec3(
-					preComputations[dataInput.second.parentName].cosCircularTslCst * sinPlanetAngleRot,
-					preComputations[dataInput.second.parentName].sinCircularTslCst * sinPlanetAngleRot,
+					preComputations[dataInput.second.parentName].cosCircularTslCst * sinParentAngleRot,
+					preComputations[dataInput.second.parentName].sinCircularTslCst * sinParentAngleRot,
 					satelliteParent->dist * cos(satelliteParent->angleRot)));
 				orbitModelMatrix = defaultModelMatrix;
 			}
 
 			// Orbital tilt (around axis colinear to orbit direction) + Circular translation along the orbit (equidistance to axis normal to orbital plane)
 			const float sinAngleRot = sin(angleRot);
+
 			defaultModelMatrix = glm::translate(defaultModelMatrix, glm::vec3(
 				preComputations[dataInput.first].cosCircularTslCst * sinAngleRot,
 				preComputations[dataInput.first].sinCircularTslCst * sinAngleRot,
 				dataInput.second.dist * cos(angleRot)));
-			textModelMatrix = defaultModelMatrix;
+
+			bodyPositions.insert({ dataInput.first, defaultModelMatrix[3] });
 
 			// Axis tilt (around axis colinear to orbit direction)
 			defaultModelMatrix = glm::rotate(defaultModelMatrix, preComputations[dataInput.first].obliquityInRad, Utils::rightVector);
@@ -274,53 +269,6 @@ void Application::SimulateSolarSystem()
 				}
 			}
 
-
-
-
-
-			// Draw billboard (containing current celestial body name) on top of current celestial body mesh/model
-			if (IsLegend())
-			{
-				// Orient text to camera position
-				const glm::vec3& look = glm::normalize(cameraPosition - glm::vec3(textModelMatrix[3]));
-				const glm::vec3& right = glm::cross(controller.GetCamera().GetUp(), look);
-				const glm::vec3& up2 = cross(look, right);
-				textModelMatrix[0] = glm::vec4(right, 0);
-				textModelMatrix[1] = glm::vec4(up2, 0);
-				textModelMatrix[2] = glm::vec4(look, 0);
-
-				textShader.Enable();
-				textShader.setUniformMat4("vu_Model", textModelMatrix);
-				textShader.setUniformInt("fu_DiffuseMat", samplerID);
-				textShader.setUniformVec3("fu_DiffuseColour", Utils::whiteColour);
-
-				float textHeight = 0.0f;
-				float textScale = 0.0f;
-				if (dataInput.first == "Sun")
-				{
-					textHeight = preComputations[dataInput.first].sunTextHeight;
-					textScale = preComputations[dataInput.first].sunTextScale;
-				}
-				// If this is a satellite (i.e. has a parent)
-				else if (dataInput.second.parentInfo)
-				{
-					textHeight = preComputations[dataInput.first].satelliteTextHeight;
-					textScale = preComputations[dataInput.first].satelliteTextScale;
-				}
-				else
-				{
-					textHeight = preComputations[dataInput.first].textHeight;
-					textScale = preComputations[dataInput.first].textScale;
-				}
-				textRenderer.Render(renderer, dataInput.first, 0.0f, textHeight, textScale, samplerID++);
-
-				textShader.Disable();
-			}
-
-
-
-
-
 			// Draw planet orbits
 			if (dataInput.first != "Sun")
 			{
@@ -331,6 +279,64 @@ void Application::SimulateSolarSystem()
 				defaultShader.setUniformInt("fu_DiffuseMat", samplerID);
 				dataInput.second.orbit->Render(renderer, samplerID++);
 				defaultShader.Disable();
+			}
+		}
+
+
+
+
+
+		// Draw meshes with transparency (only billboard containing current celestial body name on top of the mesh/model for now)
+		if (IsLegend())
+		{
+			// Be sure we render names from the farthest to the closest celestial body to the camera to make blending work for multiple objects
+			std::map<float, std::string> bodiesSortedPerDist;
+			for (const auto& dataInput : data)
+			{
+				bodiesSortedPerDist.insert({ glm::distance(cameraPosition, bodyPositions[dataInput.first]), dataInput.first });
+			}
+
+			for (auto it = bodiesSortedPerDist.rbegin(); it != bodiesSortedPerDist.rend(); ++it)
+			{
+				const std::string& currentBodyName = it->second;
+
+				// Orient text to camera position
+				glm::mat4 textModelMatrix(1.0f);
+				const glm::vec3& bodyPosition = bodyPositions[currentBodyName];
+				const glm::vec3& forward = glm::normalize(cameraPosition - bodyPosition);
+				const glm::vec3& right = glm::cross(controller.GetCamera().GetUp(), forward);
+				const glm::vec3& up = cross(forward, right);
+				textModelMatrix[0] = glm::vec4(right, 0.0f);
+				textModelMatrix[1] = glm::vec4(up, 0.0f);
+				textModelMatrix[2] = glm::vec4(forward, 0.0f);
+				textModelMatrix[3] = glm::vec4(bodyPosition, 1.0f);
+
+				textShader.Enable();
+				textShader.setUniformMat4("vu_Model", textModelMatrix);
+				textShader.setUniformInt("fu_DiffuseMat", samplerID);
+				textShader.setUniformVec3("fu_DiffuseColour", Utils::whiteColour);
+
+				float textHeight = 0.0f;
+				float textScale = 0.0f;
+				if (currentBodyName == "Sun")
+				{
+					textHeight = preComputations[currentBodyName].sunTextHeight;
+					textScale = preComputations[currentBodyName].sunTextScale;
+				}
+				// If this is a satellite (i.e. has a parent)
+				else if (data[currentBodyName].parentInfo)
+				{
+					textHeight = preComputations[currentBodyName].satelliteTextHeight;
+					textScale = preComputations[currentBodyName].satelliteTextScale;
+				}
+				else
+				{
+					textHeight = preComputations[currentBodyName].textHeight;
+					textScale = preComputations[currentBodyName].textScale;
+				}
+				textRenderer.Render(renderer, currentBodyName, 0.0f, textHeight, textScale, samplerID++);
+
+				textShader.Disable();
 			}
 		}
 
@@ -355,9 +361,9 @@ void Application::SimulateSolarSystem()
 		controller.GetCamera().SetInfiniteProjectionViewUniform(window->GetAspectRatio());
 		skyboxShader.Enable();
 		skyboxShader.setUniformInt("fu_DiffuseMat", samplerID);
-		renderer.DepthEqual();
+		renderer.SetDepthFctToEqual();
 		skybox.Render(renderer, samplerID++);
-		renderer.DepthLess();
+		renderer.SetDepthFctToLess();
 		skyboxShader.Disable();
 
 
@@ -367,6 +373,10 @@ void Application::SimulateSolarSystem()
 		window->SwapBuffers();
 		window->PollEvents();
 	}
+
+	//renderer.DisableFaceCulling();
+	renderer.DisableBlending();
+	renderer.DisableDepthTesting();
 
 	window->FreeUpResources();
 }

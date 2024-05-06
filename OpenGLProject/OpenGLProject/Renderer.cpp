@@ -12,23 +12,43 @@ void Renderer::Clear() const
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::DepthTest() const
+void Renderer::EnableDepthTesting() const
 {
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Renderer::Blend() const
+void Renderer::EnableFaceCulling() const
+{
+	glEnable(GL_CULL_FACE);
+}
+
+void Renderer::DisableFaceCulling() const
+{
+	glDisable(GL_CULL_FACE);
+}
+
+void Renderer::EnableBlending() const
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void Renderer::DepthEqual() const
+void Renderer::DisableDepthTesting() const
+{
+	glDisable(GL_DEPTH_TEST);
+}
+
+void Renderer::DisableBlending() const
+{
+	glDisable(GL_BLEND);
+}
+
+void Renderer::SetDepthFctToEqual() const
 {
 	glDepthFunc(GL_LEQUAL);
 }
 
-void Renderer::DepthLess() const
+void Renderer::SetDepthFctToLess() const
 {
 	glDepthFunc(GL_LESS);
 }

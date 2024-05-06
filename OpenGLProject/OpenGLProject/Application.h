@@ -43,6 +43,7 @@ private:
 
 	bool isLegend{ false };
 
+	// Coordinate system based on constant Solar position.
 	// @todo - Create a specific SolarSystem solution to use the generic "OpenGL engine" code
 	void SimulateSolarSystem();
 

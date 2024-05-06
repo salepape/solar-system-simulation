@@ -110,7 +110,8 @@ static void LoadData()
 {
 	using dataElmt = std::pair<std::string, EntityInfo>;
 
-	data.insert(dataElmt("Sun",			{ texturePaths[0], 109.3f, 0.0f, 7.25f, 0.0f, 27.0f }));
+	// @todo - Figure out why I need to put this factor
+	data.insert(dataElmt("Sun",			{ texturePaths[0], 109.3f, 0.0f, 7.25f, 0.0f, 27.0f * 0.0001f }));
 
 	data.insert(dataElmt("Mercury",		{ texturePaths[1],  0.383f, data["Sun"].radius + 0.38f * DIST_SCALE_FACTOR,      0.03f,  87.97f,    58.6f,   7.01f }));
 	data.insert(dataElmt("Venus",		{ texturePaths[2],  0.95f,  data["Mercury"].dist + 0.72f * DIST_SCALE_FACTOR,    2.64f,  224.7f,   -243.02f, 3.39f }));
@@ -145,7 +146,7 @@ static void LoadPreComputations()
 
 		PreComputations preComp
 		{
-			Utils::doublePi * 1.0f / dataInput.second.orbPeriod,
+			dataInput.second.orbPeriod == 0.0f ? 0.0f : Utils::doublePi * 1.0f / dataInput.second.orbPeriod,
 			Utils::doublePi * dataInput.second.orbPeriod,
 			Utils::doublePi * dataInput.second.rotPeriod,
 
