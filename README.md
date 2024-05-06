@@ -41,7 +41,7 @@ P.S. If Avast antivirus gives you a warning that there is a threat while the sim
 ## Controls
 
 To be able to explore the Solar System, the user should use the following controls:
-* <kbd>Z</kbd>, <kbd>Q</kbd>, <kbd>S</kbd>, <kbd>D</kbd> (for an AZERTY keyboard), <kbd>left mouse button</kbd>, <kbd>right mouse button</kbd> to move forward, backward, left, right, up or down respectively,
+* <kbd>Z</kbd>, <kbd>Q</kbd>, <kbd>S</kbd>, <kbd>D</kbd> (for an AZERTY keyboard), <kbd>left mouse button</kbd> and <kbd>right mouse button</kbd> to move forward, to the left, backward, to the right, up and down respectively,
 * <kbd>X</kbd> to increase speed when moving,
 * <kbd>mouse scroll wheel</kbd> to zoom in/out,
 * <kbd>L</kbd> to make celestial body names appear above them,
