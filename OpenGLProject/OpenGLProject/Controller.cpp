@@ -10,8 +10,8 @@
 
 
 
-Controller::Controller(const glm::vec3& inPosition, const float inZoomMaxLevel, const float inFarPlane, const std::vector<uint32_t>& shaderIDs) :
-	camera({ inPosition, inZoomMaxLevel, inFarPlane, shaderIDs }), zoomMaxLevel(inZoomMaxLevel)
+Controller::Controller(const glm::vec3& position, const glm::vec3& rotation, const float inZoomMaxLevel, const float inFarPlane, const std::vector<uint32_t>& shaderIDs) :
+	camera({ position, rotation, inZoomMaxLevel, inFarPlane, shaderIDs }), zoomMaxLevel(inZoomMaxLevel)
 {
 	zoomLeft = inZoomMaxLevel;
 
@@ -68,11 +68,11 @@ void Controller::ProcessInput(const float deltaTime)
 	// Modify controller speed
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_X))
 	{
-		IncreaseSpeed(2.0f);
+		IncreaseTravelSpeed(2.0f);
 	}
 	if (InputHandler::GetInstance().IsKeyReleased(GLFW_KEY_X))
 	{
-		DecreaseSpeed(2.0f);
+		DecreaseTravelSpeed(2.0f);
 	}
 }
 
@@ -87,7 +87,7 @@ void Controller::UpdateZoomLeft(const float yOffset)
 	zoomLeft = glm::clamp(zoomLeft, zoomMinLevel, zoomMaxLevel);
 }
 
-void Controller::IncreaseSpeed(const float factor)
+void Controller::IncreaseTravelSpeed(const float factor)
 {
 	if (travelSpeed > factor * travelSpeedDefault)
 	{
@@ -97,7 +97,7 @@ void Controller::IncreaseSpeed(const float factor)
 	travelSpeed *= factor;
 }
 
-void Controller::DecreaseSpeed(const float factor)
+void Controller::DecreaseTravelSpeed(const float factor)
 {
 	if (travelSpeed < travelSpeedDefault)
 	{

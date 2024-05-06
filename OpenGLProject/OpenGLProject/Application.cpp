@@ -135,7 +135,7 @@ void Application::SimulateSolarSystem()
 
 	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun - farthest celestial body'
 	std::vector<uint32_t> allShadersIDs({ defaultShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID() });
-	Controller controller({ 0.0f, 50.0f, 200.0f }, 45.0f, 2.0f * data["Pluto"].dist, allShadersIDs);
+	Controller controller({ 0.0f, 100.0f, -25.0f }, { 0.0f, -25.0f, 90.0f }, 45.0f, 2.0f * data["Pluto"].dist, allShadersIDs);
 	window->controller = &controller;
 
 	std::vector<uint32_t> celestialBodyShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });

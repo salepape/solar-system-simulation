@@ -16,7 +16,7 @@ class UniformBuffer;
 class Camera
 {
 public:
-	Camera(const glm::vec3& inPosition, const float inFovY, const float inFarPlane, const std::vector<uint32_t>& shaderIDs);
+	Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane, const std::vector<uint32_t>& shaderIDs);
 
 	const glm::vec3& GetPosition() const { return position; }
 	const glm::vec3& GetUp() const { return up; }
@@ -46,10 +46,10 @@ private:
 	glm::vec3 right;
 	glm::vec3 forward;
 
-	// [in degrees]
-	float yaw{ -90.0f };
+	// Rotation angle around the Up vector [in degrees]
+	float yaw{ 0.0f };
 
-	// [in degrees]
+	// Rotation angle around the Right vector [in degrees]
 	float pitch{ 0.0f };
 
 	UniformBuffer* ubo{ nullptr };

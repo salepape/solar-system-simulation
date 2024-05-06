@@ -11,7 +11,7 @@
 class Controller
 {
 public:
-	Controller(const glm::vec3& position, const float inZoomMaxLevel, const float inFarPlane, const std::vector<uint32_t>& shaderIDs);
+	Controller(const glm::vec3& position, const glm::vec3& rotation, const float inZoomMaxLevel, const float inFarPlane, const std::vector<uint32_t>& shaderIDs);
 
 	// Process controller input received from any keyboard-like input system
 	void ProcessInput(const float deltaTime);
@@ -37,8 +37,8 @@ private:
 	// Process input received from a mouse scroll-wheel event (vertical wheel-axis to be considered only)
 	void UpdateZoomLeft(const float yoffset);
 
-	void IncreaseSpeed(const float factor);
-	void DecreaseSpeed(const float factor);
+	void IncreaseTravelSpeed(const float factor);
+	void DecreaseTravelSpeed(const float factor);
 
 	// Cache used to avoid detecting the button release happening after a button press if quick
 	double pauseStartTime{ 0.0 };

@@ -12,8 +12,8 @@
 
 
 
-Camera::Camera(const glm::vec3& inPosition, const float inFovY, const float inFarPlane, const std::vector<uint32_t>& shaderIDs) :
-	position(inPosition), fovY(inFovY), farPlane(inFarPlane), forward({ 0.0f, 0.0f, -1.0f })
+Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane, const std::vector<uint32_t>& shaderIDs) :
+	position(inPosition), pitch(inRotation.y), yaw(inRotation.z), fovY(inFovY), farPlane(inFarPlane), forward({ 0.0f, 0.0f, -1.0f })
 {
 	UpdateCameraVectors();
 	AllocateProjectionView(shaderIDs);
