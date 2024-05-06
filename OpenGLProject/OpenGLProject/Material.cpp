@@ -7,8 +7,8 @@
 
 
 
-Material::Material(const glm::vec3& inSpecular, const float inShininess) :
-	specularColour(inSpecular), shininess(inShininess)
+Material::Material(const glm::vec3& inSpecular, const float inShininess, const float inTransparency) :
+	specularColour(inSpecular), shininess(inShininess), transparency(inTransparency)
 {
 
 }

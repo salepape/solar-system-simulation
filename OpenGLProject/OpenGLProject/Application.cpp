@@ -145,7 +145,7 @@ void Application::SimulateSolarSystem()
 	celestialBodyLight.Store(celestialBodyShadersIDs);
 
 	std::vector<uint32_t> sunShaderID({ sunShader.GetRendererID() });
-	Material sunMaterial({ 1.0f, 0.0f, 0.0f }, 95.0f);
+	Material sunMaterial({ 1.0f, 0.0f, 0.0f }, 95.0f, 1.0f);
 	sunMaterial.Store(sunShaderID);
 	DirectionalLight sunLight;
 	sunLight.Store(sunShaderID);
@@ -173,63 +173,77 @@ void Application::SimulateSolarSystem()
 		// Texture sampler ID (one for each object) 
 		uint32_t samplerID = 0;
 
-
-
-
-
-		// Draw celestial bodies, their orbits and their motion
+		// Compute position of each celestial body in Sun coordinates system so we can sort them from the farthest to the closest according
+		// to the camera, because it is needed to make blending work for multiple objects with transparency like body names and Saturn Rings
 		for (auto& dataInput : data)
 		{
-			const float frameRate = GetFrameRate();
-
 			// Angle of rotation around the sun (resp. planet) for planets (resp. moons) per frame [in radians]
-			const float angleRot = preComputations[dataInput.first].angleRotCst * frameRate;
+			const float angleRot = preComputations[dataInput.first].angleRotCst * GetFrameRate();
 			if (dataInput.second.parentInfo == nullptr)
 			{
 				dataInput.second.angleRot = angleRot;
 			}
 
-			// Angle of rotation of the celestial body around itself per frame [in radians]
-			const float angleRotItself = preComputations[dataInput.first].rotPeriodCst * frameRate;
-
-			// Simulate movements that affects the current celestial bodies
-			glm::mat4 defaultModelMatrix(1.0f);
-			glm::mat4 orbitModelMatrix(1.0f);
+			glm::vec3 bodyPosition(0.0f);
 
 			// Circular translation of satellite around corresponding planet
 			if (const auto& satelliteParent = dataInput.second.parentInfo)
 			{
 				const float sinParentAngleRot = sin(satelliteParent->angleRot);
 
-				defaultModelMatrix = glm::translate(defaultModelMatrix, glm::vec3(
+				bodyPosition += glm::vec3(
 					preComputations[dataInput.second.parentName].cosCircularTslCst * sinParentAngleRot,
 					preComputations[dataInput.second.parentName].sinCircularTslCst * sinParentAngleRot,
-					satelliteParent->dist * cos(satelliteParent->angleRot)));
-				orbitModelMatrix = defaultModelMatrix;
+					satelliteParent->dist * cos(satelliteParent->angleRot));
 			}
 
 			// Orbital tilt (around axis colinear to orbit direction) + Circular translation along the orbit (equidistance to axis normal to orbital plane)
 			const float sinAngleRot = sin(angleRot);
 
-			defaultModelMatrix = glm::translate(defaultModelMatrix, glm::vec3(
+			bodyPosition += glm::vec3(
 				preComputations[dataInput.first].cosCircularTslCst * sinAngleRot,
 				preComputations[dataInput.first].sinCircularTslCst * sinAngleRot,
-				dataInput.second.dist * cos(angleRot)));
+				dataInput.second.dist * cos(angleRot));
 
-			bodyPositions.insert({ dataInput.first, defaultModelMatrix[3] });
+			bodyPositions.insert({ dataInput.first, bodyPosition });
+		}
+
+		std::map<float, std::string> bodiesSortedPerDist;
+		for (const auto& dataInput : data)
+		{
+			bodiesSortedPerDist.insert({ glm::distance(cameraPosition, bodyPositions[dataInput.first]), dataInput.first });
+		}
+
+
+
+
+
+		// Draw celestial bodies, their orbits and their motion
+		for (auto it = bodiesSortedPerDist.rbegin(); it != bodiesSortedPerDist.rend(); ++it)
+		{
+			glm::mat4 defaultModelMatrix(1.0f);
+
+			const std::string& currentBodyName = it->second;
+
+			// Start positioning the mesh/model according to Sun position
+			defaultModelMatrix = glm::translate(defaultModelMatrix, bodyPositions[currentBodyName]);
 
 			// Axis tilt (around axis colinear to orbit direction)
-			defaultModelMatrix = glm::rotate(defaultModelMatrix, preComputations[dataInput.first].obliquityInRad, Utils::rightVector);
+			defaultModelMatrix = glm::rotate(defaultModelMatrix, preComputations[currentBodyName].obliquityInRad, Utils::rightVector);
+
+			// Angle of rotation of the celestial body around itself per frame [in radians]
+			const float angleRotItself = preComputations[currentBodyName].rotPeriodCst * GetFrameRate();
 
 			// Rotation on itself (around axis normal to orbital plane)
 			defaultModelMatrix = glm::rotate(defaultModelMatrix, angleRotItself, Utils::upVector);
 
 			// Draw Saturn rings
-			if (dataInput.first == "Saturn")
+			if (currentBodyName == "Saturn")
 			{
 				defaultShader.Enable();
 				defaultShader.setUniformMat4("vu_Model", defaultModelMatrix);
 				defaultShader.setUniformInt("fu_DiffuseMat", samplerID);
+				defaultShader.setUniformFloat("fu_Alpha", 0.5f);
 				saturnRings.Render(renderer, samplerID++);
 				defaultShader.Disable();
 			}
@@ -237,69 +251,50 @@ void Application::SimulateSolarSystem()
 			// Rotation on itself (to have celestial body poles vertical)
 			defaultModelMatrix = glm::rotate(defaultModelMatrix, Utils::halfPi, Utils::rightVector);
 
-			if (dataInput.first == "Sun")
+			if (currentBodyName == "Sun")
 			{
 				sunShader.Enable();
+				sunShader.setUniformMat4("vu_Model", defaultModelMatrix);
 				sunShader.setUniformInt("fu_DiffuseMat", samplerID);
+				data[currentBodyName].sphere->Render(renderer, samplerID++);
 				sunShader.Disable();
 			}
 			else
 			{
 				defaultShader.Enable();
+				defaultShader.setUniformMat4("vu_Model", defaultModelMatrix);
 				defaultShader.setUniformInt("fu_DiffuseMat", samplerID);
+				defaultShader.setUniformFloat("fu_Alpha", 1.0f);
+				data[currentBodyName].sphere->Render(renderer, samplerID++);
 				defaultShader.Disable();
 			}
 
-			// Spherical celestial bodies
-			if (const auto& sphere = dataInput.second.sphere)
-			{
-				if (dataInput.first == "Sun")
-				{
-					sunShader.Enable();
-					sunShader.setUniformMat4("vu_Model", defaultModelMatrix);
-					sphere->Render(renderer, samplerID++);
-					sunShader.Disable();
-				}
-				else
-				{
-					defaultShader.Enable();
-					defaultShader.setUniformMat4("vu_Model", defaultModelMatrix);
-					sphere->Render(renderer, samplerID++);
-					defaultShader.Disable();
-				}
-			}
-
 			// Draw planet orbits
-			if (dataInput.first != "Sun")
+			if (currentBodyName != "Sun")
 			{
-				orbitModelMatrix = glm::rotate(orbitModelMatrix, preComputations[dataInput.first].orbInclinationInRad, Utils::backVector);
+				glm::mat4 orbitModelMatrix(1.0f);
+
+				// Center the orbit around the planet parent if the current celestial body is a satellite
+				if (data[currentBodyName].parentName.empty() == false)
+				{
+					orbitModelMatrix = glm::translate(orbitModelMatrix, bodyPositions[data[currentBodyName].parentName]);
+				}
+				orbitModelMatrix = glm::rotate(orbitModelMatrix, preComputations[currentBodyName].orbInclinationInRad, Utils::backVector);
 
 				defaultShader.Enable();
 				defaultShader.setUniformMat4("vu_Model", orbitModelMatrix);
 				defaultShader.setUniformInt("fu_DiffuseMat", samplerID);
-				dataInput.second.orbit->Render(renderer, samplerID++);
+				defaultShader.setUniformFloat("fu_Alpha", 1.0f);
+				data[currentBodyName].orbit->Render(renderer, samplerID++);
 				defaultShader.Disable();
 			}
-		}
 
 
 
 
 
-		// Draw meshes with transparency (only billboard containing current celestial body name on top of the mesh/model for now)
-		if (IsLegend())
-		{
-			// Be sure we render names from the farthest to the closest celestial body to the camera to make blending work for multiple objects
-			std::map<float, std::string> bodiesSortedPerDist;
-			for (const auto& dataInput : data)
+			if (IsLegend())
 			{
-				bodiesSortedPerDist.insert({ glm::distance(cameraPosition, bodyPositions[dataInput.first]), dataInput.first });
-			}
-
-			for (auto it = bodiesSortedPerDist.rbegin(); it != bodiesSortedPerDist.rend(); ++it)
-			{
-				const std::string& currentBodyName = it->second;
-
 				// Orient text to camera position
 				glm::mat4 textModelMatrix(1.0f);
 				const glm::vec3& bodyPosition = bodyPositions[currentBodyName];
@@ -323,7 +318,7 @@ void Application::SimulateSolarSystem()
 					textHeight = preComputations[currentBodyName].sunTextHeight;
 					textScale = preComputations[currentBodyName].sunTextScale;
 				}
-				// If this is a satellite (i.e. has a parent)
+				// If the current celestial body is a satellite (i.e. has a parent)
 				else if (data[currentBodyName].parentInfo)
 				{
 					textHeight = preComputations[currentBodyName].satelliteTextHeight;

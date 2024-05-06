@@ -14,7 +14,7 @@ class Material
 {
 public:
 	Material() = default;
-	Material(const glm::vec3& inSpecular, const float inShininess);
+	Material(const glm::vec3& inSpecular, const float inShininess, const float inTransparency);
 
 	void Store(const std::vector<uint32_t>& entitiesShadersIDs);
 
@@ -30,6 +30,10 @@ private:
 
 	// Coefficient altering the radius of the specular highlight
 	float shininess{ 64.0f };
+
+	// Coefficient corresponding to the alpha value in a colour vector
+	// @todo - Make this parameter part of the UBO to avoid having a separate uniform variable once the Material system is implemented
+	float transparency{ 1.0f };
 
 	UniformBuffer* ubo{ nullptr };
 };

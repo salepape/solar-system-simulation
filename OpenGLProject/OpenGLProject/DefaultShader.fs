@@ -32,6 +32,7 @@ layout (std140) uniform pointLightParams
 };
 
 uniform vec3 fu_CameraPosition;
+uniform float fu_Alpha;
 
 void main()
 {
@@ -66,5 +67,5 @@ void main()
     float attenuation = 1.0 / (fu_AttenuationCstTerm + (fu_AttenuationLinTerm * distFragLight) + (fu_AttenuationQuadTerm * distFragLight * distFragLight));
         
     vec3 phongIllumination = (ambientIntensity + diffuseIntensity + specularIntensity) * attenuation;
-    fo_Colour.xyzw = vec4(phongIllumination, 1.0);
+    fo_Colour.xyzw = vec4(phongIllumination, fu_Alpha);
 }
