@@ -37,12 +37,6 @@
     <Filter Include="Source Files\Meshes">
       <UniqueIdentifier>{6dd714ea-40d0-4db2-bca5-6fceb12f6e08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Controls">
-      <UniqueIdentifier>{57825855-20d3-41f8-a979-8e90f1d2742b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Controls">
-      <UniqueIdentifier>{1b71018e-a757-47a6-aa94-b0ef7aafbe0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Renderers">
       <UniqueIdentifier>{9f214c6c-6cff-4f73-bea9-73a4f3b01572}</UniqueIdentifier>
     </Filter>
@@ -54,6 +48,12 @@
     </Filter>
     <Filter Include="Header Files\Lights">
       <UniqueIdentifier>{54f17ea8-391c-46fb-9dc3-f82b0bd0d860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interactions">
+      <UniqueIdentifier>{57825855-20d3-41f8-a979-8e90f1d2742b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Interactions">
+      <UniqueIdentifier>{1b71018e-a757-47a6-aa94-b0ef7aafbe0e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,10 +97,10 @@
       <Filter>Header Files\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
-      <Filter>Header Files\Controls</Filter>
+      <Filter>Header Files\Interactions</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Header Files\Controls</Filter>
+      <Filter>Header Files\Interactions</Filter>
     </ClInclude>
     <ClInclude Include="Belt.h">
       <Filter>Header Files\Meshes</Filter>
@@ -136,10 +136,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InputHandler.h">
-      <Filter>Header Files\Controls</Filter>
+      <Filter>Header Files\Interactions</Filter>
     </ClInclude>
     <ClInclude Include="Controller.h">
-      <Filter>Header Files\Controls</Filter>
+      <Filter>Header Files\Interactions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -186,10 +186,10 @@
       <Filter>Source Files\Meshes</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Controls</Filter>
+      <Filter>Source Files\Interactions</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
-      <Filter>Source Files\Controls</Filter>
+      <Filter>Source Files\Interactions</Filter>
     </ClCompile>
     <ClCompile Include="Belt.cpp">
       <Filter>Source Files\Meshes</Filter>
@@ -222,10 +222,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InputHandler.cpp">
-      <Filter>Source Files\Controls</Filter>
+      <Filter>Source Files\Interactions</Filter>
     </ClCompile>
     <ClCompile Include="Controller.cpp">
-      <Filter>Source Files\Controls</Filter>
+      <Filter>Source Files\Interactions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
