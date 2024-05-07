@@ -60,16 +60,16 @@ struct EntityInfo
 {
 	std::string texturePath;				// DDS texture path
 	float radius{ 0.0f };					// Planet or moon (only those > pluto radius in length) radius divided by earth's radius [in kms]
-	float dist{ 0.0f };						// Distance between planet (resp. moon) and sun (resp. the planet around which they gravitate) divided by sun-earth distance [in kms]
+	float distanceToSun{ 0.0f };			// Distance between planet (resp. moon) and sun (resp. the planet around which they gravitate) divided by sun-earth distance [in kms]
 	float obliquity{ 0.0f };				// Or axial tilt: angle between planet/moon axis rotation and the normal of its orbital plane [in degrees]
-	float orbPeriod{ 0.0f };				// Time the planet (resp. moon) takes to do 1 revolution around the sun (resp. its planet) [in earth days]
-	float rotPeriod{ 0.0f };				// Time the planet takes to do a rotation on itself [in earth days]	
-	float orbInclination{ 0.0f };			// Or "orbital tilt": angle between planet (resp. moon) orbit and the ecliptic [in degrees]
+	float orbitalPeriod{ 0.0f };			// Time the planet (resp. moon) takes to do one revolution around the sun (resp. its planet) [in earth days]
+	float spinPeriod{ 0.0f };				// Time (sideral) the planet takes to do a rotation on itself [in earth days]	
+	float orbitalInclination{ 0.0f };		// Or "orbital tilt": angle between planet (resp. moon) orbit and the ecliptic [in degrees]
 	Sphere* sphere{ nullptr };				// Pointer to the sphere mesh
 	Orbit* orbit{ nullptr };				// Pointer to the orbit mesh
 	std::string parentName;					// Name of the planet mesh around which a moon rotates
 	EntityInfo* parentInfo{ nullptr };		// Pointer to the planet mesh around which a moon rotates
-	float angleRot{ 0.0f };					// Filled in later: angle of planet rotation around the sun per frame [in radians]
+	float travelledAngle{ 0.0f };			// Filled in later: angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
 };
 
 // Solar System celestial bodies data
@@ -78,17 +78,14 @@ static std::unordered_map<std::string, EntityInfo> data(BODIES_COUNT);
 // Represent all constant formula parts (so we can compute them outside the Render loop)
 struct PreComputations
 {
-	float angleRotCst{ 0.0f };
-	float angleRotItselfCst{ 0.0f };
-	float rotPeriodCst{ 0.0f };
+	float orbitAngularFreq{ 0.0f };			// Angular frequency for orbital motion [in radians/Earth days]
+	float spinAngularFreq{ 0.0f };			// Angular frequency for spin motion [in radians/Earth days]
 
-	float orbInclinationInRad{ 0.0f };
-	float cosCircularTslCst{ 0.0f };
-	float sinCircularTslCst{ 0.0f };
-
-	float obliquityInRad{ 0.0f };
-
-	glm::vec3 nonSphericalScaling;
+	float obliquityInRad{ 0.0f };			// Obliquity converted [in radians]
+	float orbInclinationInRad{ 0.0f };		// Orbital Inclination converted [in radians]
+	
+	float distCosOrbInclination{ 0.0f };
+	float distSinOrbInclination{ 0.0f };
 
 	float textHeight{ 0.0f };
 	float satelliteTextHeight{ 0.0f };
@@ -110,30 +107,29 @@ static void LoadData()
 {
 	using dataElmt = std::pair<std::string, EntityInfo>;
 
-	// @todo - Figure out why I need to put this factor
-	data.insert(dataElmt("Sun",			{ texturePaths[0], 109.3f, 0.0f, 7.25f, 0.0f, 27.0f * 0.0001f }));
+	data.insert(dataElmt("Sun",			{ texturePaths[0], 109.3f, 0.0f, 7.25f, 0.0f, 27.0f }));
 
-	data.insert(dataElmt("Mercury",		{ texturePaths[1],  0.383f, data["Sun"].radius + 0.38f * DIST_SCALE_FACTOR,      0.03f,  87.97f,    58.6f,   7.01f }));
-	data.insert(dataElmt("Venus",		{ texturePaths[2],  0.95f,  data["Mercury"].dist + 0.72f * DIST_SCALE_FACTOR,    2.64f,  224.7f,   -243.02f, 3.39f }));
-	data.insert(dataElmt("Earth",		{ texturePaths[3],  1.0f,	data["Venus"].dist + 1.0f * DIST_SCALE_FACTOR,	     23.44f, 365.26f,   0.99f,   0.0f  }));
-	data.insert(dataElmt("Mars",		{ texturePaths[4],  0.532f, data["Earth"].dist + 1.52f * DIST_SCALE_FACTOR,	     25.19f, 686.97f,   1.03f,   1.85f }));
-	data.insert(dataElmt("Jupiter",		{ texturePaths[5],  10.97f, data["Mars"].dist + 5.19f * DIST_SCALE_FACTOR,	     3.13f,  4332.59f,  0.41f,   1.31f }));
-	data.insert(dataElmt("Saturn",		{ texturePaths[6],  9.14f,  data["Jupiter"].dist + 9.53f * DIST_SCALE_FACTOR,    26.73f, 10759.22f, 0.43f,   2.49f }));
-	data.insert(dataElmt("Uranus",		{ texturePaths[7],  3.981f, data["Saturn"].dist + 19.20f * DIST_SCALE_FACTOR,    82.23f, 30688.5,  -0.72f,   0.77f }));
-	data.insert(dataElmt("Neptune",		{ texturePaths[8],  3.865f, data["Uranus"].dist + 30.05f * DIST_SCALE_FACTOR,	 28.32f, 60182.0f,  0.67f,   1.77f }));
+	data.insert(dataElmt("Mercury",		{ texturePaths[1],  0.383f, data["Sun"].radius + 0.38f * DIST_SCALE_FACTOR,					0.03f,  87.97f,	   58.6f,   7.01f }));
+	data.insert(dataElmt("Venus",		{ texturePaths[2],  0.95f,  data["Mercury"].distanceToSun + 0.72f * DIST_SCALE_FACTOR,		2.64f,  224.7f,   -243.02f, 3.39f }));
+	data.insert(dataElmt("Earth",		{ texturePaths[3],  1.0f,	data["Venus"].distanceToSun + 1.0f * DIST_SCALE_FACTOR,			23.44f, 365.26f,   0.99f,   0.0f  }));
+	data.insert(dataElmt("Mars",		{ texturePaths[4],  0.532f, data["Earth"].distanceToSun + 1.52f * DIST_SCALE_FACTOR,		25.19f, 686.97f,   1.03f,   1.85f }));
+	data.insert(dataElmt("Jupiter",		{ texturePaths[5],  10.97f, data["Mars"].distanceToSun + 5.19f * DIST_SCALE_FACTOR,			3.13f,  4332.59f,  0.41f,   1.31f }));
+	data.insert(dataElmt("Saturn",		{ texturePaths[6],  9.14f,  data["Jupiter"].distanceToSun + 9.53f * DIST_SCALE_FACTOR,		26.73f, 10759.22f, 0.43f,   2.49f }));
+	data.insert(dataElmt("Uranus",		{ texturePaths[7],  3.981f, data["Saturn"].distanceToSun + 19.20f * DIST_SCALE_FACTOR,		82.23f, 30688.5,  -0.72f,   0.77f }));
+	data.insert(dataElmt("Neptune",		{ texturePaths[8],  3.865f, data["Uranus"].distanceToSun + 30.05f * DIST_SCALE_FACTOR,		28.32f, 60182.0f,  0.67f,   1.77f }));
 
-	data.insert(dataElmt("Ceres",		{ texturePaths[9],  0.074f, data["Mars"].dist + 2.75f * DIST_SCALE_FACTOR,       0.0f,   1683.15f,  9.07f,   17.14f }));
-	data.insert(dataElmt("Pluto",		{ texturePaths[10], 0.186f, data["Neptune"].dist + 39.24f * DIST_SCALE_FACTOR,   57.47f, 90560.0f, -6.39f,   10.62f }));
+	data.insert(dataElmt("Ceres",		{ texturePaths[9],  0.074f, data["Mars"].distanceToSun + 2.75f * DIST_SCALE_FACTOR,			0.0f,   1683.15f,  9.07f,   17.14f }));
+	data.insert(dataElmt("Pluto",		{ texturePaths[10], 0.186f, data["Neptune"].distanceToSun + 39.24f * DIST_SCALE_FACTOR,		57.47f, 90560.0f, -6.39f,   10.62f }));
 
-	data.insert(dataElmt("Luna",		{ texturePaths[11], 0.273f, data["Earth"].radius + 0.384f * DIST_SCALE_FACTOR,   6.68f,  27.32f,    27.32f,  5.145f,	nullptr,  nullptr, "Earth",		&data["Earth"]   }));
-	data.insert(dataElmt("Callisto",	{ texturePaths[12], 0.378f, data["Jupiter"].radius + 1.883f * DIST_SCALE_FACTOR, 0.0f,   16.69f,    16.69f,  2.017f,	nullptr,  nullptr, "Jupiter",	&data["Jupiter"] }));
-	data.insert(dataElmt("Europa",		{ texturePaths[13], 0.245f, data["Jupiter"].radius + 0.671f * DIST_SCALE_FACTOR, 0.1f,   3.55f,     3.55f,   1.791f,	nullptr,  nullptr, "Jupiter",	&data["Jupiter"] }));
-	data.insert(dataElmt("Ganymede",	{ texturePaths[14], 0.413f, data["Jupiter"].radius + 1.07f * DIST_SCALE_FACTOR,  0.16f,  7.15f,     7.15f,   2.214f,	nullptr,  nullptr, "Jupiter",	&data["Jupiter"] }));
-	data.insert(dataElmt("Io",			{ texturePaths[15], 0.286f, data["Jupiter"].radius + 0.422f * DIST_SCALE_FACTOR, 0.0f,   1.77f,     1.77f,   2.213f,	nullptr,  nullptr, "Jupiter",	&data["Jupiter"] }));
-	data.insert(dataElmt("Titan",		{ texturePaths[16], 0.404f, data["Saturn"].radius + 1.222f * DIST_SCALE_FACTOR,  0.0f,   15.95f,    15.95f,  0.0f,		nullptr,  nullptr, "Saturn",	&data["Saturn"]	 }));
-	data.insert(dataElmt("Triton",		{ texturePaths[17], 0.212f, data["Neptune"].radius + 0.354f * DIST_SCALE_FACTOR, 0.0f,   5.88f,     5.88f,   129.812f,	nullptr,  nullptr, "Neptune",	&data["Neptune"] }));
-	//data.insert(dataElmt("Deimos",		{ texturePaths[18], 0.000f,	data["Mars"].radius + 0.156f * DIST_SCALE_FACTOR,	 0.0f,   1.263f,    1.263f,  nullptr, nullptr, 27.58f,  "Mars", &data["Mars"])    }));
-	//data.insert(dataElmt("Phobos",		{ texturePaths[19], 0.000f,	data["Mars"].radius + 0.94f * DIST_SCALE_FACTOR,	 0.0f,	 0.319f,    0.319f,  nullptr, nullptr, 28.4f,	"Mars", &data["Mars"])    }));
+	data.insert(dataElmt("Luna",		{ texturePaths[11], 0.273f, data["Earth"].radius + 0.384f * DIST_SCALE_FACTOR,				6.68f,  27.32f,    27.32f,  5.145f,		nullptr,  nullptr,  "Earth",	&data["Earth"]   }));
+	data.insert(dataElmt("Callisto",	{ texturePaths[12], 0.378f, data["Jupiter"].radius + 1.883f * DIST_SCALE_FACTOR,			0.0f,   16.69f,    16.69f,  2.017f,		nullptr,  nullptr,  "Jupiter",	&data["Jupiter"] }));
+	data.insert(dataElmt("Europa",		{ texturePaths[13], 0.245f, data["Jupiter"].radius + 0.671f * DIST_SCALE_FACTOR,			0.1f,   3.55f,     3.55f,   1.791f,		nullptr,  nullptr,  "Jupiter",	&data["Jupiter"] }));
+	data.insert(dataElmt("Ganymede",	{ texturePaths[14], 0.413f, data["Jupiter"].radius + 1.07f * DIST_SCALE_FACTOR,				0.16f,  7.15f,     7.15f,   2.214f,		nullptr,  nullptr,  "Jupiter",	&data["Jupiter"] }));
+	data.insert(dataElmt("Io",			{ texturePaths[15], 0.286f, data["Jupiter"].radius + 0.422f * DIST_SCALE_FACTOR,			0.0f,   1.77f,     1.77f,   2.213f,		nullptr,  nullptr,  "Jupiter",	&data["Jupiter"] }));
+	data.insert(dataElmt("Titan",		{ texturePaths[16], 0.404f, data["Saturn"].radius + 1.222f * DIST_SCALE_FACTOR,				0.0f,   15.95f,    15.95f,  0.0f,		nullptr,  nullptr,  "Saturn",	&data["Saturn"]	 }));
+	data.insert(dataElmt("Triton",		{ texturePaths[17], 0.212f, data["Neptune"].radius + 0.354f * DIST_SCALE_FACTOR,			0.0f,   5.88f,     5.88f,   129.812f,	nullptr,  nullptr,  "Neptune",	&data["Neptune"] }));
+	//data.insert(dataElmt("Deimos",		{ texturePaths[18], 0.000f,	data["Mars"].radius + 0.156f * DIST_SCALE_FACTOR,				0.0f,   1.263f,    1.263f,	nullptr,    nullptr,  27.58f,   "Mars",		&data["Mars"]    }));
+	//data.insert(dataElmt("Phobos",		{ texturePaths[19], 0.000f,	data["Mars"].radius + 0.94f * DIST_SCALE_FACTOR,				0.0f,	0.319f,    0.319f,  nullptr,    nullptr,  28.4f,    "Mars",		&data["Mars"]    }));
 }
 
 static void LoadPreComputations()
@@ -141,22 +137,18 @@ static void LoadPreComputations()
 	using preComputationsElmt = std::pair<std::string, PreComputations>;
 	for (const auto& dataInput : data)
 	{
-		const float orbInclination = glm::radians(dataInput.second.orbInclination);
-		const glm::vec3& nonSphericalScale = dataInput.second.sphere ? glm::vec3() : glm::vec3(0.025f * dataInput.second.parentInfo->radius);
+		const float orbitalInclinationInRad = glm::radians(dataInput.second.orbitalInclination);
 
 		PreComputations preComp
 		{
-			dataInput.second.orbPeriod == 0.0f ? 0.0f : Utils::doublePi * 1.0f / dataInput.second.orbPeriod,
-			Utils::doublePi * dataInput.second.orbPeriod,
-			Utils::doublePi * dataInput.second.rotPeriod,
-
-			orbInclination,
-			dataInput.second.dist * cos(orbInclination),
-			dataInput.second.dist * sin(orbInclination),
+			dataInput.second.orbitalPeriod == 0.0f ? 0.0f : Utils::doublePi * 1.0f / dataInput.second.orbitalPeriod,
+			dataInput.second.spinPeriod == 0.0f ? 0.0f : Utils::doublePi * 1.0f / dataInput.second.spinPeriod,
 
 			glm::radians(dataInput.second.obliquity),
+			orbitalInclinationInRad,
 
-			nonSphericalScale,
+			dataInput.second.distanceToSun * cos(orbitalInclinationInRad),
+			dataInput.second.distanceToSun * sin(orbitalInclinationInRad),
 
 			dataInput.second.radius * 1.5f,
 			dataInput.second.radius * 3.5f,

@@ -73,8 +73,13 @@ void Application::Pause(const bool inIsPaused)
 
 	if (isPaused == false)
 	{
-		glfwSetTime(lastFrame);
+		glfwSetTime(lastFrameElapsedTime);
 	}
+}
+
+void Application::ChangeSpeed(const float inSpeedFactor)
+{
+	speedFactor *= inSpeedFactor;
 }
 
 void Application::SimulateSolarSystem()
@@ -106,7 +111,7 @@ void Application::SimulateSolarSystem()
 	Model asteroid("../Models/Asteroid.obj");
 	Model ice("../Models/Ice.obj");
 
-	// Initialise all celestial bodies and their respective orbit (applying celectial body textures to have some colour consistency)
+	// Initialise all celestial body meshes and their respective orbit
 	LoadData();
 	for (auto& dataInput : data)
 	{
@@ -117,7 +122,9 @@ void Application::SimulateSolarSystem()
 		else
 		{
 			dataInput.second.sphere = new Sphere(dataInput.second.texturePath, dataInput.second.radius);
-			dataInput.second.orbit = new Orbit(dataInput.second.texturePath, dataInput.second.dist);
+
+			// Apply celectial body textures to have some colour consistency
+			dataInput.second.orbit = new Orbit(dataInput.second.texturePath, dataInput.second.distanceToSun);
 		}
 
 		textRenderer.LoadASCIICharacters(dataInput.first);
@@ -125,9 +132,9 @@ void Application::SimulateSolarSystem()
 	textRenderer.FreeFTResources();
 	LoadPreComputations();
 
-	// Do some instancing to build the main Solar Systems rock belts
-	Belt asteroidBelt(	{ asteroid, 5000,  0.05f, 10 },		{ data["Mars"].dist * 1.1f,	  2.75f * DIST_SCALE_FACTOR * 1.0f / 2.5f,	0.4f });
-	Belt kuiperBelt(	{ ice,		 20000, 0.05f, 20 },	{ data["Neptune"].dist * 1.4f, 30.05f * DIST_SCALE_FACTOR,				0.4f });
+	// Use instancing to build efficiently the two rocky belts of the Solar System
+	Belt asteroidBelt(	{ asteroid,	 5000,   0.05f,  10 },	{ data["Mars"].distanceToSun * 1.1f,	 2.75f * DIST_SCALE_FACTOR * 1.0f / 2.5f,  0.4f });
+	Belt kuiperBelt(	{ ice,	     20000,  0.05f,  20 },	{ data["Neptune"].distanceToSun * 1.4f,  30.05f * DIST_SCALE_FACTOR,			   0.4f });
 
 
 
@@ -135,7 +142,7 @@ void Application::SimulateSolarSystem()
 
 	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun - farthest celestial body'
 	std::vector<uint32_t> allShadersIDs({ defaultShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID() });
-	Controller controller({ 0.0f, 100.0f, -25.0f }, { 0.0f, -25.0f, 90.0f }, 45.0f, 2.0f * data["Pluto"].dist, allShadersIDs);
+	Controller controller({ 0.0f, 100.0f, -25.0f }, { 0.0f, -25.0f, 90.0f }, 45.0f, 2.0f * data["Pluto"].distanceToSun, allShadersIDs);
 	window->controller = &controller;
 
 	std::vector<uint32_t> celestialBodyShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
@@ -157,7 +164,7 @@ void Application::SimulateSolarSystem()
 	// RENDER LOOP (running every frame)
 	while (IsNotClosed())
 	{
-		UpdateFrames();
+		Tick();
 		controller.ProcessInput(deltaTime);
 
 		renderer.Clear();
@@ -173,37 +180,38 @@ void Application::SimulateSolarSystem()
 		// Texture sampler ID (one for each object) 
 		uint32_t samplerID = 0;
 
-		// Compute position of each celestial body in Sun coordinates system so we can sort them from the farthest to the closest according
-		// to the camera, because it is needed to make blending work for multiple objects with transparency like body names and Saturn Rings
+		// Compute position of each celestial body so we can sort them from the farthest to the closest according to the camera, 
+		// because it is needed to make blending work for multiple objects with transparency like body names and Saturn Rings
 		for (auto& dataInput : data)
 		{
-			// Angle of rotation around the sun (resp. planet) for planets (resp. moons) per frame [in radians]
-			const float angleRot = preComputations[dataInput.first].angleRotCst * GetFrameRate();
+			// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
+			const float travelledOrbitAngle = preComputations[dataInput.first].orbitAngularFreq * elapsedTime * speedFactor;
 			if (dataInput.second.parentInfo == nullptr)
 			{
-				dataInput.second.angleRot = angleRot;
+				dataInput.second.travelledAngle = travelledOrbitAngle;
 			}
 
+			// Store body position in Cartesian coordinates computed from Spherical ones
 			glm::vec3 bodyPosition(0.0f);
 
-			// Circular translation of satellite around corresponding planet
-			if (const auto& satelliteParent = dataInput.second.parentInfo)
+			// Circular translation of satellite around corresponding planet, taking into account satellite "orbital tilt"
+			if (const auto* satelliteParent = dataInput.second.parentInfo)
 			{
-				const float sinParentAngleRot = sin(satelliteParent->angleRot);
+				const float sinTravelledAngleParent = sin(satelliteParent->travelledAngle);
 
 				bodyPosition += glm::vec3(
-					preComputations[dataInput.second.parentName].cosCircularTslCst * sinParentAngleRot,
-					preComputations[dataInput.second.parentName].sinCircularTslCst * sinParentAngleRot,
-					satelliteParent->dist * cos(satelliteParent->angleRot));
+					preComputations[dataInput.second.parentName].distCosOrbInclination * sinTravelledAngleParent,
+					preComputations[dataInput.second.parentName].distSinOrbInclination * sinTravelledAngleParent,
+					satelliteParent->distanceToSun * cos(satelliteParent->travelledAngle));
 			}
 
-			// Orbital tilt (around axis colinear to orbit direction) + Circular translation along the orbit (equidistance to axis normal to orbital plane)
-			const float sinAngleRot = sin(angleRot);
+			// Circular translation of body around Sun, taking into account body "orbital tilt"
+			const float sinTravelledAngle = sin(travelledOrbitAngle);
 
 			bodyPosition += glm::vec3(
-				preComputations[dataInput.first].cosCircularTslCst * sinAngleRot,
-				preComputations[dataInput.first].sinCircularTslCst * sinAngleRot,
-				dataInput.second.dist * cos(angleRot));
+				preComputations[dataInput.first].distCosOrbInclination * sinTravelledAngle,
+				preComputations[dataInput.first].distSinOrbInclination * sinTravelledAngle,
+				dataInput.second.distanceToSun * cos(travelledOrbitAngle));
 
 			bodyPositions.insert({ dataInput.first, bodyPosition });
 		}
@@ -218,26 +226,26 @@ void Application::SimulateSolarSystem()
 
 
 
-		// Draw celestial bodies, their orbits and their motion
+		// Draw celestial bodies (their names if required), their orbits, and animate them accordingly over time
 		for (auto it = bodiesSortedPerDist.rbegin(); it != bodiesSortedPerDist.rend(); ++it)
 		{
 			glm::mat4 defaultModelMatrix(1.0f);
 
 			const std::string& currentBodyName = it->second;
 
-			// Start positioning the mesh/model according to Sun position
+			// Move the body (non-constant over time) according to the circular translations computed previously
 			defaultModelMatrix = glm::translate(defaultModelMatrix, bodyPositions[currentBodyName]);
 
-			// Axis tilt (around axis colinear to orbit direction)
-			defaultModelMatrix = glm::rotate(defaultModelMatrix, preComputations[currentBodyName].obliquityInRad, Utils::rightVector);
+			// Rotate the body (constant over time) around an axis colinear to orbit direction to reproduce its axial tilt
+			defaultModelMatrix = glm::rotate(defaultModelMatrix, preComputations[currentBodyName].obliquityInRad, Utils::forwardVector);
 
-			// Angle of rotation of the celestial body around itself per frame [in radians]
-			const float angleRotItself = preComputations[currentBodyName].rotPeriodCst * GetFrameRate();
+			// Angle travelled by the celestial body around itself since the simulation started [in radians]
+			const float travelledSpinAngle = preComputations[currentBodyName].spinAngularFreq * elapsedTime * speedFactor;
 
-			// Rotation on itself (around axis normal to orbital plane)
-			defaultModelMatrix = glm::rotate(defaultModelMatrix, angleRotItself, Utils::upVector);
+			// Rotate the body (non-constant over time) around axis normal to orbital plane to reproduce its spin
+			defaultModelMatrix = glm::rotate(defaultModelMatrix, travelledSpinAngle, Utils::upVector);
 
-			// Draw Saturn rings
+			// Draw semi-transparent Saturn rings
 			if (currentBodyName == "Saturn")
 			{
 				defaultShader.Enable();
@@ -248,7 +256,7 @@ void Application::SimulateSolarSystem()
 				defaultShader.Disable();
 			}
 
-			// Rotation on itself (to have celestial body poles vertical)
+			// Rotate the body (constant over time) around axis colinear to orbital plane so its poles appear vertically
 			defaultModelMatrix = glm::rotate(defaultModelMatrix, Utils::halfPi, Utils::rightVector);
 
 			if (currentBodyName == "Sun")
@@ -269,17 +277,19 @@ void Application::SimulateSolarSystem()
 				defaultShader.Disable();
 			}
 
-			// Draw planet orbits
+			// Draw celestial body orbits
 			if (currentBodyName != "Sun")
 			{
 				glm::mat4 orbitModelMatrix(1.0f);
 
-				// Center the orbit around the planet parent if the current celestial body is a satellite
+				// Center the orbit (non-constant over time) around the parent planet for satellites
 				if (data[currentBodyName].parentName.empty() == false)
 				{
 					orbitModelMatrix = glm::translate(orbitModelMatrix, bodyPositions[data[currentBodyName].parentName]);
 				}
-				orbitModelMatrix = glm::rotate(orbitModelMatrix, preComputations[currentBodyName].orbInclinationInRad, Utils::backVector);
+
+				// Rotate the orbit (constant over time) around axis colinear to orbit direction to reproduce the orbital plane
+				orbitModelMatrix = glm::rotate(orbitModelMatrix, preComputations[currentBodyName].orbInclinationInRad, Utils::forwardVector);
 
 				defaultShader.Enable();
 				defaultShader.setUniformMat4("vu_Model", orbitModelMatrix);
@@ -295,7 +305,7 @@ void Application::SimulateSolarSystem()
 
 			if (IsLegend())
 			{
-				// Orient text to camera position
+				// Orient text billboards so their readable side always faces the camera
 				glm::mat4 textModelMatrix(1.0f);
 				const glm::vec3& bodyPosition = bodyPositions[currentBodyName];
 				const glm::vec3& forward = glm::normalize(cameraPosition - bodyPosition);
@@ -381,20 +391,13 @@ double Application::GetTime()
 	return glfwGetTime();
 }
 
-void Application::UpdateFrames()
+void Application::Tick()
 {
 	if (isPaused == false)
 	{
-		// Time elapsed since GLFW initialisation [considered as a dimensionless chrono, but in seconds in reality]
-		currentFrame = static_cast<float>(GetTime());
+		elapsedTime = static_cast<float>(GetTime());
 
-		// Compute delta time in order to reduce differences between computer processing powers
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
+		deltaTime = elapsedTime - lastFrameElapsedTime;
+		lastFrameElapsedTime = elapsedTime;
 	}
-}
-
-float Application::GetFrameRate() const
-{
-	return currentFrame * speedFactor;
 }

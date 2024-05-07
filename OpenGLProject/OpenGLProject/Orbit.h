@@ -10,7 +10,7 @@ class Renderer;
 
 
 
-// Approximation: all planet/moon orbits will be circular (eccentricities close to 0)
+// @todo - Implement elliptic orbits for a more realistic simulation (circular orbits with eccentricities close to 0 for now)
 class Orbit : public Mesh
 {
 public:
