@@ -349,9 +349,10 @@ void Application::SimulateSolarSystem()
 
 
 
-		// Draw the 2 main belts composed
+		// Draw the 2 main belts of the Solar System
 		instancedModelShader.Enable();
 		instancedModelShader.setUniformVec3("fu_CameraPosition", cameraPosition);
+		instancedModelShader.setUniformFloat("fu_Alpha", 1.0f);
 		instancedModelShader.setUniformInt("fu_DiffuseMat", samplerID);
 		asteroidBelt.Render(renderer, samplerID++);
 		instancedModelShader.setUniformInt("fu_DiffuseMat", samplerID);
