@@ -13,6 +13,7 @@ layout (std140) uniform specularMatParams
     vec4 fu_SpecularColour;
 
     float fu_Shininess;
+    float fu_Transparency;
 };
 
 // See C++ class DirectionalLight
@@ -59,5 +60,5 @@ void main()
     vec3 specularIntensity = fu_SpecularReflectCoef.xyz * specularHighlight * fu_SpecularColour.xyz;
 
     vec3 phongIllumination = ambientIntensity + diffuseIntensity + specularIntensity;
-    fo_Colour.xyzw = vec4(phongIllumination, 1.0);
+    fo_Colour.xyzw = vec4(phongIllumination, fu_Transparency);
 }

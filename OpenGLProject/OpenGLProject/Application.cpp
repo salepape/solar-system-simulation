@@ -85,11 +85,13 @@ void Application::SimulateSolarSystem()
 	//renderer.EnableFaceCulling();
 
 	// Build and compile shader programs
-	Shader defaultShader("DefaultShader.vs", "DefaultShader.fs");
+	Shader celestialBodyShader("DefaultShader.vs", "DefaultShader.fs");
 	Shader sunShader("DefaultShader.vs", "SunShader.fs");
 	Shader textShader("TextShader.vs", "TextShader.fs");
-	Shader instancedModelShader("InstancedModelShader.vs", "DefaultShader.fs");
+	Shader beltBodyShader("InstancedModelShader.vs", "DefaultShader.fs");
 	Shader skyboxShader("SkyboxShader.vs", "SkyboxShader.fs");
+	Shader saturnRingsShader("DefaultShader.vs", "DefaultShader.fs");
+	Shader orbitShader("DefaultShader.vs", "DefaultShader.fs");
 
 	TextRenderer textRenderer;
 
@@ -135,7 +137,7 @@ void Application::SimulateSolarSystem()
 
 
 	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun - farthest celestial body'
-	std::vector<uint32_t> allShadersIDs({ defaultShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID() });
+	std::vector<uint32_t> allShadersIDs({ celestialBodyShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), beltBodyShader.GetRendererID(), skyboxShader.GetRendererID() });
 	std::shared_ptr<Controller> controller(new Controller({ 0.0f, 100.0f, -25.0f }, { 0.0f, -25.0f, 90.0f }, 45.0f, 2.0f * data["Pluto"].distanceToSun, allShadersIDs));
 	if (controller == nullptr)
 	{
@@ -143,17 +145,30 @@ void Application::SimulateSolarSystem()
 	}
 	window->controller = controller;
 
-	std::vector<uint32_t> celestialBodyShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
+	// @todo - Build a proper material for the orbits, e.g. a foggy thin tube
+	std::vector<uint32_t> celestialBodyShaderID({ celestialBodyShader.GetRendererID(), orbitShader.GetRendererID() });
 	Material celestialBodyMaterial;
-	celestialBodyMaterial.Store(celestialBodyShadersIDs);
+	celestialBodyMaterial.Store(celestialBodyShaderID);
 	PointLight celestialBodyLight;
-	celestialBodyLight.Store(celestialBodyShadersIDs);
+	celestialBodyLight.Store(celestialBodyShaderID);
+
+	std::vector<uint32_t> beltBodyShaderID({ beltBodyShader.GetRendererID() });
+	Material beltBodyMaterial;
+	beltBodyMaterial.Store(beltBodyShaderID);
+	PointLight beltBodyLight;
+	beltBodyLight.Store(beltBodyShaderID);
 
 	std::vector<uint32_t> sunShaderID({ sunShader.GetRendererID() });
-	Material sunMaterial({ 1.0f, 0.0f, 0.0f }, 95.0f, 1.0f);
+	Material sunMaterial({ 1.0f, 0.0f, 0.0f }, 95.0f);
 	sunMaterial.Store(sunShaderID);
 	DirectionalLight sunLight;
 	sunLight.Store(sunShaderID);
+
+	std::vector<uint32_t> saturnRingsShaderID({ saturnRingsShader.GetRendererID() });
+	Material saturnRingsMaterial({ 0.0f, 0.0f, 0.0f }, 64.0f, 0.5f);
+	saturnRingsMaterial.Store(saturnRingsShaderID);
+	PointLight saturnRingsLight;
+	saturnRingsLight.Store(saturnRingsShaderID);
 
 
 
@@ -169,9 +184,9 @@ void Application::SimulateSolarSystem()
 		
 		Camera& camera = controller->GetCamera();
 		const glm::vec3& cameraPosition = camera.GetPosition();
-		camera.SetPositionUniform(defaultShader);
+		camera.SetPositionUniform(celestialBodyShader);
 		camera.SetPositionUniform(sunShader);
-		camera.SetPositionUniform(instancedModelShader);
+		camera.SetPositionUniform(beltBodyShader);
 		camera.SetProjectionViewUniform(window->GetAspectRatio());		
 
 		// Texture sampler ID (one for each object) 
@@ -246,12 +261,11 @@ void Application::SimulateSolarSystem()
 			// Draw semi-transparent Saturn rings
 			if (currentBodyName == "Saturn")
 			{
-				defaultShader.Enable();
-				defaultShader.setUniformMat4("vu_Model", defaultModelMatrix);
-				defaultShader.setUniformInt("fu_DiffuseMat", samplerID);
-				defaultShader.setUniformFloat("fu_Alpha", 0.5f);
+				saturnRingsShader.Enable();
+				saturnRingsShader.setUniformMat4("vu_Model", defaultModelMatrix);
+				saturnRingsShader.setUniformInt("fu_DiffuseMat", samplerID);
 				saturnRings.Render(renderer, samplerID++);
-				defaultShader.Disable();
+				saturnRingsShader.Disable();
 			}
 
 			// Rotate the body (constant over time) around axis colinear to orbital plane so its poles appear vertically
@@ -267,12 +281,11 @@ void Application::SimulateSolarSystem()
 			}
 			else
 			{
-				defaultShader.Enable();
-				defaultShader.setUniformMat4("vu_Model", defaultModelMatrix);
-				defaultShader.setUniformInt("fu_DiffuseMat", samplerID);
-				defaultShader.setUniformFloat("fu_Alpha", 1.0f);
+				celestialBodyShader.Enable();
+				celestialBodyShader.setUniformMat4("vu_Model", defaultModelMatrix);
+				celestialBodyShader.setUniformInt("fu_DiffuseMat", samplerID);
 				data[currentBodyName].sphere->Render(renderer, samplerID++);
-				defaultShader.Disable();
+				celestialBodyShader.Disable();
 			}
 
 			// Draw celestial body orbits
@@ -289,12 +302,11 @@ void Application::SimulateSolarSystem()
 				// Rotate the orbit (constant over time) around axis colinear to orbit direction to reproduce the orbital plane
 				orbitModelMatrix = glm::rotate(orbitModelMatrix, preComputations[currentBodyName].orbInclinationInRad, Utils::forwardVector);
 
-				defaultShader.Enable();
-				defaultShader.setUniformMat4("vu_Model", orbitModelMatrix);
-				defaultShader.setUniformInt("fu_DiffuseMat", samplerID);
-				defaultShader.setUniformFloat("fu_Alpha", 1.0f);
+				orbitShader.Enable();
+				orbitShader.setUniformMat4("vu_Model", orbitModelMatrix);
+				orbitShader.setUniformInt("fu_DiffuseMat", samplerID);
 				data[currentBodyName].orbit->Render(renderer, samplerID++);
-				defaultShader.Disable();
+				orbitShader.Disable();
 			}
 
 
@@ -348,14 +360,13 @@ void Application::SimulateSolarSystem()
 
 
 		// Draw the 2 main belts of the Solar System
-		instancedModelShader.Enable();
-		instancedModelShader.setUniformVec3("fu_CameraPosition", cameraPosition);
-		instancedModelShader.setUniformFloat("fu_Alpha", 1.0f);
-		instancedModelShader.setUniformInt("fu_DiffuseMat", samplerID);
+		beltBodyShader.Enable();
+		beltBodyShader.setUniformVec3("fu_CameraPosition", cameraPosition);
+		beltBodyShader.setUniformInt("fu_DiffuseMat", samplerID);
 		asteroidBelt.Render(renderer, samplerID++);
-		instancedModelShader.setUniformInt("fu_DiffuseMat", samplerID);
+		beltBodyShader.setUniformInt("fu_DiffuseMat", samplerID);
 		kuiperBelt.Render(renderer, samplerID++);
-		instancedModelShader.Disable();
+		beltBodyShader.Disable();
 
 
 

@@ -15,7 +15,7 @@ class Material
 {
 public:
 	Material() = default;
-	Material(const glm::vec3& inSpecular, const float inShininess, const float inTransparency);
+	Material(const glm::vec3& inSpecular, const float inShininess, const float inTransparency = 1.0f);
 
 	void Store(const std::vector<uint32_t>& entitiesShadersIDs);
 

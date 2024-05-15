@@ -13,6 +13,7 @@ layout (std140) uniform specularMatParams
     vec4 fu_SpecularColour;
 
     float fu_Shininess;
+    float fu_Transparency;
 };
 
 // See C++ class PointLight
@@ -32,7 +33,6 @@ layout (std140) uniform pointLightParams
 };
 
 uniform vec3 fu_CameraPosition;
-uniform float fu_Alpha;
 
 void main()
 {
@@ -67,5 +67,5 @@ void main()
     float attenuation = 1.0 / (fu_AttenuationCstTerm + (fu_AttenuationLinTerm * distFragLight) + (fu_AttenuationQuadTerm * distFragLight * distFragLight));
         
     vec3 phongIllumination = (ambientIntensity + diffuseIntensity + specularIntensity) * attenuation;
-    fo_Colour.xyzw = vec4(phongIllumination, fu_Alpha);
+    fo_Colour.xyzw = vec4(phongIllumination, fu_Transparency);
 }
