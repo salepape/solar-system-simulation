@@ -5,8 +5,9 @@
 #include <memory>
 #include <vector>
 
-#include "Texture.h"
 #include "UniformBuffer.h"
+
+class Shader;
 
 
 
@@ -18,11 +19,12 @@ public:
 	Material(const glm::vec3& inSpecular, const float inShininess, const float inTransparency = 1.0f);
 
 	void Store(const std::vector<uint32_t>& entitiesShadersIDs);
+	void SetDiffuseSamplerUniform(Shader& shader, const uint32_t samplerID);
 
 private:
 	// DDS texture that will be used as a Sampler2D
 	// @todo - Find ways to put the equivalent uniform out of the Render loop with this pointer?
-	std::unique_ptr<Texture> diffuseTexture;
+	//std::unique_ptr<Texture> diffuseTexture;
 
 	// @todo - Check code again, as I'm not under the impression the variables below work correctly...
 

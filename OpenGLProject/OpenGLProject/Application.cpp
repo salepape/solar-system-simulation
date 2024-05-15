@@ -261,9 +261,9 @@ void Application::SimulateSolarSystem()
 			// Draw semi-transparent Saturn rings
 			if (currentBodyName == "Saturn")
 			{
+				saturnRingsMaterial.SetDiffuseSamplerUniform(saturnRingsShader, samplerID);
 				saturnRingsShader.Enable();
-				saturnRingsShader.setUniformMat4("vu_Model", defaultModelMatrix);
-				saturnRingsShader.setUniformInt("fu_DiffuseMat", samplerID);
+				saturnRingsShader.setUniformMat4("vu_Model", defaultModelMatrix);				
 				saturnRings.Render(renderer, samplerID++);
 				saturnRingsShader.Disable();
 			}
@@ -273,17 +273,17 @@ void Application::SimulateSolarSystem()
 
 			if (currentBodyName == "Sun")
 			{
+				sunMaterial.SetDiffuseSamplerUniform(sunShader, samplerID);
 				sunShader.Enable();
 				sunShader.setUniformMat4("vu_Model", defaultModelMatrix);
-				sunShader.setUniformInt("fu_DiffuseMat", samplerID);
 				data[currentBodyName].sphere->Render(renderer, samplerID++);
 				sunShader.Disable();
 			}
 			else
 			{
+				celestialBodyMaterial.SetDiffuseSamplerUniform(celestialBodyShader, samplerID);
 				celestialBodyShader.Enable();
 				celestialBodyShader.setUniformMat4("vu_Model", defaultModelMatrix);
-				celestialBodyShader.setUniformInt("fu_DiffuseMat", samplerID);
 				data[currentBodyName].sphere->Render(renderer, samplerID++);
 				celestialBodyShader.Disable();
 			}
@@ -302,9 +302,9 @@ void Application::SimulateSolarSystem()
 				// Rotate the orbit (constant over time) around axis colinear to orbit direction to reproduce the orbital plane
 				orbitModelMatrix = glm::rotate(orbitModelMatrix, preComputations[currentBodyName].orbInclinationInRad, Utils::forwardVector);
 
+				celestialBodyMaterial.SetDiffuseSamplerUniform(orbitShader, samplerID);
 				orbitShader.Enable();
 				orbitShader.setUniformMat4("vu_Model", orbitModelMatrix);
-				orbitShader.setUniformInt("fu_DiffuseMat", samplerID);
 				data[currentBodyName].orbit->Render(renderer, samplerID++);
 				orbitShader.Disable();
 			}
@@ -360,11 +360,15 @@ void Application::SimulateSolarSystem()
 
 
 		// Draw the 2 main belts of the Solar System
+		camera.SetPositionUniform(beltBodyShader);
+
+		beltBodyMaterial.SetDiffuseSamplerUniform(beltBodyShader, samplerID);
 		beltBodyShader.Enable();
-		beltBodyShader.setUniformVec3("fu_CameraPosition", cameraPosition);
-		beltBodyShader.setUniformInt("fu_DiffuseMat", samplerID);
 		asteroidBelt.Render(renderer, samplerID++);
-		beltBodyShader.setUniformInt("fu_DiffuseMat", samplerID);
+		beltBodyShader.Disable();
+
+		beltBodyMaterial.SetDiffuseSamplerUniform(beltBodyShader, samplerID);
+		beltBodyShader.Enable();		
 		kuiperBelt.Render(renderer, samplerID++);
 		beltBodyShader.Disable();
 
