@@ -28,7 +28,6 @@
 #include "Sphere.h"
 #include "TextRenderer.h"
 #include "Utils.h"
-#include "Window.h"
 
 Application* Application::instance = nullptr;
 
@@ -36,7 +35,7 @@ Application* Application::instance = nullptr;
 
 Application::Application()
 {
-	window = new Window(1000, 1000, "Solar System Simulation");
+	window = std::make_unique<Window>(1000, 1000, "Solar System Simulation");
 
 	// Load all OpenGL function pointers locations using GLAD
 	if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
@@ -45,11 +44,6 @@ Application::Application()
 	}
 
 	instance = this;
-}
-
-Application::~Application()
-{
-	delete window;
 }
 
 void Application::Run()
@@ -142,8 +136,12 @@ void Application::SimulateSolarSystem()
 
 	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun - farthest celestial body'
 	std::vector<uint32_t> allShadersIDs({ defaultShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), instancedModelShader.GetRendererID(), skyboxShader.GetRendererID() });
-	Controller controller({ 0.0f, 100.0f, -25.0f }, { 0.0f, -25.0f, 90.0f }, 45.0f, 2.0f * data["Pluto"].distanceToSun, allShadersIDs);
-	window->controller = &controller;
+	std::shared_ptr<Controller> controller(new Controller({ 0.0f, 100.0f, -25.0f }, { 0.0f, -25.0f, 90.0f }, 45.0f, 2.0f * data["Pluto"].distanceToSun, allShadersIDs));
+	if (controller == nullptr)
+	{
+		return;
+	}
+	window->controller = controller;
 
 	std::vector<uint32_t> celestialBodyShadersIDs({ defaultShader.GetRendererID(), instancedModelShader.GetRendererID() });
 	Material celestialBodyMaterial;
@@ -164,24 +162,24 @@ void Application::SimulateSolarSystem()
 	// RENDER LOOP (running every frame)
 	while (IsNotClosed())
 	{
-		Tick();
-		controller.ProcessInput(deltaTime);
-
 		renderer.Clear();
 
-		std::unordered_map<std::string, glm::vec3> bodyPositions;
-		const glm::vec3& cameraPosition = controller.GetCamera().GetPosition();
-
-		controller.GetCamera().SetPositionUniform(defaultShader);
-		controller.GetCamera().SetPositionUniform(sunShader);
-		controller.GetCamera().SetPositionUniform(instancedModelShader);
-		controller.GetCamera().SetProjectionViewUniform(window->GetAspectRatio());
+		Tick();
+		controller->ProcessInput(deltaTime);
+		
+		Camera& camera = controller->GetCamera();
+		const glm::vec3& cameraPosition = camera.GetPosition();
+		camera.SetPositionUniform(defaultShader);
+		camera.SetPositionUniform(sunShader);
+		camera.SetPositionUniform(instancedModelShader);
+		camera.SetProjectionViewUniform(window->GetAspectRatio());		
 
 		// Texture sampler ID (one for each object) 
 		uint32_t samplerID = 0;
 
 		// Compute position of each celestial body so we can sort them from the farthest to the closest according to the camera, 
 		// because it is needed to make blending work for multiple objects with transparency like body names and Saturn Rings
+		std::unordered_map<std::string, glm::vec3> bodyPositions;
 		for (auto& dataInput : data)
 		{
 			// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
@@ -309,7 +307,7 @@ void Application::SimulateSolarSystem()
 				glm::mat4 textModelMatrix(1.0f);
 				const glm::vec3& bodyPosition = bodyPositions[currentBodyName];
 				const glm::vec3& forward = glm::normalize(cameraPosition - bodyPosition);
-				const glm::vec3& right = glm::cross(controller.GetCamera().GetUp(), forward);
+				const glm::vec3& right = glm::cross(camera.GetUp(), forward);
 				const glm::vec3& up = cross(forward, right);
 				textModelMatrix[0] = glm::vec4(right, 0.0f);
 				textModelMatrix[1] = glm::vec4(up, 0.0f);
@@ -364,7 +362,7 @@ void Application::SimulateSolarSystem()
 
 
 		// Draw Milky Way skybox
-		controller.GetCamera().SetInfiniteProjectionViewUniform(window->GetAspectRatio());
+		camera.SetInfiniteProjectionViewUniform(window->GetAspectRatio());
 		skyboxShader.Enable();
 		skyboxShader.setUniformInt("fu_DiffuseMat", samplerID);
 		renderer.SetDepthFctToEqual();

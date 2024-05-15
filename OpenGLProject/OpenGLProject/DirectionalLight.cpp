@@ -1,6 +1,7 @@
 #include "DirectionalLight.h"
 
 #include <glm/gtc/type_ptr.hpp>
+#include <memory>
 
 #include "UniformBuffer.h"
 #include "Utils.h"
@@ -21,7 +22,7 @@ DirectionalLight::DirectionalLight(const glm::vec3& inDirection, const Reflectio
 
 void DirectionalLight::Store(const std::vector<uint32_t>& entitiesShadersIDs)
 {
-	ubo = new UniformBuffer(entitiesShadersIDs, "directionalLightParams", 4 * Utils::vec4Size + Utils::scalarSize);
+	ubo = std::make_unique<UniformBuffer>(entitiesShadersIDs, "directionalLightParams", 4 * Utils::vec4Size + Utils::scalarSize);
 	ubo->InitSubData({
 		{ static_cast<const void*>(glm::value_ptr(direction)), Utils::vec4Size },
 		{ static_cast<const void*>(glm::value_ptr(reflectionParams.ambient)), Utils::vec4Size },

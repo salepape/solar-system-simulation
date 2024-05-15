@@ -37,23 +37,10 @@ TextRenderer::TextRenderer(const uint32_t pixelWidth, const uint32_t pixelHeight
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
-TextRenderer::~TextRenderer()
-{
-	//if (vao)
-	//{
-	//	delete vao;
-	//}
-
-	//if (vbo)
-	//{
-	//	delete vbo;
-	//}
-}
-
 void TextRenderer::AllocateBufferObjects()
 {
-	vao = new VertexArray();
-	vbo = new VertexBuffer(nullptr, Quad::GetSize());
+	vao = std::make_shared<VertexArray>();
+	vbo = std::make_shared<VertexBuffer>(nullptr, Quad::GetSize());
 
 	VertexBufferLayout vbl;
 	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, Quad::QUAD_ELMTS_COUNT);

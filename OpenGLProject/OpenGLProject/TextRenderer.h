@@ -9,9 +9,9 @@
 #include <string>
 
 #include "Texture.h"
+#include "VertexArray.h"
 
 class Renderer;
-class VertexArray;
 class VertexBuffer;
 
 
@@ -36,7 +36,7 @@ class TextRenderer
 public:
 	TextRenderer(const uint32_t pixelWidth = 0, const uint32_t pixelHeight = 100);
 	TextRenderer(const TextRenderer&) = delete;
-	~TextRenderer();
+	~TextRenderer() = default;
 
 	// Load ASCII characters (data + texture creation) of the text provided as input
 	void LoadASCIICharacters(const std::string& text);
@@ -49,8 +49,8 @@ private:
 	FT_Library FreeTypeLibrary;
 	FT_Face face;
 
-	VertexArray* vao{ nullptr };
-	VertexBuffer* vbo{ nullptr };
+	std::shared_ptr<VertexArray> vao;
+	std::shared_ptr<VertexBuffer> vbo;
 
 	std::unordered_map<int8_t, GlyphParams> ASCIICharacterCache;
 

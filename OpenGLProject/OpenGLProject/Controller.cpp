@@ -3,6 +3,7 @@
 #include <glfw3.h>
 #include <glm/common.hpp>
 #include <iostream>
+#include <memory>
 
 #include "Application.h"
 #include "InputHandler.h"
@@ -126,7 +127,7 @@ void Controller::Callback_SetCursorPosition()
 
 		const auto& offset = currentWindow->GetOffsetFromLastCursorPosition(static_cast<float>(xPosition), static_cast<float>(yPosition));
 
-		if (auto* const currentController = currentWindow->controller)
+		if (const auto currentController = currentWindow->controller)
 		{
 			currentController->GetCamera().UpdateRotation(offset * currentController->mouseSensitivity);
 		}
@@ -145,7 +146,7 @@ void Controller::Callback_SetScroll()
 			return;
 		}
 
-		if (auto* const currentController = currentWindow->controller)
+		if (const auto currentController = currentWindow->controller)
 		{
 			currentController->UpdateZoomLeft(static_cast<float>(yOffset));
 			currentController->GetCamera().SetFovY(currentController->zoomLeft);
@@ -157,7 +158,7 @@ void Controller::Callback_SetKey()
 {
 	glfwSetKeyCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* window, const int32_t key, const int32_t /*scanCode*/, const int32_t action, const int32_t /*mods*/)
 	{
-		auto GetCurrentController = [&window]() -> Controller*
+		auto GetCurrentController = [&window]() -> std::shared_ptr<Controller>
 		{
 			// Access contextual data from within GLFWwindow callback
 			auto* const currentWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
@@ -166,7 +167,7 @@ void Controller::Callback_SetKey()
 				std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()" << std::endl;
 			}
 
-			if (auto* const currentController = currentWindow->controller)
+			if (const auto currentController = currentWindow->controller)
 			{
 				return currentController;
 			}

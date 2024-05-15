@@ -87,7 +87,7 @@ void Camera::UpdateCameraVectors()
 
 void Camera::AllocateProjectionView(const std::vector<uint32_t>& shaderIDs)
 {
-	ubo = new UniformBuffer(shaderIDs, "ubo_ProjectionView", Utils::mat4v4Size);
+	ubo = std::make_unique<UniformBuffer>(shaderIDs, "ubo_ProjectionView", Utils::mat4v4Size);
 }
 
 void Camera::SetProjectionViewUniform(const float windowAspectRatio)

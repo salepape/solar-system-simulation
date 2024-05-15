@@ -1,6 +1,7 @@
 #include "PointLight.h"
 
 #include <glm/gtc/type_ptr.hpp>
+#include <memory>
 
 #include "UniformBuffer.h"
 #include "Utils.h"
@@ -21,7 +22,7 @@ PointLight::PointLight(const glm::vec3& inPosition, const ReflectionParams& inRe
 
 void PointLight::Store(const std::vector<uint32_t>& entitiesShadersIDs)
 {
-	ubo = new UniformBuffer(entitiesShadersIDs, "pointLightParams", 4 * Utils::vec4Size + 4 * Utils::scalarSize);
+	ubo = std::make_unique<UniformBuffer>(entitiesShadersIDs, "pointLightParams", 4 * Utils::vec4Size + 4 * Utils::scalarSize);
 	ubo->InitSubData({
 		{ static_cast<const void*>(glm::value_ptr(position)), Utils::vec4Size },
 		{ static_cast<const void*>(glm::value_ptr(reflectionParams.ambient)), Utils::vec4Size },

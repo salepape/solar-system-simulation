@@ -3,16 +3,17 @@
 
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
+#include <memory>
 #include <iostream>
 #include <vector>
 
+#include "IndexBuffer.h"
 #include "Mesh.h"
 #include "Texture.h"
+#include "VertexArray.h"
 
-class IndexBuffer;
 class Renderer;
 enum class TextureType;
-class VertexArray;
 class VertexBuffer;
 
 
@@ -43,7 +44,7 @@ public:
 	Mesh(const std::string& texturePath, const uint32_t textureTarget, const WrapOptions& textureWrapOptions, const FilterOptions& textureFilterOptions, const TextureType& textureType);
 	// User-defined constructor used when parsing a pre-made 3D model (i.e. a mesh with textures applied on it) 
 	Mesh(const std::vector<Vertex>& inVertices, const std::vector<uint32_t>& inIndices, const std::vector<Texture>& inTextures);
-	~Mesh();
+	~Mesh() = default;
 
 	void StoreModelMatrices(const VertexBuffer& vbo) const;
 
@@ -55,8 +56,8 @@ protected:
 	std::vector<uint32_t> indices;
 	std::vector<Texture> textures;
 
-	VertexArray* vao{ nullptr };
-	IndexBuffer* ibo{ nullptr };
+	std::shared_ptr<VertexArray> vao;
+	std::shared_ptr<IndexBuffer> ibo;
 
 	// Compute each vertex of the mesh mathematically in code
 	virtual void ComputeVertices() {};

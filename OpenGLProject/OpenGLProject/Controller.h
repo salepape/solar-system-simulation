@@ -34,12 +34,6 @@ private:
 	float zoomLeft{ 0.0f };
 	float zoomMaxLevel{ 45.0f };
 
-	// Process input received from a mouse scroll-wheel event (vertical wheel-axis to be considered only)
-	void UpdateZoomLeft(const float yoffset);
-
-	void IncreaseTravelSpeed(const float factor);
-	void DecreaseTravelSpeed(const float factor);
-
 	// Cache used to avoid detecting the button release happening after a button press if quick
 	double pauseStartTime{ 0.0 };
 	double displayLegendStartTime{ 0.0 };
@@ -47,6 +41,12 @@ private:
 
 	// Duration needed before a button release is detected
 	double detectedButtonReleaseMinDuration{ 1.0 };
+
+	// Process input received from a mouse scroll-wheel event (vertical wheel-axis to be considered only)
+	void UpdateZoomLeft(const float yoffset);
+
+	void IncreaseTravelSpeed(const float factor);
+	void DecreaseTravelSpeed(const float factor);
 
 	// Detect if any mouse movement is masde and react accordingly
 	void Callback_SetCursorPosition();

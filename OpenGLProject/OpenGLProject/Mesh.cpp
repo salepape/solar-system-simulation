@@ -23,19 +23,6 @@ Mesh::Mesh(const std::vector<Vertex>& inVertices, const std::vector<uint32_t>& i
 	StoreVertices();
 }
 
-Mesh::~Mesh()
-{
-	//if (vao)
-	//{
-	//	delete vao;
-	//}
-	//
-	//if (ibo)
-	//{
-	//	delete ibo;
-	//}
-}
-
 void Mesh::StoreVertices()
 {
 	if (vertices.empty())
@@ -45,11 +32,11 @@ void Mesh::StoreVertices()
 	}
 	const bool isIndexBuffer = indices.empty() == false;
 
-	vao = new VertexArray();
+	vao = std::make_shared<VertexArray>();
 	VertexBuffer vbo(static_cast<const void*>(vertices.data()), vertices.size() * sizeof(Vertex));
 	if (isIndexBuffer)
 	{
-		ibo = new IndexBuffer(static_cast<const void*>(indices.data()), static_cast<uint32_t>(indices.size()));
+		ibo = std::make_shared<IndexBuffer>(static_cast<const void*>(indices.data()), static_cast<uint32_t>(indices.size()));
 	}
 
 	VertexBufferLayout vbl;

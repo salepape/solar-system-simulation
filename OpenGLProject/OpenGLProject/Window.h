@@ -2,9 +2,11 @@
 #define WINDOW_H
 
 #include <glm/vec2.hpp>
+#include <memory>
 #include <string>
 
-class Controller;
+#include "Controller.h"
+
 struct GLFWwindow;
 
 
@@ -18,7 +20,7 @@ public:
 
 	// Needed unfortunately, to be able to access it from a GLFWwindow scroll and cursor position callbacks
 	// @todo - Implement a custom event system, to get rid of this pointer?
-	Controller* controller{ nullptr };
+	std::shared_ptr<Controller> controller;
 
 	// Tell GLFW that we want the window context to be the main one on the current thread
 	int32_t MakeContextCurrent();

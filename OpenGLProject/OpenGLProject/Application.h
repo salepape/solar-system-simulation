@@ -1,7 +1,9 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-class Window;
+#include <memory>
+
+#include "Window.h"
 
 
 
@@ -10,7 +12,7 @@ class Application
 {
 public:
 	Application();
-	~Application();
+	~Application() = default;
 
 	static Application& GetInstance() { return *instance; }
 	Window& GetWindow() const { return *window; }
@@ -35,7 +37,7 @@ public:
 
 private:
 	static Application* instance;
-	Window* window{ nullptr };
+	std::unique_ptr<Window> window;
 
 	// Time elapsed since GLFW initialisation [in seconds]
 	float elapsedTime{ 0.0f };
@@ -53,7 +55,6 @@ private:
 	void SimulateSolarSystem();
 
 	void Tick();
-	float GetElapsedTime() const;
 };
 
 #endif // APPLICATION_H

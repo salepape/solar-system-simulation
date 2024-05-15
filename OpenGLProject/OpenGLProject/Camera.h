@@ -4,11 +4,11 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
+#include <memory>
 #include <vector>
 
 #include "Shader.h"
-
-class UniformBuffer;
+#include "UniformBuffer.h"
 
 
 
@@ -57,7 +57,7 @@ private:
 	// Rotation angle around the Right vector [in degrees]
 	float pitch{ 0.0f };
 
-	UniformBuffer* ubo{ nullptr };
+	std::unique_ptr<UniformBuffer> ubo;
 
 	// Compute new Forward, Right and Up vectors from new Euler Angles
 	void UpdateCameraVectors();
