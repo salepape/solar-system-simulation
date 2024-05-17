@@ -159,8 +159,9 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Belt.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CelestialBody.h" />
     <ClInclude Include="Controller.h" />
-    <ClInclude Include="Data.h" />
+    <ClInclude Include="ResourceLoader.h" />
     <ClInclude Include="DataBuffer.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="IndexBuffer.h" />
@@ -189,6 +190,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Belt.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CelestialBody.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="DataBuffer.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />

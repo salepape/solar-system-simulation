@@ -11,12 +11,13 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 #include <map>
+#include <unordered_map>
 
 #include "Application.h"
 #include "Belt.h"
 #include "Camera.h"
 #include "Controller.h"
-#include "Data.h"
+#include "ResourceLoader.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "Material.h"
@@ -78,13 +79,40 @@ void Application::ChangeSpeed(const float inSpeedFactor)
 
 void Application::SimulateSolarSystem()
 {
+	// Step 1 - Create all scene entities (using meshes, models, etc...)
+	Skybox milkyWay("../Textures/MilkyWay/stars.dds");
+
+	Model saturnRings("../Models/SaturnRings.obj");
+	Model asteroid("../Models/Asteroid.obj");
+	Model ice("../Models/Ice.obj");
+
+	ResourceLoader::LoadCelestialBodies();
+
+	Belt asteroidBelt({ asteroid,	5000,   0.05f,  10 }, { ResourceLoader::GetBodyFromName("Mars").distanceToParent * 1.1f,		2.75f * ResourceLoader::DIST_SCALE_FACTOR * 1.0f / 2.5f,	0.4f });
+	Belt kuiperBelt({ ice,			20000,  0.05f,  20 }, { ResourceLoader::GetBodyFromName("Neptune").distanceToParent * 1.4f,		30.05f * ResourceLoader::DIST_SCALE_FACTOR,					0.4f });
+
+
+
+
+	// Step 2 - Create renderers for scene entities and text
 	Renderer renderer;
 	renderer.EnableDepthTesting();
 	renderer.EnableBlending();
 	// @todo - Optimise rendering by activating face culling only when the controller is outside spheres
 	//renderer.EnableFaceCulling();
 
-	// Build and compile shader programs
+	TextRenderer textRenderer;
+	for (const auto& celestialBody : ResourceLoader::celestialBodies)
+	{
+		textRenderer.LoadASCIICharacters(celestialBody.bodyName);
+	}
+	textRenderer.FreeFTResources();
+
+
+
+
+
+	// Step 3 - Build/compile shaders, their corresponding programs and set UBOs
 	Shader celestialBodyShader("DefaultShader.vs", "DefaultShader.fs");
 	Shader sunShader("DefaultShader.vs", "SunShader.fs");
 	Shader textShader("TextShader.vs", "TextShader.fs");
@@ -93,52 +121,9 @@ void Application::SimulateSolarSystem()
 	Shader saturnRingsShader("DefaultShader.vs", "DefaultShader.fs");
 	Shader orbitShader("DefaultShader.vs", "DefaultShader.fs");
 
-	TextRenderer textRenderer;
-
-
-
-
-
-	// Create Milky Way skybox
-	Skybox skybox("../Textures/MilkyWay/stars.dds");
-
-	// Load models (meshes with textures applied)
-	Model saturnRings("../Models/SaturnRings.obj");
-	Model asteroid("../Models/Asteroid.obj");
-	Model ice("../Models/Ice.obj");
-
-	// Initialise all celestial body meshes and their respective orbit
-	LoadData();
-	for (auto& dataInput : data)
-	{
-		if (dataInput.first == "Sun")
-		{
-			dataInput.second.sphere = new Sphere(dataInput.second.texturePath, dataInput.second.radius * 0.5f);
-		}
-		else
-		{
-			dataInput.second.sphere = new Sphere(dataInput.second.texturePath, dataInput.second.radius);
-
-			// Apply celectial body textures to have some colour consistency
-			dataInput.second.orbit = new Orbit(dataInput.second.texturePath, dataInput.second.distanceToSun);
-		}
-
-		textRenderer.LoadASCIICharacters(dataInput.first);
-	}
-	textRenderer.FreeFTResources();
-	LoadPreComputations();
-
-	// Use instancing to build efficiently the two rocky belts of the Solar System
-	Belt asteroidBelt(	{ asteroid,	 5000,   0.05f,  10 },	{ data["Mars"].distanceToSun * 1.1f,	 2.75f * DIST_SCALE_FACTOR * 1.0f / 2.5f,  0.4f });
-	Belt kuiperBelt(	{ ice,	     20000,  0.05f,  20 },	{ data["Neptune"].distanceToSun * 1.4f,  30.05f * DIST_SCALE_FACTOR,			   0.4f });
-
-
-
-
-
 	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun - farthest celestial body'
 	std::vector<uint32_t> allShadersIDs({ celestialBodyShader.GetRendererID(), sunShader.GetRendererID(), textShader.GetRendererID(), beltBodyShader.GetRendererID(), skyboxShader.GetRendererID() });
-	std::shared_ptr<Controller> controller(new Controller({ 0.0f, 100.0f, -25.0f }, { 0.0f, -25.0f, 90.0f }, 45.0f, 2.0f * data["Pluto"].distanceToSun, allShadersIDs));
+	std::shared_ptr<Controller> controller(new Controller({ 0.0f, ResourceLoader::GetBodyFromName("Sun").radius * 1.75f, -25.0f }, { 0.0f, -25.0f, 90.0f }, 45.0f, 2.0f * ResourceLoader::GetBodyFromName("Pluto").distanceToParent, allShadersIDs));
 	if (controller == nullptr)
 	{
 		return;
@@ -174,65 +159,67 @@ void Application::SimulateSolarSystem()
 
 
 
-	// RENDER LOOP (running every frame)
+	// Step 4 - RENDER LOOP (running every frame)
 	while (IsNotClosed())
 	{
 		renderer.Clear();
 
 		Tick();
 		controller->ProcessInput(deltaTime);
-		
+
 		Camera& camera = controller->GetCamera();
 		const glm::vec3& cameraPosition = camera.GetPosition();
 		camera.SetPositionUniform(celestialBodyShader);
 		camera.SetPositionUniform(sunShader);
 		camera.SetPositionUniform(beltBodyShader);
-		camera.SetProjectionViewUniform(window->GetAspectRatio());		
+		camera.SetProjectionViewUniform(window->GetAspectRatio());
 
-		// Texture sampler ID (one for each object) 
+		// Texture sampler ID (one for each object)
 		uint32_t samplerID = 0;
 
 		// Compute position of each celestial body so we can sort them from the farthest to the closest according to the camera, 
 		// because it is needed to make blending work for multiple objects with transparency like body names and Saturn Rings
-		std::unordered_map<std::string, glm::vec3> bodyPositions;
-		for (auto& dataInput : data)
+		std::unordered_map<uint32_t, glm::vec3> bodyPositions;
+		for (auto& celestialBody : ResourceLoader::celestialBodies)
 		{
 			// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
-			const float travelledOrbitAngle = preComputations[dataInput.first].orbitAngularFreq * elapsedTime * speedFactor;
-			if (dataInput.second.parentInfo == nullptr)
+			const float travelledOrbitAngle = celestialBody.preComputations.orbitAngularFreq * elapsedTime * speedFactor;
+			if (celestialBody.parentID == -1)
 			{
-				dataInput.second.travelledAngle = travelledOrbitAngle;
+				celestialBody.travelledAngle = travelledOrbitAngle;
 			}
 
 			// Store body position in Cartesian coordinates computed from Spherical ones
 			glm::vec3 bodyPosition(0.0f);
 
 			// Circular translation of satellite around corresponding planet, taking into account satellite "orbital tilt"
-			if (const auto* satelliteParent = dataInput.second.parentInfo)
+			if (celestialBody.parentID != -1)
 			{
-				const float sinTravelledAngleParent = sin(satelliteParent->travelledAngle);
+				const auto& satelliteParent = ResourceLoader::GetBodyFromID(celestialBody.parentID);
+
+				const float sinTravelledAngleParent = glm::sin(satelliteParent.travelledAngle);
 
 				bodyPosition += glm::vec3(
-					preComputations[dataInput.second.parentName].distCosOrbInclination * sinTravelledAngleParent,
-					preComputations[dataInput.second.parentName].distSinOrbInclination * sinTravelledAngleParent,
-					satelliteParent->distanceToSun * cos(satelliteParent->travelledAngle));
+					satelliteParent.preComputations.distCosOrbInclination * sinTravelledAngleParent,
+					satelliteParent.preComputations.distSinOrbInclination * sinTravelledAngleParent,
+					satelliteParent.distanceToParent * glm::cos(satelliteParent.travelledAngle));
 			}
 
 			// Circular translation of body around Sun, taking into account body "orbital tilt"
-			const float sinTravelledAngle = sin(travelledOrbitAngle);
+			const float sinTravelledAngle = glm::sin(travelledOrbitAngle);
 
 			bodyPosition += glm::vec3(
-				preComputations[dataInput.first].distCosOrbInclination * sinTravelledAngle,
-				preComputations[dataInput.first].distSinOrbInclination * sinTravelledAngle,
-				dataInput.second.distanceToSun * cos(travelledOrbitAngle));
+				celestialBody.preComputations.distCosOrbInclination * sinTravelledAngle,
+				celestialBody.preComputations.distSinOrbInclination * sinTravelledAngle,
+				celestialBody.distanceToParent * glm::cos(travelledOrbitAngle));
 
-			bodyPositions.insert({ dataInput.first, bodyPosition });
+			bodyPositions.insert({ celestialBody.bodyID, bodyPosition });
 		}
 
-		std::map<float, std::string> bodiesSortedPerDist;
-		for (const auto& dataInput : data)
+		std::map<float, uint32_t> bodiesSortedPerDist;
+		for (const auto& celestialBody : ResourceLoader::celestialBodies)
 		{
-			bodiesSortedPerDist.insert({ glm::distance(cameraPosition, bodyPositions[dataInput.first]), dataInput.first });
+			bodiesSortedPerDist.insert({ glm::distance(cameraPosition, bodyPositions[celestialBody.bodyID]), celestialBody.bodyID });
 		}
 
 
@@ -244,22 +231,24 @@ void Application::SimulateSolarSystem()
 		{
 			glm::mat4 defaultModelMatrix(1.0f);
 
-			const std::string& currentBodyName = it->second;
+			const uint32_t currentBodyID = it->second;
+			const auto& currentBodyPosition = bodyPositions[currentBodyID];
+			const auto& currentBody = ResourceLoader::GetBodyFromID(currentBodyID);
 
 			// Move the body (non-constant over time) according to the circular translations computed previously
-			defaultModelMatrix = glm::translate(defaultModelMatrix, bodyPositions[currentBodyName]);
+			defaultModelMatrix = glm::translate(defaultModelMatrix, currentBodyPosition);
 
 			// Rotate the body (constant over time) around an axis colinear to orbit direction to reproduce its axial tilt
-			defaultModelMatrix = glm::rotate(defaultModelMatrix, preComputations[currentBodyName].obliquityInRad, Utils::forwardVector);
+			defaultModelMatrix = glm::rotate(defaultModelMatrix, currentBody.preComputations.obliquityInRad, Utils::forwardVector);
 
 			// Angle travelled by the celestial body around itself since the simulation started [in radians]
-			const float travelledSpinAngle = preComputations[currentBodyName].spinAngularFreq * elapsedTime * speedFactor;
+			const float travelledSpinAngle = currentBody.preComputations.spinAngularFreq * elapsedTime * speedFactor;
 
 			// Rotate the body (non-constant over time) around axis normal to orbital plane to reproduce its spin
 			defaultModelMatrix = glm::rotate(defaultModelMatrix, travelledSpinAngle, Utils::upVector);
 
 			// Draw semi-transparent Saturn rings
-			if (currentBodyName == "Saturn")
+			if (currentBody.bodyName == "Saturn")
 			{
 				saturnRingsMaterial.SetDiffuseSamplerUniform(saturnRingsShader, samplerID);
 				saturnRingsShader.Enable();
@@ -271,12 +260,12 @@ void Application::SimulateSolarSystem()
 			// Rotate the body (constant over time) around axis colinear to orbital plane so its poles appear vertically
 			defaultModelMatrix = glm::rotate(defaultModelMatrix, Utils::halfPi, Utils::rightVector);
 
-			if (currentBodyName == "Sun")
+			if (currentBody.bodyName == "Sun")
 			{
 				sunMaterial.SetDiffuseSamplerUniform(sunShader, samplerID);
 				sunShader.Enable();
 				sunShader.setUniformMat4("vu_Model", defaultModelMatrix);
-				data[currentBodyName].sphere->Render(renderer, samplerID++);
+				currentBody.sphere.Render(renderer, samplerID++);
 				sunShader.Disable();
 			}
 			else
@@ -284,28 +273,28 @@ void Application::SimulateSolarSystem()
 				celestialBodyMaterial.SetDiffuseSamplerUniform(celestialBodyShader, samplerID);
 				celestialBodyShader.Enable();
 				celestialBodyShader.setUniformMat4("vu_Model", defaultModelMatrix);
-				data[currentBodyName].sphere->Render(renderer, samplerID++);
+				currentBody.sphere.Render(renderer, samplerID++);
 				celestialBodyShader.Disable();
 			}
 
 			// Draw celestial body orbits
-			if (currentBodyName != "Sun")
+			if (currentBody.bodyName != "Sun")
 			{
 				glm::mat4 orbitModelMatrix(1.0f);
 
 				// Center the orbit (non-constant over time) around the parent planet for satellites
-				if (data[currentBodyName].parentName.empty() == false)
+				if (currentBody.parentID != -1)
 				{
-					orbitModelMatrix = glm::translate(orbitModelMatrix, bodyPositions[data[currentBodyName].parentName]);
+					orbitModelMatrix = glm::translate(orbitModelMatrix, bodyPositions[currentBody.parentID]);
 				}
 
 				// Rotate the orbit (constant over time) around axis colinear to orbit direction to reproduce the orbital plane
-				orbitModelMatrix = glm::rotate(orbitModelMatrix, preComputations[currentBodyName].orbInclinationInRad, Utils::forwardVector);
+				orbitModelMatrix = glm::rotate(orbitModelMatrix, currentBody.preComputations.orbInclinationInRad, Utils::forwardVector);
 
 				celestialBodyMaterial.SetDiffuseSamplerUniform(orbitShader, samplerID);
 				orbitShader.Enable();
 				orbitShader.setUniformMat4("vu_Model", orbitModelMatrix);
-				data[currentBodyName].orbit->Render(renderer, samplerID++);
+				currentBody.orbit.Render(renderer, samplerID++);
 				orbitShader.Disable();
 			}
 
@@ -317,7 +306,7 @@ void Application::SimulateSolarSystem()
 			{
 				// Orient text billboards so their readable side always faces the camera
 				glm::mat4 textModelMatrix(1.0f);
-				const glm::vec3& bodyPosition = bodyPositions[currentBodyName];
+				const glm::vec3& bodyPosition = currentBodyPosition;
 				const glm::vec3& forward = glm::normalize(cameraPosition - bodyPosition);
 				const glm::vec3& right = glm::cross(camera.GetUp(), forward);
 				const glm::vec3& up = cross(forward, right);
@@ -330,27 +319,7 @@ void Application::SimulateSolarSystem()
 				textShader.setUniformMat4("vu_Model", textModelMatrix);
 				textShader.setUniformInt("fu_DiffuseMat", samplerID);
 				textShader.setUniformVec3("fu_DiffuseColour", Utils::whiteColour);
-
-				float textHeight = 0.0f;
-				float textScale = 0.0f;
-				if (currentBodyName == "Sun")
-				{
-					textHeight = preComputations[currentBodyName].sunTextHeight;
-					textScale = preComputations[currentBodyName].sunTextScale;
-				}
-				// If the current celestial body is a satellite (i.e. has a parent)
-				else if (data[currentBodyName].parentInfo)
-				{
-					textHeight = preComputations[currentBodyName].satelliteTextHeight;
-					textScale = preComputations[currentBodyName].satelliteTextScale;
-				}
-				else
-				{
-					textHeight = preComputations[currentBodyName].textHeight;
-					textScale = preComputations[currentBodyName].textScale;
-				}
-				textRenderer.Render(renderer, currentBodyName, 0.0f, textHeight, textScale, samplerID++);
-
+				textRenderer.Render(renderer, currentBody.bodyName, 0.0f, currentBody.preComputations.textHeight, currentBody.preComputations.textScale, samplerID++);
 				textShader.Disable();
 			}
 		}
@@ -381,7 +350,7 @@ void Application::SimulateSolarSystem()
 		skyboxShader.Enable();
 		skyboxShader.setUniformInt("fu_DiffuseMat", samplerID);
 		renderer.SetDepthFctToEqual();
-		skybox.Render(renderer, samplerID++);
+		milkyWay.Render(renderer, samplerID++);
 		renderer.SetDepthFctToLess();
 		skyboxShader.Disable();
 
@@ -393,6 +362,7 @@ void Application::SimulateSolarSystem()
 		window->PollEvents();
 	}
 
+	// Step 5 - Free up all rendering resources
 	//renderer.DisableFaceCulling();
 	renderer.DisableBlending();
 	renderer.DisableDepthTesting();
