@@ -4,7 +4,6 @@
 #include <string>
 
 #include "Orbit.h"
-#include "SceneEntity.h"
 #include "Sphere.h"
 
 
@@ -26,7 +25,7 @@ struct PreComputations
 };
 
 // Represent a planet, dwarf planet, moon etc... using "ECS" (Sphere and Orbit "components") 
-struct CelestialBody : public SceneEntity
+struct CelestialBody
 {
 	std::string texturePath;				// DDS texture path
 	float radius{ 0.0f };					// Planet or moon (only those > pluto radius in length) radius divided by earth's radius [in kms]
