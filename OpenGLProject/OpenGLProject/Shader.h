@@ -2,12 +2,13 @@
 #define SHADER_H
 
 #include <glm/mat4x4.hpp>
-#include <iostream>
+#include <glm/vec3.hpp>
 #include <string>
 #include <unordered_map>
 
 
 
+// Used to check validity of all shaders, and the program they are attached to
 enum class ShaderProcessStage
 {
 	COMPILATION,
@@ -18,8 +19,7 @@ enum class ShaderProcessStage
 class Shader
 {
 public:
-	Shader(const std::string& vsPath, const std::string& fsPath);
-	Shader(const Shader&) = delete;
+	Shader(const std::string& inEntityName, const std::string& vsPath, const std::string& fsPath);
 	~Shader();
 
 	// Needs to be called before we initialise a uniform of the shader
@@ -35,9 +35,11 @@ public:
 	void setUniformMat4(const std::string& name, const glm::mat4& mat);
 
 	uint32_t GetRendererID() const { return rendererID; }
+	const std::string& GetEntityName() const { return entityName; }
 
 private:
 	uint32_t rendererID{ 0 };
+	std::string entityName;
 
 	std::unordered_map<std::string, int32_t> uniformLocationCache;
 

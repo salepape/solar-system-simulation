@@ -90,17 +90,17 @@ void Camera::AllocateProjectionView(const std::vector<uint32_t>& shaderIDs)
 	ubo = std::make_unique<UniformBuffer>(shaderIDs, "ubo_ProjectionView", Utils::mat4v4Size);
 }
 
-void Camera::SetProjectionViewUniform(const float windowAspectRatio)
+void Camera::SetProjectionViewVUniform(const float windowAspectRatio)
 {
 	ubo->InitSubData({ { static_cast<const void*>(glm::value_ptr(ComputeProjectionMatrix(windowAspectRatio) * ComputeViewMatrix())), Utils::mat4v4Size } });
 }
 
-void Camera::SetInfiniteProjectionViewUniform(const float windowAspectRatio)
+void Camera::SetInfiniteProjectionViewVUniform(const float windowAspectRatio)
 {
 	ubo->InitSubData({ { static_cast<const void*>(glm::value_ptr(ComputeProjectionMatrix(windowAspectRatio) * glm::mat4(glm::mat3(ComputeViewMatrix())))), Utils::mat4v4Size } });
 }
 
-void Camera::SetPositionUniform(Shader& shader)
+void Camera::SetPositionFUniform(Shader& shader)
 {
 	shader.Enable();
 	shader.setUniformVec3("fu_CameraPosition", GetPosition());

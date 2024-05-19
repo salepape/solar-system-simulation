@@ -14,7 +14,7 @@ public:
 	PointLight();
 	PointLight(const glm::vec3& inPosition, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const bool inIsBlinn);
 
-	void Store(const std::vector<uint32_t>& entitiesShadersIDs);
+	void Store(const std::vector<uint32_t>& entitiesShadersIDs) override;
 
 private:
 	glm::vec3 position{ 0.0f, 0.0f, 0.0f };

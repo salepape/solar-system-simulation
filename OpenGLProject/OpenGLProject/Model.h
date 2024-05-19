@@ -17,14 +17,15 @@ class Renderer;
 struct Vertex;
 
 
-
+// Set of meshes with textures already applied in a 3D Software
 class Model
 {
 public:
 	Model(const std::string& inPath, const bool inGammaCorrection = false);
 
-	void StoreModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t size) const;
+	void StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t size) const;
 
+	// @todo - Move render method implementations in SceneEntity child classes to be created for SaturnRings
 	void Render(const Renderer& renderer, const uint32_t textureUnit) const;
 	void RenderInstances(const Renderer& renderer, const uint32_t textureUnit, const uint32_t instanceCount) const;
 

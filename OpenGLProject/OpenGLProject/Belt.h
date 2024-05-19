@@ -6,6 +6,8 @@
 #include <vector>
 
 #include "Model.h"
+#include "PointLight.h"
+#include "SceneEntity.h"
 
 class Renderer;
 
@@ -14,7 +16,7 @@ class Renderer;
 // Instance is an asteroid for a belt
 struct InstanceParams
 {
-	Model model;
+	std::string texturePath;
 
 	const uint32_t count{ 0 };
 
@@ -36,20 +38,26 @@ struct TorusParams
 	const float flatnessFactor{ 0.0f };
 };
 
-class Belt
+class Belt : public SceneEntity
 {
 public:
 	Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams);
 
-	void Render(const Renderer& renderer, const uint32_t textureUnit) const;
+	void Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& modelMatrix = glm::mat4(1.0f)) override;
+	void RenderInstances(const Renderer& renderer, uint32_t& textureUnit, const uint32_t instanceCount) override {};
 
 private:
 	InstanceParams instanceParams;
 	TorusParams torusParams;
 	std::vector<glm::mat4> modelMatrices;
 
-	void ComputeModelMatrices();
-	void StoreModelMatrices() const;
+	// Model used for a belt body
+	Model model;
+
+	PointLight pointLight;
+
+	void ComputeInstanceModelMatrices();
+	void StoreInstanceModelMatrices() const;
 };
 
 

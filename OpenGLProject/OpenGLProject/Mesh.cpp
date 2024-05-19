@@ -12,6 +12,7 @@
 
 Mesh::Mesh(const std::string& texturePath, const uint32_t textureTarget, const WrapOptions& textureWrapOptions, const FilterOptions& textureFilterOptions, const TextureType& textureType)
 {
+	// @todo - A mesh should just contain geometry, texture setup should rather be in Material or SceneEntity class
 	Texture texture(texturePath, textureTarget, textureWrapOptions, textureFilterOptions, textureType);
 	texture.LoadDDS();
 	textures.push_back(texture);
@@ -56,7 +57,7 @@ void Mesh::StoreVertices()
 	}
 }
 
-void Mesh::StoreModelMatrices(const VertexBuffer& vbo) const
+void Mesh::StoreInstanceModelMatrices(const VertexBuffer& vbo) const
 {
 	VertexBufferLayout vbl;
 	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, Vertex::INSTANCE_MATRIX_ELMTS_COUNT);
@@ -87,7 +88,17 @@ void Mesh::Render(const Renderer& renderer, const uint32_t textureUnit) const
 	}
 }
 
-void Mesh::RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const
+void Mesh::RenderInstances(const Renderer& renderer, const uint32_t textureUnit, const uint32_t instanceCount) const
 {
+	for (const auto& texture : textures)
+	{
+		texture.Enable(textureUnit);
+	}
+
 	renderer.DrawInstances(*vao, ibo->GetCount(), instanceCount);
+
+	for (const auto& texture : textures)
+	{
+		texture.Disable();
+	}
 }

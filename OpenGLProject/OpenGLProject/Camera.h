@@ -34,9 +34,9 @@ public:
 	glm::mat4 ComputeProjectionMatrix(const float windowAspectRatio) const;
 	glm::mat4 ComputeViewMatrix() const;
 
-	void SetProjectionViewUniform(const float windowAspectRatio);
-	void SetInfiniteProjectionViewUniform(const float windowAspectRatio);
-	void SetPositionUniform(Shader& shader);
+	void SetProjectionViewVUniform(const float windowAspectRatio);
+	void SetInfiniteProjectionViewVUniform(const float windowAspectRatio);
+	void SetPositionFUniform(Shader& shader);
 
 private:
 	glm::vec3 position;

@@ -86,6 +86,8 @@ void Skybox::ComputeVertices()
 
 void Skybox::Render(const Renderer& renderer, const uint32_t textureUnit) const
 {
+	renderer.SetDepthFctToEqual();
+	
 	for (const auto& texture : textures)
 	{
 		texture.Enable(textureUnit);
@@ -97,4 +99,6 @@ void Skybox::Render(const Renderer& renderer, const uint32_t textureUnit) const
 	{
 		texture.Disable();
 	}
+
+	renderer.SetDepthFctToLess();
 }

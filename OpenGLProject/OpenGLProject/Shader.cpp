@@ -1,6 +1,7 @@
 #include "Shader.h"
 
 #include <fstream>
+#include <iostream>
 #include <glad.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <sstream>
@@ -8,7 +9,7 @@
 
 
 
-Shader::Shader(const std::string& vsPath, const std::string& fsPath)
+Shader::Shader(const std::string& inEntityName, const std::string& vsPath, const std::string& fsPath): entityName(inEntityName)
 {
 	const std::string& vsContent = ParseShader(vsPath);
 	const std::string& fsContent = ParseShader(fsPath);
@@ -82,7 +83,8 @@ int Shader::GetUniformLocation(const std::string& name)
 	const int32_t uniformLocation = glGetUniformLocation(rendererID, name.c_str());
 	if (uniformLocation == -1)
 	{
-		std::cout << "ERROR::SHADER - uniform " << name << " doesn't exist!" << std::endl;
+		std::cout << "ERROR::SHADER " << entityName << " - uniform " << name << " is not active in the program!" << std::endl;
+		return -1;
 	}
 
 	uniformLocationCache[name] = uniformLocation;

@@ -1,24 +1,30 @@
 #include "Belt.h"
 
-#include <algorithm>
-#include <glfw3.h>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
 
 #include "Application.h"
+#include "Material.h"
 #include "Renderer.h"
+#include "ResourceLoader.h"
+#include "Shader.h"
 
 
 
 Belt::Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams) :
-	instanceParams(inInstanceParams), torusParams(inTorusParams)
+	SceneEntity(Material(ResourceLoader::GetShader("BeltBody"))), instanceParams(inInstanceParams), torusParams(inTorusParams), model({ inInstanceParams.texturePath })
 {
-	ComputeModelMatrices();
-	StoreModelMatrices();
+	// @todo - See if we can adapt and reuse function in ResourceLoader when no '_' in the name
+	name = "Belt";
+
+	pointLight.Store({ material.GetShader().GetRendererID() });
+
+	ComputeInstanceModelMatrices();
+	StoreInstanceModelMatrices();
 }
 
-void Belt::ComputeModelMatrices()
+void Belt::ComputeInstanceModelMatrices()
 {
 	const float angleValue = 1.0f / instanceParams.count * 360.0f;
 	
@@ -37,14 +43,14 @@ void Belt::ComputeModelMatrices()
 		const float angle = i * angleValue;
 
 		const float xOffset = lowerBoundOffset + static_cast<float>(rand() % rangeSpanOffset);
-		const float x = sin(angle) * torusParams.majorRadius + xOffset;
+		const float x = glm::sin(angle) * torusParams.majorRadius + xOffset;
 
 		// Keep height of model field smaller compared to width of x and z
 		const float yOffset = lowerBoundOffset + static_cast<float>(rand() % rangeSpanOffset);
 		const float y = yOffset * torusParams.flatnessFactor;
 
 		const float zOffset = lowerBoundOffset + static_cast<float>(rand() % rangeSpanOffset);
-		const float z = cos(angle) * torusParams.majorRadius + zOffset;
+		const float z = glm::cos(angle) * torusParams.majorRadius + zOffset;
 
 		// Move instance along circle of radius majorRadius in [-minorRadius, minorRadius]
 		// (added the range lower bound to the random number modulo by the range span to get a random value in range [lowerBound, lowerBound + rangeSpan])
@@ -63,12 +69,17 @@ void Belt::ComputeModelMatrices()
 	}
 }
 
-void Belt::StoreModelMatrices() const
+void Belt::StoreInstanceModelMatrices() const
 {
-	instanceParams.model.StoreModelMatrices(modelMatrices, static_cast<size_t>(instanceParams.count) * sizeof(glm::mat4));
+	model.StoreInstanceModelMatrices(modelMatrices, static_cast<size_t>(instanceParams.count) * sizeof(glm::mat4));
 }
 
-void Belt::Render(const Renderer& renderer, const uint32_t textureUnit) const
+void Belt::Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& /*modelMatrix*/)
 {
-	instanceParams.model.RenderInstances(renderer, textureUnit, instanceParams.count);
+	Shader& shader = material.GetShader();
+
+	shader.Enable();
+	material.SetDiffuseSamplerVUniform(textureUnit);
+	model.RenderInstances(renderer, textureUnit++, instanceParams.count);
+	shader.Disable();
 }

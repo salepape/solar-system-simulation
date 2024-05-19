@@ -46,14 +46,16 @@ public:
 	Mesh(const std::vector<Vertex>& inVertices, const std::vector<uint32_t>& inIndices, const std::vector<Texture>& inTextures);
 	~Mesh() = default;
 
-	void StoreModelMatrices(const VertexBuffer& vbo) const;
+	void StoreInstanceModelMatrices(const VertexBuffer& vbo) const;
 
+	// @todo - Move render method implementations in SceneEntity child classes (to be created for Orbit, Billboard and Skybox)
 	virtual void Render(const Renderer& renderer, const uint32_t textureUnit) const;
-	void RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const;
+	void RenderInstances(const Renderer& renderer, const uint32_t textureUnit, const uint32_t instanceCount) const;
 
 protected:
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
+	// @todo - Should be moved in Material class or SceneEntity one
 	std::vector<Texture> textures;
 
 	std::shared_ptr<VertexArray> vao;

@@ -1,10 +1,18 @@
 #ifndef CELESTIAL_BODY_H
 #define CELESTIAL_BODY_H
 
+#include <glm/mat4x4.hpp>
+#include <memory>
 #include <string>
 
+#include "DirectionalLight.h"
+#include "Material.h"
 #include "Orbit.h"
+#include "PointLight.h"
+#include "SceneEntity.h"
 #include "Sphere.h"
+
+class Renderer;
 
 
 
@@ -24,8 +32,9 @@ struct PreComputations
 	float textScale{ 0.0f };
 };
 
-// Represent a planet, dwarf planet, moon etc... using "ECS" (Sphere and Orbit "components") 
-struct CelestialBody
+// @todo - Have a better separation body/orbit and naming?
+// Represent a planet, dwarf planet, moon etc... and its orbit
+struct CelestialBody : public SceneEntity
 {
 	std::string texturePath;				// DDS texture path
 	float radius{ 0.0f };					// Planet or moon (only those > pluto radius in length) radius divided by earth's radius [in kms]
@@ -39,19 +48,22 @@ struct CelestialBody
 	Sphere sphere;							// Sphere mesh
 	Orbit orbit;							// Orbit mesh
 	PreComputations preComputations;
+
+	std::unique_ptr<PointLight> pointLight;
+	std::unique_ptr<DirectionalLight> directionalLight;
 	
-	static uint32_t bodyIDCounter;
-	int32_t bodyID{ -1 };					// Unique ID identifying the celestial body
-	std::string bodyName;					// Body name computed from the Texture path
 	float travelledAngle{ 0.0f };			// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
 
 
 
-	CelestialBody(const std::string& inTexturePath, const float inRadius, const float inDistanceToParent, const float inObliquity, const float inOrbitalPeriod, const float inSpinPeriod, const float inOrbitalInclination, const int32_t inParentID = -1);
-	
-	const PreComputations LoadPreComputations();
+	CelestialBody(const std::string& inTexturePath, const float inRadius, const float inDistanceToParent, const float inObliquity, const float inOrbitalPeriod, const float inSpinPeriod, const float inOrbitalInclination, const int32_t inParentID = -1);	
 
-	void GetNameFromTexturePath();
+	void Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& modelMatrix) override;
+	void RenderInstances(const Renderer& renderer, uint32_t& textureUnit, const uint32_t instanceCount) override {};
+
+private:
+	static Material InitialiseParent(const std::string& inTexturePath);
+	PreComputations LoadPreComputations();
 };
 
 

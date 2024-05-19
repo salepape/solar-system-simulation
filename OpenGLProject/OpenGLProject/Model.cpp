@@ -135,7 +135,7 @@ void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 			const std::string& textureStringPath = std::string(texturePath.C_Str(), texturePath.length);
 
 			// Skip texture creation if already done
-			const auto loadedTextureIt = find_if(textures.begin(), textures.end(), [&textureStringPath](const Texture& loadedTexture)
+			const auto& loadedTextureIt = find_if(textures.begin(), textures.end(), [&textureStringPath](const Texture& loadedTexture)
 			{
 				return textureStringPath == loadedTexture.GetPath();
 			});
@@ -146,6 +146,7 @@ void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 			}
 
 			// Create a DDS texture from the ASSIMP one
+			// @todo - Should this be moved in Material class?
 			Texture texture(textureStringPath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, static_cast<TextureType>(type));
 			texture.LoadDDS();
 			textures.push_back(texture);
@@ -153,7 +154,7 @@ void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 	}
 }
 
-void Model::StoreModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t size) const
+void Model::StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t size) const
 {
 	// Configure instanced array
 	VertexBuffer vbo(static_cast<const void*>(modelMatrices.data()), size);
@@ -161,7 +162,7 @@ void Model::StoreModelMatrices(const std::vector<glm::mat4>& modelMatrices, cons
 	// Set transformation matrices as an instance vertex attribute for each mesh VAO already created
 	for (const auto& mesh : meshes)
 	{
-		mesh.StoreModelMatrices(vbo);
+		mesh.StoreInstanceModelMatrices(vbo);
 	}
 
 	vbo.Unbind();
@@ -184,7 +185,7 @@ void Model::RenderInstances(const Renderer& renderer, const uint32_t textureUnit
 
 	for (const auto& mesh : meshes)
 	{
-		mesh.RenderInstances(renderer, instanceCount);
+		mesh.RenderInstances(renderer, textureUnit, instanceCount);
 	}
 
 	for (const auto& texture : textures)

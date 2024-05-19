@@ -1,31 +1,32 @@
 #ifndef ORBIT_H
 #define ORBIT_H
 
-#include <iostream>
-#include <string>
+#include <glm/mat4x4.hpp>
 
-#include "Mesh.h"
+#include "Circle.h"
+#include "PointLight.h"
+#include "SceneEntity.h"
 
 class Renderer;
 
 
 
-// @todo - Implement elliptic orbits for a more realistic simulation (circular orbits with eccentricities close to 0 for now)
-class Orbit : public Mesh
+struct Orbit : public SceneEntity
 {
-public:
-	Orbit(const std::string& texturePath, const float inRadius);
+	// @todo - Implement ellipse for a more realistic simulation (circular orbits with eccentricities close to 0 for now)
+	Circle circle;
 
-	void Render(const Renderer& renderer, const uint32_t textureUnit) const override;
+	PointLight pointLight;
 
-protected:
-	void ComputeVertices() override;
 
-private:
-	float radius{ 0.0f };
-	uint32_t meridianStripsCount{ 100 };
+
+	Orbit(const std::string& texturePath, const float radius);
+
+	void Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& modelMatrix) override;
+	void RenderInstances(const Renderer& renderer, uint32_t& textureUnit, const uint32_t instanceCount) override {};
 };
 
 
 
 #endif // ORBIT_H
+

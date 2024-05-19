@@ -30,7 +30,8 @@ class LightSource
 {
 public:
 	LightSource(const ReflectionParams& inReflectionParams, const bool isBlinn = false);
-	virtual void Store(const std::vector<uint32_t>& entitiesShadersIDs) { };
+
+	virtual void Store(const std::vector<uint32_t>& entitiesShadersIDs) {};
 
 protected:
 	const ReflectionParams reflectionParams;
