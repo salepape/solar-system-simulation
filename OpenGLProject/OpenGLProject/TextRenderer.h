@@ -34,7 +34,7 @@ struct GlyphParams
 class TextRenderer
 {
 public:
-	TextRenderer(const uint32_t pixelWidth = 0, const uint32_t pixelHeight = 100);
+	TextRenderer(const Renderer& inRenderer, const uint32_t pixelWidth = 0, const uint32_t pixelHeight = 100);
 	TextRenderer(const TextRenderer&) = delete;
 	~TextRenderer() = default;
 
@@ -43,9 +43,11 @@ public:
 	void FreeFTResources() const;
 
 	// Update VBO for each character of the text provided as input
-	void Render(const Renderer& renderer, const std::string& text, float x, const float y, const float scale, const uint32_t textureUnit);
+	void Render(const std::string& text, float x, const float y, const float scale, const uint32_t textureUnit);
 
 private:
+	const Renderer& renderer;
+
 	FT_Library FreeTypeLibrary;
 	FT_Face face;
 

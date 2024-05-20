@@ -13,7 +13,7 @@
 
 
 
-TextRenderer::TextRenderer(const uint32_t pixelWidth, const uint32_t pixelHeight)
+TextRenderer::TextRenderer(const Renderer& inRenderer, const uint32_t pixelWidth, const uint32_t pixelHeight) : renderer(inRenderer)
 {
 	AllocateBufferObjects();
 
@@ -99,7 +99,7 @@ void TextRenderer::FreeFTResources() const
 	FT_Done_FreeType(FreeTypeLibrary);
 }
 
-void TextRenderer::Render(const Renderer& renderer, const std::string& text, float x, const float y, const float scale, const uint32_t textureUnit)
+void TextRenderer::Render(const std::string& text, float x, const float y, const float scale, const uint32_t textureUnit)
 {
 	// Left-shift billboard position to half its width to center-align it to the celestial body
 	x = -GetBillboardSize(text, scale) * 0.5f;

@@ -1,6 +1,7 @@
 #include "SaturnRings.h"
 
 #include "Material.h"
+#include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
 
@@ -15,10 +16,10 @@ SaturnRings::SaturnRings(const std::string& texturePath) : SceneEntity(Material(
 
 void SaturnRings::Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& modelMatrix)
 {
-	Shader& shader = GetMaterial().GetShader();
+	Shader& shader = material.GetShader();
 
 	shader.Enable();
-	GetMaterial().SetDiffuseSamplerVUniform(textureUnit);
+	material.SetDiffuseSamplerVUniform(textureUnit);
 	SetModelMatrixUniform(modelMatrix);
 	model.Render(renderer, textureUnit++);
 	shader.Disable();

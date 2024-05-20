@@ -15,6 +15,7 @@
 
 #include "Application.h"
 #include "Belt.h"
+#include "Billboard.h"
 #include "Camera.h"
 #include "Controller.h"
 #include "MilkyWay.h"
@@ -119,7 +120,7 @@ void Application::SimulateSolarSystem()
 	// @todo - Optimise rendering by activating face culling only when the controller is outside spheres
 	//renderer.EnableFaceCulling();
 
-	TextRenderer textRenderer;
+	TextRenderer textRenderer(renderer);
 	for (const auto& celestialBody : celestialBodies)
 	{
 		textRenderer.LoadASCIICharacters(celestialBody.name);
@@ -268,13 +269,8 @@ void Application::SimulateSolarSystem()
 				textModelMatrix[2] = glm::vec4(forward, 0.0f);
 				textModelMatrix[3] = glm::vec4(bodyPosition, 1.0f);
 
-				// @todo - Create a class Billboard inheriting from SceneEntity as a set of Quad components being the one defined in TextRenderer
-				textShader.Enable();
-				textShader.setUniformMat4("vu_Model", textModelMatrix);
-				textShader.setUniformInt("fu_DiffuseMat", samplerID);
-				textShader.setUniformVec3("fu_DiffuseColour", Utils::whiteColour);
-				textRenderer.Render(renderer, currentBody.name, 0.0f, currentBody.preComputations.textHeight, currentBody.preComputations.textScale, samplerID++);
-				textShader.Disable();
+				currentBody.billboard = std::make_unique<Billboard>(currentBody.name);
+				currentBody.billboard->Render(textRenderer, samplerID, textModelMatrix);
 			}
 		}
 

@@ -1,6 +1,7 @@
 #include "Orbit.h"
 
 #include "Material.h"
+#include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
 
@@ -16,10 +17,10 @@ Orbit::Orbit(const std::string& texturePath, const float radius) : SceneEntity(M
 
 void Orbit::Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& modelMatrix)
 {
-	Shader& shader = GetMaterial().GetShader();
+	Shader& shader = material.GetShader();
 
 	shader.Enable();
-	GetMaterial().SetDiffuseSamplerVUniform(textureUnit);
+	material.SetDiffuseSamplerVUniform(textureUnit);
 	SetModelMatrixUniform(modelMatrix);
 	circle.Render(renderer, textureUnit++);
 	shader.Disable();

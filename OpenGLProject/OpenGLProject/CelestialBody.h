@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 
+#include "Billboard.h"
 #include "DirectionalLight.h"
 #include "Material.h"
 #include "Orbit.h"
@@ -48,6 +49,8 @@ struct CelestialBody : public SceneEntity
 	Sphere sphere;							// Sphere mesh
 	Orbit orbit;							// Orbit mesh
 	PreComputations preComputations;
+
+	std::unique_ptr<Billboard> billboard;
 
 	std::unique_ptr<PointLight> pointLight;
 	std::unique_ptr<DirectionalLight> directionalLight;

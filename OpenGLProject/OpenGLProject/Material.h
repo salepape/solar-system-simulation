@@ -21,6 +21,7 @@ public:
 
 	void Store(const std::vector<uint32_t>& entitiesShadersIDs);
 	void SetDiffuseSamplerVUniform(const uint32_t samplerID);
+	void SetDiffuseColourVUniform(const glm::vec3& colour);
 
 	Shader& GetShader() { return shader; }
 
@@ -44,6 +45,8 @@ private:
 	float transparency{ 1.0f };
 
 	std::unique_ptr<UniformBuffer> ubo;
+
+	glm::vec3 diffuseColour{ 0.0f, 0.0f, 0.0f };
 };
 
 

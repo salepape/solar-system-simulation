@@ -38,3 +38,8 @@ void Material::SetDiffuseSamplerVUniform(const uint32_t samplerID)
 {
 	shader.setUniformInt("fu_DiffuseMat", samplerID);
 }
+
+void Material::SetDiffuseColourVUniform(const glm::vec3& colour)
+{
+	shader.setUniformVec3("fu_DiffuseColour", colour);
+}

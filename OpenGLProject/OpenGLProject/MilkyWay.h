@@ -1,8 +1,12 @@
 #ifndef MILKY_WAY_H
 #define MILKY_WAY_H
 
+#include <glm/mat4x4.hpp>
+
 #include "SceneEntity.h"
 #include "Skybox.h"
+
+class Renderer;
 
 
 

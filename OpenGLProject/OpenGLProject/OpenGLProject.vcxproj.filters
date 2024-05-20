@@ -171,6 +171,9 @@
     <ClInclude Include="Orbit.h">
       <Filter>Header Files\Scene Entities</Filter>
     </ClInclude>
+    <ClInclude Include="Billboard.h">
+      <Filter>Header Files\Scene Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -273,6 +276,9 @@
       <Filter>Source Files\Meshes</Filter>
     </ClCompile>
     <ClCompile Include="Orbit.cpp">
+      <Filter>Source Files\Scene Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Billboard.cpp">
       <Filter>Source Files\Scene Entities</Filter>
     </ClCompile>
   </ItemGroup>
