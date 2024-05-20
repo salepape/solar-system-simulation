@@ -74,12 +74,12 @@ void Belt::StoreInstanceModelMatrices() const
 	model.StoreInstanceModelMatrices(modelMatrices, static_cast<size_t>(instanceParams.count) * sizeof(glm::mat4));
 }
 
-void Belt::Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& /*modelMatrix*/)
+void Belt::Render(const Renderer& renderer, const glm::mat4& /*modelMatrix*/)
 {
 	Shader& shader = material.GetShader();
-
+	
 	shader.Enable();
-	material.SetDiffuseSamplerVUniform(textureUnit);
-	model.RenderInstances(renderer, textureUnit++, instanceParams.count);
+	material.SetDiffuseSamplerVUniform();
+	model.RenderInstances(renderer, material.GetDiffuseSamplerID(), instanceParams.count);
 	shader.Disable();
 }

@@ -20,20 +20,25 @@ public:
 	Material(Material&& inMaterial);
 
 	void Store(const std::vector<uint32_t>& entitiesShadersIDs);
-	void SetDiffuseSamplerVUniform(const uint32_t samplerID);
+	void SetDiffuseSamplerVUniform();
 	void SetDiffuseColourVUniform(const glm::vec3& colour);
 
 	Shader& GetShader() { return shader; }
+	uint32_t GetDiffuseSamplerID() const { return diffuseSamplerID; }
 
 private:
 	// We need a reference so the shader persists even after Material destruction (Shader exists separately in ResourceLoader)
 	Shader& shader;
 
+	// Diffuse texture sampler ID (one for each object)
+	static uint32_t diffuseSamplerIDCounter;
+	uint32_t diffuseSamplerID = 0;
+	
+	// @todo - Move all the corresponding Texture code in this class
 	// DDS texture that will be used as a Sampler2D
-	// @todo - Find ways to put the equivalent uniform out of the Render loop with this pointer?
-	//std::unique_ptr<Texture> diffuseTexture;
+	//Texture diffuseTexture;
 
-	// @todo - Check code again, as I'm not under the impression the variables below work correctly...
+	glm::vec3 diffuseColour{ 0.0f, 0.0f, 0.0f };
 
 	// Colour of the specular highlight on the surface (instead of a texture)
 	glm::vec3 specularColour{ 0.0f, 0.0f, 0.0f };
@@ -45,8 +50,6 @@ private:
 	float transparency{ 1.0f };
 
 	std::unique_ptr<UniformBuffer> ubo;
-
-	glm::vec3 diffuseColour{ 0.0f, 0.0f, 0.0f };
 };
 
 

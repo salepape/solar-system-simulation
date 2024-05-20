@@ -141,9 +141,6 @@ void Application::SimulateSolarSystem()
 
 
 
-		// Texture sampler ID (one for each object)
-		uint32_t samplerID = 0;
-
 		// Compute position of each celestial body so we can sort them from the farthest to the closest according to the camera, 
 		// because it is needed to make blending work for multiple objects with transparency like body names and Saturn Rings
 		std::unordered_map<uint32_t, glm::vec3> bodyPositions;
@@ -217,13 +214,13 @@ void Application::SimulateSolarSystem()
 			// Draw semi-transparent Saturn rings
 			if (currentBody.name == "Saturn")
 			{	
-				saturnRings.Render(renderer, samplerID, defaultModelMatrix);
+				saturnRings.Render(renderer, defaultModelMatrix);
 			}
 
 			// Rotate the body (constant over time) around axis colinear to orbital plane so its poles appear vertically
 			defaultModelMatrix = glm::rotate(defaultModelMatrix, Utils::halfPi, Utils::rightVector);
 
-			currentBody.Render(renderer, samplerID, defaultModelMatrix);
+			currentBody.Render(renderer, defaultModelMatrix);
 
 
 
@@ -243,7 +240,7 @@ void Application::SimulateSolarSystem()
 				// Rotate the orbit (constant over time) around axis colinear to orbit direction to reproduce the orbital plane
 				orbitModelMatrix = glm::rotate(orbitModelMatrix, currentBody.preComputations.orbInclinationInRad, Utils::forwardVector);
 
-				currentBody.orbit.Render(renderer, samplerID, orbitModelMatrix);
+				currentBody.orbit.Render(renderer, orbitModelMatrix);
 			}
 
 
@@ -264,7 +261,7 @@ void Application::SimulateSolarSystem()
 				textModelMatrix[3] = glm::vec4(bodyPosition, 1.0f);
 
 				currentBody.billboard = std::make_unique<Billboard>(currentBody.name);
-				currentBody.billboard->Render(textRenderer, samplerID, textModelMatrix);
+				currentBody.billboard->Render(textRenderer, textModelMatrix);
 			}
 		}
 
@@ -273,8 +270,8 @@ void Application::SimulateSolarSystem()
 
 
 		// Draw the 2 main belts of the Solar System
-		asteroidBelt.Render(renderer, samplerID);
-		kuiperBelt.Render(renderer, samplerID);
+		asteroidBelt.Render(renderer);
+		kuiperBelt.Render(renderer);
 
 
 
@@ -282,7 +279,7 @@ void Application::SimulateSolarSystem()
 
 		// Draw Milky Way skybox
 		camera.SetInfiniteProjectionViewVUniform(window->GetAspectRatio());
-		milkyWay.Render(renderer, samplerID);
+		milkyWay.Render(renderer);
 
 
 

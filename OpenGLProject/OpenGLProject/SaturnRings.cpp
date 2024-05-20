@@ -14,13 +14,13 @@ SaturnRings::SaturnRings(const std::string& texturePath) : SceneEntity(Material(
 	pointLight.Store({ material.GetShader().GetRendererID() });
 }
 
-void SaturnRings::Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& modelMatrix)
+void SaturnRings::Render(const Renderer& renderer, const glm::mat4& modelMatrix)
 {
 	Shader& shader = material.GetShader();
 
 	shader.Enable();
-	material.SetDiffuseSamplerVUniform(textureUnit);
+	material.SetDiffuseSamplerVUniform();
 	SetModelMatrixUniform(modelMatrix);
-	model.Render(renderer, textureUnit++);
+	model.Render(renderer, material.GetDiffuseSamplerID());
 	shader.Disable();
 }

@@ -61,8 +61,7 @@ struct CelestialBody : public SceneEntity
 
 	CelestialBody(const std::string& inTexturePath, const float inRadius, const float inDistanceToParent, const float inObliquity, const float inOrbitalPeriod, const float inSpinPeriod, const float inOrbitalInclination, const int32_t inParentID = -1);	
 
-	void Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& modelMatrix) override;
-	void RenderInstances(const Renderer& renderer, uint32_t& textureUnit, const uint32_t instanceCount) override {};
+	void Render(const Renderer& renderer, const glm::mat4& modelMatrix) override;
 
 private:
 	static Material InitialiseParent(const std::string& inTexturePath);

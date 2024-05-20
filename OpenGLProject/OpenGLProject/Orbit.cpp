@@ -15,13 +15,13 @@ Orbit::Orbit(const std::string& texturePath, const float radius) : SceneEntity(M
 	pointLight.Store({ material.GetShader().GetRendererID() });
 }
 
-void Orbit::Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& modelMatrix)
+void Orbit::Render(const Renderer& renderer, const glm::mat4& modelMatrix)
 {
 	Shader& shader = material.GetShader();
 
 	shader.Enable();
-	material.SetDiffuseSamplerVUniform(textureUnit);
+	material.SetDiffuseSamplerVUniform();
 	SetModelMatrixUniform(modelMatrix);
-	circle.Render(renderer, textureUnit++);
+	circle.Render(renderer, material.GetDiffuseSamplerID());
 	shader.Disable();
 }

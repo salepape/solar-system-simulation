@@ -43,8 +43,7 @@ class Belt : public SceneEntity
 public:
 	Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams);
 
-	void Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& modelMatrix = glm::mat4(1.0f)) override;
-	void RenderInstances(const Renderer& renderer, uint32_t& textureUnit, const uint32_t instanceCount) override {};
+	void Render(const Renderer& renderer, const glm::mat4& modelMatrix = glm::mat4(1.0f)) override;
 
 private:
 	InstanceParams instanceParams;

@@ -22,8 +22,7 @@ struct Orbit : public SceneEntity
 
 	Orbit(const std::string& texturePath, const float radius);
 
-	void Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& modelMatrix) override;
-	void RenderInstances(const Renderer& renderer, uint32_t& textureUnit, const uint32_t instanceCount) override {};
+	void Render(const Renderer& renderer, const glm::mat4& modelMatrix) override;
 };
 
 

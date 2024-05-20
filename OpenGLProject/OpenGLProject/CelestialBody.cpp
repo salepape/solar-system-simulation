@@ -74,13 +74,13 @@ PreComputations CelestialBody::LoadPreComputations()
 	};
 }
 
-void CelestialBody::Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& modelMatrix)
+void CelestialBody::Render(const Renderer& renderer, const glm::mat4& modelMatrix)
 {
 	Shader& shader = material.GetShader();
 
 	shader.Enable();
 	SetModelMatrixUniform(modelMatrix);
-	material.SetDiffuseSamplerVUniform(textureUnit);
-	sphere.Render(renderer, textureUnit++);
+	material.SetDiffuseSamplerVUniform();
+	sphere.Render(renderer, material.GetDiffuseSamplerID());
 	shader.Disable();
 }

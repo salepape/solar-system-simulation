@@ -12,12 +12,12 @@ MilkyWay::MilkyWay(const std::string& texturePath) : SceneEntity(Material(Resour
 	name = "MilkyWay";
 }
 
-void MilkyWay::Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& /*modelMatrix*/)
+void MilkyWay::Render(const Renderer& renderer, const glm::mat4& /*modelMatrix*/)
 {
 	Shader& shader = material.GetShader();
 
 	shader.Enable();
-	material.SetDiffuseSamplerVUniform(textureUnit);
-	skybox.Render(renderer, textureUnit++);
+	material.SetDiffuseSamplerVUniform();
+	skybox.Render(renderer, material.GetDiffuseSamplerID());
 	shader.Disable();
 }

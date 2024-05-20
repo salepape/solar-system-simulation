@@ -21,8 +21,7 @@ public:
 	void ComputeModelMatrixUniform();
 	void SetModelMatrixUniform(const glm::mat4& inModelMatrix);
 
-	virtual void Render(const Renderer& renderer, uint32_t& textureUnit, const glm::mat4& modelMatrix) = 0;
-	virtual void RenderInstances(const Renderer& renderer, uint32_t& textureUnit, const uint32_t instanceCount) = 0;
+	virtual void Render(const Renderer& renderer, const glm::mat4& modelMatrix) = 0;
 
 	Material& GetMaterial() { return material; }
 
