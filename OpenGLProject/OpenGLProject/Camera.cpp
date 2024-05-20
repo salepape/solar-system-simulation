@@ -7,19 +7,21 @@
 #include <glm/gtc/type_ptr.hpp> 
 #include <glm/trigonometric.hpp>
 
+#include "ResourceLoader.h"
+#include "Shader.h"
 #include "UniformBuffer.h"
 #include "Utils.h"
 
 
 
-Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane, const std::vector<uint32_t>& shaderIDs) :
+Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane) :
 	position(inPosition), pitch(inRotation.y), yaw(inRotation.z), fovY(inFovY), farPlane(inFarPlane), forward({ 0.0f, 0.0f, -1.0f })
 {
 	initialPosition = inPosition;
 	initialRotation = inRotation;
 
 	UpdateCameraVectors();
-	AllocateProjectionView(shaderIDs);
+	AllocateProjectionView();
 }
 
 void Camera::Reset()
@@ -85,9 +87,18 @@ void Camera::UpdateCameraVectors()
 	up = glm::normalize(glm::cross(right, forward));
 }
 
-void Camera::AllocateProjectionView(const std::vector<uint32_t>& shaderIDs)
+void Camera::AllocateProjectionView()
 {
-	ubo = std::make_unique<UniformBuffer>(shaderIDs, "ubo_ProjectionView", Utils::mat4v4Size);
+	extern std::vector<Shader> shaders;
+	std::vector<uint32_t> allShaderIDs;
+	allShaderIDs.reserve(static_cast<uint32_t>(shaders.size()));
+
+	for (const auto& shader : shaders)
+	{
+		allShaderIDs.push_back(shader.GetRendererID());
+	}
+
+	ubo = std::make_unique<UniformBuffer>(allShaderIDs, "ubo_ProjectionView", Utils::mat4v4Size);
 }
 
 void Camera::SetProjectionViewVUniform(const float windowAspectRatio)
@@ -98,6 +109,15 @@ void Camera::SetProjectionViewVUniform(const float windowAspectRatio)
 void Camera::SetInfiniteProjectionViewVUniform(const float windowAspectRatio)
 {
 	ubo->InitSubData({ { static_cast<const void*>(glm::value_ptr(ComputeProjectionMatrix(windowAspectRatio) * glm::mat4(glm::mat3(ComputeViewMatrix())))), Utils::mat4v4Size } });
+}
+
+void Camera::SetPositionFUniforms()
+{
+	SetPositionFUniform(ResourceLoader::GetShader("CelestialBody"));
+	SetPositionFUniform(ResourceLoader::GetShader("BeltBody"));
+	SetPositionFUniform(ResourceLoader::GetShader("Sun"));
+	SetPositionFUniform(ResourceLoader::GetShader("SaturnRings"));
+	SetPositionFUniform(ResourceLoader::GetShader("Orbit"));
 }
 
 void Camera::SetPositionFUniform(Shader& shader)

@@ -7,8 +7,9 @@
 #include <memory>
 #include <vector>
 
-#include "Shader.h"
 #include "UniformBuffer.h"
+
+class Shader;
 
 
 
@@ -16,7 +17,7 @@
 class Camera
 {
 public:
-	Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane, const std::vector<uint32_t>& shaderIDs);
+	Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane);
 
 	const glm::vec3& GetPosition() const { return position; }
 	const glm::vec3& GetUp() const { return up; }
@@ -36,7 +37,7 @@ public:
 
 	void SetProjectionViewVUniform(const float windowAspectRatio);
 	void SetInfiniteProjectionViewVUniform(const float windowAspectRatio);
-	void SetPositionFUniform(Shader& shader);
+	void SetPositionFUniforms();
 
 private:
 	glm::vec3 position;
@@ -62,7 +63,8 @@ private:
 	// Compute new Forward, Right and Up vectors from new Euler Angles
 	void UpdateCameraVectors();
 
-	void AllocateProjectionView(const std::vector<uint32_t>& shaderIDs);
+	void AllocateProjectionView();
+	void SetPositionFUniform(Shader& shader);
 };
 
 

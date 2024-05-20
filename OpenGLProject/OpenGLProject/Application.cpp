@@ -78,12 +78,6 @@ void Application::SimulateSolarSystem()
 {
 	// Step 1 - Build/compile shaders and their corresponding programs
 	ResourceLoader::LoadShaders();
-	Shader& celestialBodyShader = ResourceLoader::GetShader("CelestialBody");
-	Shader& beltBodyShader = ResourceLoader::GetShader("BeltBody");
-	Shader& sunShader = ResourceLoader::GetShader("Sun");
-	Shader& textShader = ResourceLoader::GetShader("Text");
-	Shader& saturnRingsShader = ResourceLoader::GetShader("SaturnRings");
-	Shader& orbitShader = ResourceLoader::GetShader("Orbit");
 
 
 
@@ -101,8 +95,7 @@ void Application::SimulateSolarSystem()
 	Belt kuiperBelt({	"../Models/Ice.obj",	   20000,	 0.05f,	 20 }, { ResourceLoader::GetBody("Neptune").distanceToParent * 1.4f,	30.05f * ResourceLoader::DIST_SCALE_FACTOR,				0.4f });
 
 	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun - farthest celestial body'
-	std::vector<uint32_t> allShadersIDs({ celestialBodyShader.GetRendererID(), beltBodyShader.GetRendererID(), sunShader.GetRendererID(), ResourceLoader::GetShader("Skybox").GetRendererID(), textShader.GetRendererID(), saturnRingsShader.GetRendererID(), orbitShader.GetRendererID() });
-	std::shared_ptr<Controller> controller(new Controller({ 0.0f, ResourceLoader::GetBody("Sun").radius * 1.75f, -25.0f }, { 0.0f, -25.0f, 90.0f }, 45.0f, 2.0f * ResourceLoader::GetBody("Pluto").distanceToParent, allShadersIDs));
+	std::shared_ptr<Controller> controller(new Controller({ 0.0f, ResourceLoader::GetBody("Sun").radius * 1.75f, -25.0f }, { 0.0f, -25.0f, 90.0f }, 45.0f, 2.0f * ResourceLoader::GetBody("Pluto").distanceToParent));
 	if (controller == nullptr)
 	{
 		return;
@@ -141,11 +134,12 @@ void Application::SimulateSolarSystem()
 
 		Camera& camera = controller->GetCamera();
 		camera.SetProjectionViewVUniform(window->GetAspectRatio());
-		camera.SetPositionFUniform(celestialBodyShader);
-		camera.SetPositionFUniform(sunShader);
-		camera.SetPositionFUniform(saturnRingsShader);
-		camera.SetPositionFUniform(orbitShader);
+		camera.SetPositionFUniforms();
 		const glm::vec3& cameraPosition = camera.GetPosition();
+
+
+
+
 
 		// Texture sampler ID (one for each object)
 		uint32_t samplerID = 0;
@@ -279,7 +273,6 @@ void Application::SimulateSolarSystem()
 
 
 		// Draw the 2 main belts of the Solar System
-		camera.SetPositionFUniform(beltBodyShader);
 		asteroidBelt.Render(renderer, samplerID);
 		kuiperBelt.Render(renderer, samplerID);
 

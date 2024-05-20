@@ -53,7 +53,7 @@ namespace ResourceLoader
 
 		if (shaderIt == shaders.end())
 		{
-			std::cout << "ERROR::RESOURCE_LOADER - Celestial body name does not exist!" << std::endl;
+			std::cout << "ERROR::RESOURCE_LOADER - Shader name does not exist!" << std::endl;
 		}
 
 		return *shaderIt;

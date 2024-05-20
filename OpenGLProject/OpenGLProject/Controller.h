@@ -11,7 +11,7 @@
 class Controller
 {
 public:
-	Controller(const glm::vec3& position, const glm::vec3& rotation, const float inZoomMaxLevel, const float inFarPlane, const std::vector<uint32_t>& shaderIDs);
+	Controller(const glm::vec3& position, const glm::vec3& rotation, const float inZoomMaxLevel, const float inFarPlane);
 
 	// Process controller input received from any keyboard-like input system
 	void ProcessInput(const float deltaTime);
