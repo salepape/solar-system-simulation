@@ -15,6 +15,7 @@ Controller::Controller(const glm::vec3& position, const glm::vec3& rotation, con
 	camera({ position, rotation, inZoomMaxLevel, inFarPlane, shaderIDs }), zoomMaxLevel(inZoomMaxLevel)
 {
 	zoomLeft = inZoomMaxLevel;
+	mouseSensitivity = mouseMaxSensitivity;
 
 	Callback_SetCursorPosition();
 	Callback_SetScroll();
@@ -88,9 +89,11 @@ void Controller::UpdateZoomLeft(const float yOffset)
 	if (zoomLeft >= zoomMinLevel && zoomLeft <= zoomMaxLevel)
 	{
 		zoomLeft -= yOffset;
+		mouseSensitivity -= yOffset * 1.0f / 1000;
 	}
 
 	zoomLeft = glm::clamp(zoomLeft, zoomMinLevel, zoomMaxLevel);
+	mouseSensitivity = glm::clamp(mouseSensitivity, mouseMaxSensitivity / 10, mouseMaxSensitivity);
 }
 
 void Controller::IncreaseTravelSpeed(const float factor)

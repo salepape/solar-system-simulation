@@ -29,9 +29,10 @@ private:
 
 	// [dimensionless]
 	float mouseSensitivity{ 0.05f };
+	float mouseMaxSensitivity{ 0.05f };
 
 	// [in degrees]
-	float zoomLeft{ 0.0f };
+	float zoomLeft{ 45.0f };
 	float zoomMaxLevel{ 45.0f };
 
 	// Cache used to avoid detecting the button release happening after a button press if quick
