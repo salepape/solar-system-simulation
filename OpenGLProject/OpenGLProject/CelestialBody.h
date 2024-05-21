@@ -1,6 +1,7 @@
 #ifndef CELESTIAL_BODY_H
 #define CELESTIAL_BODY_H
 
+#include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
 #include <memory>
 #include <string>
@@ -61,11 +62,19 @@ struct CelestialBody : public SceneEntity
 
 	CelestialBody(const std::string& inTexturePath, const float inRadius, const float inDistanceToParent, const float inObliquity, const float inOrbitalPeriod, const float inSpinPeriod, const float inOrbitalInclination, const int32_t inParentID = -1);	
 
-	void Render(const Renderer& renderer, const glm::mat4& modelMatrix) override;
+	void ComputeModelMatrixUniform(const float elapsedTime = 1.0f) override;
+
+	void Render(const Renderer& renderer, const float elapsedTime = 1.0f) override;
+
+	void ComputeCartesianPosition(const float elapsedTime);
+	const glm::vec3& GetPosition() const { return position; }
 
 private:
 	static Material InitialiseParent(const std::string& inTexturePath);
 	PreComputations LoadPreComputations();
+
+	// Store body position in Cartesian coordinates, computed from Spherical ones
+	glm::vec3 position;
 };
 
 

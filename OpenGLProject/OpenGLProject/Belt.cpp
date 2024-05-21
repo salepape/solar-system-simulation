@@ -74,7 +74,7 @@ void Belt::StoreInstanceModelMatrices() const
 	model.StoreInstanceModelMatrices(modelMatrices, static_cast<size_t>(instanceParams.count) * sizeof(glm::mat4));
 }
 
-void Belt::Render(const Renderer& renderer, const glm::mat4& /*modelMatrix*/)
+void Belt::Render(const Renderer& renderer, const float /*elapsedTime*/)
 {
 	Shader& shader = material.GetShader();
 	

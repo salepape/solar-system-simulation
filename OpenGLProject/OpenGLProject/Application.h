@@ -29,11 +29,11 @@ public:
 	bool IsLegend() const { return isLegend; }
 	void DisplayLegend(const bool inIsLegend) { isLegend = inIsLegend; }
 
-	// See what the simulation looks like with celestial body slower/faster movements (does not keep body positions between different speed simulations)
-	// @todo - Jumps in the simulation are due to the Model matrix of each body being computed from elapsed time and not delta time
-	void ChangeSpeed(const float inSpeedFactor);
-
 	double GetTime();
+	
+	// @todo - Jumps in the simulation are due to the Model matrix of each body being computed from elapsed time and not delta time. Worth solving it? Seems complex...
+	// See what the simulation looks like with celestial body slower/faster movements (does not keep body positions between different speed simulations)
+	void ChangeSpeed(const float inSpeedFactor);
 
 private:
 	static Application* instance;
@@ -50,8 +50,8 @@ private:
 
 	bool isLegend{ false };
 
+	// @todo - Create a specific SolarSystem solution to use the generic "OpenGL Game Engine" code? Or at least create a Scene class instead.
 	// Coordinate system based on constant Solar position.
-	// @todo - Create a specific SolarSystem solution to use the generic "OpenGL engine" code
 	void SimulateSolarSystem();
 
 	void Tick();

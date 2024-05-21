@@ -1,8 +1,6 @@
 #ifndef SATURN_RINGS_H
 #define SATURN_RINGS_H
 
-#include <glm/mat4x4.hpp>
-
 #include "PointLight.h"
 #include "SceneEntity.h"
 #include "Model.h"
@@ -21,7 +19,9 @@ struct SaturnRings : public SceneEntity
 
 	SaturnRings(const std::string& texturePath);
 
-	void Render(const Renderer& renderer, const glm::mat4& modelMatrix) override;
+	void ComputeModelMatrixUniform(const float elapsedTime = 0.0f) override;
+
+	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 };
 
 

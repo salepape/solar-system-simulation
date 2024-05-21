@@ -3,15 +3,9 @@
 #include <iostream>
 #include <glad.h>
 #include <glfw3.h>
-#include <glm/ext/matrix_transform.hpp>
 #include <glm/geometric.hpp>
-#include <glm/mat3x3.hpp>
-#include <glm/mat4x4.hpp>
-#include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
-#include <glm/vec4.hpp>
 #include <map>
-#include <unordered_map>
 
 #include "Application.h"
 #include "Belt.h"
@@ -23,7 +17,6 @@
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "SaturnRings.h"
-#include "Shader.h"
 #include "TextRenderer.h"
 #include "Utils.h"
 
@@ -42,11 +35,6 @@ Application::Application()
 	}
 
 	instance = this;
-}
-
-void Application::Run()
-{
-	SimulateSolarSystem();
 }
 
 bool Application::IsNotClosed() const
@@ -69,19 +57,31 @@ void Application::Pause(const bool inIsPaused)
 	}
 }
 
-void Application::ChangeSpeed(const float inSpeedFactor)
+double Application::GetTime()
 {
-	speedFactor *= inSpeedFactor;
+	return glfwGetTime();
+}
+
+void Application::Tick()
+{
+	if (isPaused == false)
+	{
+		elapsedTime = static_cast<float>(GetTime());
+
+		deltaTime = elapsedTime - lastFrameElapsedTime;
+		lastFrameElapsedTime = elapsedTime;
+	}
+}
+
+void Application::Run()
+{
+	SimulateSolarSystem();
 }
 
 void Application::SimulateSolarSystem()
 {
 	// Step 1 - Build/compile shaders and their corresponding programs
 	ResourceLoader::LoadShaders();
-
-
-
-
 
 	// Step 2 - Create all scene entities (using meshes, models, etc...)
 	MilkyWay milkyWay("../Textures/MilkyWay/stars.dds");
@@ -102,11 +102,7 @@ void Application::SimulateSolarSystem()
 	}
 	window->controller = controller;
 
-
-
-
-
-	// Step 3 - Create renderers for scene entities and text
+	// Step 3 - Create renderers for meshes and text quads
 	Renderer renderer;
 	renderer.EnableDepthTesting();
 	renderer.EnableBlending();
@@ -119,10 +115,6 @@ void Application::SimulateSolarSystem()
 		textRenderer.LoadASCIICharacters(celestialBody.name);
 	}
 	textRenderer.FreeFTResources();
-
-
-
-
 
 	// Step 4 - RENDER LOOP (running every frame)
 	while (IsNotClosed())
@@ -137,161 +129,55 @@ void Application::SimulateSolarSystem()
 		camera.SetPositionFUniforms();
 		const glm::vec3& cameraPosition = camera.GetPosition();
 
-
-
-
-
-		// Compute position of each celestial body so we can sort them from the farthest to the closest according to the camera, 
-		// because it is needed to make blending work for multiple objects with transparency like body names and Saturn Rings
-		std::unordered_map<uint32_t, glm::vec3> bodyPositions;
+		// Compute celestial body positions and sort them from farthest to closest according to the camera, 
+		// because it is needed to make blending work for multiple objects with transparency, like body names and Saturn Rings
+		std::map<float, uint32_t> bodiesSortedByDistance;
 		for (auto& celestialBody : celestialBodies)
 		{
-			// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
-			const float travelledOrbitAngle = celestialBody.preComputations.orbitAngularFreq * elapsedTime * speedFactor;
-			if (celestialBody.parentID == -1)
-			{
-				celestialBody.travelledAngle = travelledOrbitAngle;
-			}
-
-			// Store body position in Cartesian coordinates computed from Spherical ones
-			glm::vec3 bodyPosition(0.0f);
-
-			// Circular translation of satellite around corresponding planet, taking into account satellite "orbital tilt"
-			if (celestialBody.parentID != -1)
-			{
-				const auto& satelliteParent = ResourceLoader::GetBody(celestialBody.parentID);
-
-				const float sinTravelledAngleParent = glm::sin(satelliteParent.travelledAngle);
-
-				bodyPosition += glm::vec3(
-					satelliteParent.preComputations.distCosOrbInclination * sinTravelledAngleParent,
-					satelliteParent.preComputations.distSinOrbInclination * sinTravelledAngleParent,
-					satelliteParent.distanceToParent * glm::cos(satelliteParent.travelledAngle));
-			}
-
-			// Circular translation of body around Sun, taking into account body "orbital tilt"
-			const float sinTravelledAngle = glm::sin(travelledOrbitAngle);
-
-			bodyPosition += glm::vec3(
-				celestialBody.preComputations.distCosOrbInclination * sinTravelledAngle,
-				celestialBody.preComputations.distSinOrbInclination * sinTravelledAngle,
-				celestialBody.distanceToParent * glm::cos(travelledOrbitAngle));
-
-			bodyPositions.insert({ celestialBody.ID, bodyPosition });
+			celestialBody.ComputeCartesianPosition(elapsedTime * speedFactor);
+			bodiesSortedByDistance.insert({ glm::distance(cameraPosition, celestialBody.GetPosition()), celestialBody.ID });
 		}
 
-		std::map<float, uint32_t> bodiesSortedPerDist;
-		for (const auto& celestialBody : celestialBodies)
+		for (auto bodyit = bodiesSortedByDistance.rbegin(); bodyit != bodiesSortedByDistance.rend(); ++bodyit)
 		{
-			bodiesSortedPerDist.insert({ glm::distance(cameraPosition, bodyPositions[celestialBody.ID]), celestialBody.ID });
-		}
-
-
-
-
-
-		// Draw celestial bodies (their names if required), their orbits, and animate them accordingly over time
-		for (auto it = bodiesSortedPerDist.rbegin(); it != bodiesSortedPerDist.rend(); ++it)
-		{
-			glm::mat4 defaultModelMatrix(1.0f);
-
-			const uint32_t currentBodyID = it->second;
-			const auto& currentBodyPosition = bodyPositions[currentBodyID];
-			auto& currentBody = ResourceLoader::GetBody(currentBodyID);
-
-			// Move the body (non-constant over time) according to the circular translations computed previously
-			defaultModelMatrix = glm::translate(defaultModelMatrix, currentBodyPosition);
-
-			// Rotate the body (constant over time) around an axis colinear to orbit direction to reproduce its axial tilt
-			defaultModelMatrix = glm::rotate(defaultModelMatrix, currentBody.preComputations.obliquityInRad, Utils::forwardVector);
-
-			// Angle travelled by the celestial body around itself since the simulation started [in radians]
-			const float travelledSpinAngle = currentBody.preComputations.spinAngularFreq * elapsedTime * speedFactor;
-
-			// Rotate the body (non-constant over time) around axis normal to orbital plane to reproduce its spin
-			defaultModelMatrix = glm::rotate(defaultModelMatrix, travelledSpinAngle, Utils::upVector);
+			// Draw celestial bodies, and animate them accordingly over time
+			auto& currentBody = ResourceLoader::GetBody(bodyit->second);
+			currentBody.Render(renderer, elapsedTime * speedFactor);
 
 			// Draw semi-transparent Saturn rings
 			if (currentBody.name == "Saturn")
-			{	
-				saturnRings.Render(renderer, defaultModelMatrix);
+			{
+				saturnRings.Render(renderer);
 			}
-
-			// Rotate the body (constant over time) around axis colinear to orbital plane so its poles appear vertically
-			defaultModelMatrix = glm::rotate(defaultModelMatrix, Utils::halfPi, Utils::rightVector);
-
-			currentBody.Render(renderer, defaultModelMatrix);
-
-
-
-
 
 			// Draw celestial body orbits
 			if (currentBody.name != "Sun")
 			{
-				glm::mat4 orbitModelMatrix(1.0f);
-
-				// Center the orbit (non-constant over time) around the parent planet for satellites
-				if (currentBody.parentID != -1)
-				{
-					orbitModelMatrix = glm::translate(orbitModelMatrix, bodyPositions[currentBody.parentID]);
-				}
-
-				// Rotate the orbit (constant over time) around axis colinear to orbit direction to reproduce the orbital plane
-				orbitModelMatrix = glm::rotate(orbitModelMatrix, currentBody.preComputations.orbInclinationInRad, Utils::forwardVector);
-
-				currentBody.orbit.Render(renderer, orbitModelMatrix);
+				currentBody.orbit.Render(renderer);
 			}
-
-
-
-
 
 			if (IsLegend())
 			{
 				// Orient text billboards so their readable side always faces the camera
-				glm::mat4 textModelMatrix(1.0f);
-				const glm::vec3& bodyPosition = currentBodyPosition;
-				const glm::vec3& forward = glm::normalize(cameraPosition - bodyPosition);
+				const glm::vec3& forward = glm::normalize(cameraPosition - currentBody.GetPosition());
 				const glm::vec3& right = glm::cross(camera.GetUp(), forward);
-				const glm::vec3& up = cross(forward, right);
-				textModelMatrix[0] = glm::vec4(right, 0.0f);
-				textModelMatrix[1] = glm::vec4(up, 0.0f);
-				textModelMatrix[2] = glm::vec4(forward, 0.0f);
-				textModelMatrix[3] = glm::vec4(bodyPosition, 1.0f);
 
 				currentBody.billboard = std::make_unique<Billboard>(currentBody.name);
-				currentBody.billboard->Render(textRenderer, textModelMatrix);
+				currentBody.billboard->Render(textRenderer, forward, right);
 			}
 		}
-
-
-
-
 
 		// Draw the 2 main belts of the Solar System
 		asteroidBelt.Render(renderer);
 		kuiperBelt.Render(renderer);
 
-
-
-
-
 		// Draw Milky Way skybox
 		camera.SetInfiniteProjectionViewVUniform(window->GetAspectRatio());
 		milkyWay.Render(renderer);
 
-
-
-
-
 		window->SwapBuffers();
 		window->PollEvents();
 	}
-
-
-
-
 
 	// Step 5 - Free up all rendering resources
 	//renderer.DisableFaceCulling();
@@ -301,18 +187,7 @@ void Application::SimulateSolarSystem()
 	window->FreeUpResources();
 }
 
-double Application::GetTime()
+void Application::ChangeSpeed(const float inSpeedFactor)
 {
-	return glfwGetTime();
-}
-
-void Application::Tick()
-{
-	if (isPaused == false)
-	{
-		elapsedTime = static_cast<float>(GetTime());
-
-		deltaTime = elapsedTime - lastFrameElapsedTime;
-		lastFrameElapsedTime = elapsedTime;
-	}
+	speedFactor *= inSpeedFactor;
 }

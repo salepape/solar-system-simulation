@@ -43,7 +43,7 @@ class Belt : public SceneEntity
 public:
 	Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams);
 
-	void Render(const Renderer& renderer, const glm::mat4& modelMatrix = glm::mat4(1.0f)) override;
+	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 
 private:
 	InstanceParams instanceParams;
@@ -55,6 +55,7 @@ private:
 
 	PointLight pointLight;
 
+	void ComputeModelMatrixUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeInstanceModelMatrices();
 	void StoreInstanceModelMatrices() const;
 };

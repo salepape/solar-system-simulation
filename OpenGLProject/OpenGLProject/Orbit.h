@@ -2,11 +2,15 @@
 #define ORBIT_H
 
 #include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
+#include <memory>
+#include <string>
 
 #include "Circle.h"
 #include "PointLight.h"
 #include "SceneEntity.h"
 
+struct PreComputations;
 class Renderer;
 
 
@@ -19,10 +23,16 @@ struct Orbit : public SceneEntity
 	PointLight pointLight;
 
 
-
 	Orbit(const std::string& texturePath, const float radius);
 
-	void Render(const Renderer& renderer, const glm::mat4& modelMatrix) override;
+	void ComputeModelMatrixUniform(const float elapsedTime = 0.0f) override;
+
+	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
+	
+	std::string bodyName;
+	int32_t bodyID{ -1 };
+	int32_t parentBodyID{ -1 };
+	std::unique_ptr<PreComputations> bodyPreComputations;	
 };
 
 

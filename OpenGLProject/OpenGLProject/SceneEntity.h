@@ -18,15 +18,17 @@ public:
 
 	// @todo - Reduce visibility of methods below?
 
-	void ComputeModelMatrixUniform();
+	virtual void ComputeModelMatrixUniform(const float elapsedTime = 0.0f) = 0;
 	void SetModelMatrixUniform(const glm::mat4& inModelMatrix);
 
-	virtual void Render(const Renderer& renderer, const glm::mat4& modelMatrix) = 0;
+	virtual void Render(const Renderer& renderer, const float elapsedTime = 0.0f) = 0;
 
 	Material& GetMaterial() { return material; }
 
 	std::string name;
 	int32_t ID{ -1 };
+
+	const glm::mat4& GetModelMatrix() const { return modelMatrix; }
 
 protected:
 	static uint32_t entityIDCounter;

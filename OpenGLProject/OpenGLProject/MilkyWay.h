@@ -1,8 +1,6 @@
 #ifndef MILKY_WAY_H
 #define MILKY_WAY_H
 
-#include <glm/mat4x4.hpp>
-
 #include "SceneEntity.h"
 #include "Skybox.h"
 
@@ -18,7 +16,9 @@ struct MilkyWay : public SceneEntity
 
 	MilkyWay(const std::string& texturePath);
 
-	void Render(const Renderer& renderer, const glm::mat4& modelMatrix = glm::mat4(1.0f)) override;
+	void ComputeModelMatrixUniform(const float elapsedTime = 0.0f) override {};
+
+	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 };
 
 #endif // MILKY_WAY_H
