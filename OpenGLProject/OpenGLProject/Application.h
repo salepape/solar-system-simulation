@@ -7,17 +7,28 @@
 
 
 
-// 1 second corresponds to 1 Earth day in the simulation
 class Application
 {
 public:
 	Application();
 	~Application() = default;
 
+	virtual void SetUp() = 0;
+	virtual void Run();
+	void Tick();
+	virtual void Refresh() = 0;
+	virtual void Terminate();
+
+	float elapsedTime{ 0.0f };
+
+	// Factor which consistently increases/decreases the angle values travelled by the celestial bodies since the simulation started
+	float speedFactor{ 1.0f };
+
+	// Compute delta time between last frame and current one in order to reduce differences between computer processing powers
+	float deltaTime{ 0.0f };
+
 	static Application& GetInstance() { return *instance; }
 	Window& GetWindow() const { return *window; }
-
-	void Run();
 
 	// Check if GLFW window has been instructed to close
 	bool IsNotClosed() const;
@@ -40,21 +51,10 @@ private:
 	std::unique_ptr<Window> window;
 
 	// Time elapsed since GLFW initialisation [in seconds]
-	float elapsedTime{ 0.0f };
+	
 	float lastFrameElapsedTime{ 0.0f };
-	// Compute delta time between last frame and current one in order to reduce differences between computer processing powers
-	float deltaTime{ 0.0f };
 	bool isPaused{ false };
-	// Factor which consistently increases/decreases the angle values travelled by the celestial bodies since the simulation started
-	float speedFactor{ 1.0f };
-
 	bool isLegend{ false };
-
-	// @todo - Create a specific SolarSystem solution to use the generic "OpenGL Game Engine" code? Or at least create a Scene class instead.
-	// Coordinate system based on constant Solar position.
-	void SimulateSolarSystem();
-
-	void Tick();
 };
 
 #endif // APPLICATION_H

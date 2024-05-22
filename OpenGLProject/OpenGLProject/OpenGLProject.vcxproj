@@ -178,9 +178,12 @@
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SaturnRings.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEntity.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="SolarSystem.h" />
+    <ClInclude Include="SolarSystemSimulation.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Texture.h" />
@@ -216,9 +219,12 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceLoader.cpp" />
     <ClCompile Include="SaturnRings.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneEntity.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="SolarSystem.cpp" />
+    <ClCompile Include="SolarSystemSimulation.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />

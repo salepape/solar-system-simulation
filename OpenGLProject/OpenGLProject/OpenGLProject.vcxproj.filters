@@ -52,12 +52,6 @@
     <Filter Include="Header Files\Interactions">
       <UniqueIdentifier>{1b71018e-a757-47a6-aa94-b0ef7aafbe0e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Scene Entities">
-      <UniqueIdentifier>{9bc341b3-ef9f-48b8-ad23-d18abdbebb5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Scene Entities">
-      <UniqueIdentifier>{2aaa3db1-ae35-4d7c-85ae-10d5eb31091e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Data">
       <UniqueIdentifier>{b1218cc2-67f3-458e-a34d-4b81430aad57}</UniqueIdentifier>
     </Filter>
@@ -69,6 +63,18 @@
     </Filter>
     <Filter Include="Source Files\Data">
       <UniqueIdentifier>{fd18e00d-5086-4e98-98f8-10d71e7a7516}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{c44d696d-e7a1-423e-9627-a21bbc29d455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{cf7c7bfe-f05a-4718-9c7f-5626b69cc0aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Solar System">
+      <UniqueIdentifier>{9bc341b3-ef9f-48b8-ad23-d18abdbebb5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Solar System">
+      <UniqueIdentifier>{2aaa3db1-ae35-4d7c-85ae-10d5eb31091e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -117,12 +123,6 @@
     <ClInclude Include="Renderer.h">
       <Filter>Header Files\Renderers</Filter>
     </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PointLight.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
@@ -138,20 +138,14 @@
     <ClInclude Include="Controller.h">
       <Filter>Header Files\Interactions</Filter>
     </ClInclude>
-    <ClInclude Include="SceneEntity.h">
-      <Filter>Header Files\Scene Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Belt.h">
-      <Filter>Header Files\Scene Entities</Filter>
+      <Filter>Header Files\Solar System</Filter>
     </ClInclude>
     <ClInclude Include="CelestialBody.h">
-      <Filter>Header Files\Scene Entities</Filter>
+      <Filter>Header Files\Solar System</Filter>
     </ClInclude>
     <ClInclude Include="ResourceLoader.h">
       <Filter>Header Files\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\Scene Entities</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Header Files\Application</Filter>
@@ -160,19 +154,40 @@
       <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="SaturnRings.h">
-      <Filter>Header Files\Scene Entities</Filter>
+      <Filter>Header Files\Solar System</Filter>
     </ClInclude>
     <ClInclude Include="MilkyWay.h">
-      <Filter>Header Files\Scene Entities</Filter>
+      <Filter>Header Files\Solar System</Filter>
     </ClInclude>
     <ClInclude Include="Circle.h">
       <Filter>Header Files\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Orbit.h">
-      <Filter>Header Files\Scene Entities</Filter>
+      <Filter>Header Files\Solar System</Filter>
     </ClInclude>
     <ClInclude Include="Billboard.h">
-      <Filter>Header Files\Scene Entities</Filter>
+      <Filter>Header Files\Solar System</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarSystemSimulation.h">
+      <Filter>Header Files\Solar System</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarSystem.h">
+      <Filter>Header Files\Solar System</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneEntity.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -224,12 +239,6 @@
     <ClCompile Include="TextRenderer.cpp">
       <Filter>Source Files\Renderers</Filter>
     </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PointLight.cpp">
       <Filter>Source Files\Lights</Filter>
     </ClCompile>
@@ -245,17 +254,11 @@
     <ClCompile Include="Controller.cpp">
       <Filter>Source Files\Interactions</Filter>
     </ClCompile>
-    <ClCompile Include="SceneEntity.cpp">
-      <Filter>Source Files\Scene Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Belt.cpp">
-      <Filter>Source Files\Scene Entities</Filter>
+      <Filter>Source Files\Solar System</Filter>
     </ClCompile>
     <ClCompile Include="CelestialBody.cpp">
-      <Filter>Source Files\Scene Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Scene Entities</Filter>
+      <Filter>Source Files\Solar System</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Files\Application</Filter>
@@ -267,19 +270,40 @@
       <Filter>Source Files\Data</Filter>
     </ClCompile>
     <ClCompile Include="SaturnRings.cpp">
-      <Filter>Source Files\Scene Entities</Filter>
+      <Filter>Source Files\Solar System</Filter>
     </ClCompile>
     <ClCompile Include="MilkyWay.cpp">
-      <Filter>Source Files\Scene Entities</Filter>
+      <Filter>Source Files\Solar System</Filter>
     </ClCompile>
     <ClCompile Include="Circle.cpp">
       <Filter>Source Files\Meshes</Filter>
     </ClCompile>
     <ClCompile Include="Orbit.cpp">
-      <Filter>Source Files\Scene Entities</Filter>
+      <Filter>Source Files\Solar System</Filter>
     </ClCompile>
     <ClCompile Include="Billboard.cpp">
-      <Filter>Source Files\Scene Entities</Filter>
+      <Filter>Source Files\Solar System</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarSystemSimulation.cpp">
+      <Filter>Source Files\Solar System</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarSystem.cpp">
+      <Filter>Source Files\Solar System</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneEntity.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

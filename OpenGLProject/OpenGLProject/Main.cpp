@@ -1,9 +1,9 @@
-#include "Application.h"
+#include "SolarSystemSimulation.h"
 
 
 
 int main()
 {
-	Application app;
+	SolarSystemSimulation app;
 	app.Run();
 }

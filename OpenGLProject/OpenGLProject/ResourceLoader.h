@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "Belt.h"
 #include "CelestialBody.h"
 #include "Shader.h"
 
@@ -13,6 +14,7 @@ namespace ResourceLoader
 {
 	constexpr uint32_t BODIES_COUNT = 18;
 	constexpr float DIST_SCALE_FACTOR = 10.0f;
+	constexpr uint32_t BELTS_COUNT = 2;
 
 	// Paths to retrieve DDS textures (convention: size_name.dds)
 	const std::array<const std::string, BODIES_COUNT> texturePaths
@@ -49,15 +51,20 @@ namespace ResourceLoader
 		//"../Textures/Planets/8k_earth_normal_map.png"
 	};
 
+	
+
 	CelestialBody& GetBody(const std::string& inBodyName);
 	CelestialBody& GetBody(const int32_t inBodyID);
+
 	Shader& GetShader(const std::string& inShaderName);
 
+	// Build/compile shaders and their corresponding programs
 	void LoadShaders();
 
 	// Fill data structures above with celestial bodies information/pre-computations (collected from NASA website, Wikipedia and passionates)
 	// Note: data is scaled so we can visualise the whole Solar System without having to travel too much time.
 	void LoadCelestialBodies();
+	void LoadBelts();
 
 	std::string GetNameFromTexturePath(const std::string& inTexturePath);
 }
