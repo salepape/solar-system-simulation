@@ -8,14 +8,13 @@
 
 
 
-PointLight::PointLight() :
-	LightSource({ { 0.2f, 0.2f, 0.2f }, { 0.95f, 0.95f, 0.95f }, { 1.0f, 1.0f, 1.0f } })
+PointLight::PointLight() : LightSource({ { 0.2f, 0.2f, 0.2f }, { 0.95f, 0.95f, 0.95f }, { 1.0f, 1.0f, 1.0f } })
 {
 
 }
 
-PointLight::PointLight(const glm::vec3& inPosition, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const bool inIsBlinn) :
-	position(inPosition), attenuationParams(inAttenuationParams), LightSource(inReflectionParams, inIsBlinn)
+PointLight::PointLight(const glm::vec3& inPosition, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const bool inIsBlinn) : LightSource(inReflectionParams, inIsBlinn),
+position(inPosition), attenuationParams(inAttenuationParams)
 {
 
 }

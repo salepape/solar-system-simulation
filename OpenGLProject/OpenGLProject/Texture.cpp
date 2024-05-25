@@ -1,6 +1,7 @@
 #include "Texture.h"
 
 #include <glad.h>
+#include <iostream>
 #include <SOIL2.h>
 
 

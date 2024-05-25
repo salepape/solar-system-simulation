@@ -1,7 +1,6 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
-#include <iostream>
 #include <string>
 
 #include "Mesh.h"

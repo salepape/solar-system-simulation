@@ -1,7 +1,6 @@
 #ifndef SKYBOX_H
 #define SKYBOX_H
 
-#include <iostream>
 #include <string>
 
 #include "Mesh.h"

@@ -2,6 +2,7 @@
 
 #include <freetype/freetype.h>
 #include <glad.h>
+#include <iostream>
 #include <utility>
 #include <vector>
 
@@ -13,7 +14,8 @@
 
 
 
-TextRenderer::TextRenderer(const Renderer& inRenderer, const uint32_t pixelWidth, const uint32_t pixelHeight) : renderer(inRenderer)
+TextRenderer::TextRenderer(const Renderer& inRenderer, const uint32_t pixelFontWidth, const uint32_t pixelFontHeight) :
+	renderer(inRenderer)
 {
 	AllocateBufferObjects();
 
@@ -28,9 +30,9 @@ TextRenderer::TextRenderer(const Renderer& inRenderer, const uint32_t pixelWidth
 		std::cout << "ERROR::FREETYPE - Failed to load the font" << std::endl;
 	}
 
-	// Set pixel font size to be retrieved from the face (i.e. render quality)
+	// Set pixel font size (i.e. render quality) we want to retrieve from this face object
 	// @todo - Might consider Signed Distance Field Fonts technique instead of hardcode pixel size values 
-	FT_Set_Pixel_Sizes(face, pixelWidth, pixelHeight);
+	FT_Set_Pixel_Sizes(face, pixelFontWidth, pixelFontHeight);
 
 	// Disable default OpenGL restriction for each texel to be coded as a multiple of 4 bytes (rgba) due to 
 	// each FreeType glyph bitmap colour being coded on 1 byte

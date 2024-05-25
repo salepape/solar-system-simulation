@@ -32,7 +32,7 @@ private:
 
 	// Diffuse texture sampler ID (one for each object)
 	static uint32_t diffuseSamplerIDCounter;
-	uint32_t diffuseSamplerID = 0;
+	uint32_t diffuseSamplerID{ 0 };
 	
 	// @todo - Move all the corresponding Texture code in this class
 	// DDS texture that will be used as a Sampler2D

@@ -34,7 +34,7 @@ protected:
 	static uint32_t entityIDCounter;
 
 	Material material;
-	glm::mat4 modelMatrix;
+	glm::mat4 modelMatrix{ 1.0f };
 };
 
 

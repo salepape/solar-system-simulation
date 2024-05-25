@@ -1,6 +1,7 @@
 #ifndef MILKY_WAY_H
 #define MILKY_WAY_H
 
+#include <string>
 #include "SceneEntity.h"
 #include "Skybox.h"
 

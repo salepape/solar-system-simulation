@@ -9,12 +9,14 @@
 #include <glad.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
+#include <iostream>
 
 #include "VertexBuffer.h"
 
 
 
-Model::Model(const std::string& inPath, const bool inGammaCorrection) : gammaCorrection(inGammaCorrection)
+Model::Model(const std::string& inPath, const bool inGammaCorrection) :
+	gammaCorrection(inGammaCorrection)
 {
 	LoadModel(inPath);
 }

@@ -3,7 +3,6 @@
 
 #include <assimp/material.h>
 #include <glm/ext/matrix_transform.hpp>
-#include <iostream>
 #include <string>
 #include <vector>
 

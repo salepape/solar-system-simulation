@@ -9,7 +9,8 @@ uint32_t SceneEntity::entityIDCounter = 0;
 
 
 
-SceneEntity::SceneEntity(Material inMaterial) : material(std::move(inMaterial)), modelMatrix(1.0f)
+SceneEntity::SceneEntity(Material inMaterial) :
+	material(std::move(inMaterial))
 {
 	ID = entityIDCounter++;
 }

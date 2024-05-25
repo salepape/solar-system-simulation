@@ -8,14 +8,13 @@
 
 
 
-DirectionalLight::DirectionalLight() :
-	LightSource({ {0.75f, 0.75f, 0.75f}, {0.5f, 0.5f, 0.5f}, { 0.95f, 0.95f, 0.95f } })
+DirectionalLight::DirectionalLight() : LightSource({ {0.75f, 0.75f, 0.75f}, {0.5f, 0.5f, 0.5f}, { 0.95f, 0.95f, 0.95f } })
 {
 
 }
 
-DirectionalLight::DirectionalLight(const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn) :
-	direction(inDirection), LightSource(inReflectionParams, inIsBlinn)
+DirectionalLight::DirectionalLight(const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn) : LightSource(inReflectionParams, inIsBlinn),
+direction(inDirection)
 {
 
 }

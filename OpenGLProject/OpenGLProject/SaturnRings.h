@@ -1,6 +1,8 @@
 #ifndef SATURN_RINGS_H
 #define SATURN_RINGS_H
 
+#include <string>
+
 #include "PointLight.h"
 #include "SceneEntity.h"
 #include "Model.h"

@@ -12,9 +12,9 @@
 // Surface coefficient of reflection for each Phong component
 struct ReflectionParams
 {
-	glm::vec3 ambient;
-	glm::vec3 diffuse;
-	glm::vec3 specular;
+	glm::vec3 ambient{ 0.0f, 0.0f, 0.0f };
+	glm::vec3 diffuse{ 0.0f, 0.0f, 0.0f };
+	glm::vec3 specular{ 0.0f, 0.0f, 0.0f };
 };
 
 // Terms of light intensity attenuation formula
@@ -35,7 +35,6 @@ public:
 
 protected:
 	const ReflectionParams reflectionParams;
-
 	bool isBlinn{ false };
 
 	std::unique_ptr<UniformBuffer> ubo;

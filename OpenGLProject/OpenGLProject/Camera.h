@@ -40,23 +40,24 @@ public:
 	void SetPositionFUniforms();
 
 private:
-	glm::vec3 position;
-	glm::vec3 initialPosition;
-	glm::vec3 initialRotation;
+	glm::vec3 initialPosition{ 0.0f, 0.0f, 0.0f };
+	glm::vec3 initialRotation{ 0.0f, 0.0f, 0.0f };
+
+	glm::vec3 position{ 0.0f, 0.0f, 0.0f };
+
+	// Rotation angle around the Right vector [in degrees]
+	float pitch{ 0.0f };
+
+	// Rotation angle around the Up vector [in degrees]
+	float yaw{ 0.0f };
 
 	// Field of view along the y-axis [in degrees]
 	float fovY{ 0.0f };
 	float farPlane{ 0.0f };
 
-	glm::vec3 up;
-	glm::vec3 right;
-	glm::vec3 forward;
-
-	// Rotation angle around the Up vector [in degrees]
-	float yaw{ 0.0f };
-
-	// Rotation angle around the Right vector [in degrees]
-	float pitch{ 0.0f };
+	glm::vec3 up{ 1.0f, 0.0f, 0.0f };
+	glm::vec3 right{ 0.0f, 1.0f, 0.0f };
+	glm::vec3 forward{ 0.0f, 0.0f, -1.0f };
 
 	std::unique_ptr<UniformBuffer> ubo;
 

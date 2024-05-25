@@ -3,7 +3,6 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
-#include <iostream>
 #include <string>
 
 
@@ -68,9 +67,9 @@ public:
 	const std::string& GetPath() const { return path; }
 
 private:
+	std::string path;
 	uint32_t target{ 0 };
 	uint32_t rendererID{ 0 };
-	std::string path;
 
 	// @todo - Use this variable to identify the type of the texture used in a specific model and process samplers accordingly in shaders
 	TextureType textureType;

@@ -15,11 +15,8 @@
 
 
 Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane) :
-	position(inPosition), pitch(inRotation.y), yaw(inRotation.z), fovY(inFovY), farPlane(inFarPlane), forward({ 0.0f, 0.0f, -1.0f })
+	initialPosition(position), initialRotation(inRotation), position(inPosition), pitch(inRotation.y), yaw(inRotation.z), fovY(inFovY), farPlane(inFarPlane)
 {
-	initialPosition = inPosition;
-	initialRotation = inRotation;
-
 	UpdateCameraVectors();
 	AllocateProjectionView();
 }

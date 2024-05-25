@@ -5,7 +5,8 @@
 
 
 
-Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::string& inTitle) : title(inTitle)
+Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::string& inTitle) :
+	title(inTitle)
 {
 	UpdateDimensions(inWidth, inHeight);
 

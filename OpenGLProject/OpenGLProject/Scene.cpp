@@ -5,7 +5,8 @@
 
 
 
-Scene::Scene() : runningApp(Application::GetInstance()), openedWindow(runningApp.GetWindow()), textRenderer(renderer)
+Scene::Scene() :
+	runningApp(Application::GetInstance()), openedWindow(runningApp.GetWindow()), textRenderer(renderer)
 {
 	renderer.EnableDepthTesting();
 	renderer.EnableBlending();

@@ -1,7 +1,6 @@
 #ifndef VERTEXBUFFERLAYOUT_H
 #define VERTEXBUFFERLAYOUT_H
 
-#include <iostream>
 #include <vector>
 
 

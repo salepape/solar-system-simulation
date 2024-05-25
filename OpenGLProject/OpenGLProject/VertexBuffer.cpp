@@ -4,8 +4,7 @@
 
 
 
-VertexBuffer::VertexBuffer(const void* data, const size_t size):
-	DataBuffer(data, size, GL_ARRAY_BUFFER)
+VertexBuffer::VertexBuffer(const void* data, const size_t size) : DataBuffer(data, size, GL_ARRAY_BUFFER)
 {
 
 }

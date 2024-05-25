@@ -9,7 +9,8 @@
 
 
 
-Shader::Shader(const std::string& inEntityName, const std::string& vsPath, const std::string& fsPath): entityName(inEntityName)
+Shader::Shader(const std::string& inEntityName, const std::string& vsPath, const std::string& fsPath) :
+	entityName(inEntityName)
 {
 	const std::string& vsContent = ParseShader(vsPath);
 	const std::string& fsContent = ParseShader(fsPath);

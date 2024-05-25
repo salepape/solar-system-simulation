@@ -4,7 +4,6 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <glm/vec2.hpp>
-#include <iostream>
 #include <unordered_map>
 #include <string>
 
@@ -21,10 +20,10 @@ struct GlyphParams
 {
 	Texture texture;
 
-	glm::ivec2 size;
+	glm::ivec2 size{ 0, 0 };
 
 	// Offset from baseline to left/top of glyph
-	glm::ivec2 bearing;
+	glm::ivec2 bearing{ 0, 0 };
 
 	// Horizontal offset to advance to start next glyph
 	FT_Pos advance;
@@ -34,7 +33,8 @@ struct GlyphParams
 class TextRenderer
 {
 public:
-	TextRenderer(const Renderer& inRenderer, const uint32_t pixelWidth = 0, const uint32_t pixelHeight = 100);
+	// Put such default parameters to let the FT_Face dynamically compute the width based on the non-null height
+	TextRenderer(const Renderer& inRenderer, const uint32_t pixelFontWidth = 0, const uint32_t pixelFontHeight = 100);
 	TextRenderer(const TextRenderer&) = delete;
 	~TextRenderer() = default;
 

@@ -74,7 +74,7 @@ private:
 	PreComputations LoadPreComputations();
 
 	// Store body position in Cartesian coordinates, computed from Spherical ones
-	glm::vec3 position;
+	glm::vec3 position{ 0.0f, 0.0f, 0.0f };
 };
 
 
