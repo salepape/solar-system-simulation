@@ -8,16 +8,17 @@ out vec4 fo_Colour;
 
 // See C++ class Material
 uniform sampler2D fu_DiffuseMat;
-layout (std140) uniform specularMatParams
+struct Material
 {
-    vec4 fu_SpecularColour;
+    vec3 fu_SpecularColour;
 
     float fu_Shininess;
     float fu_Transparency;
 };
+uniform Material material;
 
 // See C++ class PointLight
-layout (std140) uniform pointLightParams
+layout (std140) uniform ubo_PointLightParams
 {
     vec4 fu_LightPosition;
 
@@ -32,7 +33,7 @@ layout (std140) uniform pointLightParams
     bool fu_IsBlinn;
 };
 
-uniform vec3 fu_CameraPosition;
+layout (std140) uniform vec4 ubo_CameraPosition;
 
 void main()
 {
@@ -49,23 +50,23 @@ void main()
     vec3 diffuseIntensity = fu_DiffuseReflectCoef.xyz * diffuseImpact * diffuseTex;
         
     // Specular component
-    vec3 viewDir = normalize(fu_CameraPosition - vo_Position);
+    vec3 viewDir = normalize(ubo_CameraPosition.xyz - vo_Position);
     float specularHighlight = 0.0f;
     if(fu_IsBlinn)
     {
         vec3 halfwayDir = normalize(lightDir + viewDir);
-        specularHighlight = pow(max(0.0, dot(normalDir, halfwayDir)), fu_Shininess);
+        specularHighlight = pow(max(0.0, dot(normalDir, halfwayDir)), material.fu_Shininess);
     }
     else
     {
         vec3 reflectDir = reflect(-lightDir, normalDir);
-        specularHighlight = pow(max(0.0, dot(viewDir, reflectDir)), fu_Shininess);
+        specularHighlight = pow(max(0.0, dot(viewDir, reflectDir)), material.fu_Shininess);
     }
-    vec3 specularIntensity = fu_SpecularReflectCoef.xyz * specularHighlight * fu_SpecularColour.xyz;
+    vec3 specularIntensity = fu_SpecularReflectCoef.xyz * specularHighlight * material.fu_SpecularColour;
 
     float distFragLight = length(fu_LightPosition.xyz - vo_Position);
     float attenuation = 1.0 / (fu_AttenuationCstTerm + (fu_AttenuationLinTerm * distFragLight) + (fu_AttenuationQuadTerm * distFragLight * distFragLight));
         
     vec3 phongIllumination = (ambientIntensity + diffuseIntensity + specularIntensity) * attenuation;
-    fo_Colour.xyzw = vec4(phongIllumination, fu_Transparency);
+    fo_Colour.xyzw = vec4(phongIllumination, material.fu_Transparency);
 }

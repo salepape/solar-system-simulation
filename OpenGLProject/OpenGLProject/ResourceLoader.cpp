@@ -5,10 +5,12 @@
 #include <iostream>
 
 #include "SolarSystem.h"
+#include "Utils.h"
 
 
 
 std::vector<Shader> shaders;
+std::vector<UniformBuffer> ubos;
 
 namespace ResourceLoader
 {
@@ -53,6 +55,17 @@ namespace ResourceLoader
 		shaders.push_back(skyboxShader);
 		shaders.push_back(saturnRingsShader);
 		shaders.push_back(orbitShader);
+
+		ubos.reserve(3);
+		static UniformBuffer projectionViewUBO({ { GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("Text").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("Skybox").GetRendererID(), GetShader("SaturnRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
+			"ubo_ProjectionView", Utils::mat4v4Size });
+		static UniformBuffer cameraPositionUBO({ { GetShader("CelestialBody").GetRendererID(), GetShader("BeltBody").GetRendererID(), ResourceLoader::GetShader("Sun").GetRendererID(), ResourceLoader::GetShader("SaturnRings").GetRendererID(), ResourceLoader::GetShader("Orbit").GetRendererID() },
+			"ubo_CameraPosition", Utils::vec4Size });
+		static UniformBuffer pointLightParamsUBO({ { GetShader("CelestialBody").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("SaturnRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
+			"ubo_PointLightParams", 4 * Utils::vec4Size + 4 * Utils::scalarSize });
+		ubos.push_back(projectionViewUBO);
+		ubos.push_back(cameraPositionUBO);
+		ubos.push_back(pointLightParamsUBO);
 	}
 
 	void LoadCelestialBodies()
@@ -134,5 +147,20 @@ namespace ResourceLoader
 		}
 
 		return *shaderIt;
+	}
+
+	UniformBuffer & GetUBO(const std::string& inUniformName)
+	{
+		const auto& uboIt = std::find_if(ubos.begin(), ubos.end(), [&inUniformName](const UniformBuffer& inUBO)
+		{
+			return inUBO.GetUniformName() == inUniformName;
+		});
+
+		if (uboIt == ubos.end())
+		{
+			std::cout << "ERROR::RESOURCE_LOADER - Uniform name does not exist!" << std::endl;
+		}
+
+		return *uboIt;
 	}
 }

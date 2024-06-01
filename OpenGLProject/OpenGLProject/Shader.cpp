@@ -74,7 +74,7 @@ void Shader::CreateProgram(const uint32_t vertexShaderID, const uint32_t fragmen
 	glDeleteShader(fragmentShaderID);
 }
 
-int Shader::GetUniformLocation(const std::string& name)
+int32_t Shader::GetUniformLocation(const std::string& name)
 {
 	if (uniformLocationCache.find(name) != uniformLocationCache.end())
 	{
@@ -84,7 +84,8 @@ int Shader::GetUniformLocation(const std::string& name)
 	const int32_t uniformLocation = glGetUniformLocation(rendererID, name.c_str());
 	if (uniformLocation == -1)
 	{
-		std::cout << "ERROR::SHADER " << entityName << " - uniform " << name << " is not active in the program!" << std::endl;
+		// @todo - Avoid triggering the text when method called from outside this class
+		//std::cout << "ERROR::SHADER " << entityName << " - uniform " << name << " is not active in the program!" << std::endl;
 		return -1;
 	}
 
@@ -150,7 +151,7 @@ void Shader::CheckValidity(const uint32_t ID, const ShaderProcessStage processSt
 			std::vector<char> errorMessage(logLength);
 			glGetShaderInfoLog(ID, logLength, &logLength, errorMessage.data());
 
-			std::cout << "ERROR::SHADER - Error: " << errorMessage.data() << std::endl;
+			std::cout << "ERROR::SHADER for " << entityName << " - Error: " << errorMessage.data() << std::endl;
 		}
 
 		break;
@@ -168,7 +169,7 @@ void Shader::CheckValidity(const uint32_t ID, const ShaderProcessStage processSt
 			std::vector<char> errorMessage(logLength);
 			glGetProgramInfoLog(ID, logLength, &logLength, errorMessage.data());
 
-			std::cout << "ERROR::PROGRAM - Error: " << errorMessage.data() << std::endl;
+			std::cout << "ERROR::PROGRAM for " << entityName << " - Error: " << errorMessage.data() << std::endl;
 		}
 
 		break;

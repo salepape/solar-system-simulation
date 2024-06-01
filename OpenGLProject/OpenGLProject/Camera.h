@@ -4,12 +4,10 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
-#include <memory>
 #include <vector>
 
-#include "UniformBuffer.h"
-
 class Shader;
+class UniformBuffer;
 
 
 
@@ -59,13 +57,11 @@ private:
 	glm::vec3 right{ 0.0f, 1.0f, 0.0f };
 	glm::vec3 forward{ 0.0f, 0.0f, -1.0f };
 
-	std::unique_ptr<UniformBuffer> ubo;
+	UniformBuffer& projectionViewUBO;
+	UniformBuffer& positionUBO;
 
 	// Compute new Forward, Right and Up vectors from new Euler Angles
 	void UpdateCameraVectors();
-
-	void AllocateProjectionView();
-	void SetPositionFUniform(Shader& shader);
 };
 
 

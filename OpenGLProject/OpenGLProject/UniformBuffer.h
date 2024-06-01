@@ -11,9 +11,13 @@
 class UniformBuffer : public DataBuffer
 {
 public:
-	UniformBuffer(const std::vector<uint32_t>& shaderIDs, const std::string& uniformName, const size_t size);
+	// uniformName can either be a single uniform or a struct provided using layout std140 in shader
+	UniformBuffer(const std::vector<uint32_t>& shaderIDs, const std::string& inUniformName, const size_t size);
+
+	const std::string& GetUniformName() const { return uniformName; }
 
 private:
+	std::string uniformName;
 	static uint32_t blockBindingPoint;
 };
 

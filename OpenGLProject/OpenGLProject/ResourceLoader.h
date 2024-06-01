@@ -7,6 +7,7 @@
 #include "Belt.h"
 #include "CelestialBody.h"
 #include "Shader.h"
+#include "UniformBuffer.h"
 
 
 
@@ -57,6 +58,7 @@ namespace ResourceLoader
 	CelestialBody& GetBody(const int32_t inBodyID);
 
 	Shader& GetShader(const std::string& inShaderName);
+	UniformBuffer& GetUBO(const std::string& inUniformName);
 
 	// Build/compile shaders and their corresponding programs
 	void LoadShaders();

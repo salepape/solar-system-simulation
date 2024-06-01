@@ -2,7 +2,7 @@
 
 
 
-LightSource::LightSource(const ReflectionParams& inReflectionParams, const bool inIsBlinn) : 
+LightSource::LightSource(const ReflectionParams& inReflectionParams, const bool inIsBlinn) :
 	reflectionParams(inReflectionParams), isBlinn(inIsBlinn)
 {
 

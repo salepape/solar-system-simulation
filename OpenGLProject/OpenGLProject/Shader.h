@@ -34,6 +34,9 @@ public:
 	void setUniformVec3(const std::string& name, const float x, const float y, const float z);
 	void setUniformMat4(const std::string& name, const glm::mat4& mat);
 
+	// Prevent glGetUniformLocation duplicate calls
+	int32_t GetUniformLocation(const std::string& name);
+
 	uint32_t GetRendererID() const { return rendererID; }
 	const std::string& GetEntityName() const { return entityName; }
 
@@ -42,9 +45,6 @@ private:
 	std::string entityName;
 
 	std::unordered_map<std::string, int32_t> uniformLocationCache;
-
-	// Prevent glGetUniformLocation duplicate calls
-	int GetUniformLocation(const std::string& name);
 
 	// Store shader file (.vs or .fs) content into a string (used C code for better efficiency when it comes to read a file)
 	std::string ParseShader(const std::string& path) const;

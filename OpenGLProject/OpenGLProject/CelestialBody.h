@@ -7,10 +7,9 @@
 #include <string>
 
 #include "Billboard.h"
-#include "DirectionalLight.h"
+#include "LightSource.h"
 #include "Material.h"
 #include "Orbit.h"
-#include "PointLight.h"
 #include "SceneEntity.h"
 #include "Sphere.h"
 
@@ -53,8 +52,7 @@ struct CelestialBody : public SceneEntity
 
 	std::unique_ptr<Billboard> billboard;
 
-	std::unique_ptr<PointLight> pointLight;
-	std::unique_ptr<DirectionalLight> directionalLight;
+	std::unique_ptr<LightSource> lightSource;
 	
 	float travelledAngle{ 0.0f };			// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
 

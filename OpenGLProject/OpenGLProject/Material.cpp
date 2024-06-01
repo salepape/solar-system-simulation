@@ -14,28 +14,43 @@ Material::Material(Shader& inShader) : shader(inShader)
 {
 	diffuseSamplerID = Material::diffuseSamplerIDCounter++;
 
-	Store({ shader.GetRendererID() });
+	SetFUniforms();
 }
 
 Material::Material(Shader& inShader, const glm::vec3& inSpecular, const float inShininess, const float inTransparency) :
 	shader(inShader), specularColour(inSpecular), shininess(inShininess), transparency(inTransparency)
 {
-	Store({ shader.GetRendererID() });
+	SetFUniforms();
 }
 
-Material::Material(Material&& inMaterial) : shader(inMaterial.shader), specularColour(inMaterial.specularColour), shininess(inMaterial.shininess), transparency(inMaterial.transparency), ubo(std::move(inMaterial.ubo))
+Material::Material(Material&& inMaterial) : shader(inMaterial.shader), specularColour(inMaterial.specularColour), shininess(inMaterial.shininess), transparency(inMaterial.transparency)
 {
 
 }
 
-void Material::Store(const std::vector<uint32_t>& entitiesShadersIDs)
+void Material::SetFUniforms()
 {
-	ubo = std::make_unique<UniformBuffer>(entitiesShadersIDs, "specularMatParams", Utils::vec4Size + 2 * Utils::scalarSize);
-	ubo->InitSubData({
-		{ static_cast<const void*>(glm::value_ptr(specularColour)), Utils::vec4Size },
-		{ static_cast<const void*>(&shininess), Utils::scalarSize },
-		{ static_cast<const void*>(&transparency), Utils::scalarSize }
-		});
+	shader.Enable();
+
+	const std::string& unif1 = "material.fu_SpecularColour";
+	if (shader.GetUniformLocation(unif1.c_str()) != -1)
+	{
+		shader.setUniformVec3(unif1, specularColour);
+	}
+
+	const std::string& unif2 = "material.fu_Shininess";
+	if (shader.GetUniformLocation(unif2.c_str()) != -1)
+	{
+		shader.setUniformFloat(unif2, shininess);
+	}
+
+	const std::string& unif3 = "material.fu_Transparency";
+	if (shader.GetUniformLocation(unif3.c_str()) != -1)
+	{
+		shader.setUniformFloat(unif3, transparency);
+	}
+
+	shader.Disable();
 }
 
 void Material::SetDiffuseSamplerVUniform()

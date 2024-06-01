@@ -18,8 +18,6 @@ Belt::Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusPar
 	// @todo - See if we can adapt and reuse function in ResourceLoader when no '_' in the name
 	name = "Belt";
 
-	pointLight.Store({ material.GetShader().GetRendererID() });
-
 	ComputeInstanceModelMatrices();
 	StoreInstanceModelMatrices();
 }

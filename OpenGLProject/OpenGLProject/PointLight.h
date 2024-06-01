@@ -2,9 +2,9 @@
 #define POINT_LIGHT_H
 
 #include <glm/vec3.hpp>
-#include <vector>
 
 #include "LightSource.h"
+#include "UniformBuffer.h"
 
 
 
@@ -14,12 +14,17 @@ public:
 	PointLight();
 	PointLight(const glm::vec3& inPosition, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const bool inIsBlinn);
 
-	void Store(const std::vector<uint32_t>& entitiesShadersIDs) override;
-
 private:
 	glm::vec3 position{ 0.0f, 0.0f, 0.0f };
-
 	AttenuationParams attenuationParams;
+
+	UniformBuffer& ubo;
+
+	static bool isUBOFilled;
+
+
+
+	void StoreDataInUBO();
 };
 
 

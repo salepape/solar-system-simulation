@@ -15,10 +15,9 @@
 
 
 Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane) :
-	initialPosition(position), initialRotation(inRotation), position(inPosition), pitch(inRotation.y), yaw(inRotation.z), fovY(inFovY), farPlane(inFarPlane)
+	initialPosition(position), initialRotation(inRotation), position(inPosition), pitch(inRotation.y), yaw(inRotation.z), fovY(inFovY), farPlane(inFarPlane), projectionViewUBO(ResourceLoader::GetUBO("ubo_ProjectionView")), positionUBO(ResourceLoader::GetUBO("ubo_CameraPosition"))
 {
 	UpdateCameraVectors();
-	AllocateProjectionView();
 }
 
 void Camera::Reset()
@@ -84,42 +83,17 @@ void Camera::UpdateCameraVectors()
 	up = glm::normalize(glm::cross(right, forward));
 }
 
-void Camera::AllocateProjectionView()
-{
-	extern std::vector<Shader> shaders;
-	std::vector<uint32_t> allShaderIDs;
-	allShaderIDs.reserve(static_cast<uint32_t>(shaders.size()));
-
-	for (const auto& shader : shaders)
-	{
-		allShaderIDs.push_back(shader.GetRendererID());
-	}
-
-	ubo = std::make_unique<UniformBuffer>(allShaderIDs, "ubo_ProjectionView", Utils::mat4v4Size);
-}
-
 void Camera::SetProjectionViewVUniform(const float windowAspectRatio)
 {
-	ubo->InitSubData({ { static_cast<const void*>(glm::value_ptr(ComputeProjectionMatrix(windowAspectRatio) * ComputeViewMatrix())), Utils::mat4v4Size } });
+	projectionViewUBO.InitSubData({ { static_cast<const void*>(glm::value_ptr(ComputeProjectionMatrix(windowAspectRatio) * ComputeViewMatrix())), Utils::mat4v4Size } });
 }
 
 void Camera::SetInfiniteProjectionViewVUniform(const float windowAspectRatio)
 {
-	ubo->InitSubData({ { static_cast<const void*>(glm::value_ptr(ComputeProjectionMatrix(windowAspectRatio) * glm::mat4(glm::mat3(ComputeViewMatrix())))), Utils::mat4v4Size } });
+	projectionViewUBO.InitSubData({ { static_cast<const void*>(glm::value_ptr(ComputeProjectionMatrix(windowAspectRatio) * glm::mat4(glm::mat3(ComputeViewMatrix())))), Utils::mat4v4Size } });
 }
 
 void Camera::SetPositionFUniforms()
 {
-	SetPositionFUniform(ResourceLoader::GetShader("CelestialBody"));
-	SetPositionFUniform(ResourceLoader::GetShader("BeltBody"));
-	SetPositionFUniform(ResourceLoader::GetShader("Sun"));
-	SetPositionFUniform(ResourceLoader::GetShader("SaturnRings"));
-	SetPositionFUniform(ResourceLoader::GetShader("Orbit"));
-}
-
-void Camera::SetPositionFUniform(Shader& shader)
-{
-	shader.Enable();
-	shader.setUniformVec3("fu_CameraPosition", GetPosition());
-	shader.Disable();
+	positionUBO.InitSubData({ { static_cast<const void*>(glm::value_ptr(glm::vec4(GetPosition(), 0.0f))), Utils::vec4Size } });
 }

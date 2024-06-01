@@ -1,32 +1,28 @@
 #include "DirectionalLight.h"
 
-#include <glm/gtc/type_ptr.hpp>
-#include <memory>
-
-#include "UniformBuffer.h"
-#include "Utils.h"
+#include "Shader.h"
 
 
 
-DirectionalLight::DirectionalLight() : LightSource({ {0.75f, 0.75f, 0.75f}, {0.5f, 0.5f, 0.5f}, { 0.95f, 0.95f, 0.95f } })
+DirectionalLight::DirectionalLight(Shader& inShader) : LightSource({ glm::vec3(0.75f, 0.75f, 0.75f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.95f, 0.95f, 0.95f) }),
+shader(inShader)
 {
-
+	SetFUniforms();
 }
 
-DirectionalLight::DirectionalLight(const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn) : LightSource(inReflectionParams, inIsBlinn),
-direction(inDirection)
+DirectionalLight::DirectionalLight(Shader& inShader, const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn) : LightSource(inReflectionParams, inIsBlinn),
+shader(inShader), direction(inDirection)
 {
-
+	SetFUniforms();
 }
 
-void DirectionalLight::Store(const std::vector<uint32_t>& entitiesShadersIDs)
+void DirectionalLight::SetFUniforms()
 {
-	ubo = std::make_unique<UniformBuffer>(entitiesShadersIDs, "directionalLightParams", 4 * Utils::vec4Size + Utils::scalarSize);
-	ubo->InitSubData({
-		{ static_cast<const void*>(glm::value_ptr(direction)), Utils::vec4Size },
-		{ static_cast<const void*>(glm::value_ptr(reflectionParams.ambient)), Utils::vec4Size },
-		{ static_cast<const void*>(glm::value_ptr(reflectionParams.diffuse)), Utils::vec4Size },
-		{ static_cast<const void*>(glm::value_ptr(reflectionParams.specular)), Utils::vec4Size },
-		{ static_cast<const void*>(&isBlinn), Utils::scalarSize }
-		});
+	shader.Enable();
+	shader.setUniformVec3("light.fu_Dir", direction);
+	shader.setUniformVec3("light.fu_AmbientReflectCoef", reflectionParams.ambient);
+	shader.setUniformVec3("light.fu_DiffuseReflectCoef", reflectionParams.diffuse);
+	shader.setUniformVec3("light.fu_SpecularReflectCoef", reflectionParams.specular);
+	shader.setUniformBool("light.fu_IsBlinn", isBlinn);
+	shader.Disable();
 }

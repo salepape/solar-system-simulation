@@ -19,7 +19,6 @@ public:
 	Material(Shader& inShader, const glm::vec3& inSpecular, const float inShininess, const float inTransparency = 1.0f);
 	Material(Material&& inMaterial);
 
-	void Store(const std::vector<uint32_t>& entitiesShadersIDs);
 	void SetDiffuseSamplerVUniform();
 	void SetDiffuseColourVUniform(const glm::vec3& colour);
 
@@ -49,7 +48,9 @@ private:
 	// Coefficient corresponding to the alpha value in a colour vector
 	float transparency{ 1.0f };
 
-	std::unique_ptr<UniformBuffer> ubo;
+
+
+	void SetFUniforms();
 };
 
 

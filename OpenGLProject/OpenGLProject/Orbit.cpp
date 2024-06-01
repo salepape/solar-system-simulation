@@ -16,8 +16,6 @@ Orbit::Orbit(const std::string& texturePath, const float radius) :
 {
 	name = "Orbit";
 	bodyName = ResourceLoader::GetNameFromTexturePath(texturePath);
-
-	pointLight.Store({ material.GetShader().GetRendererID() });
 }
 
 void Orbit::ComputeModelMatrixUniform(const float /*elapsedTime*/)

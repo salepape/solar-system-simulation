@@ -3,6 +3,8 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
 
+#include "DirectionalLight.h"
+#include "PointLight.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
@@ -20,13 +22,11 @@ CelestialBody::CelestialBody(const std::string& inTexturePath, const float inRad
 	
 	if (name == "Sun")
 	{
-		directionalLight = std::make_unique<DirectionalLight>();
-		directionalLight->Store({ material.GetShader().GetRendererID() });
+		lightSource = std::make_unique<DirectionalLight>(ResourceLoader::GetShader("Sun"));
 	}
 	else
 	{
-		pointLight = std::make_unique<PointLight>();
-		pointLight->Store({ material.GetShader().GetRendererID() });
+		lightSource = std::make_unique<PointLight>();
 	}
 }
 

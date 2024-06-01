@@ -2,10 +2,7 @@
 #define LIGHT_SOURCE_H
 
 #include <glm/vec3.hpp>
-#include <memory>
 #include <vector>
-
-#include "UniformBuffer.h"
 
 
 
@@ -31,13 +28,9 @@ class LightSource
 public:
 	LightSource(const ReflectionParams& inReflectionParams, const bool isBlinn = false);
 
-	virtual void Store(const std::vector<uint32_t>& entitiesShadersIDs) {};
-
 protected:
 	const ReflectionParams reflectionParams;
 	bool isBlinn{ false };
-
-	std::unique_ptr<UniformBuffer> ubo;
 };
 
 
