@@ -13,16 +13,17 @@ Texture::Texture(const std::string& inPath, const uint32_t inTarget, const WrapO
 	SetFilters(filterOptions);
 }
 
-void Texture::LoadFTBitmap(const FT_Bitmap bitmap, const uint32_t format)
+void Texture::LoadFTBitmap(const FT_Bitmap& bitmap, const uint32_t format)
 {
 	// Generate then bind Texture Object (= TO) to the OpenGL TO type we want 
 	glGenTextures(1, &rendererID);
 
 	Bind();
 
+	// @todo - Add 1 texel border to each side to avoid leaking from adjacent glyphs due to linear filtering used?
 	// Generate texture image on the currently bound TO at the active texture unit
 	glTexImage2D(target, 0, format, bitmap.width, bitmap.rows, 0, format, GL_UNSIGNED_BYTE, bitmap.buffer);
-	
+
 	// Generate all mipmap levels for the previous currently bound TO
 	glGenerateMipmap(target);
 
@@ -31,7 +32,7 @@ void Texture::LoadFTBitmap(const FT_Bitmap bitmap, const uint32_t format)
 
 void Texture::LoadDDS()
 {
-	// Already contains glGenTextures function!!!
+	// Already contains glGenTextures function call!!!
 	rendererID = SOIL_load_OGL_texture(path.c_str(), SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
 	if (rendererID == 0)
@@ -42,7 +43,7 @@ void Texture::LoadDDS()
 
 void Texture::LoadCubemapDDS()
 {
-	// Already contains glGenTextures function!!!
+	// Already contains glGenTextures function call!!!
 	rendererID = SOIL_load_OGL_single_cubemap(path.c_str(), "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
 	if (rendererID == 0)
@@ -55,10 +56,9 @@ void Texture::SetWraps(const WrapOptions& wrapOptions) const
 {
 	glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapOptions.s);
 	glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapOptions.t);
-
 	if (target == GL_TEXTURE_CUBE_MAP)
 	{
-		glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapOptions.r);
+		glTexParameteri(target, GL_TEXTURE_WRAP_R, wrapOptions.r);
 	}
 }
 
@@ -66,6 +66,17 @@ void Texture::SetFilters(const FilterOptions& filterOptions) const
 {
 	glTexParameteri(target, GL_TEXTURE_MIN_FILTER, filterOptions.min);
 	glTexParameteri(target, GL_TEXTURE_MAG_FILTER, filterOptions.mag);
+}
+
+void Texture::Activate(const uint32_t textureUnit) const
+{
+	glActiveTexture(GL_TEXTURE0 + textureUnit);
+}
+
+void Texture::Deactivate() const
+{
+	// @todo - Find out why this command trigger OpenGL issues when calling glGetError()
+	glActiveTexture(0);
 }
 
 void Texture::Bind() const
@@ -80,14 +91,12 @@ void Texture::Unbind() const
 
 void Texture::Enable(const uint32_t textureUnit) const
 {
-	glActiveTexture(GL_TEXTURE0 + textureUnit);
-
+	Activate(textureUnit);
 	Bind();
 }
 
 void Texture::Disable() const
 {
-	glActiveTexture(0);
-
+	Deactivate();
 	Unbind();
 }

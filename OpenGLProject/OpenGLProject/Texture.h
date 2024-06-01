@@ -43,7 +43,7 @@ public:
 	Texture() = default;
 	Texture(const std::string& inPath, const uint32_t inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType);
 
-	void LoadFTBitmap(const FT_Bitmap bitmap, const uint32_t format);
+	void LoadFTBitmap(const FT_Bitmap& bitmap, const uint32_t format);
 	void LoadDDS();
 	void LoadCubemapDDS();
 
@@ -53,13 +53,15 @@ public:
 	// Set texture filtering options on the currently bound texture object
 	void SetFilters(const FilterOptions& filterOptions) const;
 
+	void Activate(const uint32_t textureUnit) const;
+	void Deactivate() const;
+
 	// Bind texture name to the OpenGL target we want (e.g. a 2D texture called GL_TEXTURE_2D)
 	void Bind() const;
 	void Unbind() const;
 
 	// Activate the texture unit then bind texture
 	void Enable(const uint32_t textureUnit) const;
-
 	// Set everything back to default once texture is configured
 	void Disable() const;
 
