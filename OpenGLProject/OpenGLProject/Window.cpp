@@ -39,8 +39,8 @@ GLFWwindow* const Window::initGLFWWindow()
 	glfwInit();
 
 	// Set major and minor version of OpenGL to 3, to prevent others who have not this OpenGL version GLFW to fail
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
 	// Tell explicitly GLFW that we want to use core-profile 
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
