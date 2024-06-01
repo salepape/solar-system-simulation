@@ -4,13 +4,14 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <glm/vec2.hpp>
+#include <memory>
 #include <unordered_map>
 #include <string>
 
 #include "Texture.h"
-#include "VertexArray.h"
 
 class Renderer;
+class VertexArray;
 class VertexBuffer;
 
 
@@ -43,9 +44,11 @@ public:
 	void FreeFTResources() const;
 
 	// Update VBO for each character of the text provided as input
-	void Render(const std::string& text, float x, const float y, const float scale, const uint32_t textureUnit);
+	void Render(const std::string& text, float x, const float y, const float scale);
 
 private:
+	static TextRenderer* instance;
+
 	const Renderer& renderer;
 
 	FT_Library FreeTypeLibrary;

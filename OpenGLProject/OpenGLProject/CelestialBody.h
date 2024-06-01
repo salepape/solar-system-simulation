@@ -2,7 +2,6 @@
 #define CELESTIAL_BODY_H
 
 #include <glm/vec3.hpp>
-#include <glm/mat4x4.hpp>
 #include <memory>
 #include <string>
 
@@ -33,10 +32,16 @@ struct PreComputations
 	float textScale{ 0.0f };
 };
 
-// @todo - Have a better separation body/orbit and naming?
+// @todo - Sphere is a Mesh, Orbit is a SceneEntity. Create another class as a clear combination of CelestialBody (only containing the Sphere) and Orbit? 
 // Represent a planet, dwarf planet, moon etc... and its orbit
-struct CelestialBody : public SceneEntity
+class CelestialBody : public SceneEntity
 {
+public:
+	CelestialBody(const std::string& inTexturePath, const float inRadius, const float inDistanceToParent, const float inObliquity, const float inOrbitalPeriod, const float inSpinPeriod, const float inOrbitalInclination, const int32_t inParentID = -1);
+	CelestialBody(CelestialBody&& inCelestialBody);
+	~CelestialBody();
+
+	// @todo - Create a CelestialBodyData struct for the sake of clarity. Might easy things when we will read values from .csv file Also make data private?
 	std::string texturePath;				// DDS texture path
 	float radius{ 0.0f };					// Planet or moon (only those > pluto radius in length) radius divided by earth's radius [in kms]
 	float distanceToParent{ 0.0f };			// Distance between planet (resp. moon) and sun (resp. the planet around which they gravitate) divided by sun-earth distance [in kms]
@@ -46,33 +51,33 @@ struct CelestialBody : public SceneEntity
 	float orbitalInclination{ 0.0f };		// Or "orbital tilt": angle between planet (resp. moon) orbit and the ecliptic [in degrees]
 	int32_t parentID{ -1 };					// Pointer to the planet mesh around which a moon rotates
 
-	Sphere sphere;							// Sphere mesh
-	Orbit orbit;							// Orbit mesh
+	Sphere sphere;
+	Orbit orbit;
+	Billboard billboard;
 	PreComputations preComputations;
 
-	std::unique_ptr<Billboard> billboard;
-
 	std::unique_ptr<LightSource> lightSource;
-	
-	float travelledAngle{ 0.0f };			// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
+
+	// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
+	float travelledAngle{ 0.0f };
 
 
-
-	CelestialBody(const std::string& inTexturePath, const float inRadius, const float inDistanceToParent, const float inObliquity, const float inOrbitalPeriod, const float inSpinPeriod, const float inOrbitalInclination, const int32_t inParentID = -1);	
-
-	void ComputeModelMatrixUniform(const float elapsedTime = 1.0f) override;
-
-	void Render(const Renderer& renderer, const float elapsedTime = 1.0f) override;
 
 	void ComputeCartesianPosition(const float elapsedTime);
 	const glm::vec3& GetPosition() const { return position; }
 
+	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
+
 private:
+	// Store body position in Cartesian coordinates, computed from Spherical ones
+	glm::vec3 position{ 0.0f, 0.0f, 0.0f };
+
+
+
 	static Material InitialiseParent(const std::string& inTexturePath);
 	PreComputations LoadPreComputations();
 
-	// Store body position in Cartesian coordinates, computed from Spherical ones
-	glm::vec3 position{ 0.0f, 0.0f, 0.0f };
+	void ComputeModelMatrixVUniform(const float elapsedTime = 1.0f) override;
 };
 
 

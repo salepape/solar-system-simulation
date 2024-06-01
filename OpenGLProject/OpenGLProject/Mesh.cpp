@@ -11,16 +11,8 @@
 
 
 
-Mesh::Mesh(const std::string& texturePath, const uint32_t textureTarget, const WrapOptions& textureWrapOptions, const FilterOptions& textureFilterOptions, const TextureType& textureType)
-{
-	// @todo - A mesh should just contain geometry, texture setup should rather be in Material or SceneEntity class
-	Texture texture(texturePath, textureTarget, textureWrapOptions, textureFilterOptions, textureType);
-	texture.LoadDDS();
-	textures.push_back(texture);
-}
-
-Mesh::Mesh(const std::vector<Vertex>& inVertices, const std::vector<uint32_t>& inIndices, const std::vector<Texture>& inTextures) :
-	vertices(inVertices), indices(inIndices), textures(inTextures)
+Mesh::Mesh(const std::vector<Vertex>& inVertices, const std::vector<uint32_t>& inIndices) :
+	vertices(inVertices), indices(inIndices)
 {
 	StoreVertices();
 }
@@ -68,7 +60,7 @@ void Mesh::StoreInstanceModelMatrices(const VertexBuffer& vbo) const
 	vao->AddInstancedBuffer(vbo, vbl);
 }
 
-void Mesh::Render(const Renderer& renderer, const uint32_t textureUnit) const
+void Mesh::Render(const Renderer& renderer) const
 {
 	if (indices.empty())
 	{
@@ -76,30 +68,10 @@ void Mesh::Render(const Renderer& renderer, const uint32_t textureUnit) const
 		return;
 	}
 
-	for (const auto& texture: textures)
-	{
-		texture.Enable(textureUnit);
-	}
-
 	renderer.Draw(*vao, *ibo);
-
-	for (const auto& texture : textures)
-	{
-		texture.Disable();
-	}
 }
 
-void Mesh::RenderInstances(const Renderer& renderer, const uint32_t textureUnit, const uint32_t instanceCount) const
+void Mesh::RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const
 {
-	for (const auto& texture : textures)
-	{
-		texture.Enable(textureUnit);
-	}
-
 	renderer.DrawInstances(*vao, ibo->GetCount(), instanceCount);
-
-	for (const auto& texture : textures)
-	{
-		texture.Disable();
-	}
 }

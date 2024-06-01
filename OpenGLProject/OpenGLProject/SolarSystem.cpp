@@ -5,7 +5,6 @@
 #include <map>
 
 #include "Application.h"
-#include "Belt.h"
 #include "Billboard.h"
 #include "Camera.h"
 #include "Controller.h"
@@ -24,6 +23,15 @@ SolarSystem::SolarSystem() :
 	ResourceLoader::LoadCelestialBodies();
 	ResourceLoader::LoadBelts();
 
+	// Fill remaining Orbit/Billboard data just after construction ended
+	for (auto& celestialBody : celestialBodies)
+	{
+		celestialBody.orbit.SetDataPostConstruction();
+		celestialBody.billboard.SetDataPostConstruction(textRenderer);
+	}
+	// Free FT resources oce we don't have any more letters to load
+	textRenderer.FreeFTResources();
+
 	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun - farthest celestial body'
 	controller = std::make_shared<Controller>(glm::vec3(0.0f, ResourceLoader::GetBody("Sun").radius * 1.75f, -25.0f), glm::vec3(0.0f, -25.0f, 90.0f), 45.0f, 2.0f * ResourceLoader::GetBody("Pluto").distanceToParent);
 	if (controller == nullptr)
@@ -31,13 +39,6 @@ SolarSystem::SolarSystem() :
 		return;
 	}
 	openedWindow.controller = controller;
-
-	// Load all needed quads to render celestial body names
-	for (const auto& celestialBody : celestialBodies)
-	{
-		textRenderer.LoadASCIICharacters(celestialBody.name);
-	}
-	textRenderer.FreeFTResources();
 }
 
 void SolarSystem::Update()
@@ -84,8 +85,7 @@ void SolarSystem::Update()
 			const glm::vec3& forward = glm::normalize(cameraPosition - currentBody.GetPosition());
 			const glm::vec3& right = glm::cross(camera.GetUp(), forward);
 
-			currentBody.billboard = std::make_unique<Billboard>(currentBody.name);
-			currentBody.billboard->Render(textRenderer, forward, right);
+			currentBody.billboard.Render(textRenderer, currentBody.GetPosition(), forward, right);
 		}
 	}
 

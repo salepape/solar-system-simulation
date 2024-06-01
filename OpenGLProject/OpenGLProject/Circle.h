@@ -12,9 +12,9 @@ class Renderer;
 class Circle : public Mesh
 {
 public:
-	Circle(const std::string& texturePath, const float inRadius);
+	Circle(const float inRadius);
 
-	void Render(const Renderer& renderer, const uint32_t textureUnit) const override;
+	void Render(const Renderer& renderer) const override;
 
 protected:
 	void ComputeVertices() override;

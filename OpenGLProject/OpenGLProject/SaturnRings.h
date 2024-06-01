@@ -5,6 +5,7 @@
 
 #include "PointLight.h"
 #include "SceneEntity.h"
+#include "Material.h"
 #include "Model.h"
 
 class Renderer;
@@ -15,15 +16,16 @@ struct SaturnRings : public SceneEntity
 {
 	Model model;
 
-	PointLight pointLight;
 
 
+	SaturnRings(const std::string& modelPath);
 
-	SaturnRings(const std::string& texturePath);
-
-	void ComputeModelMatrixUniform(const float elapsedTime = 0.0f) override;
+	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override;
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
+
+private:
+	static Material InitialiseParent(const std::string& inTexturePath);
 };
 
 

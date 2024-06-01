@@ -24,9 +24,10 @@ public:
 
 	void StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t size) const;
 
-	// @todo - Move render method implementations in SceneEntity child classes to be created for SaturnRings
-	void Render(const Renderer& renderer, const uint32_t textureUnit) const;
-	void RenderInstances(const Renderer& renderer, const uint32_t textureUnit, const uint32_t instanceCount) const;
+	void Render(const Renderer& renderer) const;
+	void RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const;
+
+	const std::vector<Texture>& GetTextures() const { return textures; }
 
 private:
 	std::vector<Mesh> meshes;

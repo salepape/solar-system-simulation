@@ -1,8 +1,6 @@
 #ifndef SKYBOX_H
 #define SKYBOX_H
 
-#include <string>
-
 #include "Mesh.h"
 
 class Renderer;
@@ -12,9 +10,9 @@ class Renderer;
 class Skybox : public Mesh
 {
 public:
-	Skybox(const std::string& texturePath);
+	Skybox();
 
-	void Render(const Renderer& renderer, const uint32_t textureUnit) const override;
+	void Render(const Renderer& renderer) const override;
 
 protected:
 	void ComputeVertices() override;

@@ -3,7 +3,6 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/mat4x4.hpp>
 
-#include "Material.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
@@ -11,12 +10,20 @@
 
 
 
-SaturnRings::SaturnRings(const std::string& texturePath) : SceneEntity(Material(ResourceLoader::GetShader("SaturnRings"), { 0.0f, 0.0f, 0.0f }, 64.0f, 0.5f)), model({ texturePath })
+SaturnRings::SaturnRings(const std::string& modelPath) : SceneEntity(InitialiseParent("")),
+model({ modelPath })
 {
+	material.SetTextures(model.GetTextures());
+
 	name = "SaturnRings";
 }
 
-void SaturnRings::ComputeModelMatrixUniform(const float /*elapsedTime*/)
+Material SaturnRings::InitialiseParent(const std::string& inTexturePath)
+{
+	return Material(ResourceLoader::GetShader("SaturnRings"), { /* texturesLoadedFromTheModel */ }, { 0.0f, 0.0f, 0.0f }, 64.0f, 0.5f);
+}
+
+void SaturnRings::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
 {
 	modelMatrix = ResourceLoader::GetBody("Saturn").GetModelMatrix();
 
@@ -26,13 +33,18 @@ void SaturnRings::ComputeModelMatrixUniform(const float /*elapsedTime*/)
 
 void SaturnRings::Render(const Renderer& renderer, const float /*elapsedTime*/)
 {
-	ComputeModelMatrixUniform();
+	ComputeModelMatrixVUniform();
 
 	Shader& shader = material.GetShader();
-
 	shader.Enable();
+
+	SetModelMatrixVUniform(modelMatrix);
+
 	material.SetDiffuseSamplerFUniform();
-	SetModelMatrixUniform(modelMatrix);
-	model.Render(renderer, material.GetDiffuseTextureUnit());
+
+	material.EnableTextures();
+	model.Render(renderer);
+	material.DisableTextures();
+
 	shader.Disable();
 }

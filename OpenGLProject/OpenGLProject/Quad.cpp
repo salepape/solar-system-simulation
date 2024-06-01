@@ -2,10 +2,14 @@
 
 #include <glad/glad.h>
 
+#include "Renderer.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
 
 
-Quad::Quad(const Texture& inTexture, const float inXPosition, const float inYPosition, const float inWidth, const float inHeight):
-	texture(inTexture), xPosition(inXPosition), yPosition(inYPosition), width(inWidth), height(inHeight)
+
+Quad::Quad(const float inXPosition, const float inYPosition, const float inWidth, const float inHeight) :
+	xPosition(inXPosition), yPosition(inYPosition), width(inWidth), height(inHeight)
 {
 	Compute();
 }
@@ -32,9 +36,7 @@ void Quad::Store(VertexBuffer& vbo)
 	vbo.InitSubData({ { static_cast<const void*>(quadCoor.data()), Quad::GetSize() } });
 }
 
-void Quad::Render(const Renderer& renderer, const VertexArray& vao, const uint32_t textureUnit)
+void Quad::Render(const Renderer& renderer, const VertexArray& vao)
 {
-	texture.Enable(textureUnit);
 	renderer.Draw(vao, GL_TRIANGLES, Quad::VERTICES_COUNT);
-	texture.Disable();
 }

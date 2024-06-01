@@ -15,7 +15,7 @@ SceneEntity::SceneEntity(Material inMaterial) :
 	ID = entityIDCounter++;
 }
 
-void SceneEntity::SetModelMatrixUniform(const glm::mat4 & inModelMatrix)
+void SceneEntity::SetModelMatrixVUniform(const glm::mat4& inModelMatrix)
 {
 	modelMatrix = inModelMatrix;
 

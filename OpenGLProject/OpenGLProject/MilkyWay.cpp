@@ -1,23 +1,41 @@
 #include "MilkyWay.h"
 
-#include "Material.h"
+#include <glad.h>
+#include <utility>
+
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
 
 
 
-MilkyWay::MilkyWay(const std::string& texturePath) : SceneEntity(Material(ResourceLoader::GetShader("Skybox"), { 0.0f, 0.0f, 0.0f }, 0.0f)), skybox({ texturePath })
+MilkyWay::MilkyWay(const std::string& texturePath) : SceneEntity(InitialiseParent(texturePath))
 {
 	name = "MilkyWay";
+}
+
+Material MilkyWay::InitialiseParent(const std::string& inTexturePath)
+{
+	Texture texture(inTexturePath, GL_TEXTURE_CUBE_MAP, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::DIFFUSE);
+	texture.LoadCubemapDDS();
+
+	return Material(ResourceLoader::GetShader("MilkyWay"), { std::move(texture) });
 }
 
 void MilkyWay::Render(const Renderer& renderer, const float /*elapsedTime*/)
 {
 	Shader& shader = material.GetShader();
-
 	shader.Enable();
+
 	material.SetDiffuseSamplerFUniform();
-	skybox.Render(renderer, material.GetDiffuseTextureUnit());
+
+	renderer.SetDepthFctToEqual();
+
+	material.EnableTextures();
+	skybox.Render(renderer);
+	material.DisableTextures();
+
+	renderer.SetDepthFctToLess();
+
 	shader.Disable();
 }

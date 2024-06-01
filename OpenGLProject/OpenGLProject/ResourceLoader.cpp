@@ -43,9 +43,9 @@ namespace ResourceLoader
 		// RendererID will be identical for all shaders if we do not instantiate them line by line before pushing them into the vector
 		static Shader celestialBodyShader("CelestialBody", "DefaultShader.vs", "DefaultShader.fs");
 		static Shader sunShader("Sun", "DefaultShader.vs", "SunShader.fs");
-		static Shader textShader("Text", "TextShader.vs", "TextShader.fs");
+		static Shader textShader("TextGlyph", "TextShader.vs", "TextShader.fs");
 		static Shader beltBodyShader("BeltBody", "InstancedModelShader.vs", "DefaultShader.fs");
-		static Shader skyboxShader("Skybox", "SkyboxShader.vs", "SkyboxShader.fs");
+		static Shader skyboxShader("MilkyWay", "SkyboxShader.vs", "SkyboxShader.fs");
 		static Shader saturnRingsShader("SaturnRings", "DefaultShader.vs", "DefaultShader.fs");
 		static Shader orbitShader("Orbit", "DefaultShader.vs", "DefaultShader.fs");
 		shaders.push_back(celestialBodyShader);
@@ -57,7 +57,7 @@ namespace ResourceLoader
 		shaders.push_back(orbitShader);
 
 		ubos.reserve(3);
-		static UniformBuffer projectionViewUBO({ { GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("Text").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("Skybox").GetRendererID(), GetShader("SaturnRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
+		static UniformBuffer projectionViewUBO({ { GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("TextGlyph").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("MilkyWay").GetRendererID(), GetShader("SaturnRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
 			"ubo_ProjectionView", Utils::mat4v4Size });
 		static UniformBuffer cameraPositionUBO({ { GetShader("CelestialBody").GetRendererID(), GetShader("BeltBody").GetRendererID(), ResourceLoader::GetShader("Sun").GetRendererID(), ResourceLoader::GetShader("SaturnRings").GetRendererID(), ResourceLoader::GetShader("Orbit").GetRendererID() },
 			"ubo_CameraPosition", Utils::vec4Size });

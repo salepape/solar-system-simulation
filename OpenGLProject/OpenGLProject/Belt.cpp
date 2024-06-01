@@ -12,14 +12,21 @@
 
 
 
-Belt::Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams) :
-	SceneEntity(Material(ResourceLoader::GetShader("BeltBody"))), instanceParams(inInstanceParams), torusParams(inTorusParams), model({ inInstanceParams.texturePath })
+Belt::Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams) : SceneEntity(InitialiseParent("")),
+instanceParams(inInstanceParams), torusParams(inTorusParams), model({ inInstanceParams.modelPath })
 {
+	material.SetTextures(model.GetTextures());
+
 	// @todo - See if we can adapt and reuse function in ResourceLoader when no '_' in the name
 	name = "Belt";
 
 	ComputeInstanceModelMatrices();
 	StoreInstanceModelMatrices();
+}
+
+Material Belt::InitialiseParent(const std::string& inTexturePath)
+{
+	return Material(ResourceLoader::GetShader("BeltBody"), { /* texturesLoadedFromTheModel */ });
 }
 
 void Belt::ComputeInstanceModelMatrices()
@@ -75,9 +82,13 @@ void Belt::StoreInstanceModelMatrices() const
 void Belt::Render(const Renderer& renderer, const float /*elapsedTime*/)
 {
 	Shader& shader = material.GetShader();
-	
 	shader.Enable();
+
 	material.SetDiffuseSamplerFUniform();
-	model.RenderInstances(renderer, material.GetDiffuseTextureUnit(), instanceParams.count);
+
+	material.EnableTextures();
+	model.RenderInstances(renderer, instanceParams.count);
+	material.DisableTextures();
+
 	shader.Disable();
 }

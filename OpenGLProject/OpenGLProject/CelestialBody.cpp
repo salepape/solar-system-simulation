@@ -1,25 +1,30 @@
 #include "CelestialBody.h"
 
+#include <glad.h>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
+#include <glm/mat4x4.hpp>
+#include <utility>
 
 #include "DirectionalLight.h"
-#include "PointLight.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
+#include "PointLight.h"
+#include "Texture.h"
 #include "Utils.h"
 
 
 
-CelestialBody::CelestialBody(const std::string& inTexturePath, const float inRadius, const float inDistanceToParent, const float inObliquity, const float inOrbitalPeriod, const float inSpinPeriod, const float inOrbitalInclination, const int32_t inParentID) :
-	texturePath(inTexturePath), radius(inRadius), distanceToParent(inDistanceToParent), obliquity(inObliquity), orbitalPeriod(inOrbitalPeriod), spinPeriod(inSpinPeriod), orbitalInclination(inOrbitalInclination), parentID(inParentID),
-	SceneEntity(InitialiseParent(inTexturePath)), sphere({ inTexturePath, inRadius }), orbit({ inTexturePath, inDistanceToParent }), preComputations(LoadPreComputations()),
-	position(glm::vec3((0.0f, 0.0f, 0.0f)))
+// @todo - Find a way to avoid building this string (GetNameFromTexturePath method) 3 times 
+CelestialBody::CelestialBody(const std::string& inTexturePath, const float inRadius, const float inDistanceToParent, const float inObliquity, const float inOrbitalPeriod, const float inSpinPeriod, const float inOrbitalInclination, const int32_t inParentID) : SceneEntity(InitialiseParent(inTexturePath)),
+texturePath(inTexturePath), radius(inRadius), distanceToParent(inDistanceToParent), obliquity(inObliquity), orbitalPeriod(inOrbitalPeriod), spinPeriod(inSpinPeriod), orbitalInclination(inOrbitalInclination), parentID(inParentID),
+sphere({ inRadius }),
+orbit({ inTexturePath, inDistanceToParent }),
+billboard({ ResourceLoader::GetNameFromTexturePath(inTexturePath) }),
+preComputations(LoadPreComputations())
 {
-	// @todo - Find a way to avoid building this string again
 	name = ResourceLoader::GetNameFromTexturePath(inTexturePath);
-	
 	if (name == "Sun")
 	{
 		lightSource = std::make_unique<DirectionalLight>(ResourceLoader::GetShader("Sun"));
@@ -28,18 +33,26 @@ CelestialBody::CelestialBody(const std::string& inTexturePath, const float inRad
 	{
 		lightSource = std::make_unique<PointLight>();
 	}
+
+	ComputeCartesianPosition(1.0f);
 }
+
+CelestialBody::CelestialBody(CelestialBody&& inCelestialBody) = default;
+CelestialBody::~CelestialBody() = default;
 
 Material CelestialBody::InitialiseParent(const std::string& inTexturePath)
 {
-	const std::string& bodyNameLocal = ResourceLoader::GetNameFromTexturePath(inTexturePath);
-	if (bodyNameLocal == "Sun")
+	Texture texture(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::DIFFUSE);
+	texture.LoadDDS();
+
+	if (const std::string& bodyName = ResourceLoader::GetNameFromTexturePath(inTexturePath);
+		bodyName == "Sun")
 	{
-		return Material(ResourceLoader::GetShader("Sun"), { 1.0f, 0.0f, 0.0f }, 95.0f);
+		return Material(ResourceLoader::GetShader("Sun"), { std::move(texture) }, { 1.0f, 0.0f, 0.0f }, 95.0f);
 	}
 	else
 	{
-		return Material(ResourceLoader::GetShader("CelestialBody"));
+		return Material(ResourceLoader::GetShader("CelestialBody"), { std::move(texture) });
 	}
 }
 
@@ -76,7 +89,7 @@ PreComputations CelestialBody::LoadPreComputations()
 	};
 }
 
-void CelestialBody::ComputeModelMatrixUniform(const float elapsedTime)
+void CelestialBody::ComputeModelMatrixVUniform(const float elapsedTime)
 {
 	modelMatrix = glm::mat4(1.0f);
 
@@ -94,19 +107,6 @@ void CelestialBody::ComputeModelMatrixUniform(const float elapsedTime)
 
 	// Rotate the body (constant over time) around axis colinear to orbital plane so its poles appear vertically
 	modelMatrix = glm::rotate(modelMatrix, Utils::halfPi, Utils::rightVector);
-}
-
-void CelestialBody::Render(const Renderer& renderer, const float elapsedTime)
-{
-	ComputeModelMatrixUniform(elapsedTime);
-
-	Shader& shader = material.GetShader();
-
-	shader.Enable();
-	SetModelMatrixUniform(modelMatrix);
-	material.SetDiffuseSamplerFUniform();
-	sphere.Render(renderer, material.GetDiffuseTextureUnit());
-	shader.Disable();
 }
 
 void CelestialBody::ComputeCartesianPosition(const float elapsedTime)
@@ -139,4 +139,22 @@ void CelestialBody::ComputeCartesianPosition(const float elapsedTime)
 		preComputations.distCosOrbInclination * sinTravelledAngle,
 		preComputations.distSinOrbInclination * sinTravelledAngle,
 		distanceToParent * glm::cos(travelledOrbitAngle));
+}
+
+void CelestialBody::Render(const Renderer& renderer, const float elapsedTime)
+{
+	ComputeModelMatrixVUniform(elapsedTime);
+
+	Shader& shader = material.GetShader();
+	shader.Enable();
+
+	SetModelMatrixVUniform(modelMatrix);
+
+	material.SetDiffuseSamplerFUniform();
+
+	material.EnableTextures();
+	sphere.Render(renderer);
+	material.EnableTextures();
+
+	shader.Disable();
 }

@@ -4,10 +4,10 @@
 #include <glad.h>
 #include <iostream>
 #include <utility>
-#include <vector>
 
 #include "Quad.h"
 #include "Renderer.h"
+#include "ResourceLoader.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
@@ -54,7 +54,7 @@ void TextRenderer::AllocateBufferObjects()
 
 void TextRenderer::LoadASCIICharacters(const std::string& text)
 {
-	for (const auto& character: text)
+	for (const auto& character : text)
 	{
 		// Avoid loading a character previously loaded
 		if (ASCIICharacterCache.find(character) != ASCIICharacterCache.end())
@@ -66,7 +66,7 @@ void TextRenderer::LoadASCIICharacters(const std::string& text)
 		{
 			std::cout << "ERROR::FREETYTPE - Failed to load the face object glyph" << std::endl;
 			continue;
-		}	
+		}
 
 		FT_GlyphSlot glyph = face->glyph;
 		if (glyph == nullptr)
@@ -77,8 +77,8 @@ void TextRenderer::LoadASCIICharacters(const std::string& text)
 
 		// No need to specify an image path here since the glyph bitmap directly contains the data
 		// @todo - Store all characters into a single texture atlas/sprite sheet for better performance
-		Texture glyphTexture("", GL_TEXTURE_2D, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::NONE);
-		
+		Texture glyphTexture("", GL_TEXTURE_2D, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::DIFFUSE);
+
 		// FreeType glyph bitmaps are 8-bit grayscale images: it means only one channel (black/white) will be used, encoded with 8 bits,
 		// so we just need to store the colour result in the first vector component, equivalent to red for RGBA
 		glyphTexture.LoadFTBitmap(glyph->bitmap, GL_RED);
@@ -101,8 +101,10 @@ void TextRenderer::FreeFTResources() const
 	FT_Done_FreeType(FreeTypeLibrary);
 }
 
-void TextRenderer::Render(const std::string& text, float x, const float y, const float scale, const uint32_t textureUnit)
+void TextRenderer::Render(const std::string& text, float x, const float y, const float scale)
 {
+	auto& body = ResourceLoader::GetBody(text);
+
 	// Left-shift billboard position to half its width to center-align it to the celestial body
 	x = -GetBillboardSize(text, scale) * 0.5f;
 
@@ -120,9 +122,12 @@ void TextRenderer::Render(const std::string& text, float x, const float y, const
 		const float width = glyphParams.size.x * scale;
 		const float height = glyphParams.size.y * scale;
 
-		Quad quad(glyphParams.texture, xPosition, yPosition, width, height);
+		Quad quad(xPosition, yPosition, width, height);
 		quad.Store(*vbo);
-		quad.Render(renderer, *vao, textureUnit);
+
+		glyphParams.texture.Enable(body.billboard.GetMaterial().GetDiffuseTextureUnit());
+		quad.Render(renderer, *vao);
+		glyphParams.texture.Disable();
 
 		x += GetGlyphAdvance(glyphParams, scale);
 	}

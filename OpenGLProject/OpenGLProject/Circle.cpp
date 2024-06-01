@@ -5,14 +5,12 @@
 #include <glm/vec3.hpp>
 
 #include "Renderer.h"
-#include "Texture.h"
 #include "Utils.h"
 
 
 
-Circle::Circle(const std::string& texturePath, const float inRadius) :
-	radius(inRadius),
-	Mesh(texturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::NONE)
+Circle::Circle(const float inRadius) :
+	radius(inRadius)
 {
 	ComputeVertices();
 	StoreVertices();
@@ -39,17 +37,7 @@ void Circle::ComputeVertices()
 	}
 }
 
-void Circle::Render(const Renderer& renderer, const uint32_t textureUnit) const
+void Circle::Render(const Renderer& renderer) const
 {
-	for (const auto& texture : textures)
-	{
-		texture.Enable(textureUnit);
-	}
-	
 	renderer.Draw(*vao, GL_LINE_LOOP, meridianStripsCount);
-
-	for (const auto& texture : textures)
-	{
-		texture.Disable();
-	}
 }

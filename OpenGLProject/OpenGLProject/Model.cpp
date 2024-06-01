@@ -10,6 +10,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <iostream>
+#include <utility>
 
 #include "VertexBuffer.h"
 
@@ -66,7 +67,7 @@ Mesh Model::ProcessMesh(const aiMesh& mesh, const aiScene& scene)
 	const std::vector<uint32_t>& indices = GetMeshIndices(mesh);
 	GetMeshTextures(mesh, scene);
 
-	return Mesh(vertices, indices, textures);
+	return Mesh(vertices, indices);
 }
 
 std::vector<Vertex> Model::GetMeshVertices(const aiMesh& mesh)
@@ -148,10 +149,9 @@ void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 			}
 
 			// Create a DDS texture from the ASSIMP one
-			// @todo - Should this be moved in Material class?
 			Texture texture(textureStringPath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, static_cast<TextureType>(type));
 			texture.LoadDDS();
-			textures.push_back(texture);
+			textures.push_back(std::move(texture));
 		}
 	}
 }
@@ -170,28 +170,18 @@ void Model::StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatric
 	vbo.Unbind();
 }
 
-void Model::Render(const Renderer& renderer, const uint32_t textureUnit) const
+void Model::Render(const Renderer& renderer) const
 {
 	for (const auto& mesh : meshes)
 	{
-		mesh.Render(renderer, textureUnit);
+		mesh.Render(renderer);
 	}
 }
 
-void Model::RenderInstances(const Renderer& renderer, const uint32_t textureUnit, const uint32_t instanceCount) const
+void Model::RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const
 {
-	for (const auto& texture : textures)
-	{
-		texture.Enable(textureUnit);
-	}
-
 	for (const auto& mesh : meshes)
 	{
-		mesh.RenderInstances(renderer, textureUnit, instanceCount);
-	}
-
-	for (const auto& texture : textures)
-	{
-		texture.Disable();
+		mesh.RenderInstances(renderer, instanceCount);
 	}
 }

@@ -3,23 +3,26 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <utility>
 
+#include "Material.h"
 #include "Shader.h"
 #include "Utils.h"
 
 
 
-Material::Material(Shader& inShader) : shader(inShader)
+Material::Material(Shader& inShader, const std::vector<Texture>& inTextures) :
+	shader(inShader), textures(inTextures), diffuseTextureUnit(0)
 {
 	SetFUniforms();
 }
 
-Material::Material(Shader& inShader, const glm::vec3& inSpecular, const float inShininess, const float inTransparency) :
-	shader(inShader), specularColour(inSpecular), shininess(inShininess), transparency(inTransparency)
+Material::Material(Shader& inShader, const std::vector<Texture>& inTextures, const glm::vec3& inSpecular, const float inShininess, const float inTransparency) :
+	shader(inShader), textures(inTextures), diffuseTextureUnit(0), specularColour(inSpecular), shininess(inShininess), transparency(inTransparency)
 {
 	SetFUniforms();
 }
 
-Material::Material(Material&& inMaterial) : shader(inMaterial.shader), specularColour(inMaterial.specularColour), shininess(inMaterial.shininess), transparency(inMaterial.transparency)
+Material::Material(Material&& inMaterial) :
+	shader(inMaterial.shader), textures(std::move(inMaterial.textures)), diffuseTextureUnit(0), specularColour(inMaterial.specularColour), shininess(inMaterial.shininess), transparency(inMaterial.transparency)
 {
 
 }
@@ -57,4 +60,25 @@ void Material::SetDiffuseSamplerFUniform()
 void Material::SetDiffuseColourFUniform(const glm::vec3& colour)
 {
 	shader.setUniformVec3("material.fu_DiffuseColour", colour);
+}
+
+void Material::EnableTextures()
+{
+	for (const auto& texture : textures)
+	{
+		texture.Enable(diffuseTextureUnit);
+	}
+}
+
+void Material::DisableTextures()
+{
+	for (const auto& texture : textures)
+	{
+		texture.Disable();
+	}
+}
+
+void Material::SetTextures(const std::vector<Texture>& inTextures)
+{
+	textures = inTextures;
 }

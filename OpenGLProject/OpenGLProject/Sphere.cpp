@@ -1,18 +1,15 @@
 #include "Sphere.h"
 
-#include <glad.h>
 #include <glm/trigonometric.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
-#include "Texture.h"
 #include "Utils.h"
 
 
 
-Sphere::Sphere(const std::string& inTexturePath, const float inRadius, const uint32_t inMeridianStripsCount, const uint32_t inParallelStripsCount) :
-	radius(inRadius), meridianStripsCount(inMeridianStripsCount), parallelStripsCount(inParallelStripsCount),
-	Mesh(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::NONE)
+Sphere::Sphere(const float inRadius, const uint32_t inMeridianStripsCount, const uint32_t inParallelStripsCount) :
+	radius(inRadius), meridianStripsCount(inMeridianStripsCount), parallelStripsCount(inParallelStripsCount)
 {
 	ComputeVertices();
 	ComputeIndices();

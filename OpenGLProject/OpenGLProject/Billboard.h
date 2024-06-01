@@ -2,10 +2,13 @@
 #define BILLBOARD_H
 
 #include <glm/vec3.hpp>
+#include <memory>
+#include <string>
 
+#include "Material.h"
 #include "SceneEntity.h"
 
-struct CelestialBody;
+struct PreComputations;
 class Renderer;
 class TextRenderer;
 
@@ -14,15 +17,18 @@ class TextRenderer;
 struct Billboard : public SceneEntity
 {
 	Billboard(const std::string& legend);
+	void SetDataPostConstruction(TextRenderer& textRenderer);
 
-	void ComputeModelMatrixUniform(const float elapsedTime = 0.0f) override {};
-	void ComputeModelMatrixUniform(const glm::vec3& forward, const glm::vec3& right);
+	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
+	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
-	void Render(TextRenderer& textRenderer, const glm::vec3& forward, const glm::vec3& right);
+	void Render(TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
 
 private:
-	CelestialBody& body;
+	std::unique_ptr<PreComputations> bodyPreComputations;
+
+	static Material InitialiseParent();
 };
 
 

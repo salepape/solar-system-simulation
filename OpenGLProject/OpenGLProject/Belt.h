@@ -2,9 +2,10 @@
 #define BELT_H
 
 #include <glm/mat4x4.hpp>
-#include <iostream>
+#include <string>
 #include <vector>
 
+#include "Material.h"
 #include "Model.h"
 #include "PointLight.h"
 #include "SceneEntity.h"
@@ -16,7 +17,7 @@ class Renderer;
 // Instance is an asteroid for a belt
 struct InstanceParams
 {
-	std::string texturePath;
+	std::string modelPath;
 
 	const uint32_t count{ 0 };
 
@@ -55,7 +56,9 @@ private:
 
 	PointLight pointLight;
 
-	void ComputeModelMatrixUniform(const float elapsedTime = 0.0f) override {};
+	static Material InitialiseParent(const std::string& inTexturePath);
+
+	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeInstanceModelMatrices();
 	void StoreInstanceModelMatrices() const;
 };

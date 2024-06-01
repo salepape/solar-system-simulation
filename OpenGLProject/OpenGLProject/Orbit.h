@@ -1,12 +1,11 @@
 #ifndef ORBIT_H
 #define ORBIT_H
 
-#include <glm/mat4x4.hpp>
-#include <glm/vec3.hpp>
 #include <memory>
 #include <string>
 
 #include "Circle.h"
+#include "Material.h"
 #include "PointLight.h"
 #include "SceneEntity.h"
 
@@ -24,15 +23,19 @@ struct Orbit : public SceneEntity
 
 
 	Orbit(const std::string& texturePath, const float radius);
+	void SetDataPostConstruction();
 
-	void ComputeModelMatrixUniform(const float elapsedTime = 0.0f) override;
+	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override;
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 	
 	std::string bodyName;
 	int32_t bodyID{ -1 };
 	int32_t parentBodyID{ -1 };
-	std::unique_ptr<PreComputations> bodyPreComputations;	
+	std::unique_ptr<PreComputations> bodyPreComputations;
+
+private:
+	static Material InitialiseParent(const std::string& inTexturePath);
 };
 
 

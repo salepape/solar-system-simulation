@@ -1,8 +1,11 @@
 #include "Orbit.h"
 
+#include <glad.h>
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/mat4x4.hpp>
+#include <utility>
 
-#include "Material.h"
+#include "CelestialBody.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
@@ -10,26 +13,32 @@
 
 
 
-// @todo - Build a proper material for the orbits, e.g. a foggy thin tube
-Orbit::Orbit(const std::string& texturePath, const float radius) :
-	SceneEntity(Material(ResourceLoader::GetShader("Orbit"))), circle({ texturePath, radius })
+Orbit::Orbit(const std::string& texturePath, const float radius) : SceneEntity(InitialiseParent(texturePath)),
+circle({ radius })
 {
-	name = "Orbit";
 	bodyName = ResourceLoader::GetNameFromTexturePath(texturePath);
+	name = bodyName + "Orbit";
 }
 
-void Orbit::ComputeModelMatrixUniform(const float /*elapsedTime*/)
+void Orbit::SetDataPostConstruction()
+{
+	const auto& body = ResourceLoader::GetBody(bodyName);
+	bodyID = body.ID;
+	parentBodyID = body.parentID;
+	bodyPreComputations = std::make_unique<PreComputations>(body.preComputations);
+}
+
+Material Orbit::InitialiseParent(const std::string& inTexturePath)
+{
+	Texture texture(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::DIFFUSE);
+	texture.LoadDDS();
+
+	return Material(ResourceLoader::GetShader("Orbit"), { std::move(texture) });
+}
+
+void Orbit::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
 {
 	modelMatrix = glm::mat4(1.0f);
-
-	// Cache all needed values to avoid calling ResourceLoader vector search each frame
-	if (bodyID == -1)
-	{
-		const auto& body = ResourceLoader::GetBody(bodyName);
-		bodyID = body.ID;
-		parentBodyID = body.parentID;
-		bodyPreComputations = std::make_unique<PreComputations>(body.preComputations);
-	}
 
 	// Center the orbit (non-constant over time) around the parent planet for satellites
 	if (parentBodyID != -1)
@@ -43,13 +52,18 @@ void Orbit::ComputeModelMatrixUniform(const float /*elapsedTime*/)
 
 void Orbit::Render(const Renderer& renderer, const float /*elapsedTime*/)
 {
-	ComputeModelMatrixUniform();
+	ComputeModelMatrixVUniform();
 
 	Shader& shader = material.GetShader();
-
 	shader.Enable();
+
+	SetModelMatrixVUniform(modelMatrix);
+
 	material.SetDiffuseSamplerFUniform();
-	SetModelMatrixUniform(modelMatrix);
-	circle.Render(renderer, material.GetDiffuseTextureUnit());
+
+	material.EnableTextures();
+	circle.Render(renderer);
+	material.DisableTextures();
+
 	shader.Disable();
 }

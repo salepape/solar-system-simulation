@@ -5,16 +5,11 @@
 #include <vector>
 
 #include "Renderer.h"
-#include "Texture.h"
 
 
 
-Skybox::Skybox(const std::string& texturePath)
+Skybox::Skybox()
 {
-	Texture texture(texturePath, GL_TEXTURE_CUBE_MAP, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::NONE);
-	texture.LoadCubemapDDS();
-	textures.push_back(texture);
-
 	ComputeVertices();
 	StoreVertices();
 };
@@ -67,7 +62,7 @@ void Skybox::ComputeVertices()
 	};
 
 	const glm::vec3 zeroVector(0.0f, 0.0f, 0.0f);
-	
+
 	uint32_t positionIndex = 0;
 	vertices.reserve(VERTICES_COUNT);
 	while (positionIndex < VERTICES_COUNT * Vertex::POSITION_ELMTS_COUNT)
@@ -84,21 +79,7 @@ void Skybox::ComputeVertices()
 	}
 }
 
-void Skybox::Render(const Renderer& renderer, const uint32_t textureUnit) const
+void Skybox::Render(const Renderer& renderer) const
 {
-	renderer.SetDepthFctToEqual();
-	
-	for (const auto& texture : textures)
-	{
-		texture.Enable(textureUnit);
-	}
-	
 	renderer.Draw(*vao, GL_TRIANGLES, VERTICES_COUNT);
-
-	for (const auto& texture : textures)
-	{
-		texture.Disable();
-	}
-
-	renderer.SetDepthFctToLess();
 }
