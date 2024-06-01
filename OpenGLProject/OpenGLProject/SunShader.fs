@@ -7,9 +7,9 @@ in vec2 vo_TexCoords;
 out vec4 fo_Colour;
 
 // See C++ class Material
-uniform sampler2D fu_DiffuseMat;
 struct Material
 {
+    sampler2D fu_DiffuseTex;
     vec3 fu_SpecularColour;
 
     float fu_Shininess;
@@ -35,7 +35,7 @@ layout (std140) uniform vec4 ubo_CameraPosition;
 void main()
 {
     // uv-coordinates need to be inversed due to DDS compressing
-    vec3 diffuseTex = texture(fu_DiffuseMat, vec2(vo_TexCoords.x, 1.0 - vo_TexCoords.y)).rgb;
+    vec3 diffuseTex = texture(material.fu_DiffuseTex, vec2(vo_TexCoords.x, 1.0 - vo_TexCoords.y)).rgb;
 
     // Ambient component
     vec3 ambientIntensity = light.fu_AmbientReflectCoef * diffuseTex;

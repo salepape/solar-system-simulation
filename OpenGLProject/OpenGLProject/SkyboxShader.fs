@@ -3,9 +3,13 @@
 in vec3 vo_TexDir;
 out vec4 fo_Colour;
 
-uniform samplerCube fu_DiffuseMat;
+struct Material
+{
+    samplerCube fu_DiffuseTex;
+};
+uniform Material material;
 
 void main()
 {
-    fo_Colour.xyzw = texture(fu_DiffuseMat, vo_TexDir.xyz);
+    fo_Colour.xyzw = texture(material.fu_DiffuseTex, vo_TexDir.xyz);
 }
