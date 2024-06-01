@@ -17,7 +17,7 @@ void MilkyWay::Render(const Renderer& renderer, const float /*elapsedTime*/)
 	Shader& shader = material.GetShader();
 
 	shader.Enable();
-	material.SetDiffuseSamplerVUniform();
-	skybox.Render(renderer, material.GetDiffuseSamplerID());
+	material.SetDiffuseSamplerFUniform();
+	skybox.Render(renderer, material.GetDiffuseTextureUnit());
 	shader.Disable();
 }

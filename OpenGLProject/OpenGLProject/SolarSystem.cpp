@@ -48,7 +48,7 @@ void SolarSystem::Update()
 
 	Camera& camera = controller->GetCamera();
 	camera.SetProjectionViewVUniform(openedWindow.GetAspectRatio());
-	camera.SetPositionFUniforms();
+	camera.SetPositionFUniform();
 	const glm::vec3& cameraPosition = camera.GetPosition();
 
 	// Compute celestial body positions and sort them from farthest to closest according to the camera, 

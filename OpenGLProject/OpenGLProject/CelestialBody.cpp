@@ -104,8 +104,8 @@ void CelestialBody::Render(const Renderer& renderer, const float elapsedTime)
 
 	shader.Enable();
 	SetModelMatrixUniform(modelMatrix);
-	material.SetDiffuseSamplerVUniform();
-	sphere.Render(renderer, material.GetDiffuseSamplerID());
+	material.SetDiffuseSamplerFUniform();
+	sphere.Render(renderer, material.GetDiffuseTextureUnit());
 	shader.Disable();
 }
 

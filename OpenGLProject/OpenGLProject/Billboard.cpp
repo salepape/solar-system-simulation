@@ -34,9 +34,9 @@ void Billboard::Render(TextRenderer& textRenderer, const glm::vec3& forward, con
 	Shader& shader = material.GetShader();
 
 	shader.Enable();
-	material.SetDiffuseSamplerVUniform();
-	material.SetDiffuseColourVUniform(Utils::whiteColour);
+	material.SetDiffuseSamplerFUniform();
+	material.SetDiffuseColourFUniform(Utils::whiteColour);
 	SetModelMatrixUniform(modelMatrix);
-	textRenderer.Render(name, 0.0f, body.preComputations.textHeight, body.preComputations.textScale, material.GetDiffuseSamplerID());
+	textRenderer.Render(name, 0.0f, body.preComputations.textHeight, body.preComputations.textScale, material.GetDiffuseTextureUnit());
 	shader.Disable();
 }

@@ -77,7 +77,7 @@ void Belt::Render(const Renderer& renderer, const float /*elapsedTime*/)
 	Shader& shader = material.GetShader();
 	
 	shader.Enable();
-	material.SetDiffuseSamplerVUniform();
-	model.RenderInstances(renderer, material.GetDiffuseSamplerID(), instanceParams.count);
+	material.SetDiffuseSamplerFUniform();
+	model.RenderInstances(renderer, material.GetDiffuseTextureUnit(), instanceParams.count);
 	shader.Disable();
 }

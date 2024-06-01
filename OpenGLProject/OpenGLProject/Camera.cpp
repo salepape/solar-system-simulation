@@ -93,7 +93,7 @@ void Camera::SetInfiniteProjectionViewVUniform(const float windowAspectRatio)
 	projectionViewUBO.InitSubData({ { static_cast<const void*>(glm::value_ptr(ComputeProjectionMatrix(windowAspectRatio) * glm::mat4(glm::mat3(ComputeViewMatrix())))), Utils::mat4v4Size } });
 }
 
-void Camera::SetPositionFUniforms()
+void Camera::SetPositionFUniform()
 {
 	positionUBO.InitSubData({ { static_cast<const void*>(glm::value_ptr(glm::vec4(GetPosition(), 0.0f))), Utils::vec4Size } });
 }

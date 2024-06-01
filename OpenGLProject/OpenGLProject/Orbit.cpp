@@ -48,8 +48,8 @@ void Orbit::Render(const Renderer& renderer, const float /*elapsedTime*/)
 	Shader& shader = material.GetShader();
 
 	shader.Enable();
-	material.SetDiffuseSamplerVUniform();
+	material.SetDiffuseSamplerFUniform();
 	SetModelMatrixUniform(modelMatrix);
-	circle.Render(renderer, material.GetDiffuseSamplerID());
+	circle.Render(renderer, material.GetDiffuseTextureUnit());
 	shader.Disable();
 }

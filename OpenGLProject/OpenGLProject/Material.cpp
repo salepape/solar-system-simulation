@@ -6,14 +6,10 @@
 #include "Shader.h"
 #include "Utils.h"
 
-uint32_t Material::diffuseSamplerIDCounter = 0;
-
 
 
 Material::Material(Shader& inShader) : shader(inShader)
 {
-	diffuseSamplerID = Material::diffuseSamplerIDCounter++;
-
 	SetFUniforms();
 }
 
@@ -53,12 +49,12 @@ void Material::SetFUniforms()
 	shader.Disable();
 }
 
-void Material::SetDiffuseSamplerVUniform()
+void Material::SetDiffuseSamplerFUniform()
 {
-	shader.setUniformInt("material.fu_DiffuseMat", diffuseSamplerID);
+	shader.setUniformInt("material.fu_DiffuseMat", diffuseTextureUnit);
 }
 
-void Material::SetDiffuseColourVUniform(const glm::vec3& colour)
+void Material::SetDiffuseColourFUniform(const glm::vec3& colour)
 {
 	shader.setUniformVec3("material.fu_DiffuseColour", colour);
 }

@@ -35,7 +35,7 @@ public:
 
 	void SetProjectionViewVUniform(const float windowAspectRatio);
 	void SetInfiniteProjectionViewVUniform(const float windowAspectRatio);
-	void SetPositionFUniforms();
+	void SetPositionFUniform();
 
 private:
 	glm::vec3 initialPosition{ 0.0f, 0.0f, 0.0f };
