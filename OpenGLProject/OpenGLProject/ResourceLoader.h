@@ -63,7 +63,8 @@ namespace ResourceLoader
 	// Build/compile shaders and their corresponding programs
 	void LoadShaders();
 
-	// Fill data structures above with celestial bodies information/pre-computations (collected from NASA website, Wikipedia and passionates)
+	// @todo - Load raw data from .csv file
+	// Fill data structures above with celestial bodies information (collected from NASA website, Wikipedia and passionates)
 	// Note: data is scaled so we can visualise the whole Solar System without having to travel too much time.
 	void LoadCelestialBodies();
 	void LoadBelts();

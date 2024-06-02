@@ -5,7 +5,6 @@
 #include <glm/vec3.hpp>
 
 #include "Application.h"
-#include "Material.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
@@ -32,8 +31,8 @@ Material Belt::InitialiseParent(const std::string& inTexturePath)
 void Belt::ComputeInstanceModelMatrices()
 {
 	const float angleValue = 1.0f / instanceParams.count * 360.0f;
-	
-	const float lowerBoundOffset = - torusParams.minorRadius;
+
+	const float lowerBoundOffset = -torusParams.minorRadius;
 	const float upperBoundOffset = torusParams.minorRadius + 1.0f;
 	const int32_t rangeSpanOffset = static_cast<int32_t>(upperBoundOffset - lowerBoundOffset);
 

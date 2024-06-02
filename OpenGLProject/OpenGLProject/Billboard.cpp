@@ -3,7 +3,6 @@
 #include <glm/geometric.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
-#include <utility>
 
 #include "Renderer.h"
 #include "TextRenderer.h"
@@ -27,7 +26,7 @@ Material Billboard::InitialiseParent()
 void Billboard::SetDataPostConstruction(TextRenderer& textRenderer)
 {
 	const auto& body = ResourceLoader::GetBody(name);
-	bodyPreComputations = std::make_unique<PreComputations>(body.preComputations);
+	bodyPreComputations = std::make_unique<PreComputations>(body.GetPreComputations());
 
 	// Texture creation is handled by the Text Renderer for now (glyph rendering issue if textures created in this method)
 	textRenderer.LoadASCIICharacters(name);

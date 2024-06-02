@@ -11,20 +11,19 @@ class Renderer;
 
 
 
-struct MilkyWay : public SceneEntity
+class MilkyWay : public SceneEntity
 {
-	Skybox skybox;
-
-
-
+public:
 	MilkyWay(const std::string& texturePath);
-
-	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 
 private:
+	Skybox skybox;
+
 	static Material InitialiseParent(const std::string& inTexturePath);
+
+	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 };
 
 

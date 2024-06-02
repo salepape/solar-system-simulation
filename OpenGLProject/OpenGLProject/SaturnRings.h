@@ -12,23 +12,22 @@ class Renderer;
 
 
 
-struct SaturnRings : public SceneEntity
+class SaturnRings : public SceneEntity
 {
-	Model model;
-
-
-
+public:
 	SaturnRings(const std::string& modelPath);
-
-	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override;
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 
 private:
+	Model model;
+	PointLight pointLight;
+
 	static Material InitialiseParent(const std::string& inTexturePath);
+
+	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override;
 };
 
 
 
 #endif // SATURN_RINGS_H
-

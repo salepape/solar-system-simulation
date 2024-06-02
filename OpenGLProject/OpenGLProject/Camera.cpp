@@ -78,7 +78,7 @@ void Camera::UpdateCameraVectors()
 	newForward.z = glm::sin(YawInRadians) * glm::cos(PitchInRadians);
 	forward = glm::normalize(newForward);
 
-	right = glm::normalize(glm::cross(forward, { 0.0f, 1.0f, 0.0f }));
+	right = glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
 
 	up = glm::normalize(glm::cross(right, forward));
 }

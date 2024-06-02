@@ -16,25 +16,26 @@ class SceneEntity
 public:
 	SceneEntity(Material inMaterial);
 
-	// @todo - Reduce visibility of methods below?
+	int32_t GetID() const { return ID; }
+	const std::string& GetName() const { return name; }
+
+	Material& GetMaterial() { return material; }
+	const glm::mat4& GetModelMatrix() const { return modelMatrix; }
+
+	virtual void Render(const Renderer& renderer, const float elapsedTime = 0.0f) = 0;
+
+protected:
+	int32_t ID{ -1 };
+	std::string name;
+
+	Material material;
+	glm::mat4 modelMatrix{ 1.0f };
 
 	virtual void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) = 0;
 	void SetModelMatrixVUniform(const glm::mat4& inModelMatrix);
 
-	virtual void Render(const Renderer& renderer, const float elapsedTime = 0.0f) = 0;
-
-	Material& GetMaterial() { return material; }
-
-	std::string name;
-	int32_t ID{ -1 };
-
-	const glm::mat4& GetModelMatrix() const { return modelMatrix; }
-
-protected:
+private:
 	static uint32_t entityIDCounter;
-
-	Material material;
-	glm::mat4 modelMatrix{ 1.0f };
 };
 
 

@@ -6,6 +6,7 @@
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
+#include "Texture.h"
 
 
 

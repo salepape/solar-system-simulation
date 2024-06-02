@@ -10,7 +10,7 @@ bool PointLight::isUBOFilled = false;
 
 
 
-PointLight::PointLight() : LightSource({ { 0.2f, 0.2f, 0.2f }, { 0.95f, 0.95f, 0.95f }, { 1.0f, 1.0f, 1.0f } }),
+PointLight::PointLight() : LightSource({ glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.95f, 0.95f, 0.95f), glm::vec3(1.0f, 1.0f, 1.0f) }),
 ubo(ResourceLoader::GetUBO("ubo_PointLightParams"))
 {
 	StoreDataInUBO();

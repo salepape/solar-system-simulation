@@ -33,7 +33,7 @@ SolarSystem::SolarSystem() :
 	textRenderer.FreeFTResources();
 
 	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun - farthest celestial body'
-	controller = std::make_shared<Controller>(glm::vec3(0.0f, ResourceLoader::GetBody("Sun").radius * 1.75f, -25.0f), glm::vec3(0.0f, -25.0f, 90.0f), 45.0f, 2.0f * ResourceLoader::GetBody("Pluto").distanceToParent);
+	controller = std::make_shared<Controller>(glm::vec3(0.0f, ResourceLoader::GetBody("Sun").bodyData.radius * 1.75f, -25.0f), glm::vec3(0.0f, -25.0f, 90.0f), 45.0f, 2.0f * ResourceLoader::GetBody("Pluto").bodyData.distanceToParent);
 	if (controller == nullptr)
 	{
 		return;
@@ -58,7 +58,7 @@ void SolarSystem::Update()
 	for (auto& celestialBody : celestialBodies)
 	{
 		celestialBody.ComputeCartesianPosition(runningApp.elapsedTime * runningApp.speedFactor);
-		bodiesSortedByDistance.insert({ glm::distance(cameraPosition, celestialBody.GetPosition()), celestialBody.ID });
+		bodiesSortedByDistance.insert({ glm::distance(cameraPosition, celestialBody.GetPosition()), celestialBody.GetID() });
 	}
 
 	for (auto bodyit = bodiesSortedByDistance.rbegin(); bodyit != bodiesSortedByDistance.rend(); ++bodyit)
@@ -68,13 +68,13 @@ void SolarSystem::Update()
 		currentBody.Render(renderer, runningApp.elapsedTime * runningApp.speedFactor);
 
 		// Draw semi-transparent Saturn rings
-		if (currentBody.name == "Saturn")
+		if (currentBody.GetName() == "Saturn")
 		{
 			saturnRings.Render(renderer);
 		}
 
 		// Draw celestial body orbits
-		if (currentBody.name != "Sun")
+		if (currentBody.GetName() != "Sun")
 		{
 			currentBody.orbit.Render(renderer);
 		}

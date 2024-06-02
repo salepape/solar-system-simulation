@@ -9,6 +9,7 @@
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "Utils.h"
 
 
@@ -23,9 +24,9 @@ circle({ radius })
 void Orbit::SetDataPostConstruction()
 {
 	const auto& body = ResourceLoader::GetBody(bodyName);
-	bodyID = body.ID;
-	parentBodyID = body.parentID;
-	bodyPreComputations = std::make_unique<PreComputations>(body.preComputations);
+	bodyID = body.GetID();
+	parentBodyID = body.bodyData.parentID;
+	bodyPreComputations = std::make_unique<PreComputations>(body.GetPreComputations());
 }
 
 Material Orbit::InitialiseParent(const std::string& inTexturePath)

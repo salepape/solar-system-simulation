@@ -2,6 +2,7 @@
 
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
 
 #include "Renderer.h"
 #include "ResourceLoader.h"
@@ -20,7 +21,7 @@ model({ modelPath })
 
 Material SaturnRings::InitialiseParent(const std::string& inTexturePath)
 {
-	return Material(ResourceLoader::GetShader("SaturnRings"), { /* texturesLoadedFromTheModel */ }, { 0.0f, 0.0f, 0.0f }, 64.0f, 0.5f);
+	return Material(ResourceLoader::GetShader("SaturnRings"), { /* texturesLoadedFromTheModel */ }, glm::vec3(0.0f, 0.0f, 0.0f), 64.0f, 0.5f);
 }
 
 void SaturnRings::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
