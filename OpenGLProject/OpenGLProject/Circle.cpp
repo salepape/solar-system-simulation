@@ -3,6 +3,7 @@
 #include <glad.h>
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
+#include <utility>
 
 #include "Renderer.h"
 #include "Utils.h"
@@ -33,7 +34,7 @@ void Circle::ComputeVertices()
 		vertex.TexCoords = zeroVector;
 		vertex.Tangent = zeroVector;
 		vertex.Bitangent = zeroVector;
-		vertices.push_back(vertex);
+		vertices.push_back(std::move(vertex));
 	}
 }
 

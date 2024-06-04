@@ -51,7 +51,7 @@ void Model::ProcessNode(const aiNode& node, const aiScene& scene)
 			continue;
 		}
 
-		meshes.push_back(ProcessMesh(*mesh, scene));
+		meshes.emplace_back(ProcessMesh(*mesh, scene));
 	}
 
 	// Process ASSIMP children nodes recursively
@@ -94,7 +94,7 @@ std::vector<Vertex> Model::GetMeshVertices(const aiMesh& mesh)
 		vertex.Tangent = glm::vec3(mesh.mTangents[i].x, mesh.mTangents[i].y, mesh.mTangents[i].z);
 		vertex.Bitangent = glm::vec3(mesh.mBitangents[i].x, mesh.mBitangents[i].y, mesh.mBitangents[i].z);
 
-		vertices.push_back(vertex);
+		vertices.push_back(std::move(vertex));
 	}
 
 	return vertices;

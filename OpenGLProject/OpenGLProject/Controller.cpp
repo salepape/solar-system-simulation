@@ -93,7 +93,7 @@ void Controller::UpdateZoomLeft(const float yOffset)
 	}
 
 	zoomLeft = glm::clamp(zoomLeft, zoomMinLevel, zoomMaxLevel);
-	mouseSensitivity = glm::clamp(mouseSensitivity, mouseMaxSensitivity / 10, mouseMaxSensitivity);
+	mouseSensitivity = glm::clamp(mouseSensitivity, mouseMaxSensitivity * 1.0f / 10, mouseMaxSensitivity);
 }
 
 void Controller::IncreaseTravelSpeed(const float factor)

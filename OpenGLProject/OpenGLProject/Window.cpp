@@ -10,7 +10,7 @@ Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::strin
 {
 	UpdateDimensions(inWidth, inHeight);
 
-	lastCursorPositionCache = { 0.5f * width, 0.5f * height };
+	lastCursorPositionCache = glm::vec2(0.5f * width, 0.5f * height);
 
 	GLFWWindow = initGLFWWindow();
 	if (GLFWWindow == nullptr)
@@ -112,14 +112,14 @@ const glm::vec2& Window::GetOffsetFromLastCursorPosition(const double xPosition,
 	// Avoid little jump
 	if (firstMouseInput)
 	{
-		lastCursorPositionCache = { xPosition, yPosition };
+		lastCursorPositionCache = glm::vec2(xPosition, yPosition);
 		firstMouseInput = false;
 	}
 
 	// Reverse y-coordinates since they go from bottom to top 
 	offsetFromLastCursorPosition = { xPosition - lastCursorPositionCache.x, lastCursorPositionCache.y - yPosition };
 
-	lastCursorPositionCache = { xPosition, yPosition };
+	lastCursorPositionCache = glm::vec2(xPosition, yPosition);
 
 	return offsetFromLastCursorPosition;
 }

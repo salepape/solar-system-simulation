@@ -46,7 +46,7 @@ void TextRenderer::AllocateBufferObjects()
 
 	VertexBufferLayout vbl;
 	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, Quad::QUAD_ELMTS_COUNT);
-	vao->AddBuffer(*vbo, vbl);
+	vao->AddBuffer(*vbo, std::move(vbl));
 
 	vao->Unbind();
 	vbo->Unbind();
@@ -85,7 +85,7 @@ void TextRenderer::LoadASCIICharacters(const std::string& text)
 
 		// Use direct-list-initialisation to avoid having to add constrcutors in the plain-old data struct
 		GlyphParams glyphParams{
-			glyphTexture,
+			std::move(glyphTexture),
 			glm::ivec2(glyph->bitmap.width, glyph->bitmap.rows),
 			glm::ivec2(glyph->bitmap_left, glyph->bitmap_top),
 			face->glyph->advance.x

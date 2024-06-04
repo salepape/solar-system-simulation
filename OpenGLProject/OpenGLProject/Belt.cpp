@@ -3,6 +3,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
+#include <utility>
 
 #include "Application.h"
 #include "Renderer.h"
@@ -69,7 +70,7 @@ void Belt::ComputeInstanceModelMatrices()
 		modelMatrix = glm::rotate(modelMatrix, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
 
 		// Add current model matrix to the list
-		modelMatrices.push_back(modelMatrix);
+		modelMatrices.push_back(std::move(modelMatrix));
 	}
 }
 

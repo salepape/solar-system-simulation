@@ -3,6 +3,7 @@
 #include <glm/trigonometric.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
+#include <utility>
 
 #include "Utils.h"
 
@@ -48,7 +49,7 @@ void Sphere::ComputeVertices()
 			vertex.TexCoords = glm::vec2(jInvMeridianStripsCount, iInvParallelStripsCount);
 			vertex.Tangent = zeroVector;
 			vertex.Bitangent = zeroVector;
-			vertices.push_back(vertex);
+			vertices.push_back(std::move(vertex));
 		}
 	}
 }

@@ -16,12 +16,12 @@
 
 
 
-// @todo - Find a way to avoid building this string (GetNameFromTexturePath method) 3 times 
-CelestialBody::CelestialBody(BodyData inBodyData) : SceneEntity(InitialiseParent(inBodyData.texturePath)),
+// @todo - Find a way to avoid building this string (GetNameFromTexturePath method) 3 times
+CelestialBody::CelestialBody(BodyData&& inBodyData) : SceneEntity(InitialiseParent(inBodyData.texturePath)),
 bodyData(inBodyData),
 sphere({ inBodyData.radius }),
 orbit({ inBodyData.texturePath, bodyData.distanceToParent }),
-billboard({ ResourceLoader::GetNameFromTexturePath(bodyData.texturePath) }),
+billboard({ ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath) }),
 preComputations(LoadPreComputations())
 {
 	name = ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath);

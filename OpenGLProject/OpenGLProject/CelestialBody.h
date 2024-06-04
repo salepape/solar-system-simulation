@@ -51,7 +51,7 @@ struct PreComputations
 class CelestialBody : public SceneEntity
 {
 public:
-	CelestialBody(BodyData inBodyData);
+	CelestialBody(BodyData&& inBodyData);
 
 	BodyData bodyData;
 	Orbit orbit;

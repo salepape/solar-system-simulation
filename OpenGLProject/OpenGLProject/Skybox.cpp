@@ -3,6 +3,7 @@
 #include <glad.h>
 #include <glm/vec3.hpp>
 #include <vector>
+#include <utility>
 
 #include "Renderer.h"
 
@@ -73,7 +74,7 @@ void Skybox::ComputeVertices()
 		vertex.TexCoords = zeroVector;
 		vertex.Tangent = zeroVector;
 		vertex.Bitangent = zeroVector;
-		vertices.push_back(vertex);
+		vertices.push_back(std::move(vertex));
 
 		positionIndex += Vertex::POSITION_ELMTS_COUNT;
 	}
