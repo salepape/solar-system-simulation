@@ -37,7 +37,7 @@ void Texture::LoadDDS()
 
 	if (rendererID == 0)
 	{
-		std::cout << "ERROR::SOIL - Loading error: '%s'\n" << SOIL_last_result() << std::endl;
+		std::cout << "ERROR::SOIL - Loading error: " << SOIL_last_result() << std::endl;
 	}
 }
 
@@ -48,7 +48,7 @@ void Texture::LoadCubemapDDS()
 
 	if (rendererID == 0)
 	{
-		std::cout << "ERROR::SOIL - Loading error: '%s'\n" << SOIL_last_result() << std::endl;
+		std::cout << "ERROR::SOIL - Loading error: " << SOIL_last_result() << std::endl;
 	}
 }
 
