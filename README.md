@@ -56,5 +56,5 @@ P.S. Press <kbd>Win</kbd> to background the simulation while it runs.
 ## Resources
 
 * Scientific data and some models has been retrieved from NASA website mainly (National Space Science Data Center),
-* Textures have been downloaded from https://www.solarsystemscope.com/textures/, https://planetpixelemporium.com/planets.html and websites of passionate people,
+* Textures have been downloaded from https://www.solarsystemscope.com/textures, https://planetpixelemporium.com/planets.html, https://www.jpl.nasa.gov, https://planet-texture-maps.fandom.com/wiki and https://3d-asteroids.space and websites of passionate people,
 * Some parts of OpenGL code have been inspired from https://learnopengl.com (from Joey De Vries) and https://www.youtube.com/user/TheChernoProject (from Yan Chernikov, aka TheCherno) mainly; http://www.opengl-tutorial.org and https://open.gl to a lesser extent.
