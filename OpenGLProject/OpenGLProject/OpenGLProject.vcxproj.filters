@@ -153,7 +153,7 @@
     <ClInclude Include="Window.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="SaturnRings.h">
+    <ClInclude Include="BodyRings.h">
       <Filter>Header Files\Solar System</Filter>
     </ClInclude>
     <ClInclude Include="MilkyWay.h">
@@ -269,7 +269,7 @@
     <ClCompile Include="ResourceLoader.cpp">
       <Filter>Source Files\Data</Filter>
     </ClCompile>
-    <ClCompile Include="SaturnRings.cpp">
+    <ClCompile Include="BodyRings.cpp">
       <Filter>Source Files\Solar System</Filter>
     </ClCompile>
     <ClCompile Include="MilkyWay.cpp">

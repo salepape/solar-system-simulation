@@ -47,16 +47,16 @@ namespace ResourceLoader
 		shaders.emplace_back("TextGlyph",		"TextShader.vs",			"TextShader.fs");
 		shaders.emplace_back("BeltBody",		"InstancedModelShader.vs",	"DefaultShader.fs");
 		shaders.emplace_back("MilkyWay",		"SkyboxShader.vs",			"SkyboxShader.fs");
-		shaders.emplace_back("SaturnRings",		"DefaultShader.vs",			"DefaultShader.fs");
+		shaders.emplace_back("BodyRings",		"DefaultShader.vs",			"DefaultShader.fs");
 		shaders.emplace_back("Orbit",			"DefaultShader.vs",			"DefaultShader.fs");
 
 		ubos.reserve(3);
 
-		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("SaturnRings").GetRendererID(), GetShader("Orbit").GetRendererID(), GetShader("TextGlyph").GetRendererID(), GetShader("MilkyWay").GetRendererID() },
+		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("BodyRings").GetRendererID(), GetShader("Orbit").GetRendererID(), GetShader("TextGlyph").GetRendererID(), GetShader("MilkyWay").GetRendererID() },
 			"ubo_ProjectionView", Utils::mat4v4Size);
-		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("SaturnRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
+		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("BodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
 			"ubo_CameraPosition", Utils::vec4Size);
-		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("SaturnRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
+		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("BodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
 			"ubo_PointLightParams", 4 * Utils::vec4Size + 4 * Utils::scalarSize);
 	}
 

@@ -6,12 +6,13 @@
 #include <string>
 
 #include "Billboard.h"
-#include "LightSource.h"
 #include "Material.h"
 #include "Orbit.h"
 #include "SceneEntity.h"
 #include "Sphere.h"
 
+class BodyRings;
+class LightSource;
 class Renderer;
 
 
@@ -52,8 +53,11 @@ class CelestialBody : public SceneEntity
 {
 public:
 	CelestialBody(BodyData&& inBodyData);
+	CelestialBody(CelestialBody&& inCelestialBody);
+	~CelestialBody();
 
 	BodyData bodyData;
+	std::unique_ptr<BodyRings> bodyRings;
 	Orbit orbit;
 	Billboard billboard;
 

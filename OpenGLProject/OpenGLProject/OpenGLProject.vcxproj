@@ -177,7 +177,7 @@
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Renderer.h" />
-    <ClInclude Include="SaturnRings.h" />
+    <ClInclude Include="BodyRings.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEntity.h" />
     <ClInclude Include="Shader.h" />
@@ -218,7 +218,7 @@
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceLoader.cpp" />
-    <ClCompile Include="SaturnRings.cpp" />
+    <ClCompile Include="BodyRings.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneEntity.cpp" />
     <ClCompile Include="Shader.cpp" />

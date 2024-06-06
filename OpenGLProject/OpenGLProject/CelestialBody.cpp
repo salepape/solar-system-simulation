@@ -6,6 +6,7 @@
 #include <glm/mat4x4.hpp>
 #include <utility>
 
+#include "BodyRings.h"
 #include "DirectionalLight.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
@@ -34,8 +35,20 @@ preComputations(LoadPreComputations())
 		lightSource = std::make_unique<PointLight>();
 	}
 
+	if (name == "Saturn")
+	{
+		bodyRings = std::make_unique<BodyRings>("../Models/SaturnRings.obj", name);
+	}
+	else if (name == "Uranus")
+	{
+		bodyRings = std::make_unique<BodyRings>("../Models/UranusRings.obj", name);
+	}
+
 	ComputeCartesianPosition(1.0f);
 }
+
+CelestialBody::CelestialBody(CelestialBody&& inCelestialBody) = default;
+CelestialBody::~CelestialBody() = default;
 
 Material CelestialBody::InitialiseParent(const std::string& inTexturePath)
 {

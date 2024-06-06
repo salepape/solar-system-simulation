@@ -1,4 +1,4 @@
-#include "SaturnRings.h"
+#include "BodyRings.h"
 
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/mat4x4.hpp>
@@ -11,28 +11,29 @@
 
 
 
-SaturnRings::SaturnRings(const std::string& modelPath) : SceneEntity(InitialiseParent("")),
+BodyRings::BodyRings(const std::string& modelPath, const std::string& inParentBodyName) : SceneEntity(InitialiseParent("")),
 model({ modelPath })
 {
 	material.SetTextures(model.GetTextures());
 
-	name = "SaturnRings";
+	name = "BodyRings";
+	parentBodyName = inParentBodyName;
 }
 
-Material SaturnRings::InitialiseParent(const std::string& inTexturePath)
+Material BodyRings::InitialiseParent(const std::string& inTexturePath)
 {
-	return Material(ResourceLoader::GetShader("SaturnRings"), { /* texturesLoadedFromTheModel */ }, glm::vec3(0.0f, 0.0f, 0.0f), 64.0f, 0.5f);
+	return Material(ResourceLoader::GetShader("BodyRings"), { /* texturesLoadedFromTheModel */ }, glm::vec3(0.0f, 0.0f, 0.0f), 64.0f, 0.5f);
 }
 
-void SaturnRings::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
+void BodyRings::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
 {
-	modelMatrix = ResourceLoader::GetBody("Saturn").GetModelMatrix();
+	modelMatrix = ResourceLoader::GetBody(parentBodyName).GetModelMatrix();
 
 	// Rotate back (constant over time) around axis normal to orbital plane
 	modelMatrix = glm::rotate(modelMatrix, -Utils::halfPi, Utils::rightVector);
 }
 
-void SaturnRings::Render(const Renderer& renderer, const float /*elapsedTime*/)
+void BodyRings::Render(const Renderer& renderer, const float /*elapsedTime*/)
 {
 	ComputeModelMatrixVUniform();
 

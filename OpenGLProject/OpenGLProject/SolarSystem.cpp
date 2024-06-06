@@ -6,6 +6,7 @@
 
 #include "Application.h"
 #include "Billboard.h"
+#include "BodyRings.h"
 #include "Camera.h"
 #include "Controller.h"
 #include "Orbit.h"
@@ -17,8 +18,7 @@
 
 
 SolarSystem::SolarSystem() :
-	milkyWay({ "../Textures/MilkyWay/stars.dds" }),
-	saturnRings("../Models/SaturnRings.obj")
+	milkyWay({ "../Textures/MilkyWay/stars.dds" })
 {
 	ResourceLoader::LoadCelestialBodies();
 	ResourceLoader::LoadBelts();
@@ -68,9 +68,9 @@ void SolarSystem::Update()
 		currentBody.Render(renderer, runningApp.elapsedTime * runningApp.speedFactor);
 
 		// Draw semi-transparent Saturn rings
-		if (currentBody.GetName() == "Saturn")
+		if (currentBody.GetName() == "Saturn" || currentBody.GetName() == "Uranus")
 		{
-			saturnRings.Render(renderer);
+			currentBody.bodyRings->Render(renderer);
 		}
 
 		// Draw celestial body orbits

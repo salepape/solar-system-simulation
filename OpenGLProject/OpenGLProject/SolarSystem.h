@@ -6,7 +6,6 @@
 #include "Belt.h"
 #include "CelestialBody.h"
 #include "MilkyWay.h"
-#include "SaturnRings.h"
 #include "Scene.h"
 
 
@@ -29,8 +28,6 @@ private:
 	static std::vector<Belt> belts;
 
 	MilkyWay milkyWay;
-
-	SaturnRings saturnRings;
 };
 
 

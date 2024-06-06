@@ -1,5 +1,5 @@
-#ifndef SATURN_RINGS_H
-#define SATURN_RINGS_H
+#ifndef BODY_RINGS_H
+#define BODY_RINGS_H
 
 #include <string>
 
@@ -12,14 +12,16 @@ class Renderer;
 
 
 
-class SaturnRings : public SceneEntity
+class BodyRings : public SceneEntity
 {
 public:
-	SaturnRings(const std::string& modelPath);
+	BodyRings(const std::string& modelPath, const std::string& inParentBodyName);
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 
 private:
+	std::string parentBodyName;
+
 	Model model;
 	PointLight pointLight;
 
@@ -30,4 +32,4 @@ private:
 
 
 
-#endif // SATURN_RINGS_H
+#endif // BODY_RINGS_H
