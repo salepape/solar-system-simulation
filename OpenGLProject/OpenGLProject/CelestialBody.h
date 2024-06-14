@@ -74,7 +74,7 @@ private:
 	std::unique_ptr<LightSource> lightSource;
 
 	// Store body position in Cartesian coordinates, computed from Spherical ones
-	glm::vec3 position{ 0.0f, 0.0f, 0.0f };
+	glm::vec3 position{ 0.0f };
 
 	// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
 	float travelledAngle{ 0.0f };

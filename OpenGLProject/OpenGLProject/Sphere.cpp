@@ -23,7 +23,7 @@ void Sphere::ComputeVertices()
 	const float invParallelStripsCount = 1.0f / parallelStripsCount;
 	const float invRadius = 1.0f / radius;
 
-	const glm::vec3 zeroVector(0.0f, 0.0f, 0.0f);
+	const glm::vec3 zeroVector(0.0f);
 
 	vertices.reserve((parallelStripsCount + 1) * (meridianStripsCount + 1));
 	for (uint32_t i = 0; i <= parallelStripsCount; ++i)

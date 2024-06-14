@@ -44,10 +44,10 @@ private:
 	// Texture unit corresponding to the diffuse texture in the referenced shader
 	uint32_t diffuseTextureUnit{ 0 };
 
-	glm::vec3 diffuseColour{ 0.0f, 0.0f, 0.0f };
+	glm::vec3 diffuseColour{ 0.0f };
 
 	// Colour of the specular highlight on the surface (instead of a texture)
-	glm::vec3 specularColour{ 0.0f, 0.0f, 0.0f };
+	glm::vec3 specularColour{ 0.0f };
 	
 	// Coefficient altering the radius of the specular highlight
 	float shininess{ 64.0f };

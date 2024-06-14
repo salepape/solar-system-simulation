@@ -4,7 +4,7 @@
 
 
 
-DirectionalLight::DirectionalLight(Shader& inShader) : LightSource({ glm::vec3(0.75f, 0.75f, 0.75f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.95f, 0.95f, 0.95f) }),
+DirectionalLight::DirectionalLight(Shader& inShader) : LightSource({ glm::vec3(0.75f), glm::vec3(0.5f), glm::vec3(0.95f) }),
 shader(inShader)
 {
 	SetFUniforms();

@@ -21,7 +21,7 @@ void Circle::ComputeVertices()
 {
 	const float thetaAngle = Utils::doublePi * 1.0f / meridianStripsCount;
 
-	const glm::vec3 zeroVector(0.0f, 0.0f, 0.0f);
+	const glm::vec3 zeroVector(0.0f);
 
 	vertices.reserve(meridianStripsCount + 1);
 	for (uint32_t i = 0; i <= meridianStripsCount; ++i)

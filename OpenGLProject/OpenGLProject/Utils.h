@@ -16,6 +16,7 @@ namespace Utils
 	const glm::vec3 upVector(0.0f, 1.0f, 0.0f);
 
 	const glm::vec3 whiteColour(1.0f, 1.0f, 1.0f);
+	const glm::vec3 whiteColour(1.0f);
 
 	// Compute the data size (in bytes) of each GLSL uniform variable, and their respective offset following the std140 layout base alignement rules 
 	constexpr size_t GLSL_SCALAR_SIZE = 4;

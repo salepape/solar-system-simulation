@@ -121,7 +121,7 @@ void CelestialBody::ComputeModelMatrixVUniform(const float elapsedTime)
 
 void CelestialBody::ComputeCartesianPosition(const float elapsedTime)
 {
-	position = glm::vec3(0.0f, 0.0f, 0.0f);
+	position = glm::vec3(0.0f);
 
 	// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
 	const float travelledOrbitAngle = preComputations.orbitAngularFreq * elapsedTime;

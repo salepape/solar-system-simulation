@@ -38,10 +38,10 @@ public:
 	void SetPositionFUniform();
 
 private:
-	glm::vec3 initialPosition{ 0.0f, 0.0f, 0.0f };
-	glm::vec3 initialRotation{ 0.0f, 0.0f, 0.0f };
+	glm::vec3 initialPosition{ 0.0f };
+	glm::vec3 initialRotation{ 0.0f };
 
-	glm::vec3 position{ 0.0f, 0.0f, 0.0f };
+	glm::vec3 position{ 0.0f };
 
 	// Rotation angle around the Right vector [in degrees]
 	float pitch{ 0.0f };

@@ -62,7 +62,7 @@ void Skybox::ComputeVertices()
 		 1.0f, -1.0f,  1.0f
 	};
 
-	const glm::vec3 zeroVector(0.0f, 0.0f, 0.0f);
+	const glm::vec3 zeroVector(0.0f);
 
 	uint32_t positionIndex = 0;
 	vertices.reserve(VERTICES_COUNT);
