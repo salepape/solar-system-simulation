@@ -35,7 +35,7 @@ layout (std140) uniform vec4 ubo_CameraPosition;
 void main()
 {
     // uv-coordinates need to be inversed due to DDS compressing
-    vec3 diffuseTex = texture(material.fu_DiffuseTex, vec2(vo_TexCoords.x, 1.0 - vo_TexCoords.y)).rgb;
+    vec3 diffuseTex = texture(material.fu_DiffuseTex, vec2(1.0 - vo_TexCoords.x, 1.0 - vo_TexCoords.y)).rgb;
 
     // Ambient component
     vec3 ambientIntensity = light.fu_AmbientReflectCoef * diffuseTex;
