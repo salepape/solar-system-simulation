@@ -18,5 +18,5 @@ void main()
 
     // We want each pixel to be transparent for glyph background colours and visible for character colour, 
     // so we sample the colour above as the alpha value
-	fo_Colour = vec4(material.fu_DiffuseColour, 1.0f) * vec4(1.0f, 1.0f, 1.0f, diffuseTexColour);
+	fo_Colour = vec4(material.fu_DiffuseColour, 1.0) * vec4(1.0, 1.0, 1.0, diffuseTexColour);
 }

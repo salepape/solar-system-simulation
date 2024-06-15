@@ -52,7 +52,7 @@ void main()
         
     // Specular component
     vec3 viewDir = normalize(ubo_CameraPosition.xyz - vo_Position);
-    float specularHighlight = 0.0f;
+    float specularHighlight = 0.0;
     if(fu_IsBlinn)
     {
         vec3 halfwayDir = normalize(lightDir + viewDir);

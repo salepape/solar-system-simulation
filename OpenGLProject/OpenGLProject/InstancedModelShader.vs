@@ -20,5 +20,5 @@ void main()
 	vo_Normal.xyz = mat3(transpose(inverse(va_InstanceMatrix))) * va_Normal.xyz;
     vo_TexCoords.xy = va_TexCoords.xy;
 
-	gl_Position.xyzw = vu_ProjectionView * va_InstanceMatrix * vec4(va_Position.xyz, 1.0f);
+	gl_Position.xyzw = vu_ProjectionView * va_InstanceMatrix * vec4(va_Position.xyz, 1.0);
 }

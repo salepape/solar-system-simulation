@@ -14,5 +14,5 @@ void main()
 {
 	vo_TexCoords = va_Quad.zw;
 	
-	gl_Position = vu_ProjectionView * vu_Model * vec4(va_Quad.xy, 0.0f, 1.0f);
+	gl_Position = vu_ProjectionView * vu_Model * vec4(va_Quad.xy, 0.0, 1.0);
 }

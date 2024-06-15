@@ -13,6 +13,6 @@ void main()
 {
 	vo_TexDir.xyz = va_Position.xyz;
 
-	vec4 position = vu_ProjectionView * vec4(va_Position.xyz, 1.0f);
+	vec4 position = vu_ProjectionView * vec4(va_Position.xyz, 1.0);
     gl_Position.xyzw = position.xyww;
 }
