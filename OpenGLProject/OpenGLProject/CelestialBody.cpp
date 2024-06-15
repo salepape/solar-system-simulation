@@ -167,4 +167,13 @@ void CelestialBody::Render(const Renderer& renderer, const float elapsedTime)
 	material.EnableTextures();
 
 	shader.Disable();
+
+	// Draw semi-transparent Saturn rings
+	if (bodyRings)
+	{
+		bodyRings->Render(renderer);
+	}
+
+	// Draw orbit
+	orbit.Render(renderer);
 }

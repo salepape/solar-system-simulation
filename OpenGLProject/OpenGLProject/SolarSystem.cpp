@@ -67,18 +67,6 @@ void SolarSystem::Update()
 		auto& currentBody = ResourceLoader::GetBody(bodyit->second);
 		currentBody.Render(renderer, runningApp.elapsedTime * runningApp.speedFactor);
 
-		// Draw semi-transparent Saturn rings
-		if (currentBody.GetName() == "Saturn" || currentBody.GetName() == "Uranus")
-		{
-			currentBody.bodyRings->Render(renderer);
-		}
-
-		// Draw celestial body orbits
-		if (currentBody.GetName() != "Sun")
-		{
-			currentBody.orbit.Render(renderer);
-		}
-
 		if (runningApp.IsLegend())
 		{
 			// Orient text billboards so their readable side always faces the camera
