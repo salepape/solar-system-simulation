@@ -17,9 +17,9 @@ struct ReflectionParams
 // Terms of light intensity attenuation formula
 struct AttenuationParams
 {
-	float constant{ 1.0f };
-	float linear{ 0.0007f };
-	float quadratic{ 0.000002f };
+	float constant{ 0.0f };
+	float linear{ 0.0f };
+	float quadratic{ 0.0f };
 };
 
 // Source casting rays of lights according to Phong Illumination model
@@ -27,6 +27,8 @@ class LightSource
 {
 public:
 	LightSource(const ReflectionParams& inReflectionParams, const bool isBlinn = false);
+
+	virtual void SetFUniforms() = 0;
 
 protected:
 	const ReflectionParams reflectionParams;

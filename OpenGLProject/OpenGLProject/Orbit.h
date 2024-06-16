@@ -6,7 +6,6 @@
 
 #include "Circle.h"
 #include "Material.h"
-#include "PointLight.h"
 #include "SceneEntity.h"
 
 struct PreComputations;
@@ -25,7 +24,6 @@ public:
 private:
 	// @todo - Implement ellipse for a more realistic simulation (circular orbits with eccentricities close to 0 for now)
 	Circle circle;
-	PointLight pointLight;
 
 	std::string bodyName;
 	int32_t bodyID{ -1 };

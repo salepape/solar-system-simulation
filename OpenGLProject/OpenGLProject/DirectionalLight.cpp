@@ -4,12 +4,6 @@
 
 
 
-DirectionalLight::DirectionalLight(Shader& inShader) : LightSource({ glm::vec3(0.75f), glm::vec3(0.5f), glm::vec3(0.95f) }),
-shader(inShader)
-{
-	SetFUniforms();
-}
-
 DirectionalLight::DirectionalLight(Shader& inShader, const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn) : LightSource(inReflectionParams, inIsBlinn),
 shader(inShader), direction(inDirection)
 {

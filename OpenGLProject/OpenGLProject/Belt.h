@@ -7,7 +7,6 @@
 
 #include "Material.h"
 #include "Model.h"
-#include "PointLight.h"
 #include "SceneEntity.h"
 
 class Renderer;
@@ -53,7 +52,6 @@ private:
 
 	// Model used for a belt body
 	Model model;
-	PointLight pointLight;
 
 	static Material InitialiseParent(const std::string& inTexturePath);
 

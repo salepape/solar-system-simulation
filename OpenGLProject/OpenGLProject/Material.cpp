@@ -10,19 +10,19 @@
 
 
 Material::Material(Shader& inShader, const std::vector<Texture>& inTextures) :
-	shader(inShader), textures(inTextures), diffuseTextureUnit(0)
+	shader(inShader), textures(inTextures), diffuseProperties({ 0, glm::vec3(0.0f) }), specularProperties({ glm::vec3(0.0f), 64.0f })
 {
 	SetFUniforms();
 }
 
-Material::Material(Shader& inShader, const std::vector<Texture>& inTextures, const glm::vec3& inSpecular, const float inShininess, const float inTransparency) :
-	shader(inShader), textures(inTextures), diffuseTextureUnit(0), specularColour(inSpecular), shininess(inShininess), transparency(inTransparency)
+Material::Material(Shader& inShader, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties, const float inTransparency) :
+	shader(inShader), textures(inTextures), diffuseProperties(inDiffuseProperties), specularProperties({ glm::vec3(0.0f), 64.0f }), transparency(inTransparency)
 {
 	SetFUniforms();
 }
 
 Material::Material(Material&& inMaterial) :
-	shader(inMaterial.shader), textures(std::move(inMaterial.textures)), diffuseTextureUnit(0), specularColour(inMaterial.specularColour), shininess(inMaterial.shininess), transparency(inMaterial.transparency)
+	shader(inMaterial.shader), textures(std::move(inMaterial.textures)), diffuseProperties(std::move(inMaterial.diffuseProperties)), specularProperties(std::move(inMaterial.specularProperties)), transparency(inMaterial.transparency)
 {
 
 }
@@ -31,22 +31,28 @@ void Material::SetFUniforms()
 {
 	shader.Enable();
 
-	const std::string& unif1 = "material.fu_SpecularColour";
-	if (shader.GetUniformLocation(unif1.c_str()) != -1)
+	const std::string& diffuseColourFU = "material.fu_DiffuseColour";
+	if (shader.GetUniformLocation(diffuseColourFU.c_str()) != -1)
 	{
-		shader.setUniformVec3(unif1, specularColour);
+		shader.setUniformVec3(diffuseColourFU, diffuseProperties.emissiveColour);
 	}
 
-	const std::string& unif2 = "material.fu_Shininess";
-	if (shader.GetUniformLocation(unif2.c_str()) != -1)
+	const std::string& specularColourFU = "material.fu_SpecularColour";
+	if (shader.GetUniformLocation(specularColourFU.c_str()) != -1)
 	{
-		shader.setUniformFloat(unif2, shininess);
+		shader.setUniformVec3(specularColourFU, specularProperties.emissiveColour);
 	}
 
-	const std::string& unif3 = "material.fu_Transparency";
-	if (shader.GetUniformLocation(unif3.c_str()) != -1)
+	const std::string& shininessFU = "material.fu_Shininess";
+	if (shader.GetUniformLocation(shininessFU.c_str()) != -1)
 	{
-		shader.setUniformFloat(unif3, transparency);
+		shader.setUniformFloat(shininessFU, specularProperties.shininess);
+	}
+
+	const std::string& transparencyFU = "material.fu_Transparency";
+	if (shader.GetUniformLocation(transparencyFU.c_str()) != -1)
+	{
+		shader.setUniformFloat(transparencyFU, transparency);
 	}
 
 	shader.Disable();
@@ -54,7 +60,7 @@ void Material::SetFUniforms()
 
 void Material::SetDiffuseSamplerFUniform()
 {
-	shader.setUniformInt("material.fu_DiffuseMat", diffuseTextureUnit);
+	shader.setUniformInt("material.fu_DiffuseTex", diffuseProperties.textureUnit);
 }
 
 void Material::SetDiffuseColourFUniform(const glm::vec3& colour)
@@ -66,7 +72,7 @@ void Material::EnableTextures()
 {
 	for (const auto& texture : textures)
 	{
-		texture.Enable(diffuseTextureUnit);
+		texture.Enable(diffuseProperties.textureUnit);
 	}
 }
 

@@ -57,7 +57,7 @@ namespace ResourceLoader
 		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("BodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
 			"ubo_CameraPosition", Utils::vec4Size);
 		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("BodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
-			"ubo_PointLightParams", 4 * Utils::vec4Size + 4 * Utils::scalarSize);
+			"ubo_PointLight", 4 * Utils::vec4Size + 4 * Utils::scalarSize);
 	}
 
 	void LoadCelestialBodies()

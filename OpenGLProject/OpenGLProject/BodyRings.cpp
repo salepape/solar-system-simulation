@@ -22,7 +22,7 @@ model({ modelPath })
 
 Material BodyRings::InitialiseParent(const std::string& inTexturePath)
 {
-	return Material(ResourceLoader::GetShader("BodyRings"), { /* texturesLoadedFromTheModel */ }, glm::vec3(0.0f, 0.0f, 0.0f), 64.0f, 0.5f);
+	return Material(ResourceLoader::GetShader("BodyRings"), { /* texturesLoadedFromTheModel */ }, { 0, glm::vec3(0.0f) }, 0.5f);
 }
 
 void BodyRings::ComputeModelMatrixVUniform(const float /*elapsedTime*/)

@@ -12,14 +12,16 @@ class Shader;
 class DirectionalLight : public LightSource
 {
 public:
-	DirectionalLight(Shader& inShader);
-	DirectionalLight(Shader& inShader, const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn);
+	DirectionalLight() = delete;
+	DirectionalLight(Shader& inShader, const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn = false);
 
 private:
 	Shader& shader;
-	glm::vec3 direction{ -0.2f, -1.0f, -0.3f };
+	glm::vec3 direction{ 0.0f };
 
-	void SetFUniforms();
+
+
+	void SetFUniforms() override;
 };
 
 

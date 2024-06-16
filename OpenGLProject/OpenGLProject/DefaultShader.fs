@@ -12,14 +12,14 @@ struct Material
     sampler2D fu_DiffuseTex;
 
     vec3 fu_SpecularColour;
-
     float fu_Shininess;
+
     float fu_Transparency;
 };
 uniform Material material;
 
 // See C++ class PointLight
-layout (std140) uniform ubo_PointLightParams
+layout (std140) uniform ubo_PointLight
 {
     vec4 fu_LightPosition;
 

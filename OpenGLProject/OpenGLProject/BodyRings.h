@@ -3,7 +3,6 @@
 
 #include <string>
 
-#include "PointLight.h"
 #include "SceneEntity.h"
 #include "Material.h"
 #include "Model.h"
@@ -23,7 +22,6 @@ private:
 	std::string parentBodyName;
 
 	Model model;
-	PointLight pointLight;
 
 	static Material InitialiseParent(const std::string& inTexturePath);
 

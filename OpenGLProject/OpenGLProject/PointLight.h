@@ -11,20 +11,19 @@
 class PointLight : public LightSource
 {
 public:
-	PointLight();
-	PointLight(const glm::vec3& inPosition, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const bool inIsBlinn);
+	PointLight() = delete;
+	PointLight(const glm::vec3& inPosition, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const bool inIsBlinn = false);
+	
+	void SetPosition(const glm::vec3& inPosition) { position = inPosition; }
+
+	void SetFUniforms() override;
+	void SetLightPositionFUniform(const glm::vec3& inPosition);
 
 private:
-	glm::vec3 position{ 0.0f, 0.0f, 0.0f };
+	glm::vec3 position{ 0.0f };
 	AttenuationParams attenuationParams;
 
 	UniformBuffer& ubo;
-
-	static bool isUBOFilled;
-
-
-
-	void StoreDataInUBO();
 };
 
 

@@ -7,11 +7,10 @@
 #include <utility>
 
 #include "BodyRings.h"
-#include "DirectionalLight.h"
+#include "PointLight.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
-#include "PointLight.h"
 #include "Texture.h"
 #include "Utils.h"
 
@@ -25,14 +24,16 @@ orbit({ inBodyData.texturePath, bodyData.distanceToParent }),
 billboard({ ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath) }),
 preComputations(LoadPreComputations())
 {
+	// Compute position first so the point light is correctly initialised in the case of the Sun
+	ComputeCartesianPosition(1.0f);
+
 	name = ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath);
 	if (name == "Sun")
 	{
-		lightSource = std::make_unique<DirectionalLight>(ResourceLoader::GetShader("Sun"));
-	}
-	else
-	{
-		lightSource = std::make_unique<PointLight>();
+		// Set up the lighting for all scene entities according to Sun position/light emission parameters
+		lightSource = std::make_unique<PointLight>(position,
+			ReflectionParams{ glm::vec3(0.25f), glm::vec3(0.95f), glm::vec3(1.0f) },
+			AttenuationParams{ 1.0f, 0.0014f, 0.000007f });
 	}
 
 	if (name == "Saturn")
@@ -43,8 +44,6 @@ preComputations(LoadPreComputations())
 	{
 		bodyRings = std::make_unique<BodyRings>("../Models/UranusRings.obj", name);
 	}
-
-	ComputeCartesianPosition(1.0f);
 }
 
 CelestialBody::CelestialBody(CelestialBody&& inCelestialBody) = default;
@@ -58,7 +57,7 @@ Material CelestialBody::InitialiseParent(const std::string& inTexturePath)
 	if (const std::string& bodyName = ResourceLoader::GetNameFromTexturePath(inTexturePath);
 		bodyName == "Sun")
 	{
-		return Material(ResourceLoader::GetShader("Sun"), { std::move(texture) }, glm::vec3(1.0f, 0.0f, 0.0f), 95.0f);
+		return Material(ResourceLoader::GetShader("Sun"), { std::move(texture) }, { 0, glm::vec3(1.5f) });
 	}
 	else
 	{
@@ -153,6 +152,7 @@ void CelestialBody::ComputeCartesianPosition(const float elapsedTime)
 
 void CelestialBody::Render(const Renderer& renderer, const float elapsedTime)
 {
+	// Update material uniforms and draw sphere
 	ComputeModelMatrixVUniform(elapsedTime);
 
 	Shader& shader = material.GetShader();
