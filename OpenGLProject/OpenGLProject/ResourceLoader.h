@@ -13,7 +13,7 @@
 
 namespace ResourceLoader
 {
-	constexpr uint32_t BODIES_COUNT = 34;
+	constexpr uint32_t BODIES_COUNT = 42;
 	constexpr float DISTANCE_SCALE_FACTOR = 10.0f;
 	constexpr float RADIUS_SCALE_FACTOR = 1000.0f;
 	constexpr uint32_t BELTS_COUNT = 2;
@@ -21,10 +21,10 @@ namespace ResourceLoader
 	// Paths to retrieve DDS textures (convention: size_name.dds)
 	const std::array<const std::string, BODIES_COUNT> texturePaths
 	{
-		// Star
+		// Star (1)
 		"../Textures/Stars/8k_sun.dds",
 
-		// Planets
+		// Planets (8)
 		"../Textures/Planets/8k_mercury.dds",
 		"../Textures/Planets/4k_venus_atmosphere.dds",				//"../Textures/Planets/8k_venus.dds"
 		"../Textures/Planets/8k_earth.dds",
@@ -34,35 +34,51 @@ namespace ResourceLoader
 		"../Textures/Planets/2k_uranus.dds",
 		"../Textures/Planets/2k_neptune.dds",
 
-		// Dwarf planets
+		// Dwarf planets (10)
 		"../Textures/DwarfPlanets/4k_ceres.dds",
-		"../Textures/DwarfPlanets/4k_pluto_enhanced_colours.dds",	//"../Textures/Planets/2k_pluto.dds"
-		"../Textures/DwarfPlanets/4k_haumea.dds",
-		"../Textures/DwarfPlanets/4k_makemake.dds",
-		"../Textures/DwarfPlanets/4k_eris.dds",
-		"../Textures/DwarfPlanets/2k_gonggong.dds",
-		"../Textures/DwarfPlanets/2k_quaoar.dds",
-		"../Textures/DwarfPlanets/2k_sedna.dds",
 		"../Textures/DwarfPlanets/2k_orcus.dds",
+		"../Textures/DwarfPlanets/4k_pluto_enhanced_colours.dds",	//"../Textures/Planets/2k_pluto.dds"
+		"../Textures/DwarfPlanets/2k_salacia.dds",
+		"../Textures/DwarfPlanets/4k_haumea.dds",
+		"../Textures/DwarfPlanets/2k_quaoar.dds",
+		"../Textures/DwarfPlanets/4k_makemake.dds",
+		"../Textures/DwarfPlanets/2k_gonggong.dds",
+		"../Textures/DwarfPlanets/4k_eris.dds",		
+		"../Textures/DwarfPlanets/2k_sedna.dds",
+		
 
-		// Moons
+		// Moons (23 = 1 + 4 + 7 + 6 + 3 + 1 + 1)
 		"../Textures/Satellites/8k_luna.dds",
+
 		//"../Textures/Satellites/1k_deimos.dds",
 		//"../Textures/Satellites/2k_phobos.dds",
-		"../Textures/Satellites/2k_callisto.dds",
+
+		"../Textures/Satellites/3k_io.dds",
 		"../Textures/Satellites/2k_europa.dds",
 		"../Textures/Satellites/2k_ganymede.dds",
-		"../Textures/Satellites/3k_io.dds",
-		"../Textures/Satellites/8k_titan.dds",
-		"../Textures/Satellites/2k_rhea.dds",
-		"../Textures/Satellites/1k_iapetus.dds",
-		"../Textures/Satellites/2k_dione.dds",
+		"../Textures/Satellites/2k_callisto.dds",
+
+		"../Textures/Satellites/1k_mimas.dds",
+		"../Textures/Satellites/2k_enceladus.dds",
 		"../Textures/Satellites/3k_tethys.dds",
-		"../Textures/Satellites/1k_titania.dds",
-		"../Textures/Satellites/1k_oberon.dds",
-		"../Textures/Satellites/1k_umbriel.dds",
+		"../Textures/Satellites/2k_dione.dds",
+		"../Textures/Satellites/2k_rhea.dds",
+		"../Textures/Satellites/8k_titan.dds",	
+		"../Textures/Satellites/1k_iapetus.dds",
+		
+		"../Textures/Satellites/2k_puck_rhea.dds",
+		"../Textures/Satellites/1k_miranda.dds",
 		"../Textures/Satellites/1k_ariel.dds",
+		"../Textures/Satellites/1k_umbriel.dds",
+		"../Textures/Satellites/1k_titania.dds",
+		"../Textures/Satellites/1k_oberon.dds",	
+		
+		"../Textures/Satellites/2k_larissa_rhea.dds",
+		"../Textures/Satellites/2k_proteus_rhea.dds",
 		"../Textures/Satellites/1k_triton.dds",
+
+		"../Textures/Satellites/2k_vanth.dds",
+
 		"../Textures/Satellites/1k_charon.dds"
 
 		// Normal maps
@@ -81,7 +97,7 @@ namespace ResourceLoader
 	void LoadShaders();
 
 	// @todo - Load raw data from .csv file
-	// Fill data structures above with celestial bodies information (collected from NASA website, Wikipedia and passionates)
+	// Fill data structures above with "spherical" celestial bodies information (collected from NASA website, Wikipedia and passionates)
 	// Note: data is scaled so we can visualise the whole Solar System without having to travel too much time.
 	void LoadCelestialBodies();
 	void LoadBelts();
