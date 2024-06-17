@@ -14,12 +14,12 @@ class Renderer;
 class BodyRings : public SceneEntity
 {
 public:
-	BodyRings(const std::string& modelPath, const std::string& inParentBodyName);
+	BodyRings(const std::string& modelPath, const std::string& inBodyName);
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 
 private:
-	std::string parentBodyName;
+	std::string bodyName;
 
 	Model model;
 

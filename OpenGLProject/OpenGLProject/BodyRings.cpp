@@ -11,13 +11,13 @@
 
 
 
-BodyRings::BodyRings(const std::string& modelPath, const std::string& inParentBodyName) : SceneEntity(InitialiseParent("")),
+BodyRings::BodyRings(const std::string& modelPath, const std::string& inBodyName) : SceneEntity(InitialiseParent("")),
 model({ modelPath })
 {
 	material.SetTextures(model.GetTextures());
 
 	name = "BodyRings";
-	parentBodyName = inParentBodyName;
+	bodyName = inBodyName;
 }
 
 Material BodyRings::InitialiseParent(const std::string& inTexturePath)
@@ -27,7 +27,7 @@ Material BodyRings::InitialiseParent(const std::string& inTexturePath)
 
 void BodyRings::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
 {
-	modelMatrix = ResourceLoader::GetBody(parentBodyName).GetModelMatrix();
+	modelMatrix = ResourceLoader::GetBody(bodyName).GetModelMatrix();
 
 	// Rotate back (constant over time) around axis normal to orbital plane
 	modelMatrix = glm::rotate(modelMatrix, -Utils::halfPi, Utils::rightVector);

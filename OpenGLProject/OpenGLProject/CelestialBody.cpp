@@ -44,6 +44,10 @@ preComputations(LoadPreComputations())
 	{
 		bodyRings = std::make_unique<BodyRings>("../Models/UranusRings.obj", name);
 	}
+	else if (name == "Quaoar")
+	{
+		bodyRings = std::make_unique<BodyRings>("../Models/QuaoarUranusRings.obj", name);
+	}
 }
 
 CelestialBody::CelestialBody(CelestialBody&& inCelestialBody) = default;
