@@ -13,7 +13,7 @@
 
 namespace ResourceLoader
 {
-	constexpr uint32_t BODIES_COUNT = 42;
+	constexpr uint32_t BODIES_COUNT = 49;
 	constexpr float DISTANCE_SCALE_FACTOR = 10.0f;
 	constexpr float RADIUS_SCALE_FACTOR = 1000.0f;
 	constexpr uint32_t BELTS_COUNT = 2;
@@ -26,8 +26,8 @@ namespace ResourceLoader
 
 		// Planets (8)
 		"../Textures/Planets/8k_mercury.dds",
-		"../Textures/Planets/4k_venus_atmosphere.dds",				//"../Textures/Planets/8k_venus.dds"
-		"../Textures/Planets/8k_earth.dds",
+		"../Textures/Planets/4k_venus_atmosphere.dds",				// "../Textures/Planets/8k_venus.dds"
+		"../Textures/Planets/8k_earth.dds",							// "../Textures/Planets/8k_earth_normal/specular_map.dds"
 		"../Textures/Planets/8k_mars.dds",
 		"../Textures/Planets/8k_jupiter.dds",
 		"../Textures/Planets/8k_saturn.dds",
@@ -37,55 +37,78 @@ namespace ResourceLoader
 		// Dwarf planets (10)
 		"../Textures/DwarfPlanets/4k_ceres.dds",
 		"../Textures/DwarfPlanets/2k_orcus.dds",
-		"../Textures/DwarfPlanets/4k_pluto_enhanced_colours.dds",	//"../Textures/Planets/2k_pluto.dds"
+		"../Textures/DwarfPlanets/4k_pluto_enhanced_colours.dds",	// "../Textures/Planets/2k_pluto.dds"
 		"../Textures/DwarfPlanets/2k_salacia.dds",
-		"../Textures/DwarfPlanets/4k_haumea.dds",
+		"../Textures/DwarfPlanets/2k_haumea.dds",
 		"../Textures/DwarfPlanets/2k_quaoar.dds",
 		"../Textures/DwarfPlanets/4k_makemake.dds",
 		"../Textures/DwarfPlanets/2k_gonggong.dds",
-		"../Textures/DwarfPlanets/4k_eris.dds",		
+		"../Textures/DwarfPlanets/4k_eris.dds",
 		"../Textures/DwarfPlanets/2k_sedna.dds",
-		
 
-		// Moons (23 = 1 + 4 + 7 + 6 + 3 + 1 + 1)
+		// Moons (30 = 1 + 4 + 7 + 6 + 3 + 1 + 1 + 1 + 2 + 1 + 1 + 1 + 1)
+		// Earth
 		"../Textures/Satellites/8k_luna.dds",
 
+		// Mars
 		//"../Textures/Satellites/1k_deimos.dds",
 		//"../Textures/Satellites/2k_phobos.dds",
 
+		// Jupiter
 		"../Textures/Satellites/3k_io.dds",
 		"../Textures/Satellites/2k_europa.dds",
 		"../Textures/Satellites/2k_ganymede.dds",
 		"../Textures/Satellites/2k_callisto.dds",
 
+		// Saturn
 		"../Textures/Satellites/1k_mimas.dds",
 		"../Textures/Satellites/2k_enceladus.dds",
 		"../Textures/Satellites/3k_tethys.dds",
 		"../Textures/Satellites/2k_dione.dds",
 		"../Textures/Satellites/2k_rhea.dds",
-		"../Textures/Satellites/8k_titan.dds",	
+		"../Textures/Satellites/8k_titan.dds",
 		"../Textures/Satellites/1k_iapetus.dds",
-		
-		"../Textures/Satellites/2k_puck_rhea.dds",
+
+		// Uranus
+		"../Textures/Satellites/2k_puck.dds",						// Copy of Rhea texture
 		"../Textures/Satellites/1k_miranda.dds",
 		"../Textures/Satellites/1k_ariel.dds",
 		"../Textures/Satellites/1k_umbriel.dds",
 		"../Textures/Satellites/1k_titania.dds",
-		"../Textures/Satellites/1k_oberon.dds",	
-		
-		"../Textures/Satellites/2k_larissa_rhea.dds",
-		"../Textures/Satellites/2k_proteus_rhea.dds",
+		"../Textures/Satellites/1k_oberon.dds",
+
+		// Neptune
+		"../Textures/Satellites/2k_larissa.dds",					// Copy of Rhea texture
+		"../Textures/Satellites/2k_proteus.dds",					// Copy of Rhea texture
 		"../Textures/Satellites/1k_triton.dds",
 
+		// Orcus
 		"../Textures/Satellites/2k_vanth.dds",
 
-		"../Textures/Satellites/1k_charon.dds"
+		// Pluto
+		"../Textures/Satellites/1k_charon.dds",
 
-		// Normal maps
-		//"../Textures/Planets/8k_earth_normal_map.png"
+		// Salacia
+		"../Textures/Satellites/2k_actaea.dds",
+
+		// Haumea
+		"../Textures/Satellites/2k_hi'iaka.dds",
+		"../Textures/Satellites/2k_namaka.dds",						// Same texture used for Hi'iaka
+
+		// Quaoar
+		"../Textures/Satellites/2k_weywot.dds",
+
+		// Makemake
+		"../Textures/Satellites/2k_MK2.dds",
+
+		// Gonggong
+		"../Textures/Satellites/2k_xiangliu.dds",
+
+		// Eris
+		"../Textures/Satellites/2k_dysnomia.dds"
 	};
 
-	
+
 
 	CelestialBody& GetBody(const std::string& inBodyName);
 	CelestialBody& GetBody(const int32_t inBodyID);

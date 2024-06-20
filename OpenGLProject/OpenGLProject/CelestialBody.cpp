@@ -48,6 +48,7 @@ preComputations(LoadPreComputations())
 	{
 		bodyRings = std::make_unique<BodyRings>("../Models/QuaoarUranusRings.obj", name);
 	}
+	// @todo - Add a model for Jupiter, Neptune and Haumea 
 }
 
 CelestialBody::CelestialBody(CelestialBody&& inCelestialBody) = default;

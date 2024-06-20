@@ -105,33 +105,33 @@ namespace ResourceLoader
 		/* Titan */		celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 2575.5f / earthRadius, GetBody("Saturn").bodyData.radius + 1200000.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,	0.0f,   15.95f,		15.95f,		0.0f,      GetBody("Saturn").GetID() });
 		/* Iapetus */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 734.5f / earthRadius,	GetBody("Saturn").bodyData.radius + 1221850.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,	0.0f,   79.32f,		79.32f,		15.47f,    GetBody("Saturn").GetID() });
 
-		/* Puck */		celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 81.0f / earthRadius,	GetBody("Uranus").bodyData.radius + 86010.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,	0.0f,	0.762f,		0.762f,		0.319f,    GetBody("Uranus").GetID() });	// Inclination to Uranus equator
-		/* Miranda */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 235.8f / earthRadius,	GetBody("Uranus").bodyData.radius +	129900.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,	0.0f,	1.413f,		1.413f,		4.232f,    GetBody("Uranus").GetID() });	// Inclination to Uranus equator
-		/* Ariel */		celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 578.9f / earthRadius,	GetBody("Uranus").bodyData.radius + 190000.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,	0.0f,   2.520f,		2.520f,		0.260f,    GetBody("Uranus").GetID() });
-		/* Umbriel */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 584.7f / earthRadius,	GetBody("Uranus").bodyData.radius + 266000.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,	0.0f,   4.144f,		4.144f,		0.128f,    GetBody("Uranus").GetID() });
-		/* Titania */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 788.4f / earthRadius,	GetBody("Uranus").bodyData.radius + 436000.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,	0.0f,   8.706f,		8.706f,		0.340f,    GetBody("Uranus").GetID() });
-		/* Oberon */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 761.4f / earthRadius,	GetBody("Uranus").bodyData.radius + 584000.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,	0.0f,   13.463f,	13.463f,	0.058f,    GetBody("Uranus").GetID() });
+		/* Puck */		celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 81.0f / earthRadius,	GetBody("Uranus").bodyData.radius + 86010.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,	0.762f,		0.762f,		0.319f,    GetBody("Uranus").GetID() });	// Inclination to Uranus equator
+		/* Miranda */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 235.8f / earthRadius,	GetBody("Uranus").bodyData.radius +	129900.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,	1.413f,		1.413f,		4.232f,    GetBody("Uranus").GetID() });	// Inclination to Uranus equator
+		/* Ariel */		celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 578.9f / earthRadius,	GetBody("Uranus").bodyData.radius + 190000.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,   2.520f,		2.520f,		0.260f,    GetBody("Uranus").GetID() });
+		/* Umbriel */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 584.7f / earthRadius,	GetBody("Uranus").bodyData.radius + 266000.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,   4.144f,		4.144f,		0.128f,    GetBody("Uranus").GetID() });
+		/* Titania */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 788.4f / earthRadius,	GetBody("Uranus").bodyData.radius + 436000.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,   8.706f,		8.706f,		0.340f,    GetBody("Uranus").GetID() });
+		/* Oberon */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 761.4f / earthRadius,	GetBody("Uranus").bodyData.radius + 584000.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,   13.463f,	13.463f,	0.058f,    GetBody("Uranus").GetID() });
 
 		/* Larissa */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 97.0f / earthRadius,	GetBody("Neptune").bodyData.radius + 73600.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,   0.555f,		0.555f,		0.251f,	   GetBody("Neptune").GetID() });	// Inclination to Neptune equator
 		/* Proteus */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 209.0f / earthRadius,	GetBody("Neptune").bodyData.radius + 117600.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,	0.0f,   1.122f,		1.122f,		0.524f,	   GetBody("Neptune").GetID() });	// Inclination to Neptune equator
 		/* Triton */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 1353.4f / earthRadius,	GetBody("Neptune").bodyData.radius + 354800.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,	0.0f,   5.88f,		5.88f,		129.812f,  GetBody("Neptune").GetID() });
 
-		/* Vanth */		celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 221.5f / earthRadius,	GetBody("Orcus").bodyData.radius + 8980.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,   9.539f,		9.539f,		90.54f,	   GetBody("Orcus").GetID() });		// occultation radius taken, not thermal radiation one; no axial tilt?; inclination to ecliptic
+		/* Vanth */		celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 221.5f / earthRadius,	GetBody("Orcus").bodyData.radius + 7770.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,   9.539f,		9.539f,		90.54f,	   GetBody("Orcus").GetID() });		// occultation radius taken, not thermal radiation one; no axial tilt?; inclination to ecliptic
 
 		/* Charon */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 606.0f / earthRadius,	GetBody("Pluto").bodyData.radius + 19640.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,   6.387f,		6.387f,		0.080f,	   GetBody("Pluto").GetID() });
 
-		/* Actaea */
+		/* Actaea */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 150.0f / earthRadius,	GetBody("Salacia").bodyData.radius + 5619.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,   5.494f,		5.494f,		23.59f,	   GetBody("Salacia").GetID() });
 
-		/* Hi'iaka */
-		/* Namaka */
+		/* Hi'iaka */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 160.0f / earthRadius,	GetBody("Haumea").bodyData.radius + 39300.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,   49.12f,		9.8f / 24,	126.356f,  GetBody("Haumea").GetID() });
+		/* Namaka */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 85.0f / earthRadius,	GetBody("Haumea").bodyData.radius + 49500.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,   18.28f,		18.28f,		113.013f,  GetBody("Haumea").GetID() });
 
-		/* Weywot */
+		/* Weywot */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 100.0f / earthRadius,	GetBody("Quaoar").bodyData.radius + 13300.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,   12.43f,		12.43f,		15.8f,	   GetBody("Quaoar").GetID() });
 
-		/* MK2 */
+		/* MK2 */		celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 85.0f / earthRadius,	GetBody("Makemake").bodyData.radius + 20921.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,	0.0f,   12.4f,		12.4f,		75.0f,	   GetBody("Makemake").GetID() });
 
-		/* Xiangliu */
+		/* Xiangliu */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 50.0f / earthRadius,	GetBody("Gonggong").bodyData.radius + 15000.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,	0.0f,   25.22f,		25.22f,		83.08f,	   GetBody("Gonggong").GetID() });
 
-		/* Dysnomia */
+		/* Dysnomia */	celestialBodiesRef.emplace_back(BodyData{ texturePaths[index++], 308.0f / earthRadius,	GetBody("Eris").bodyData.radius + 37300.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		0.0f,   15.79f,		15.79f,		61.59f,	   GetBody("Eris").GetID() });
 	}
 
 	void LoadBelts()
