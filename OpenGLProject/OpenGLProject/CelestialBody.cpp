@@ -33,7 +33,7 @@ preComputations(LoadPreComputations())
 		// Set up the lighting for all scene entities according to Sun position/light emission parameters
 		lightSource = std::make_unique<PointLight>(position,
 			ReflectionParams{ glm::vec3(0.25f), glm::vec3(0.95f), glm::vec3(1.0f) },
-			AttenuationParams{ 1.0f, 0.0014f, 0.000007f });
+			AttenuationParams{ 1.0f, 0.00045f, 0.00000075f });
 	}
 
 	if (name == "Saturn")

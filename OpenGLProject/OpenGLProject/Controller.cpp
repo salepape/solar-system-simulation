@@ -75,11 +75,11 @@ void Controller::ProcessInput(const float deltaTime)
 	// Modify controller speed
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_X))
 	{
-		IncreaseTravelSpeed(2.0f);
+		IncreaseTravelSpeed(2.5f);
 	}
 	if (InputHandler::GetInstance().IsKeyReleased(GLFW_KEY_X))
 	{
-		DecreaseTravelSpeed(2.0f);
+		DecreaseTravelSpeed(2.5f);
 	}
 }
 
