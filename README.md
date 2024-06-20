@@ -6,7 +6,7 @@ Here is a simulation of the Solar System in 3D! This project mainly originates f
 
 ## Technologies
 
-The project is using Visual Studio 17 and Windows 10 environment. It has been implemented in C++17/GLSL, uses OpenGL 3.2 (Core profile) specification, as well as a set of libraries:
+The project is using Visual Studio 17 and Windows 10 environment. It has been implemented in C++17/GLSL, uses OpenGL 4.6 (Core profile) specification, as well as a set of libraries:
 * Glad to get Core OpenGL function pointers,
 * GLFW3 to initialise a window and handle user input,
 * GLM for mathematical utility functions,
@@ -14,15 +14,29 @@ The project is using Visual Studio 17 and Windows 10 environment. It has been im
 * Assimp to load 3D models,
 * FreeType to render 2D text characters.
 
+## Content 
+
+The simulation contains the following celestial bodies:
+* the Sun,
+* the 8 planets of the Solar System,
+* 10 dwarf planets (some of them not unanimously considered as such by the scientific community),
+* 3 ring systems (the ones in the visible spectrum),
+* 30 spherical moons,
+* 3 belts (Asteroid and Kuiper ones, plus the Scattered Disc),
+* Milky Way in background.
+
+P.S. For most distant celestial bodies, information can be hard to find, so texture maps are fictionnal, and chosen according to the photometry analysis presented in astrophysical research papers. 
+
 ## Features
 
-Below are the main features implemented:
-* Solar System simulation in 3D, composed of its spherical celestial bodies (planets, main dwarf planets and moons) moving along their circular orbits, as well as the main belts (asteroid and Kuiper ones), Milky Way in background,
-* Camera/Controller/Input system using GLFW3,
-* Model Loader for asteroids and Saturn rings using Assimp,
+The codebase is structure similarly to an object-oriented 3D game engine, which is decoupled from the proper Solar System simulation. Below are the main features implemented:
+* Celestial bodies in motion according to real data, with adjustable speed, along approximated circular orbits,
+* Fly-Camera/Controller/Input system with zoom using GLFW3 for an intuitive exploration,
+* Geometric meshes computations, including a cubemap for the Skybox, and a model loader for asteroids and planet rings using Assimp,
+* Mesh blending according to their distance to the camera,
 * 3D Mesh Renderer, including instanced rendering to draw the belts efficiently,
-* 2D Text renderer using FreeType,
-* Phong Illumination model done on the GPU via shaders, for all objects of the scene, with a directional light for the Sun, and point lights for the other celestial bodies.
+* 2D Text renderer for celestial body names using FreeType,
+* Phong Illumination model done on the GPU via shaders, for all objects of the scene, using a point light acting as the Sun.
 
 Comments within the codebase describe more specifically how it works (algorithmics, decisions taken etc...)
 
@@ -56,5 +70,5 @@ P.S. Press <kbd>Win</kbd> to background the simulation while it runs.
 ## Resources
 
 * Scientific data and some models has been retrieved from NASA website mainly (National Space Science Data Center),
-* Textures have been downloaded from https://www.solarsystemscope.com/textures, https://planetpixelemporium.com/planets.html, https://www.jpl.nasa.gov, https://planet-texture-maps.fandom.com/wiki and https://3d-asteroids.space and websites of passionate people,
+* Textures have been downloaded from https://www.solarsystemscope.com/textures, https://planetpixelemporium.com/planets.html, https://www.jpl.nasa.gov, https://3d-asteroids.space, and websites of passionate people such as https://planet-texture-maps.fandom.com/wiki,
 * Some parts of OpenGL code have been inspired from https://learnopengl.com (from Joey De Vries) and https://www.youtube.com/user/TheChernoProject (from Yan Chernikov, aka TheCherno) mainly; http://www.opengl-tutorial.org and https://open.gl to a lesser extent.
