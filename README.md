@@ -48,7 +48,7 @@ You can either clone the repository to your computer, or unzip the corresponding
 * If you just want to run the program, pick the executable <b>OpenGLProject.exe</b> you need according to your OS architecture (stored in <i>OpenGLProject/Output/Release/Win32 or x64/</i>), and drag it to the project main folder (called <i>OpenGLProject/OpenGLProject</i>) before double-clicking on it (otherwise it won't work, the program stating that it didn't find ASSIMP library),
 * If you want to run the code, you need to have Visual Studio 17 installed, then go to the project main folder, open <b>OpenGLProject.sln</b> solution, choose the architecture/configuration you want, and click on the green arrow button to launch the simulation.
 
-The execution of the program should require around 3 seconds in Release mode, and 5 seconds in Debug mode before starting. Enjoy!
+The execution of the program should require around 5 seconds in Release mode, and 10 seconds in Debug mode before starting. Enjoy!
 
 P.S. If Avast antivirus gives you a warning that there is a threat while the simulation is starting, just ignore it: my program is safe to use :)
 
