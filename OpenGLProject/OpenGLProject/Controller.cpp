@@ -71,6 +71,17 @@ void Controller::ProcessInput(const float deltaTime)
 	{
 		camera.UpdateUpPosition(-distance);
 	}
+	if (const auto inputHandler = InputHandler::GetInstance();
+		flashlightStartTime > 0.0 && (
+			inputHandler.IsKeyPressed(GLFW_KEY_W) ||
+			inputHandler.IsKeyPressed(GLFW_KEY_S) ||
+			inputHandler.IsKeyPressed(GLFW_KEY_A) ||
+			inputHandler.IsKeyPressed(GLFW_KEY_D) ||
+			inputHandler.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) ||
+			inputHandler.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT)))
+	{
+		GetCamera().UpdateFlashlight();
+	}
 
 	// Modify controller speed
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_X))
@@ -133,6 +144,11 @@ void Controller::Callback_SetCursorPosition()
 		if (const auto currentController = currentWindow->controller)
 		{
 			currentController->GetCamera().UpdateRotation(offset * currentController->mouseSensitivity);
+
+			if (currentController->flashlightStartTime > 0.0)
+			{
+				currentController->GetCamera().UpdateFlashlight();
+			}
 		}
 	});
 }
@@ -221,6 +237,21 @@ void Controller::Callback_SetKey()
 			{
 				Application::GetInstance().DisplayLegend(false);
 				currentController->displayLegendStartTime = 0.0;
+			}
+		}
+		else if (key == GLFW_KEY_F)
+		{
+			const auto& currentController = GetCurrentController();
+			if (action == GLFW_PRESS && currentController && currentController->flashlightStartTime == 0.0)
+			{
+				currentController->GetCamera().SetFlashlightState(true);
+				currentController->flashlightStartTime = Application::GetInstance().GetTime();
+			}
+
+			if (action == GLFW_RELEASE && currentController && Application::GetInstance().GetTime() - currentController->flashlightStartTime > currentController->detectedButtonReleaseMinDuration)
+			{
+				currentController->GetCamera().SetFlashlightState(false);
+				currentController->flashlightStartTime = 0.0;
 			}
 		}
 	});

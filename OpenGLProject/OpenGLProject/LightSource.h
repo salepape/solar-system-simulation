@@ -31,7 +31,7 @@ public:
 	virtual void SetFUniforms() = 0;
 
 protected:
-	const ReflectionParams reflectionParams;
+	ReflectionParams reflectionParams;
 	bool isBlinn{ false };
 };
 

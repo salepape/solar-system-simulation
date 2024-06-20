@@ -5,7 +5,7 @@
 
 #include "LightSource.h"
 
-class Shader;
+class UniformBuffer;
 
 
 
@@ -13,12 +13,14 @@ class DirectionalLight : public LightSource
 {
 public:
 	DirectionalLight() = delete;
-	DirectionalLight(Shader& inShader, const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn = false);
+	DirectionalLight(const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn = false);
+
+	void SetLightDirectionFUniform(const glm::vec3& inDirection);
 
 private:
-	Shader& shader;
 	glm::vec3 direction{ 0.0f };
 
+	UniformBuffer& ubo;
 
 
 	void SetFUniforms() override;

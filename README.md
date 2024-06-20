@@ -60,6 +60,8 @@ To be able to explore the Solar System, the user should use the following contro
 * <kbd>mouse scroll wheel</kbd> to zoom in/out,
 * <kbd>R</kbd> to spawn the user to the initial location,
 * <kbd>L</kbd> to make celestial body names appear above them,
+* <kbd>F</kbd> to turn on/off user's flashlight to see regions with poor lighting,
+
 * <kbd>Up arrow</kbd> and <kbd>down arrow</kbd> to speed up/slow down the simulation,
 * <kbd>Space</kbd> to pause/unpause the simulation,
 * <kbd>Tab</kbd> to switch the application to cursor mode (to resize the window easily for instance),

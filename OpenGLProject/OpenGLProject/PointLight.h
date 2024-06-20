@@ -4,7 +4,8 @@
 #include <glm/vec3.hpp>
 
 #include "LightSource.h"
-#include "UniformBuffer.h"
+
+class UniformBuffer;
 
 
 

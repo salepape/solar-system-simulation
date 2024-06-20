@@ -185,6 +185,7 @@
     <ClInclude Include="SolarSystem.h" />
     <ClInclude Include="SolarSystemSimulation.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="SpotLight.h" />
     <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="UniformBuffer.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="SolarSystem.cpp" />
     <ClCompile Include="SolarSystemSimulation.cpp" />
     <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="UniformBuffer.cpp" />

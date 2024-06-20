@@ -15,7 +15,9 @@
 
 
 Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane) :
-	initialPosition(inPosition), initialRotation(inRotation), position(inPosition), pitch(inRotation.y), yaw(inRotation.z), fovY(inFovY), farPlane(inFarPlane), projectionViewUBO(ResourceLoader::GetUBO("ubo_ProjectionView")), positionUBO(ResourceLoader::GetUBO("ubo_CameraPosition"))
+	initialPosition(inPosition), initialRotation(inRotation), position(inPosition), pitch(inRotation.y), yaw(inRotation.z), fovY(inFovY), farPlane(inFarPlane),
+	flashlight(inPosition, forward, { glm::vec3(0.2f), glm::vec3(0.8f), glm::vec3(1.0f) }, { 1.0f, 0.007f, 0.0002f }, { glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f)) }),
+	projectionViewUBO(ResourceLoader::GetUBO("ubo_ProjectionView")), positionUBO(ResourceLoader::GetUBO("ubo_CameraPosition"))
 {
 	UpdateCameraVectors();
 }
@@ -96,4 +98,15 @@ void Camera::SetInfiniteProjectionViewVUniform(const float windowAspectRatio)
 void Camera::SetPositionFUniform()
 {
 	positionUBO.InitSubData({ { static_cast<const void*>(glm::value_ptr(glm::vec4(GetPosition(), 0.0f))), Utils::vec4Size } });
+}
+
+void Camera::SetFlashlightState(const bool isActive)
+{
+	flashlight.SetIsCameraFlashlightFUniform(isActive);
+}
+
+void Camera::UpdateFlashlight()
+{
+	flashlight.SetLightPositionFUniform(position);
+	flashlight.SetLightDirectionFUniform(forward);
 }

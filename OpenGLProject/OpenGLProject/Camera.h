@@ -6,6 +6,8 @@
 #include <glm/vec3.hpp>
 #include <vector>
 
+#include "SpotLight.h"
+
 class Shader;
 class UniformBuffer;
 
@@ -37,6 +39,10 @@ public:
 	void SetInfiniteProjectionViewVUniform(const float windowAspectRatio);
 	void SetPositionFUniform();
 
+	// Prefer to turn on/off reflection params rather than creating/deleting a heap-allocated SpotLight instance
+	void SetFlashlightState(const bool isActive);
+	void UpdateFlashlight();
+
 private:
 	glm::vec3 initialPosition{ 0.0f };
 	glm::vec3 initialRotation{ 0.0f };
@@ -56,6 +62,8 @@ private:
 	glm::vec3 up{ 1.0f, 0.0f, 0.0f };
 	glm::vec3 right{ 0.0f, 1.0f, 0.0f };
 	glm::vec3 forward{ 0.0f, 0.0f, -1.0f };
+
+	SpotLight flashlight;
 
 	UniformBuffer& projectionViewUBO;
 	UniformBuffer& positionUBO;

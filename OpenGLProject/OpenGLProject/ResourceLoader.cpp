@@ -50,14 +50,18 @@ namespace ResourceLoader
 		shaders.emplace_back("BodyRings",		"DefaultShader.vs",			"DefaultShader.fs");
 		shaders.emplace_back("Orbit",			"DefaultShader.vs",			"DefaultShader.fs");
 
-		ubos.reserve(3);
+		ubos.reserve(5);
 
 		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("BodyRings").GetRendererID(), GetShader("Orbit").GetRendererID(), GetShader("TextGlyph").GetRendererID(), GetShader("MilkyWay").GetRendererID() },
 			"ubo_ProjectionView", Utils::mat4v4Size);
+		
 		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("BodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
 			"ubo_CameraPosition", Utils::vec4Size);
-		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("BodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
-			"ubo_PointLight", 4 * Utils::vec4Size + 4 * Utils::scalarSize);
+		
+		const std::vector<uint32_t> bodyShaderIDs{ GetShader("CelestialBody").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("BodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() };
+		ubos.emplace_back(bodyShaderIDs, "ubo_DirectionalLight", 4 * Utils::vec4Size + Utils::scalarSize);
+		ubos.emplace_back(bodyShaderIDs, "ubo_PointLight", 4 * Utils::vec4Size + 4 * Utils::scalarSize);
+		ubos.emplace_back(bodyShaderIDs, "ubo_SpotLight", 5 * Utils::vec4Size + 7 * Utils::scalarSize);
 	}
 
 	void LoadCelestialBodies()
