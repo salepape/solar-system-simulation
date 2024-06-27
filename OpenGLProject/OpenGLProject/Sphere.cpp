@@ -44,11 +44,11 @@ void Sphere::ComputeVertices()
 			const float yCoor = rCosTheta * glm::sin(phi);
 
 			Vertex vertex;
-			vertex.Position = glm::vec3(xCoor, yCoor, zCoor);
-			vertex.Normal = glm::vec3(xCoor * invRadius, yCoor * invRadius, zCoor * invRadius);
-			vertex.TexCoords = glm::vec2(jInvMeridianStripsCount, iInvParallelStripsCount);
-			vertex.Tangent = zeroVector;
-			vertex.Bitangent = zeroVector;
+			vertex.position = glm::vec3(xCoor, yCoor, zCoor);
+			vertex.normal = glm::vec3(xCoor * invRadius, yCoor * invRadius, zCoor * invRadius);
+			vertex.texCoords = glm::vec2(jInvMeridianStripsCount, iInvParallelStripsCount);
+			vertex.tangent = zeroVector;
+			vertex.biTangent = zeroVector;
 			vertices.push_back(std::move(vertex));
 		}
 	}

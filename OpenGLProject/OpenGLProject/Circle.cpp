@@ -29,11 +29,11 @@ void Circle::ComputeVertices()
 		const float theta = i * thetaAngle;
 
 		Vertex vertex;
-		vertex.Position = glm::vec3(radius * glm::sin(theta), 0.0f, radius * glm::cos(theta));
-		vertex.Normal = zeroVector;
-		vertex.TexCoords = zeroVector;
-		vertex.Tangent = zeroVector;
-		vertex.Bitangent = zeroVector;
+		vertex.position = glm::vec3(radius * glm::sin(theta), 0.0f, radius * glm::cos(theta));
+		vertex.normal = zeroVector;
+		vertex.texCoords = zeroVector;
+		vertex.tangent = zeroVector;
+		vertex.biTangent = zeroVector;
 		vertices.push_back(std::move(vertex));
 	}
 }

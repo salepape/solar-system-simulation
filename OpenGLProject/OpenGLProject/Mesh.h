@@ -16,11 +16,11 @@ class VertexBuffer;
 
 struct Vertex
 {
-	glm::vec3 Position{ 0.0f };
-	glm::vec3 Normal{ 0.0f };
-	glm::vec2 TexCoords{ 0.0f };
-	glm::vec3 Tangent{ 0.0f };
-	glm::vec3 Bitangent{ 0.0f };
+	glm::vec3 position{ 0.0f };
+	glm::vec3 normal{ 0.0f };
+	glm::vec2 texCoords{ 0.0f };
+	glm::vec3 tangent{ 0.0f };
+	glm::vec3 biTangent{ 0.0f };
 
 	static constexpr uint32_t POSITION_ELMTS_COUNT = 3;
 	static constexpr uint32_t NORMAL_ELMTS_COUNT = 3;

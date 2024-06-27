@@ -69,11 +69,11 @@ void Skybox::ComputeVertices()
 	while (positionIndex < VERTICES_COUNT * Vertex::POSITION_ELMTS_COUNT)
 	{
 		Vertex vertex;
-		vertex.Position = glm::vec3(vertexCoor[positionIndex], vertexCoor[positionIndex + 1], vertexCoor[positionIndex + 2]);
-		vertex.Normal = zeroVector;
-		vertex.TexCoords = zeroVector;
-		vertex.Tangent = zeroVector;
-		vertex.Bitangent = zeroVector;
+		vertex.position = glm::vec3(vertexCoor[positionIndex], vertexCoor[positionIndex + 1], vertexCoor[positionIndex + 2]);
+		vertex.normal = zeroVector;
+		vertex.texCoords = zeroVector;
+		vertex.tangent = zeroVector;
+		vertex.biTangent = zeroVector;
 		vertices.push_back(std::move(vertex));
 
 		positionIndex += Vertex::POSITION_ELMTS_COUNT;
