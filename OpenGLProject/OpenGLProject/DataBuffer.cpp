@@ -35,7 +35,17 @@ void DataBuffer::Unbind() const
 	glBindBuffer(target, 0);
 }
 
-void DataBuffer::InitSubData(const std::vector<SubData>& data, const uint32_t dataStart)
+void DataBuffer::SetSubData(const void* data, const size_t size, const uint32_t dataStart)
+{
+	Bind();
+
+	// Update the data stored in the specified subset of memory space (in bytes), avoiding the reallocation cost
+	glBufferSubData(target, dataStart, size, data);
+
+	Unbind();
+}
+
+void DataBuffer::SetSubData(const std::vector<SubData>& data, const uint32_t dataStart)
 {
 	Bind();
 

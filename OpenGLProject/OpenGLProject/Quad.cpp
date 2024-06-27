@@ -33,7 +33,7 @@ void Quad::Compute()
 
 void Quad::Store(VertexBuffer& vbo)
 {
-	vbo.InitSubData({ { static_cast<const void*>(quadCoor.data()), Quad::GetSize() } });
+	vbo.SetSubData(static_cast<const void*>(quadCoor.data()), Quad::GetSize());
 }
 
 void Quad::Render(const Renderer& renderer, const VertexArray& vao)

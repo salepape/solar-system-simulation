@@ -16,7 +16,7 @@ position(inPosition), attenuationParams(inAttenuationParams), ubo(ResourceLoader
 
 void PointLight::SetFUniforms()
 {
-	ubo.InitSubData({
+	ubo.SetSubData({
 		{ static_cast<const void*>(glm::value_ptr(position)), Utils::vec4Size },
 		{ static_cast<const void*>(glm::value_ptr(reflectionParams.ambient)), Utils::vec4Size },
 		{ static_cast<const void*>(glm::value_ptr(reflectionParams.diffuse)), Utils::vec4Size },
@@ -30,5 +30,5 @@ void PointLight::SetFUniforms()
 
 void PointLight::SetLightPositionFUniform(const glm::vec3& inPosition)
 {
-	ubo.InitSubData({ { static_cast<const void*>(glm::value_ptr(inPosition)), Utils::vec4Size } });
+	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inPosition)), Utils::vec4Size);
 }

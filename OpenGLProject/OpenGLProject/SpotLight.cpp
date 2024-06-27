@@ -16,7 +16,7 @@ position(inPosition), direction(inDirection), attenuationParams(inAttenuationPar
 
 void SpotLight::SetFUniforms()
 {
-	ubo.InitSubData({
+	ubo.SetSubData({
 		{ static_cast<const void*>(glm::value_ptr(position)), Utils::vec4Size },
 		{ static_cast<const void*>(glm::value_ptr(direction)), Utils::vec4Size },
 		{ static_cast<const void*>(glm::value_ptr(reflectionParams.ambient)), Utils::vec4Size },
@@ -35,17 +35,17 @@ void SpotLight::SetFUniforms()
 void SpotLight::SetLightPositionFUniform(const glm::vec3& inPosition)
 {
 	SetPosition(inPosition);
-	ubo.InitSubData({ { static_cast<const void*>(glm::value_ptr(inPosition)), Utils::vec4Size } });
+	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inPosition)), Utils::vec4Size);
 }
 
 void SpotLight::SetLightDirectionFUniform(const glm::vec3& inDirection)
 {
 	SetDirection(inDirection);
-	ubo.InitSubData({ { static_cast<const void*>(glm::value_ptr(inDirection)), Utils::vec4Size } }, Utils::vec4Size);
+	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inDirection)), Utils::vec4Size, Utils::vec4Size);
 }
 
 void SpotLight::SetIsCameraFlashlightFUniform(const bool isActive)
 {
 	SetActivationState(isActive);
-	ubo.InitSubData({ { static_cast<const void*>(&isActive), Utils::scalarSize } }, 5 * Utils::vec4Size + 6 * Utils::scalarSize);
+	ubo.SetSubData(static_cast<const void*>(&isActive), Utils::scalarSize, 5 * Utils::vec4Size + 6 * Utils::scalarSize);
 }

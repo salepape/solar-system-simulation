@@ -16,7 +16,7 @@ direction(inDirection), ubo(ResourceLoader::GetUBO("ubo_DirectionalLight"))
 
 void DirectionalLight::SetFUniforms()
 {
-	ubo.InitSubData({
+	ubo.SetSubData({
 		{ static_cast<const void*>(glm::value_ptr(direction)), Utils::vec4Size },
 		{ static_cast<const void*>(glm::value_ptr(reflectionParams.ambient)), Utils::vec4Size },
 		{ static_cast<const void*>(glm::value_ptr(reflectionParams.diffuse)), Utils::vec4Size },
@@ -27,5 +27,5 @@ void DirectionalLight::SetFUniforms()
 
 void DirectionalLight::SetLightDirectionFUniform(const glm::vec3& inDirection)
 {
-	ubo.InitSubData({ { static_cast<const void*>(glm::value_ptr(inDirection)), Utils::vec4Size } });
+	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inDirection)), Utils::vec4Size);
 }

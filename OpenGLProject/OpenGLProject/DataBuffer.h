@@ -26,7 +26,8 @@ public:
 	void Unbind() const;
 
 	// Set data in the memory region starting after the indicated amount of bytes
-	void InitSubData(const std::vector<SubData>& data, const uint32_t dataStart = 0);
+	void SetSubData(const void* data, const size_t size, const uint32_t dataStart = 0);
+	void SetSubData(const std::vector<SubData>& data, const uint32_t dataStart = 0);
 
 protected:
 	uint32_t rendererID{ 0 };
