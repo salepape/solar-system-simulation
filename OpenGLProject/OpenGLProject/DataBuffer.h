@@ -1,6 +1,7 @@
 #ifndef DATABUFFER_H
 #define DATABUFFER_H
 
+#include <glad.h>
 #include <vector>
 
 
@@ -16,7 +17,7 @@ class DataBuffer
 public:
 	// Default constructor needed for UniformBuffer constructor not using DataBuffer user-defined one
 	DataBuffer() = default;
-	DataBuffer(const void* data, const size_t size, const uint32_t inTarget);
+	DataBuffer(const void* data, const size_t size, const uint32_t inTarget, const uint32_t usage = GL_STATIC_DRAW);
 	~DataBuffer();
 
 	// Select the VBO we want to use

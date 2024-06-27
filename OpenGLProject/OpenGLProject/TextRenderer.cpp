@@ -42,7 +42,7 @@ TextRenderer::TextRenderer(const Renderer& inRenderer, const uint32_t pixelFontW
 void TextRenderer::AllocateBufferObjects()
 {
 	vao = std::make_shared<VertexArray>();
-	vbo = std::make_shared<VertexBuffer>(nullptr, Quad::GetSize());
+	vbo = std::make_shared<VertexBuffer>(nullptr, Quad::GetSize(), GL_DYNAMIC_DRAW);
 
 	VertexBufferLayout vbl;
 	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, Quad::QUAD_ELMTS_COUNT);

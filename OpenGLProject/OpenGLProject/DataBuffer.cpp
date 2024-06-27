@@ -4,7 +4,7 @@
 
 
 
-DataBuffer::DataBuffer(const void* data, const size_t size, const uint32_t inTarget) :
+DataBuffer::DataBuffer(const void* data, const size_t size, const uint32_t inTarget, const uint32_t usage) :
 	target(inTarget)
 {
 	// Reserve an ID available to be used by the BO as a binding point
@@ -13,7 +13,7 @@ DataBuffer::DataBuffer(const void* data, const size_t size, const uint32_t inTar
 	Bind();
 
 	// Allocate memory space (in bytes) to the BO and store data in it
-	glBufferData(target, size, data, GL_STATIC_DRAW);
+	glBufferData(target, size, data, usage);
 }
 
 DataBuffer::~DataBuffer()
