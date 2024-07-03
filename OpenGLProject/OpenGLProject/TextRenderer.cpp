@@ -45,7 +45,7 @@ void TextRenderer::AllocateBufferObjects()
 	vbo = std::make_shared<VertexBuffer>(nullptr, Quad::GetSize(), GL_DYNAMIC_DRAW);
 
 	VertexBufferLayout vbl;
-	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, Quad::QUAD_ELMTS_COUNT);
+	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, QuadVertex::ELMTS_COUNT);
 	vao->AddBuffer(*vbo, std::move(vbl));
 
 	vao->Unbind();
@@ -123,7 +123,7 @@ void TextRenderer::Render(const std::string& text, float x, const float y, const
 		const float height = glyphParams.size.y * scale;
 
 		Quad quad(xPosition, yPosition, width, height);
-		quad.Store(*vbo);
+		quad.StoreVertices(*vbo);
 
 		glyphParams.texture.Enable(body.billboard.GetMaterial().GetDiffuseTextureUnit());
 		quad.Render(renderer, *vao);

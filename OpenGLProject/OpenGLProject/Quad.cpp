@@ -11,29 +11,27 @@
 Quad::Quad(const float inXPosition, const float inYPosition, const float inWidth, const float inHeight) :
 	xPosition(inXPosition), yPosition(inYPosition), width(inWidth), height(inHeight)
 {
-	Compute();
+	ComputeVertices();
 }
 
-void Quad::Compute()
+void Quad::ComputeVertices()
 {
-	// Each line to be interpreted as (vCoorX, vCoorY, texCoorX, texCoorY)
-	quadCoor.reserve(Quad::VERTICES_COUNT * Quad::QUAD_ELMTS_COUNT);
-	quadCoor.insert(quadCoor.end(),
-		{
-		xPosition,			yPosition + height,		0.0f, 0.0f,
-		xPosition,			yPosition,				0.0f, 1.0f,
-		xPosition + width,	yPosition,				1.0f, 1.0f,
+	vertexCoor.reserve(Quad::VERTICES_COUNT);
 
-		xPosition,			yPosition + height,		0.0f, 0.0f,
-		xPosition + width,	yPosition,				1.0f, 1.0f,
-		xPosition + width,	yPosition + height,		1.0f, 0.0f
-		}
-	);
+	vertexCoor.insert(vertexCoor.end(), {
+		{ { xPosition,			yPosition + height }, { 0.0f, 0.0f } },
+		{ { xPosition,			yPosition		   }, { 0.0f, 1.0f } },
+		{ { xPosition + width,	yPosition		   }, { 1.0f, 1.0f } },
+
+		{ { xPosition,			yPosition + height }, { 0.0f, 0.0f } },
+		{ { xPosition + width,	yPosition		   }, { 1.0f, 1.0f } },
+		{ { xPosition + width,	yPosition + height }, { 1.0f, 0.0f } }
+		});
 }
 
-void Quad::Store(VertexBuffer& vbo)
+void Quad::StoreVertices(VertexBuffer& vbo)
 {
-	vbo.SetSubData(static_cast<const void*>(quadCoor.data()), Quad::GetSize());
+	vbo.SetSubData(static_cast<const void*>(vertexCoor.data()), Quad::GetSize());
 }
 
 void Quad::Render(const Renderer& renderer, const VertexArray& vao)
