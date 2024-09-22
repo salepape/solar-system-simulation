@@ -16,7 +16,7 @@ public:
 	void Refresh() override;
 
 private:
-	std::unique_ptr<SolarSystem> scene;
+	std::unique_ptr<SolarSystem> solarSystemScene;
 };
 
 

@@ -35,11 +35,11 @@ void Controller::ProcessKeyboardInput(const float deltaTime)
 	// Speed up/Slow down the simulation
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_UP))
 	{
-		Application::GetInstance().ChangeSpeed(2.0f);
+		Application::GetInstance().UpdateSpeed(2.0f);
 	}
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_DOWN))
 	{
-		Application::GetInstance().ChangeSpeed(0.5f);
+		Application::GetInstance().UpdateSpeed(0.5f);
 	}
 
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_R))
@@ -227,7 +227,7 @@ void Controller::Callback_DetectKeyboardInput()
 			return controller;
 		};
 
-		const auto IsReleaseActionRegistered = [&](const double pressTime)
+		const auto IsReleaseActionRegistered = [&GetController](const double pressTime)
 		{
 			const auto controller = GetController();
 			return Application::GetInstance().GetTime() - pressTime > controller->timeBeforeReleaseRegistered;

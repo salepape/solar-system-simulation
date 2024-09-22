@@ -10,7 +10,7 @@
 
 
 
-class SolarSystem :public Scene
+class SolarSystem : public Scene
 {
 public:
 	SolarSystem();
@@ -21,7 +21,7 @@ public:
 	static std::vector<Belt>& GetBeltsVector();
 
 private:
-	// Container for all planets (filled using the ResourceLoader)
+	// Container for all planets, moons and dward planets (filled using the ResourceLoader)
 	static std::vector<CelestialBody> celestialBodies;
 
 	// Container for Asteroid and Kuiper belts (filled using the ResourceLoader)

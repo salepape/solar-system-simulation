@@ -9,10 +9,10 @@ void SolarSystemSimulation::SetUp()
 {
 	ResourceLoader::LoadShaders();
 
-	scene = std::make_unique<SolarSystem>();
+	solarSystemScene = std::make_unique<SolarSystem>();
 }
 
 void SolarSystemSimulation::Refresh()
 {
-	scene->Update();
+	solarSystemScene->Update();
 }

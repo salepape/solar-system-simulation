@@ -12,17 +12,16 @@ class Window;
 
 
 
+// Contain entities that model the simulation. Be careful: shaders need to be all loaded first!
 class Scene
 {
 public:
 	Scene();
 
-	// Create most of scene entities. Be careful: shaders need to be all loaded first!
 	virtual void Update() = 0;
-
-	// Free up all rendering resources
 	void Clear();
 
+	// Cache Application and Window so we don't need to get their instance each frame in the Render loop
 	Application& runningApp;
 	Window& openedWindow;
 

@@ -26,7 +26,7 @@ void Application::Run()
 	SetUp();
 
 	// Main loop (run every frame)
-	while (IsNotClosed())
+	while (IsClosed() == false)
 	{
 		Tick();
 	}
@@ -55,13 +55,9 @@ void Application::Terminate()
 	window->FreeUpResources();
 }
 
-
-
-
-
-bool Application::IsNotClosed() const
+bool Application::IsClosed() const
 {
-	return glfwWindowShouldClose(window->GLFWWindow) == 0;
+	return glfwWindowShouldClose(window->GLFWWindow) != 0;
 }
 
 void Application::Close() const
@@ -72,7 +68,6 @@ void Application::Close() const
 void Application::Pause(const bool inIsPaused)
 {
 	isPaused = inIsPaused;
-
 	if (isPaused == false)
 	{
 		glfwSetTime(lastFrameElapsedTime);
@@ -84,7 +79,7 @@ double Application::GetTime()
 	return glfwGetTime();
 }
 
-void Application::ChangeSpeed(const float inSpeedFactor)
+void Application::UpdateSpeed(const float inSpeedFactor)
 {
 	speedFactor *= inSpeedFactor;
 }

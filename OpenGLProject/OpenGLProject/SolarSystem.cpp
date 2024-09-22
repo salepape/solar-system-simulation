@@ -23,13 +23,13 @@ SolarSystem::SolarSystem() :
 	ResourceLoader::LoadCelestialBodies();
 	ResourceLoader::LoadBelts();
 
-	// Fill remaining Orbit/Billboard data just after construction ended
+	// Fill remaining Orbit and Billboard data just after construction ended
 	for (auto& celestialBody : celestialBodies)
 	{
 		celestialBody.orbit.SetDataPostConstruction();
 		celestialBody.billboard.SetDataPostConstruction(textRenderer);
 	}
-	// Free FT resources oce we don't have any more letters to load
+	// Free FT resources once we don't have any more letters to load
 	textRenderer.FreeFTResources();
 
 	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun - farthest celestial body'
@@ -67,7 +67,7 @@ void SolarSystem::Update()
 		auto& currentBody = ResourceLoader::GetBody(bodyit->second);
 		currentBody.Render(renderer, runningApp.elapsedTime * runningApp.speedFactor);
 
-		if (runningApp.IsLegend())
+		if (runningApp.IsLegendDisplayed())
 		{
 			// Orient text billboards so their readable side always faces the camera
 			const glm::vec3& forward = glm::normalize(cameraPosition - currentBody.GetPosition());
