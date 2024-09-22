@@ -6,14 +6,12 @@
 #include <glm/vec3.hpp>
 #include <vector>
 
-#include "SpotLight.h"
-
 class Shader;
 class UniformBuffer;
 
 
 
-// Fly-like camera class
+// Fly-like perspective camera
 class Camera
 {
 public:
@@ -21,6 +19,7 @@ public:
 
 	const glm::vec3& GetPosition() const { return position; }
 	const glm::vec3& GetUp() const { return up; }
+	const glm::vec3& GetForward() const { return forward; }
 
 	// Set position/rotation of the camera to their initial values
 	void Reset();
@@ -32,16 +31,13 @@ public:
 
 	void SetFovY(const float zoomLeft) { fovY = zoomLeft; }
 
-	glm::mat4 ComputeProjectionMatrix(const float windowAspectRatio) const;
-	glm::mat4 ComputeViewMatrix() const;
+	glm::mat4 ComputePerspectiveProjection(const float windowAspectRatio) const;
+	glm::mat4 ComputeView() const;
+	glm::mat4 ComputeInfiniteView() const;
 
 	void SetProjectionViewVUniform(const float windowAspectRatio);
 	void SetInfiniteProjectionViewVUniform(const float windowAspectRatio);
 	void SetPositionFUniform();
-
-	// Prefer to turn on/off reflection params rather than creating/deleting a heap-allocated SpotLight instance
-	void SetFlashlightState(const bool isActive);
-	void UpdateFlashlight();
 
 private:
 	glm::vec3 initialPosition{ 0.0f };
@@ -62,8 +58,6 @@ private:
 	glm::vec3 up{ 1.0f, 0.0f, 0.0f };
 	glm::vec3 right{ 0.0f, 1.0f, 0.0f };
 	glm::vec3 forward{ 0.0f, 0.0f, -1.0f };
-
-	SpotLight flashlight;
 
 	UniformBuffer& projectionViewUBO;
 	UniformBuffer& positionUBO;

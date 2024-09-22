@@ -45,7 +45,7 @@ void SolarSystem::Update()
 {
 	renderer.Clear();
 
-	controller->ProcessInput(runningApp.deltaTime);
+	controller->ProcessKeyboardInput(runningApp.deltaTime);
 
 	Camera& camera = controller->GetCamera();
 	camera.SetProjectionViewVUniform(openedWindow.GetAspectRatio());

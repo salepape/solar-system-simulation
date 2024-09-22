@@ -28,7 +28,7 @@ void SpotLight::SetFUniforms()
 		{ static_cast<const void*>(&spotParams.cutoff), Utils::scalarSize },
 		{ static_cast<const void*>(&spotParams.outerCutoff), Utils::scalarSize },
 		{ static_cast<const void*>(&isBlinn), Utils::scalarSize },
-		{ static_cast<const void*>(&isCameraFlashlight), Utils::scalarSize }
+		{ static_cast<const void*>(&isCameraFlashLight), Utils::scalarSize }
 		});
 }
 
@@ -44,7 +44,7 @@ void SpotLight::SetLightDirectionFUniform(const glm::vec3& inDirection)
 	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inDirection)), Utils::vec4Size, Utils::vec4Size);
 }
 
-void SpotLight::SetIsCameraFlashlightFUniform(const bool isActive)
+void SpotLight::SetIsCameraFlashLightFUniform(const bool isActive)
 {
 	SetActivationState(isActive);
 	ubo.SetSubData(static_cast<const void*>(&isActive), Utils::scalarSize, 5 * Utils::vec4Size + 6 * Utils::scalarSize);

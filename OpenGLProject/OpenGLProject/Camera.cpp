@@ -16,7 +16,6 @@
 
 Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane) :
 	initialPosition(inPosition), initialRotation(inRotation), position(inPosition), pitch(inRotation.y), yaw(inRotation.z), fovY(inFovY), farPlane(inFarPlane),
-	flashlight(inPosition, forward, { glm::vec3(0.2f), glm::vec3(0.8f), glm::vec3(1.0f) }, { 1.0f, 0.007f, 0.0002f }, { glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f)) }),
 	projectionViewUBO(ResourceLoader::GetUBO("ubo_ProjectionView")), positionUBO(ResourceLoader::GetUBO("ubo_CameraPosition"))
 {
 	UpdateCameraVectors();
@@ -32,14 +31,19 @@ void Camera::Reset()
 	UpdateCameraVectors();
 }
 
-glm::mat4 Camera::ComputeProjectionMatrix(const float windowAspectRatio) const
+glm::mat4 Camera::ComputePerspectiveProjection(const float windowAspectRatio) const
 {
 	return glm::perspective(glm::radians(fovY), windowAspectRatio, 0.1f, farPlane);
 }
 
-glm::mat4 Camera::ComputeViewMatrix() const
+glm::mat4 Camera::ComputeView() const
 {
 	return glm::lookAt(position, position + forward, up);
+}
+
+glm::mat4 Camera::ComputeInfiniteView() const
+{
+	return glm::mat4(glm::mat3(ComputeView()));
 }
 
 void Camera::UpdateForwardPosition(const float distance)
@@ -61,7 +65,7 @@ void Camera::UpdateRotation(const glm::vec2& offset)
 {
 	yaw += offset.x;
 
-	// Avoid screen getting flipped by bounding pitch value
+	// Avoid screen getting flipped when looking more than 90 degrees up or down, by bounding pitch value
 	constexpr float maxPitchBeforeFlip = 89.0f;
 	pitch = glm::clamp(pitch + offset.y, -maxPitchBeforeFlip, maxPitchBeforeFlip);
 
@@ -70,14 +74,14 @@ void Camera::UpdateRotation(const glm::vec2& offset)
 
 void Camera::UpdateCameraVectors()
 {
-	const float YawInRadians = glm::radians(yaw);
-	const float PitchInRadians = glm::radians(pitch);
+	const float yawInRadians = glm::radians(yaw);
+	const float pitchInRadians = glm::radians(pitch);
 
 	// Normalise vectors because their length gets closer to 0 the more you look up or down, which results in slower movement
 	glm::vec3 newForward;
-	newForward.x = glm::cos(YawInRadians) * glm::cos(PitchInRadians);
-	newForward.y = glm::sin(PitchInRadians);
-	newForward.z = glm::sin(YawInRadians) * glm::cos(PitchInRadians);
+	newForward.x = glm::cos(yawInRadians) * glm::cos(pitchInRadians);
+	newForward.y = glm::sin(pitchInRadians);
+	newForward.z = glm::sin(yawInRadians) * glm::cos(pitchInRadians);
 	forward = glm::normalize(newForward);
 
 	right = glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
@@ -87,26 +91,18 @@ void Camera::UpdateCameraVectors()
 
 void Camera::SetProjectionViewVUniform(const float windowAspectRatio)
 {
-	projectionViewUBO.SetSubData(static_cast<const void*>(glm::value_ptr(ComputeProjectionMatrix(windowAspectRatio) * ComputeViewMatrix())), Utils::mat4v4Size);
+	const glm::mat4& projectionView = ComputePerspectiveProjection(windowAspectRatio) * ComputeView();
+	projectionViewUBO.SetSubData(static_cast<const void*>(glm::value_ptr(projectionView)), Utils::mat4v4Size);
 }
 
 void Camera::SetInfiniteProjectionViewVUniform(const float windowAspectRatio)
 {
-	projectionViewUBO.SetSubData(static_cast<const void*>(glm::value_ptr(ComputeProjectionMatrix(windowAspectRatio) * glm::mat4(glm::mat3(ComputeViewMatrix())))), Utils::mat4v4Size);
+	const glm::mat4& infiniteProjectionView = ComputePerspectiveProjection(windowAspectRatio) * ComputeInfiniteView();
+	projectionViewUBO.SetSubData(static_cast<const void*>(glm::value_ptr(infiniteProjectionView)), Utils::mat4v4Size);
 }
 
 void Camera::SetPositionFUniform()
 {
-	positionUBO.SetSubData(static_cast<const void*>(glm::value_ptr(glm::vec4(GetPosition(), 0.0f))), Utils::vec4Size);
-}
-
-void Camera::SetFlashlightState(const bool isActive)
-{
-	flashlight.SetIsCameraFlashlightFUniform(isActive);
-}
-
-void Camera::UpdateFlashlight()
-{
-	flashlight.SetLightPositionFUniform(position);
-	flashlight.SetLightDirectionFUniform(forward);
+	const glm::vec4& position = glm::vec4(GetPosition(), 0.0f);
+	positionUBO.SetSubData(static_cast<const void*>(glm::value_ptr(position)), Utils::vec4Size);
 }

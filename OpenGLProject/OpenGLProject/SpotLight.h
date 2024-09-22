@@ -15,7 +15,6 @@ struct SpotParams
 	float outerCutoff{ 0.0f };
 };
 
-// Represents a flashlight
 class SpotLight : public LightSource
 {
 public:
@@ -24,19 +23,19 @@ public:
 
 	void SetPosition(const glm::vec3& inPosition) { position = inPosition; }
 	void SetDirection(const glm::vec3 inDirection) { direction = inDirection; }
-	void SetActivationState(const bool isActive) { isCameraFlashlight = isActive; }
+	void SetActivationState(const bool isActive) { isCameraFlashLight = isActive; }
 
 	void SetFUniforms() override;
 	void SetLightPositionFUniform(const glm::vec3& inPosition);
 	void SetLightDirectionFUniform(const glm::vec3& inDirection);
-	void SetIsCameraFlashlightFUniform(const bool isActive);
+	void SetIsCameraFlashLightFUniform(const bool isActive);
 
 private:
 	glm::vec3 position{ 0.0f };
 	glm::vec3 direction{ 0.0f };
 	AttenuationParams attenuationParams;
 	SpotParams spotParams;
-	bool isCameraFlashlight{ false };
+	bool isCameraFlashLight{ false };
 
 	UniformBuffer& ubo;
 };

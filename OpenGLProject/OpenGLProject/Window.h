@@ -25,19 +25,19 @@ public:
 	// Tell GLFW that we want the window context to be the main one on the current thread
 	int32_t MakeContextCurrent();
 
-	// Swap font and back buffers (we sent to the screen the updated buffer)
+	// Swap font and back buffers (we sent the updated buffer to the screen)
 	void SwapBuffers();
 
 	// Check if any events are triggered, updates the window states and call the corresponding functions
 	void PollEvents();
 
-	// Clean up properly all previous allocated GLFW resources
+	// Clear properly all previous allocated GLFW resources
 	void FreeUpResources();
 
 	float GetAspectRatio() const { return aspectRatio; }
 	void UpdateDimensions(const uint32_t newWidth, const uint32_t newHeight);
 
-	const glm::vec2& GetOffsetFromLastCursorPosition(const double xPosition, const double yPosition);
+	const glm::vec2 ComputeCursorOffset(const double xPosition, const double yPosition);
 
 	// Make the cursor invisible to the player and allow movements even if cursor is theorically outside the window
 	void SetCursorMode(const int modeValue);
@@ -49,15 +49,12 @@ private:
 
 	float aspectRatio{ 0.0f };
 
-	// Variables for mouse callback function
-	bool firstMouseInput{ true };
-	glm::vec2 lastCursorPositionCache;
-	glm::vec2 offsetFromLastCursorPosition;
+	bool isFirstMouseInput{ true };
+	glm::vec2 lastCursorPosition;
 
 	GLFWwindow* const initGLFWWindow();
 
-	// Adapt the viewport size whenever the window size has been changed (by OS or the user)
-	void Callback_SetFramebufferResize();
+	void Callback_DetectWindowResize();
 };
 
 

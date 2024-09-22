@@ -64,9 +64,9 @@ layout (std140) uniform ubo_SpotLight
     float fu_OuterCutoff;
 
     bool fu_IsBlinn;
-    bool fu_IsCameraFlashlight;
+    bool fu_IsCameraFlashLight;
 } spotLight;
-uniform bool fu_IsCameraFlashlight;
+uniform bool fu_IsCameraFlashLight;
 
 layout (std140) uniform vec4 ubo_CameraPosition;
 
@@ -188,7 +188,7 @@ void main()
 
     // Spot light contribution
     vec3 spotLightPhongIllumination = vec3(0.0, 0.0, 0.0);
-    if (spotLight.fu_IsCameraFlashlight)
+    if (spotLight.fu_IsCameraFlashLight)
     {
         spotLightPhongIllumination = ComputeSpotLightPhongIllumination();
     }

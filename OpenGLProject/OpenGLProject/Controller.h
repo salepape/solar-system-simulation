@@ -2,26 +2,31 @@
 #define CONTROLLER_H
 
 #include "Camera.h"
+#include "SpotLight.h"
 
 #include <glm/vec3.hpp>
 
 
 
-// Controller class that processes input and calculates its Euler angles, vectors and matrices
+// Camera controller that processes keyboard input, manages a spotlight, and calculates camera Euler angles
 class Controller
 {
 public:
 	Controller(const glm::vec3& position, const glm::vec3& rotation, const float inZoomMaxLevel, const float inFarPlane);
 
-	// Process controller input received from any keyboard-like input system
-	void ProcessInput(const float deltaTime);
+	void ProcessKeyboardInput(const float deltaTime);
 
 	Camera& GetCamera() { return camera; }
-
 	float GetZoomLeft() const { return zoomLeft; }
+
+	// Turn on/off reflection params rather than creating/deleting a heap-allocated SpotLight instance
+	void SetFlashLightState(const bool isActive);
+	void UpdateFlashLight();
 
 private:
 	Camera camera;
+
+	SpotLight flashLight;
 
 	// [in km/s]
 	float travelSpeed{ 20.0f };
@@ -39,25 +44,21 @@ private:
 	double pauseStartTime{ 0.0 };
 	double displayLegendStartTime{ 0.0 };
 	double cursorModeStartTime{ 0.0 };
-	double flashlightStartTime{ 0.0 };
+	double flashLightStartTime{ 0.0 };
 
-	// Duration needed before a button release is detected
-	double detectedButtonReleaseMinDuration{ 1.0 };
+	// Allow to not register a release action if the time that separates it from the preceeding press action is below this one, considered too small
+	double timeBeforeReleaseRegistered{ 1.0 };
 
 	// Process input received from a mouse scroll-wheel event (vertical wheel-axis to be considered only)
-	void UpdateZoomLeft(const float yoffset);
+	void UpdateZoomLeft(const float yOffset);
 
 	void IncreaseTravelSpeed(const float factor);
 	void DecreaseTravelSpeed(const float factor);
 
-	// Detect if any mouse movement is masde and react accordingly
-	void Callback_SetCursorPosition();
-
-	// Detect if any mouse wheel movement is made and react accordingly
-	void Callback_SetScroll();
-
-	// Detect when a key is pressed/released
-	void Callback_SetKey();
+	// Call corresponding GLFW callback functions
+	void Callback_DetectMouseInput();
+	void Callback_DetectMouseWheelInput();
+	void Callback_DetectKeyboardInput();
 };
 
 

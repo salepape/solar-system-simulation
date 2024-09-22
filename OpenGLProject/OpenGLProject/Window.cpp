@@ -10,7 +10,7 @@ Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::strin
 {
 	UpdateDimensions(inWidth, inHeight);
 
-	lastCursorPositionCache = glm::vec2(0.5f * width, 0.5f * height);
+	lastCursorPosition = glm::vec2(0.5f * width, 0.5f * height);
 
 	GLFWWindow = initGLFWWindow();
 	if (GLFWWindow == nullptr)
@@ -28,7 +28,7 @@ Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::strin
 		return;
 	}
 
-	Callback_SetFramebufferResize();
+	Callback_DetectWindowResize();
 
 	SetCursorMode(GLFW_CURSOR_DISABLED);
 }
@@ -62,21 +62,21 @@ int32_t Window::MakeContextCurrent()
 	return 0;
 }
 
-void Window::Callback_SetFramebufferResize()
+void Window::Callback_DetectWindowResize()
 {
-	glfwSetFramebufferSizeCallback(GLFWWindow, [](GLFWwindow* window, int32_t width, int32_t height)
+	glfwSetFramebufferSizeCallback(GLFWWindow, [](GLFWwindow* GLFWWindow, int32_t width, int32_t height)
 	{
 		glViewport(0, 0, width, height);
 
 		// Access contextual data from within GLFWwindow callback
-		auto* const currentWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
-		if (currentWindow == nullptr)
+		auto* const window = static_cast<Window*>(glfwGetWindowUserPointer(GLFWWindow));
+		if (window == nullptr)
 		{
 			std::cout << "ERROR::WINDOW - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
 			return;
 		}
 
-		currentWindow->UpdateDimensions(width, height);
+		window->UpdateDimensions(width, height);
 	});
 }
 
@@ -107,19 +107,18 @@ void Window::UpdateDimensions(const uint32_t newWidth, const uint32_t newHeight)
 	aspectRatio = width * 1.0f / height;
 }
 
-const glm::vec2& Window::GetOffsetFromLastCursorPosition(const double xPosition, const double yPosition)
+const glm::vec2 Window::ComputeCursorOffset(const double xPosition, const double yPosition)
 {
-	// Avoid little jump
-	if (firstMouseInput)
+	// Avoid little jump 
+	if (isFirstMouseInput)
 	{
-		lastCursorPositionCache = glm::vec2(xPosition, yPosition);
-		firstMouseInput = false;
+		lastCursorPosition = glm::vec2(xPosition, yPosition);
+		isFirstMouseInput = false;
 	}
 
-	// Reverse y-coordinates since they go from bottom to top 
-	offsetFromLastCursorPosition = { xPosition - lastCursorPositionCache.x, lastCursorPositionCache.y - yPosition };
+	// Reverse y-coordinates since they go from bottom to top  
+	const glm::vec2& cursorOffset = glm::vec2(xPosition - lastCursorPosition.x, lastCursorPosition.y - yPosition);
+	lastCursorPosition = glm::vec2(xPosition, yPosition);
 
-	lastCursorPositionCache = glm::vec2(xPosition, yPosition);
-
-	return offsetFromLastCursorPosition;
+	return cursorOffset;
 }
