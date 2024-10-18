@@ -12,7 +12,7 @@
 class Controller
 {
 public:
-	Controller(const glm::vec3& position, const glm::vec3& rotation, const float inZoomMaxLevel, const float inFarPlane);
+	Controller(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inZoomMaxLevel, const float inFarPlane);
 
 	void ProcessKeyboardInput(const float deltaTime);
 
