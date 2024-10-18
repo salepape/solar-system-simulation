@@ -21,7 +21,7 @@ Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const f
 	UpdateCameraVectors();
 }
 
-void Camera::Reset()
+void Camera::ResetTransform()
 {
 	position = initialPosition;
 

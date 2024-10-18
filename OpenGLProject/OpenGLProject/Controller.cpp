@@ -44,7 +44,7 @@ void Controller::ProcessKeyboardInput(const float deltaTime)
 
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_R))
 	{
-		camera.Reset();
+		camera.ResetTransform();
 	}
 
 	// Designed for AZERTY keyboards with corresponding QWERTY GLFW_KEYs

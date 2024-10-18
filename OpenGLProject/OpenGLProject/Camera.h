@@ -11,7 +11,6 @@ class UniformBuffer;
 
 
 
-// Fly-like perspective camera
 class Camera
 {
 public:
@@ -21,8 +20,7 @@ public:
 	const glm::vec3& GetUp() const { return up; }
 	const glm::vec3& GetForward() const { return forward; }
 
-	// Set position/rotation of the camera to their initial values
-	void Reset();
+	void ResetTransform();
 
 	void UpdateForwardPosition(const float distance);
 	void UpdateUpPosition(const float distance);
