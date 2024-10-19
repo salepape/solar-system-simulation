@@ -11,6 +11,7 @@ struct GLFWwindow;
 
 
 
+// @todo - Reduce exposure of most attributes once the event system is implemented
 class Window
 {
 public:
@@ -22,24 +23,22 @@ public:
 	// @todo - Implement a custom event system, to get rid of this pointer?
 	std::shared_ptr<Controller> controller;
 
-	// Tell GLFW that we want the window context to be the main one on the current thread
+	// Tell GLFW that we want the context of the window to be the current single one for the current thread
 	int32_t MakeContextCurrent();
 
-	// Swap font and back buffers (we sent the updated buffer to the screen)
-	void SwapBuffers();
+	void SwapFrontAndBackBuffers();
 
-	// Check if any events are triggered, updates the window states and call the corresponding functions
-	void PollEvents();
+	// Call all window callbacks associated with each queueing events
+	void ProcessPendingEvents();
 
-	// Clear properly all previous allocated GLFW resources
-	void FreeUpResources();
+	void ClearResources();
 
 	float GetAspectRatio() const { return aspectRatio; }
-	void UpdateDimensions(const uint32_t newWidth, const uint32_t newHeight);
+	void Resize(const uint32_t newWidth, const uint32_t newHeight);
 
 	const glm::vec2 ComputeCursorOffset(const double xPosition, const double yPosition);
 
-	// Make the cursor invisible to the player and allow movements even if cursor is theorically outside the window
+	// Show/Hide the cursor and lock its motion to the window if hidden
 	void SetCursorMode(const int modeValue);
 
 private:
@@ -52,7 +51,7 @@ private:
 	bool isFirstMouseInput{ true };
 	glm::vec2 lastCursorPosition;
 
-	GLFWwindow* const initGLFWWindow();
+	GLFWwindow* const InitGLFWWindow();
 
 	void Callback_DetectWindowResize();
 };

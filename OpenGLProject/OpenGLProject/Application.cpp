@@ -46,13 +46,13 @@ void Application::Tick()
 
 	Refresh();
 
-	window->SwapBuffers();
-	window->PollEvents();
+	window->SwapFrontAndBackBuffers();
+	window->ProcessPendingEvents();
 }
 
 void Application::Terminate()
 {
-	window->FreeUpResources();
+	window->ClearResources();
 }
 
 bool Application::IsClosed() const

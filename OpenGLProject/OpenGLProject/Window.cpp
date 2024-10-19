@@ -8,11 +8,11 @@
 Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::string& inTitle) :
 	title(inTitle)
 {
-	UpdateDimensions(inWidth, inHeight);
+	Resize(inWidth, inHeight);
 
 	lastCursorPosition = glm::vec2(0.5f * width, 0.5f * height);
 
-	GLFWWindow = initGLFWWindow();
+	GLFWWindow = InitGLFWWindow();
 	if (GLFWWindow == nullptr)
 	{
 		std::cout << "ERROR::GLFW - Failed to create GLFW window" << std::endl;
@@ -33,19 +33,18 @@ Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::strin
 	SetCursorMode(GLFW_CURSOR_DISABLED);
 }
 
-GLFWwindow* const Window::initGLFWWindow()
+GLFWwindow* const Window::InitGLFWWindow()
 {
-	// Initialization of a GLFW window
+	// Initialise GLFW library
 	glfwInit();
 
-	// Set major and minor version of OpenGL to 3, to prevent others who have not this OpenGL version GLFW to fail
+	// Set major and minor version of OpenGL, to prevent others who have not this OpenGL version GLFW to fail
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
-	// Tell explicitly GLFW that we want to use core-profile 
+	// Tell explicitly GLFW that we want to use OpenGL core profile 
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// Creation of a GLFW window of size "width x height", its title appearing on a top bar
 	return glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 }
 
@@ -62,6 +61,21 @@ int32_t Window::MakeContextCurrent()
 	return 0;
 }
 
+void Window::SwapFrontAndBackBuffers()
+{
+	glfwSwapBuffers(GLFWWindow);
+}
+
+void Window::ProcessPendingEvents()
+{
+	glfwPollEvents();
+}
+
+void Window::ClearResources()
+{
+	glfwTerminate();
+}
+
 void Window::Callback_DetectWindowResize()
 {
 	glfwSetFramebufferSizeCallback(GLFWWindow, [](GLFWwindow* GLFWWindow, int32_t width, int32_t height)
@@ -76,35 +90,20 @@ void Window::Callback_DetectWindowResize()
 			return;
 		}
 
-		window->UpdateDimensions(width, height);
+		window->Resize(width, height);
 	});
+}
+
+void Window::Resize(const uint32_t newWidth, const uint32_t newHeight)
+{
+	width = newWidth;
+	height = newHeight;
+	aspectRatio = width * 1.0f / height;
 }
 
 void Window::SetCursorMode(const int modeValue)
 {
 	glfwSetInputMode(GLFWWindow, GLFW_CURSOR, modeValue);
-}
-
-void Window::SwapBuffers()
-{
-	glfwSwapBuffers(GLFWWindow);
-}
-
-void Window::PollEvents()
-{
-	glfwPollEvents();
-}
-
-void Window::FreeUpResources()
-{
-	glfwTerminate();
-}
-
-void Window::UpdateDimensions(const uint32_t newWidth, const uint32_t newHeight)
-{
-	width = newWidth;
-	height = newHeight;
-	aspectRatio = width * 1.0f / height;
 }
 
 const glm::vec2 Window::ComputeCursorOffset(const double xPosition, const double yPosition)
