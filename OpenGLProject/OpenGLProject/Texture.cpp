@@ -6,7 +6,7 @@
 
 
 
-Texture::Texture(const std::string& inPath, const uint32_t inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType) :
+Texture::Texture(const std::filesystem::path& inPath, const uint32_t inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType) :
 	path(inPath), target(inTarget), textureType(inTextureType)
 {
 	SetWraps(wrapOptions);
@@ -33,7 +33,7 @@ void Texture::LoadFTBitmap(const FT_Bitmap& bitmap, const uint32_t format)
 void Texture::LoadDDS()
 {
 	// Already contains glGenTextures function call!!!
-	rendererID = SOIL_load_OGL_texture(path.c_str(), SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
+	rendererID = SOIL_load_OGL_texture(path.string().c_str(), SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
 	if (rendererID == 0)
 	{
@@ -44,7 +44,7 @@ void Texture::LoadDDS()
 void Texture::LoadCubemapDDS()
 {
 	// Already contains glGenTextures function call!!!
-	rendererID = SOIL_load_OGL_single_cubemap(path.c_str(), "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
+	rendererID = SOIL_load_OGL_single_cubemap(path.string().c_str(), "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
 	if (rendererID == 0)
 	{

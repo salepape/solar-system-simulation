@@ -3,6 +3,8 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
+#include <filesystem>
 #include <string>
 
 
@@ -41,7 +43,7 @@ class Texture
 public:
 	// Default constructor needed for GlyphParams struct declaration
 	Texture() = default;
-	Texture(const std::string& inPath, const uint32_t inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType);
+	Texture(const std::filesystem::path& inPath, const uint32_t inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType);
 
 	void LoadFTBitmap(const FT_Bitmap& bitmap, const uint32_t format);
 	void LoadDDS();
@@ -66,10 +68,10 @@ public:
 	void Disable() const;
 
 	uint32_t GetRendererID() const { return rendererID; }
-	const std::string& GetPath() const { return path; }
+	const std::filesystem::path& GetPath() const { return path; }
 
 private:
-	std::string path;
+	std::filesystem::path path;
 	uint32_t target{ 0 };
 	uint32_t rendererID{ 0 };
 

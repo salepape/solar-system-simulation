@@ -1,6 +1,7 @@
 #ifndef ORBIT_H
 #define ORBIT_H
 
+#include <filesystem>
 #include <memory>
 #include <string>
 
@@ -16,7 +17,7 @@ class Renderer;
 class Orbit : public SceneEntity
 {
 public:
-	Orbit(const std::string& texturePath, const float radius);
+	Orbit(const std::filesystem::path& inTexturePath, const float radius);
 	void SetDataPostConstruction();
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
@@ -30,7 +31,7 @@ private:
 	int32_t parentBodyID{ -1 };
 	std::unique_ptr<PreComputations> bodyPreComputations;
 
-	static Material InitialiseParent(const std::string& inTexturePath);
+	static Material InitialiseParent(const std::filesystem::path& inTexturePath);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override;
 };

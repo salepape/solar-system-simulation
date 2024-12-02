@@ -1,6 +1,7 @@
 #ifndef BODY_RINGS_H
 #define BODY_RINGS_H
 
+#include <filesystem>
 #include <string>
 
 #include "SceneEntity.h"
@@ -23,7 +24,7 @@ private:
 
 	Model model;
 
-	static Material InitialiseParent(const std::string& inTexturePath);
+	static Material InitialiseParent(const std::filesystem::path& inTexturePath);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override;
 };

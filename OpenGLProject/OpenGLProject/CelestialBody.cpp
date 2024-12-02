@@ -54,7 +54,7 @@ preComputations(LoadPreComputations())
 CelestialBody::CelestialBody(CelestialBody&& inCelestialBody) = default;
 CelestialBody::~CelestialBody() = default;
 
-Material CelestialBody::InitialiseParent(const std::string& inTexturePath)
+Material CelestialBody::InitialiseParent(const std::filesystem::path& inTexturePath)
 {
 	Texture texture(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::DIFFUSE);
 	texture.LoadDDS();

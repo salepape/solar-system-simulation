@@ -20,8 +20,7 @@
 SolarSystem::SolarSystem() :
 	milkyWay({ "../Textures/MilkyWay/stars.dds" })
 {
-	ResourceLoader::LoadCelestialBodies();
-	ResourceLoader::LoadBelts();
+	ResourceLoader::LoadAssets();
 
 	// Fill remaining Orbit and Billboard data just after construction ended
 	for (auto& celestialBody : celestialBodies)

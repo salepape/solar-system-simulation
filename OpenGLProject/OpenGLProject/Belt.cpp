@@ -24,7 +24,7 @@ instanceParams(inInstanceParams), torusParams(inTorusParams), model({ inInstance
 	StoreInstanceModelMatrices();
 }
 
-Material Belt::InitialiseParent(const std::string& inTexturePath)
+Material Belt::InitialiseParent(const std::filesystem::path& inTexturePath)
 {
 	return Material(ResourceLoader::GetShader("BeltBody"), { /* texturesLoadedFromTheModel */ });
 }

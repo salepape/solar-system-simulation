@@ -1,6 +1,7 @@
 #ifndef CELESTIAL_BODY_H
 #define CELESTIAL_BODY_H
 
+#include <filesystem>
 #include <glm/vec3.hpp>
 #include <memory>
 #include <string>
@@ -19,7 +20,7 @@ class Renderer;
 
 struct BodyData
 {
-	std::string texturePath;				// DDS texture path
+	std::filesystem::path texturePath;		// DDS texture path
 
 	float radius{ 0.0f };					// Planet or moon (only those > pluto radius in length) radius divided by earth's radius [in kms]
 	float distanceToParent{ 0.0f };			// Distance between planet (resp. moon) and sun (resp. the planet around which they gravitate) divided by sun-earth distance (= 1AU) [in kms]
@@ -79,7 +80,7 @@ private:
 	// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
 	float travelledAngle{ 0.0f };
 
-	static Material InitialiseParent(const std::string& inTexturePath);
+	static Material InitialiseParent(const std::filesystem::path& inTexturePath);
 	PreComputations LoadPreComputations();
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 1.0f) override;

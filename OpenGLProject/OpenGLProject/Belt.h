@@ -1,6 +1,7 @@
 #ifndef BELT_H
 #define BELT_H
 
+#include <filesystem>
 #include <glm/mat4x4.hpp>
 #include <string>
 #include <vector>
@@ -16,7 +17,7 @@ class Renderer;
 // Instance is an asteroid for a belt
 struct InstanceParams
 {
-	std::string modelPath;
+	std::filesystem::path modelPath;
 
 	const uint32_t count{ 0 };
 
@@ -53,7 +54,7 @@ private:
 	// Model used for a belt body
 	Model model;
 
-	static Material InitialiseParent(const std::string& inTexturePath);
+	static Material InitialiseParent(const std::filesystem::path& inTexturePath);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeInstanceModelMatrices();

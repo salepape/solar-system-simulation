@@ -10,12 +10,12 @@
 
 
 
-MilkyWay::MilkyWay(const std::string& texturePath) : SceneEntity(InitialiseParent(texturePath))
+MilkyWay::MilkyWay(const std::filesystem::path& inTexturePath) : SceneEntity(InitialiseParent(inTexturePath))
 {
 	name = "MilkyWay";
 }
 
-Material MilkyWay::InitialiseParent(const std::string& inTexturePath)
+Material MilkyWay::InitialiseParent(const std::filesystem::path& inTexturePath)
 {
 	Texture texture(inTexturePath, GL_TEXTURE_CUBE_MAP, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::DIFFUSE);
 	texture.LoadCubemapDDS();

@@ -16,17 +16,17 @@
 
 
 
-Model::Model(const std::string& inPath, const bool inGammaCorrection) :
+Model::Model(const std::filesystem::path& inPath, const bool inGammaCorrection) :
 	gammaCorrection(inGammaCorrection)
 {
 	LoadModel(inPath);
 }
 
-void Model::LoadModel(const std::string& path)
+void Model::LoadModel(const std::filesystem::path& path)
 {
 	Assimp::Importer importer;
 
-	const aiScene* const scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+	const aiScene* const scene = importer.ReadFile(path.string().c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 	if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
 	{
 		std::cout << "ERROR::ASSIMP - Error when reading file: " << importer.GetErrorString() << std::endl;

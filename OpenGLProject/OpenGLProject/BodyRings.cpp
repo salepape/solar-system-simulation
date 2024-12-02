@@ -20,7 +20,7 @@ model({ modelPath })
 	bodyName = inBodyName;
 }
 
-Material BodyRings::InitialiseParent(const std::string& inTexturePath)
+Material BodyRings::InitialiseParent(const std::filesystem::path& inTexturePath)
 {
 	return Material(ResourceLoader::GetShader("BodyRings"), { /* texturesLoadedFromTheModel */ }, { 0, glm::vec3(0.0f) }, 0.5f);
 }

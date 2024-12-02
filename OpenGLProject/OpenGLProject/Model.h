@@ -2,6 +2,7 @@
 #define MODEL_H
 
 #include <assimp/material.h>
+#include <filesystem>
 #include <glm/ext/matrix_transform.hpp>
 #include <string>
 #include <vector>
@@ -20,7 +21,7 @@ struct Vertex;
 class Model
 {
 public:
-	Model(const std::string& inPath, const bool inGammaCorrection = false);
+	Model(const std::filesystem::path& inPath, const bool inGammaCorrection = false);
 
 	void StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t size) const;
 
@@ -36,7 +37,7 @@ private:
 	bool gammaCorrection{ false };
 
 	// Load a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector
-	void LoadModel(const std::string& path);
+	void LoadModel(const std::filesystem::path& path);
 
 	// Process an ASSIMP node recursively
 	void ProcessNode(const aiNode& node, const aiScene& scene);

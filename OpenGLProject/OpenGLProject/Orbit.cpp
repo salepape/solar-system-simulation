@@ -14,10 +14,10 @@
 
 
 
-Orbit::Orbit(const std::string& texturePath, const float radius) : SceneEntity(InitialiseParent(texturePath)),
+Orbit::Orbit(const std::filesystem::path& inTexturePath, const float radius) : SceneEntity(InitialiseParent(inTexturePath)),
 circle({ radius })
 {
-	bodyName = ResourceLoader::GetNameFromTexturePath(texturePath);
+	bodyName = ResourceLoader::GetNameFromTexturePath(inTexturePath);
 	name = bodyName + "Orbit";
 }
 
@@ -29,7 +29,7 @@ void Orbit::SetDataPostConstruction()
 	bodyPreComputations = std::make_unique<PreComputations>(body.GetPreComputations());
 }
 
-Material Orbit::InitialiseParent(const std::string& inTexturePath)
+Material Orbit::InitialiseParent(const std::filesystem::path& inTexturePath)
 {
 	Texture texture(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::DIFFUSE);
 	texture.LoadDDS();
