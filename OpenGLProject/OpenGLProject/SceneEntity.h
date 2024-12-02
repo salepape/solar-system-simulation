@@ -19,7 +19,7 @@ public:
 	int32_t GetID() const { return ID; }
 	const std::string& GetName() const { return name; }
 
-	Material& GetMaterial() { return material; }
+	const Material& GetMaterial() const { return material; }
 	const glm::mat4& GetModelMatrix() const { return modelMatrix; }
 
 	virtual void Render(const Renderer& renderer, const float elapsedTime = 0.0f) = 0;

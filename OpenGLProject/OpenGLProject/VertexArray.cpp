@@ -40,7 +40,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& l
 {
 	size_t offset = 0;
 
-	for (const auto& attributeLayout : layout.GetAttributeLayouts())
+	for (const VertexAttributeLayout& attributeLayout : layout.GetAttributeLayouts())
 	{
 		// Enable the attribute index at location i in the vertex shader to be used
 		glEnableVertexAttribArray(attributeLayout.location);
@@ -61,7 +61,7 @@ void VertexArray::AddInstancedBuffer(const VertexBuffer& vbo, const VertexBuffer
 	size_t offset = 0;
 
 	// Iterate through the instanced matrix only
-	for (const auto& attributeLayout : layout.GetAttributeLayouts())
+	for (const VertexAttributeLayout& attributeLayout : layout.GetAttributeLayouts())
 	{
 		// Enable the attribute index at location i in the vertex shader to be used
 		glEnableVertexAttribArray(attributeLayout.location);

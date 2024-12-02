@@ -54,7 +54,7 @@ void TextRenderer::AllocateBufferObjects()
 
 void TextRenderer::LoadASCIICharacters(const std::string& text)
 {
-	for (const auto& character : text)
+	for (const char& character : text)
 	{
 		// Avoid loading a character previously loaded
 		if (ASCIICharacterCache.find(character) != ASCIICharacterCache.end())
@@ -103,14 +103,14 @@ void TextRenderer::FreeFTResources() const
 
 void TextRenderer::Render(const std::string& text, float x, const float y, const float scale)
 {
-	auto& body = ResourceLoader::GetBody(text);
+	const CelestialBody& body = ResourceLoader::GetBody(text);
 
 	// Left-shift billboard position to half its width to center-align it to the celestial body
 	x = -GetBillboardSize(text, scale) * 0.5f;
 
 	vao->Bind();
 
-	for (const auto& character : text)
+	for (const char& character : text)
 	{
 		const GlyphParams& glyphParams = ASCIICharacterCache[character];
 
@@ -138,7 +138,7 @@ void TextRenderer::Render(const std::string& text, float x, const float y, const
 float TextRenderer::GetBillboardSize(const std::string& text, const float scale)
 {
 	float totalAdvance = 0.0f;
-	for (const auto& character : text)
+	for (const char& character : text)
 	{
 		totalAdvance += GetGlyphAdvance(ASCIICharacterCache[character], scale);
 	}

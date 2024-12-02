@@ -73,7 +73,7 @@ void Controller::ProcessKeyboardInput(const float deltaTime)
 	{
 		camera.UpdateUpPosition(-distance);
 	}
-	if (const auto inputHandler = InputHandler::GetInstance();
+	if (const auto& inputHandler = InputHandler::GetInstance();
 		flashLightStartTime > 0.0 && (
 			inputHandler.IsKeyPressed(GLFW_KEY_W) ||
 			inputHandler.IsKeyPressed(GLFW_KEY_S) ||
@@ -152,14 +152,14 @@ void Controller::Callback_DetectMouseInput()
 			return;
 		}
 
-		const auto controller = window->controller;
+		const std::shared_ptr<Controller>& controller = window->controller;
 		if (controller == nullptr)
 		{
 			std::cout << "ERROR::CONTROLLER - No controller attached to the window..." << std::endl;
 			return;
 		}
 
-		const auto& offset = window->ComputeCursorOffset(static_cast<float>(xPosition), static_cast<float>(yPosition));
+		const glm::vec2& offset = window->ComputeCursorOffset(static_cast<float>(xPosition), static_cast<float>(yPosition));
 		controller->GetCamera().UpdateRotation(offset * controller->mouseSensitivity);
 
 		if (controller->flashLightStartTime > 0.0)
@@ -181,7 +181,7 @@ void Controller::Callback_DetectMouseWheelInput()
 			return;
 		}
 
-		const auto controller = window->controller;
+		const std::shared_ptr<Controller>& controller = window->controller;
 		if (controller == nullptr)
 		{
 			std::cout << "ERROR::CONTROLLER - No controller attached to the window..." << std::endl;
@@ -210,15 +210,15 @@ void Controller::Callback_DetectKeyboardInput()
 			return window;
 		};
 
-		const auto GetController = [&GLFWWindow, &GetWindow]() -> std::shared_ptr<Controller>
+		const auto& GetController = [&GLFWWindow, &GetWindow]() -> std::shared_ptr<Controller>
 		{
-			const auto* const window = GetWindow();
+			const Window* const window = GetWindow();
 			if (window == nullptr)
 			{
 				return nullptr;
 			}
 
-			const auto controller = window->controller;
+			const std::shared_ptr<Controller>& controller = window->controller;
 			if (controller == nullptr)
 			{
 				std::cout << "ERROR::CONTROLLER - No controller attached to the window..." << std::endl;
@@ -227,15 +227,15 @@ void Controller::Callback_DetectKeyboardInput()
 			return controller;
 		};
 
-		const auto IsReleaseActionRegistered = [&GetController](const double pressTime)
+		const auto& IsReleaseActionRegistered = [&GetController](const double pressTime) -> bool
 		{
-			const auto controller = GetController();
+			const std::shared_ptr<Controller>& controller = GetController();
 			return Application::GetInstance().GetTime() - pressTime > controller->timeBeforeReleaseRegistered;
 		};
 
 		if (key == GLFW_KEY_SPACE)
 		{
-			const auto& controller = GetController();
+			const std::shared_ptr<Controller>& controller = GetController();
 			if (controller == nullptr)
 			{
 				return;
@@ -255,7 +255,7 @@ void Controller::Callback_DetectKeyboardInput()
 		}
 		else if (key == GLFW_KEY_TAB)
 		{
-			const auto& controller = GetController();
+			const std::shared_ptr<Controller>& controller = GetController();
 			if (controller == nullptr)
 			{
 				return;
@@ -275,7 +275,7 @@ void Controller::Callback_DetectKeyboardInput()
 		}
 		else if (key == GLFW_KEY_L)
 		{
-			const auto& controller = GetController();
+			const std::shared_ptr<Controller>& controller = GetController();
 			if (controller == nullptr)
 			{
 				return;
@@ -295,7 +295,7 @@ void Controller::Callback_DetectKeyboardInput()
 		}
 		else if (key == GLFW_KEY_F)
 		{
-			const auto& controller = GetController();
+			const std::shared_ptr<Controller>& controller = GetController();
 			if (controller == nullptr)
 			{
 				return;

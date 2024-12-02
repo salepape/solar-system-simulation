@@ -136,7 +136,7 @@ void CelestialBody::ComputeCartesianPosition(const float elapsedTime)
 	// Circular translation of satellite around corresponding planet, taking into account satellite "orbital tilt"
 	else
 	{
-		const auto& satelliteParent = ResourceLoader::GetBody(bodyData.parentID);
+		const CelestialBody& satelliteParent = ResourceLoader::GetBody(bodyData.parentID);
 
 		const float sinTravelledAngleParent = glm::sin(satelliteParent.travelledAngle);
 

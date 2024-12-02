@@ -126,7 +126,7 @@ void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 	}
 
 	const std::vector<aiTextureType> textureTypes{ aiTextureType_AMBIENT, aiTextureType_DIFFUSE, aiTextureType_SPECULAR };
-	for (const auto& type : textureTypes)
+	for (const aiTextureType& type : textureTypes)
 	{
 		const uint32_t textureCount = material->GetTextureCount(type);
 		textures.reserve(textureCount);
@@ -162,7 +162,7 @@ void Model::StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatric
 	VertexBuffer vbo(static_cast<const void*>(modelMatrices.data()), size);
 
 	// Set transformation matrices as an instance vertex attribute for each mesh VAO already created
-	for (const auto& mesh : meshes)
+	for (const Mesh& mesh : meshes)
 	{
 		mesh.StoreInstanceModelMatrices(vbo);
 	}
@@ -172,7 +172,7 @@ void Model::StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatric
 
 void Model::Render(const Renderer& renderer) const
 {
-	for (const auto& mesh : meshes)
+	for (const Mesh& mesh : meshes)
 	{
 		mesh.Render(renderer);
 	}
@@ -180,7 +180,7 @@ void Model::Render(const Renderer& renderer) const
 
 void Model::RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const
 {
-	for (const auto& mesh : meshes)
+	for (const Mesh& mesh : meshes)
 	{
 		mesh.RenderInstances(renderer, instanceCount);
 	}

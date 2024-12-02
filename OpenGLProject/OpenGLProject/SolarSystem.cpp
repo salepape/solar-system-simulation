@@ -23,10 +23,10 @@ SolarSystem::SolarSystem() :
 	ResourceLoader::LoadAssets();
 
 	// Fill remaining Orbit and Billboard data just after construction ended
-	for (auto& celestialBody : celestialBodies)
+	for (CelestialBody& body : celestialBodies)
 	{
-		celestialBody.orbit.SetDataPostConstruction();
-		celestialBody.billboard.SetDataPostConstruction(textRenderer);
+		body.orbit.SetDataPostConstruction();
+		body.billboard.SetDataPostConstruction(textRenderer);
 	}
 	// Free FT resources once we don't have any more letters to load
 	textRenderer.FreeFTResources();
@@ -54,30 +54,30 @@ void SolarSystem::Update()
 	// Compute celestial body positions and sort them from farthest to closest according to the camera, 
 	// because it is needed to make blending work for multiple objects with transparency, like body names and Saturn Rings
 	std::map<float, uint32_t> bodiesSortedByDistance;
-	for (auto& celestialBody : celestialBodies)
+	for (CelestialBody& body : celestialBodies)
 	{
-		celestialBody.ComputeCartesianPosition(runningApp.elapsedTime * runningApp.speedFactor);
-		bodiesSortedByDistance.insert({ glm::distance(cameraPosition, celestialBody.GetPosition()), celestialBody.GetID() });
+		body.ComputeCartesianPosition(runningApp.elapsedTime * runningApp.speedFactor);
+		bodiesSortedByDistance.insert({ glm::distance(cameraPosition, body.GetPosition()), body.GetID() });
 	}
 
 	for (auto bodyit = bodiesSortedByDistance.rbegin(); bodyit != bodiesSortedByDistance.rend(); ++bodyit)
 	{
 		// Draw celestial bodies, and animate them accordingly over time
-		auto& currentBody = ResourceLoader::GetBody(bodyit->second);
-		currentBody.Render(renderer, runningApp.elapsedTime * runningApp.speedFactor);
+		CelestialBody& body = ResourceLoader::GetBody(bodyit->second);
+		body.Render(renderer, runningApp.elapsedTime * runningApp.speedFactor);
 
 		if (runningApp.IsLegendDisplayed())
 		{
 			// Orient text billboards so their readable side always faces the camera
-			const glm::vec3& forward = glm::normalize(cameraPosition - currentBody.GetPosition());
+			const glm::vec3& forward = glm::normalize(cameraPosition - body.GetPosition());
 			const glm::vec3& right = glm::cross(camera.GetUp(), forward);
 
-			currentBody.billboard.Render(textRenderer, currentBody.GetPosition(), forward, right);
+			body.billboard.Render(textRenderer, body.GetPosition(), forward, right);
 		}
 	}
 
 	// Draw the 2 main belts of the Solar System
-	for (auto& belt : belts)
+	for (Belt& belt : belts)
 	{
 		belt.Render(renderer);
 	}

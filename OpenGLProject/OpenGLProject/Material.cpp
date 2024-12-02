@@ -70,7 +70,7 @@ void Material::SetDiffuseColourFUniform(const glm::vec3& colour)
 
 void Material::EnableTextures()
 {
-	for (const auto& texture : textures)
+	for (const Texture& texture : textures)
 	{
 		texture.Enable(diffuseProperties.textureUnit);
 	}
@@ -78,7 +78,7 @@ void Material::EnableTextures()
 
 void Material::DisableTextures()
 {
-	for (const auto& texture : textures)
+	for (const Texture& texture : textures)
 	{
 		texture.Disable();
 	}

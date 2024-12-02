@@ -51,7 +51,7 @@ void DataBuffer::SetSubData(const std::vector<SubData>& data, const uint32_t dat
 
 	uint32_t offset = dataStart;
 
-	for (const auto& subdata : data)
+	for (const SubData& subdata : data)
 	{
 		// Update the data stored in the specified subset of memory space (in bytes), avoiding the reallocation cost
 		glBufferSubData(target, offset, subdata.size, subdata.data);

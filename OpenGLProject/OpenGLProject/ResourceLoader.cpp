@@ -23,14 +23,14 @@ namespace ResourceLoader
 	// Paths to retrieve DDS textures (convention: size_name.dds)
 	std::unordered_map<std::string, std::filesystem::path> assetPaths;
 
-	auto& celestialBodiesRef = SolarSystem::GetCelestialBodiesVector();
-	auto& beltsRef = SolarSystem::GetBeltsVector();
+	std::vector<CelestialBody>& celestialBodiesRef = SolarSystem::GetCelestialBodiesVector();
+	std::vector<Belt>& beltsRef = SolarSystem::GetBeltsVector();
 
 	void FillTextureMap(const std::filesystem::path& inTexturePath)
 	{
-		for (auto directoryIterator : std::filesystem::recursive_directory_iterator(inTexturePath))
+		for (const auto& directory : std::filesystem::recursive_directory_iterator(inTexturePath))
 		{
-			const std::filesystem::path& directoryPath = directoryIterator.path();
+			const std::filesystem::path& directoryPath = directory.path();
 			const std::string& modelName = GetNameFromTexturePath(directoryPath);
 			if (modelName == "")
 			{
@@ -97,9 +97,9 @@ namespace ResourceLoader
 	std::vector<std::filesystem::path> GetSubfolderPaths(const std::string& subfolder)
 	{
 		std::vector<std::filesystem::path> subfolderPaths;
-		for (const auto& directoryPath : std::filesystem::recursive_directory_iterator(std::filesystem::path(subfolder)))
+		for (const auto& directory : std::filesystem::recursive_directory_iterator(std::filesystem::path(subfolder)))
 		{
-			subfolderPaths.emplace_back(directoryPath);
+			subfolderPaths.emplace_back(directory.path());
 		}
 
 		return subfolderPaths;
@@ -119,11 +119,11 @@ namespace ResourceLoader
 		const long int sunEarthDistance = 149600000;
 
 		// Stars
-		const auto& starPath = GetSubfolderPaths("../Textures/CelestialBodies/Stars/");
-		celestialBodiesRef.emplace_back(BodyData{ assetPaths["Sun"], 696300.0f / earthRadius * 0.5f, 0.0f,																									7.25f,	 0.0f,		25.05f,		  0.0f });
+		const std::vector<std::filesystem::path>& starPath = GetSubfolderPaths("../Textures/CelestialBodies/Stars/");
+		celestialBodiesRef.emplace_back(BodyData{ assetPaths["Sun"],		696300.0f / earthRadius * 0.5f, 0.0f,																								7.25f,	 0.0f,		25.05f,		  0.0f });
 
 		// Planets
-		const auto& planetPaths = GetSubfolderPaths("../Textures/CelestialBodies/Planets/");
+		const std::vector<std::filesystem::path>& planetPaths = GetSubfolderPaths("../Textures/CelestialBodies/Planets/");
 		celestialBodiesRef.emplace_back(BodyData{ assetPaths["Mercury"],	2439.7f / earthRadius,	GetBody("Sun").bodyData.radius * 2.0f + 57900000.0f / sunEarthDistance * DISTANCE_SCALE_FACTOR,				0.03f,   87.97f,	1407.6f / 24, 7.01f });
 		celestialBodiesRef.emplace_back(BodyData{ assetPaths["Venus"],		6051.8f / earthRadius,	GetBody("Mercury").bodyData.distanceToParent + 108200000.0f / sunEarthDistance * DISTANCE_SCALE_FACTOR,		2.64f,   224.7f,   -5832.5f / 24, 3.39f });
 		celestialBodiesRef.emplace_back(BodyData{ assetPaths["Earth"],		1.0f,					GetBody("Venus").bodyData.distanceToParent + 1.0f * DISTANCE_SCALE_FACTOR,									23.44f,  365.26f,   23.9f / 24,   0.0f });
@@ -134,7 +134,7 @@ namespace ResourceLoader
 		celestialBodiesRef.emplace_back(BodyData{ assetPaths["Neptune"],	24622.0f / earthRadius,	GetBody("Uranus").bodyData.distanceToParent + 4515000000.0f / sunEarthDistance * DISTANCE_SCALE_FACTOR,		28.32f,  60182.0f,  16.1f / 24,   1.77f });
 
 		// Dwarf planets
-		const auto& dwarfPlanetPaths = GetSubfolderPaths("../Textures/CelestialBodies/DwarfPlanets/");
+		const std::vector<std::filesystem::path>& dwarfPlanetPaths = GetSubfolderPaths("../Textures/CelestialBodies/DwarfPlanets/");
 		celestialBodiesRef.emplace_back(BodyData{ assetPaths["Ceres"],		469.0f / earthRadius,	GetBody("Mars").bodyData.distanceToParent + 414000000.0f / sunEarthDistance * DISTANCE_SCALE_FACTOR,		4.0f,    4.60f * GetBody("Earth").bodyData.orbitalPeriod,    9.07f / 24,	10.6f });
 		celestialBodiesRef.emplace_back(BodyData{ assetPaths["Orcus"],		460.0f / earthRadius,	GetBody("Neptune").bodyData.distanceToParent + 5890000000.0f / sunEarthDistance * DISTANCE_SCALE_FACTOR,	0.0f,	 245.19f * GetBody("Earth").bodyData.orbitalPeriod,  10.5f / 24,	20.59f });		// Rotation period very uncertain + orbit far from circular
 		celestialBodiesRef.emplace_back(BodyData{ assetPaths["Pluto"],		1188.0f / earthRadius,	GetBody("Orcus").bodyData.distanceToParent + 5910000000.0f / sunEarthDistance * DISTANCE_SCALE_FACTOR,		119.51f, 247.94f * GetBody("Earth").bodyData.orbitalPeriod, -153.29f / 24,	17.16f });
@@ -147,7 +147,7 @@ namespace ResourceLoader
 		celestialBodiesRef.emplace_back(BodyData{ assetPaths["Sedna"],		500.0f / earthRadius,	GetBody("Eris").bodyData.distanceToParent + 75800000000.0f / sunEarthDistance * DISTANCE_SCALE_FACTOR,		0.0f,	 11390.0f * GetBody("Earth").bodyData.orbitalPeriod, 10.273f / 24,	11.93f });		// Synodic rotation period used
 
 		// Moons
-		const auto& moonPaths = GetSubfolderPaths("../Textures/CelestialBodies/Satellites/");
+		const std::vector<std::filesystem::path>& moonPaths = GetSubfolderPaths("../Textures/CelestialBodies/Satellites/");
 		celestialBodiesRef.emplace_back(BodyData{ assetPaths["Luna"],		1737.1f / earthRadius,	GetBody("Earth").bodyData.radius + 384400.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,		6.68f,  27.32f,		27.32f,		5.145f,	   GetBody("Earth").GetID() });
 
 		celestialBodiesRef.emplace_back(BodyData{ assetPaths["Io"],			1821.6f / earthRadius,	GetBody("Jupiter").bodyData.radius + 421700.0f / sunEarthDistance * RADIUS_SCALE_FACTOR,	0.0f,   1.77f,		1.77f,		2.213f,	   GetBody("Jupiter").GetID() });
@@ -196,17 +196,17 @@ namespace ResourceLoader
 	{
 		FillTextureMap("../Models/");
 
-		const auto& beltPaths = GetSubfolderPaths("../Models/");
-		beltsRef.emplace_back(InstanceParams{ assetPaths["Asteroid"],	2500,		0.05f,	10 }, TorusParams{ GetBody("Mars").bodyData.distanceToParent * 1.05f + 0.5f * (GetBody("Jupiter").bodyData.distanceToParent * 0.9f - GetBody("Mars").bodyData.distanceToParent * 1.05f),		0.5f * (GetBody("Jupiter").bodyData.distanceToParent * 0.9f - GetBody("Mars").bodyData.distanceToParent * 1.05f),	0.4f });
-		beltsRef.emplace_back(InstanceParams{ assetPaths["Ice"],		25000,		0.05f,	20 }, TorusParams{ GetBody("Neptune").bodyData.distanceToParent + 0.5f * (GetBody("Makemake").bodyData.distanceToParent - GetBody("Neptune").bodyData.distanceToParent),						0.5f * (GetBody("Makemake").bodyData.distanceToParent - GetBody("Neptune").bodyData.distanceToParent),				0.4f });
-		beltsRef.emplace_back(InstanceParams{ assetPaths["Ice"],		5000,		0.05f,	5 }, TorusParams{ GetBody("Gonggong").bodyData.distanceToParent + 0.5f * (GetBody("Sedna").bodyData.distanceToParent - GetBody("Gonggong").bodyData.distanceToParent),						0.5f * (GetBody("Sedna").bodyData.distanceToParent - GetBody("Gonggong").bodyData.distanceToParent),				0.4f });
+		const std::vector<std::filesystem::path>& beltPaths = GetSubfolderPaths("../Models/");
+		beltsRef.emplace_back(InstanceParams{ assetPaths["Asteroid"],	2500,		0.05f,	10 },	TorusParams{ GetBody("Mars").bodyData.distanceToParent * 1.05f + 0.5f * (GetBody("Jupiter").bodyData.distanceToParent * 0.9f - GetBody("Mars").bodyData.distanceToParent * 1.05f),		0.5f * (GetBody("Jupiter").bodyData.distanceToParent * 0.9f - GetBody("Mars").bodyData.distanceToParent * 1.05f),	0.4f });
+		beltsRef.emplace_back(InstanceParams{ assetPaths["Ice"],		25000,		0.05f,	20 },	TorusParams{ GetBody("Neptune").bodyData.distanceToParent + 0.5f * (GetBody("Makemake").bodyData.distanceToParent - GetBody("Neptune").bodyData.distanceToParent),						0.5f * (GetBody("Makemake").bodyData.distanceToParent - GetBody("Neptune").bodyData.distanceToParent),				0.4f });
+		beltsRef.emplace_back(InstanceParams{ assetPaths["Ice"],		5000,		0.05f,	5 },	TorusParams{ GetBody("Gonggong").bodyData.distanceToParent + 0.5f * (GetBody("Sedna").bodyData.distanceToParent - GetBody("Gonggong").bodyData.distanceToParent),						0.5f * (GetBody("Sedna").bodyData.distanceToParent - GetBody("Gonggong").bodyData.distanceToParent),				0.4f });
 	}
 
 	CelestialBody& GetBody(const std::string& inBodyName)
 	{
-		const auto& bodyIt = std::find_if(celestialBodiesRef.begin(), celestialBodiesRef.end(), [&inBodyName](const CelestialBody& celestialBody)
+		const auto& bodyIt = std::find_if(celestialBodiesRef.begin(), celestialBodiesRef.end(), [&inBodyName](const CelestialBody& body)
 		{
-			return celestialBody.GetName() == inBodyName;
+			return body.GetName() == inBodyName;
 		});
 
 		if (bodyIt == celestialBodiesRef.end())
@@ -219,9 +219,9 @@ namespace ResourceLoader
 
 	CelestialBody& GetBody(const int32_t inBodyID)
 	{
-		const auto& bodyIt = std::find_if(celestialBodiesRef.begin(), celestialBodiesRef.end(), [&inBodyID](const CelestialBody& celestialBody)
+		const auto& bodyIt = std::find_if(celestialBodiesRef.begin(), celestialBodiesRef.end(), [&inBodyID](const CelestialBody& body)
 		{
-			return celestialBody.GetID() == inBodyID;
+			return body.GetID() == inBodyID;
 		});
 
 		if (bodyIt == celestialBodiesRef.end())

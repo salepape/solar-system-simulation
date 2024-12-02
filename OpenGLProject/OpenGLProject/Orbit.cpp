@@ -23,7 +23,7 @@ circle({ radius })
 
 void Orbit::SetDataPostConstruction()
 {
-	const auto& body = ResourceLoader::GetBody(bodyName);
+	const CelestialBody& body = ResourceLoader::GetBody(bodyName);
 	bodyID = body.GetID();
 	parentBodyID = body.bodyData.parentID;
 	bodyPreComputations = std::make_unique<PreComputations>(body.GetPreComputations());
