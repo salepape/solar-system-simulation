@@ -8,6 +8,7 @@
 
 #include "Application.h"
 #include "InputHandler.h"
+#include "Utils.h"
 #include "Window.h"
 
 
@@ -144,8 +145,7 @@ void Controller::Callback_DetectMouseInput()
 {
 	glfwSetCursorPosCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, const double xPosition, const double yPosition)
 	{
-		// Access contextual data from within GLFWWindow callback
-		auto* const window = static_cast<Window*>(glfwGetWindowUserPointer(GLFWWindow));
+		Window* const window = Utils::GetGLFWCallbackData(GLFWWindow);
 		if (window == nullptr)
 		{
 			std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
@@ -173,8 +173,7 @@ void Controller::Callback_DetectMouseWheelInput()
 {
 	glfwSetScrollCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, double /*xOffset*/, double yOffset)
 	{
-		// Access contextual data from within GLFWWindow callback
-		const auto* const window = static_cast<Window*>(glfwGetWindowUserPointer(GLFWWindow));
+		const Window* const window = Utils::GetGLFWCallbackData(GLFWWindow);
 		if (window == nullptr)
 		{
 			std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
@@ -199,11 +198,10 @@ void Controller::Callback_DetectKeyboardInput()
 	{
 		auto GetWindow = [&GLFWWindow]() -> Window*
 		{
-			// Access contextual data from within GLFWWindow callback
-			auto* const window = static_cast<Window*>(glfwGetWindowUserPointer(GLFWWindow));
+			Window* const window = Utils::GetGLFWCallbackData(GLFWWindow);
 			if (window == nullptr)
 			{
-				std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()" << std::endl;
+				std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
 				return nullptr;
 			}
 

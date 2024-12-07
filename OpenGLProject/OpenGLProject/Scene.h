@@ -23,7 +23,7 @@ public:
 
 	// Cache Application and Window so we don't need to get their instance each frame in the Render loop
 	Application& runningApp;
-	Window& openedWindow;
+	Window& openWindow;
 
 	Renderer renderer;
 	TextRenderer textRenderer;

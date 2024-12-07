@@ -3,6 +3,8 @@
 #include <glfw3.h>
 #include <iostream>
 
+#include "Utils.h"
+
 
 
 Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::string& inTitle) :
@@ -20,8 +22,7 @@ Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::strin
 		return;
 	}
 
-	// Register contextual data to access it from within GLFWwindow callbacks (their prototype cannot be modified at all) later
-	glfwSetWindowUserPointer(GLFWWindow, static_cast<void*>(this));
+	Utils::SetGLFWCallbackData(GLFWWindow, this);
 
 	if (MakeContextCurrent() == -1)
 	{
@@ -83,7 +84,7 @@ void Window::Callback_DetectWindowResize()
 		glViewport(0, 0, width, height);
 
 		// Access contextual data from within GLFWwindow callback
-		auto* const window = static_cast<Window*>(glfwGetWindowUserPointer(GLFWWindow));
+		Window* const window = Utils::GetGLFWCallbackData(GLFWWindow);
 		if (window == nullptr)
 		{
 			std::cout << "ERROR::WINDOW - Failed to cast glfwGetWindowUserPointer()!" << std::endl;

@@ -1,7 +1,10 @@
 #pragma once
 
+#include <glfw3.h>
 #include <glm/ext/scalar_constants.hpp>
 #include <glm/vec3.hpp>
+
+#include "Window.h"
 
 
 
@@ -22,4 +25,10 @@ namespace Utils
 	const size_t scalarSize = GLSL_SCALAR_SIZE;
 	const size_t vec4Size = 4 * GLSL_SCALAR_SIZE;
 	const size_t mat4v4Size = 16 * GLSL_SCALAR_SIZE;
+
+	// Register user data field to access it later from within static GLFWwindow callbacks (to avoid making variable global)
+	void SetGLFWCallbackData(GLFWwindow* GLFWWindow, Window* data);
+
+	// Access user data field from within static GLFWwindow callbacks
+	Window* const GetGLFWCallbackData(GLFWwindow* GLFWWindow);
 }

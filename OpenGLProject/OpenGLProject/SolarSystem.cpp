@@ -37,7 +37,7 @@ SolarSystem::SolarSystem() :
 	{
 		return;
 	}
-	openedWindow.controller = controller;
+	openWindow.controller = controller;
 }
 
 void SolarSystem::Update()
@@ -47,7 +47,7 @@ void SolarSystem::Update()
 	controller->ProcessKeyboardInput(runningApp.deltaTime);
 
 	Camera& camera = controller->GetCamera();
-	camera.SetProjectionViewVUniform(openedWindow.GetAspectRatio());
+	camera.SetProjectionViewVUniform(openWindow.GetAspectRatio());
 	camera.SetPositionFUniform();
 	const glm::vec3& cameraPosition = camera.GetPosition();
 
@@ -83,7 +83,7 @@ void SolarSystem::Update()
 	}
 
 	// Draw Milky Way skybox
-	camera.SetInfiniteProjectionViewVUniform(openedWindow.GetAspectRatio());
+	camera.SetInfiniteProjectionViewVUniform(openWindow.GetAspectRatio());
 	milkyWay.Render(renderer);
 }
 
