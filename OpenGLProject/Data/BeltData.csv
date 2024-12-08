@@ -1,0 +1,4 @@
+name,modelName,instanceCount,sizeRangeLowerBound,sizeRangeSpan,majorRadiusBody,minorRadiusBody,flatnessFactor
+AsteroidBelt,Asteroid,2500,0.05f,10,Jupiter,Mars,0.4f
+KuiperBelt,Ice,25000,0.05f,20,Makemake,Neptune,0.4f
+OortCloud,Ice,5000,0.05f,5,Sedna,Gonggong,0.4f

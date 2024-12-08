@@ -3,6 +3,7 @@
 #include <glfw3.h>
 #include <glm/ext/scalar_constants.hpp>
 #include <glm/vec3.hpp>
+#include <string>
 
 #include "Window.h"
 
@@ -31,4 +32,6 @@ namespace Utils
 
 	// Access user data field from within static GLFWwindow callbacks
 	Window* const GetGLFWCallbackData(GLFWwindow* GLFWWindow);
+
+	std::string ReadFile(const std::string& path);
 }

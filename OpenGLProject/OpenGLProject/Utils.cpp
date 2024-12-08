@@ -1,5 +1,7 @@
 #include "Utils.h"
 
+#include <filesystem>
+#include <fstream>
 
 
 namespace Utils
@@ -12,5 +14,16 @@ namespace Utils
 	Window* const GetGLFWCallbackData(GLFWwindow* GLFWWindow)
 	{
 		return static_cast<Window*>(glfwGetWindowUserPointer(GLFWWindow));
+	}
+
+	std::string ReadFile(const std::string & path)
+	{
+		std::ifstream fileStream(path, std::ios::in | std::ios::binary);
+		const uintmax_t fileSize = std::filesystem::file_size(path);
+
+		std::string fileContent(static_cast<uint32_t>(fileSize), '\0');
+		fileStream.read(fileContent.data(), fileSize);
+
+		return fileContent;
 	}
 }

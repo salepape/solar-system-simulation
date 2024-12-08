@@ -38,15 +38,15 @@ preComputations(LoadPreComputations())
 
 	if (name == "Saturn")
 	{
-		bodyRings = std::make_unique<BodyRings>("../Models/SaturnRings.obj", name);
+		bodyRings = std::make_unique<BodyRings>("../Models/Rings/SaturnRings.obj", name);
 	}
 	else if (name == "Uranus")
 	{
-		bodyRings = std::make_unique<BodyRings>("../Models/UranusRings.obj", name);
+		bodyRings = std::make_unique<BodyRings>("../Models/Rings/UranusRings.obj", name);
 	}
 	else if (name == "Quaoar")
 	{
-		bodyRings = std::make_unique<BodyRings>("../Models/QuaoarUranusRings.obj", name);
+		bodyRings = std::make_unique<BodyRings>("../Models/Rings/QuaoarUranusRings.obj", name);
 	}
 	// @todo - Add a model for Jupiter, Neptune and Haumea 
 }
