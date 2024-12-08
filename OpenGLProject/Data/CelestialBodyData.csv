@@ -1,4 +1,4 @@
-name,type,radius,distanceToParent,obliquity,orbitalPeriod,spinPeriod,orbitalInclination,parentId
+name,type,radius (in kms),distanceToParent (in kms),obliquity (in degrees),orbitalPeriod (in Earth days),spinPeriod (in Earth days),orbitalInclination (in degrees),parentName
 Sun,Star,696300.0f,0.0f,7.25f,0.0f,25.05f,0.0f,
 Mercury,Planet,2439.7f,57900000.0f,0.03f,87.97f,1407.6f,7.01f,
 Venus,Planet,6051.8f,108200000.0f,2.64f,224.7f,-5832.5f,3.39f,
