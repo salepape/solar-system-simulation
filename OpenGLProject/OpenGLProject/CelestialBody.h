@@ -48,7 +48,7 @@ struct PreComputations
 	float textScale{ 0.0f };
 };
 
-// @todo - Sphere is a Mesh, Orbit is a SceneEntity. Create another class as a clear combination of CelestialBody (that would only containing a Sphere) and Orbit (already containing a Circle)? 
+// @todo - Sphere is a Mesh whereas Orbit is a SceneEntity. Create another class as a clear combination of CelestialBody (that would only contain a Sphere) and Orbit (already containing a Circle)?
 // Represent a planet, dwarf planet, moon etc..., its orbit and its name on a billboard
 class CelestialBody : public SceneEntity
 {
