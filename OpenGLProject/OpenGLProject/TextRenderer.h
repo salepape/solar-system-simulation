@@ -35,7 +35,7 @@ class TextRenderer
 {
 public:
 	// Put such default parameters to let the FT_Face dynamically compute the width based on the non-null height
-	TextRenderer(const Renderer& inRenderer, const uint32_t pixelFontWidth = 0, const uint32_t pixelFontHeight = 100);
+	TextRenderer(const Renderer& inRenderer, const std::string& inFontPath, const uint32_t pixelFontWidth = 0, const uint32_t pixelFontHeight = 100);
 	TextRenderer(const TextRenderer&) = delete;
 	~TextRenderer() = default;
 

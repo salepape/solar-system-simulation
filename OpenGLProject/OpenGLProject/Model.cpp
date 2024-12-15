@@ -29,7 +29,7 @@ void Model::LoadModel(const std::filesystem::path& path)
 	const aiScene* const scene = importer.ReadFile(path.string().c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 	if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
 	{
-		std::cout << "ERROR::ASSIMP - Error when reading file: " << importer.GetErrorString() << std::endl;
+		std::cout << "ERROR::ASSIMP - Error when reading model file located at " << path.string() << ": " << importer.GetErrorString() << std::endl;
 		return;
 	}
 

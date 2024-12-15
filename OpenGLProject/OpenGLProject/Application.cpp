@@ -15,7 +15,7 @@ Application::Application()
 	// Load all OpenGL function pointers locations using GLAD
 	if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
 	{
-		std::cout << "ERROR::GLAD - Failed to initialise GLAD" << std::endl;
+		std::cout << "ERROR::GLAD - Failed to initialise GLAD..." << std::endl;
 	}
 
 	instance = this;

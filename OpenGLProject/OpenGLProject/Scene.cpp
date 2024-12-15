@@ -5,8 +5,9 @@
 
 
 
+// @todo - Move the font path to the SolarSystem child class
 Scene::Scene() :
-	runningApp(Application::GetInstance()), openWindow(runningApp.GetWindow()), textRenderer(renderer)
+	runningApp(Application::GetInstance()), openWindow(runningApp.GetWindow()), textRenderer(renderer, "../Fonts/arial.ttf")
 {
 	renderer.EnableDepthTesting();
 	renderer.EnableBlending();

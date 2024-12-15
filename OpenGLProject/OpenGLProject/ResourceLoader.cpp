@@ -246,7 +246,7 @@ namespace ResourceLoader
 
 		if (bodyIt == celestialBodiesRef.end())
 		{
-			std::cout << "ERROR::RESOURCE_LOADER - Celestial body name does not exist!" << std::endl;
+			std::cout << "ERROR::RESOURCE_LOADER - Celestial body " << inBodyName << " does not exist!" << std::endl;
 		}
 
 		return *bodyIt;
@@ -261,7 +261,7 @@ namespace ResourceLoader
 
 		if (bodyIt == celestialBodiesRef.end())
 		{
-			std::cout << "ERROR::RESOURCE_LOADER - Celestial body ID does not exist!" << std::endl;
+			std::cout << "ERROR::RESOURCE_LOADER - Celestial body ID " << inBodyID << " does not exist!" << std::endl;
 		}
 
 		return *bodyIt;
@@ -276,7 +276,7 @@ namespace ResourceLoader
 
 		if (shaderIt == shaders.end())
 		{
-			std::cout << "ERROR::RESOURCE_LOADER - Shader name does not exist!" << std::endl;
+			std::cout << "ERROR::RESOURCE_LOADER - Shader " << inShaderName << " does not exist!" << std::endl;
 		}
 
 		return *shaderIt;
@@ -291,7 +291,7 @@ namespace ResourceLoader
 
 		if (uboIt == ubos.end())
 		{
-			std::cout << "ERROR::RESOURCE_LOADER - Uniform name does not exist!" << std::endl;
+			std::cout << "ERROR::RESOURCE_LOADER - Uniform " << inUniformName << " does not exist!" << std::endl;
 		}
 
 		return *uboIt;

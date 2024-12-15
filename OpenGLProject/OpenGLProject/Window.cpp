@@ -17,7 +17,7 @@ Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::strin
 	GLFWWindow = InitGLFWWindow();
 	if (GLFWWindow == nullptr)
 	{
-		std::cout << "ERROR::GLFW - Failed to create GLFW window" << std::endl;
+		std::cout << "ERROR::GLFW - Failed to create GLFW window!" << std::endl;
 		glfwTerminate();
 		return;
 	}
@@ -55,7 +55,7 @@ int32_t Window::MakeContextCurrent()
 
 	if (glfwGetCurrentContext() == nullptr)
 	{
-		std::cout << "ERROR::GLFW - Failed to get current context : OpenGL functions will not work correctly" << std::endl;
+		std::cout << "ERROR::GLFW - Failed to get current context: OpenGL functions will not work correctly!" << std::endl;
 		return -1;
 	}
 

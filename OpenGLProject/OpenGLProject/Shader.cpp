@@ -31,7 +31,7 @@ std::string Shader::ParseShader(const std::string& path) const
 	std::ifstream shaderFile(path);
 	if (!shaderFile)
 	{
-		std::cout << "ERROR::SHADER - File not successfully read" << std::endl;
+		std::cout << "ERROR::SHADER - " << entityName << " file has not been successfully read!" << std::endl;
 		return std::string();
 	}
 
