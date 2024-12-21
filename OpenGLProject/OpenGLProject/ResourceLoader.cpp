@@ -28,7 +28,7 @@ namespace ResourceLoader
 	std::vector<CelestialBody>& celestialBodiesRef = SolarSystem::GetCelestialBodiesVector();
 	std::vector<Belt>& beltsRef = SolarSystem::GetBeltsVector();
 
-	void FillTextureMap(const std::filesystem::path& inTexturePath)
+	void FillAssetMap(const std::filesystem::path& inTexturePath)
 	{
 		for (const auto& directory : std::filesystem::recursive_directory_iterator(inTexturePath))
 		{
@@ -115,7 +115,7 @@ namespace ResourceLoader
 
 	void LoadCelestialBodies()
 	{
-		FillTextureMap("../Textures/CelestialBodies/");
+		FillAssetMap("../Textures/CelestialBodies/");
 
 		const int earthRadius = 6371;
 		const long int sunEarthDistance = 149600000;
@@ -184,7 +184,7 @@ namespace ResourceLoader
 
 	void LoadBelts()
 	{
-		FillTextureMap("../Models/Belts/");
+		FillAssetMap("../Models/Belts/");
 
 		const std::string& csvFile = Utils::ReadFile("../Data/BeltData.csv");
 		std::string line;

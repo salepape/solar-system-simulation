@@ -10,6 +10,7 @@
 
 
 
+// All member containers of this class are filled using the ResourceLoader
 class SolarSystem : public Scene
 {
 public:
@@ -21,10 +22,10 @@ public:
 	static std::vector<Belt>& GetBeltsVector();
 
 private:
-	// Container for all planets, moons and dward planets (filled using the ResourceLoader)
+	// Container for all planets, dwarf planets, and moons
 	static std::vector<CelestialBody> celestialBodies;
 
-	// Container for Asteroid and Kuiper belts (filled using the ResourceLoader)
+	// Container for all belts composed of small bodies
 	static std::vector<Belt> belts;
 
 	MilkyWay milkyWay;
