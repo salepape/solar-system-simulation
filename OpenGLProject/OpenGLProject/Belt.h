@@ -42,7 +42,7 @@ struct TorusParams
 class Belt : public SceneEntity
 {
 public:
-	Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams);
+	Belt(InstanceParams&& inInstanceParams, TorusParams&& inTorusParams);
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 

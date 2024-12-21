@@ -12,7 +12,7 @@
 
 
 
-Belt::Belt(const InstanceParams& inInstanceParams, const TorusParams& inTorusParams) : SceneEntity(InitialiseParent("")),
+Belt::Belt(InstanceParams&& inInstanceParams, TorusParams&& inTorusParams) : SceneEntity(InitialiseParent("")),
 instanceParams(inInstanceParams), torusParams(inTorusParams), model({ inInstanceParams.modelPath })
 {
 	material.SetTextures(model.GetTextures());
