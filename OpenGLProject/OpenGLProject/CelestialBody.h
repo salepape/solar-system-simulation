@@ -29,6 +29,8 @@ struct BodyData
 	float spinPeriod{ 0.0f };				// Time (sideral) the planet takes to do a rotation on itself [in Earth days]	
 	float orbitalInclination{ 0.0f };		// Or "orbital tilt": angle between planet (resp. moon) orbit and the ecliptic [in degrees]
 
+	bool hasRings{ false };					// Does the celestial body has a ring system around it
+
 	int32_t parentID{ -1 };					// Pointer to the planet mesh around which a moon rotates
 };
 
@@ -54,8 +56,14 @@ class CelestialBody : public SceneEntity
 {
 public:
 	CelestialBody(BodyData&& inBodyData);
-	CelestialBody(CelestialBody&& inCelestialBody);
-	~CelestialBody();
+	CelestialBody(CelestialBody&& inCelestialBody) = default;
+	CelestialBody& operator = (CelestialBody&& inCelestialBody) = delete;
+
+	CelestialBody() = delete;
+	CelestialBody(const CelestialBody& inCelestialBody) = delete;
+	CelestialBody& operator = (const CelestialBody& inCelestialBody) = delete;
+
+	~CelestialBody() = default;
 
 	BodyData bodyData;
 	std::unique_ptr<BodyRings> bodyRings;

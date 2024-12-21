@@ -1,0 +1,7 @@
+name,model,radius,opacity
+Jupiter,SaturnRings,175000.0f,0.75f
+Saturn,SaturnRings,250000.0f,0.75f
+Uranus,UranusRings,100000.0f,0.35f
+Neptune,UranusRings,50000.0f,0.35f
+Haumea,QuaoarUranusRings,2000.0f,0.35f
+Quaoar,QuaoarUranusRings,4000.0f,0.35f

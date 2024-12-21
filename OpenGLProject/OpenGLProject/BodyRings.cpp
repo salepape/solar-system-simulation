@@ -11,23 +11,33 @@
 
 
 
-BodyRings::BodyRings(const std::string& modelPath, const std::string& inBodyName) : SceneEntity(InitialiseParent("")),
-model({ modelPath })
+BodyRings::BodyRings(RingsData&& inRingsData) : SceneEntity(InitialiseParent(inRingsData.opacity)),
+model({ inRingsData.modelPath }), ringsData(inRingsData)
 {
 	material.SetTextures(model.GetTextures());
 
 	name = "BodyRings";
-	bodyName = inBodyName;
+	bodyName = ringsData.bodyName;
 }
 
-Material BodyRings::InitialiseParent(const std::filesystem::path& inTexturePath)
+Material BodyRings::InitialiseParent(const float inRingsOpacity)
 {
-	return Material(ResourceLoader::GetShader("BodyRings"), { /* texturesLoadedFromTheModel */ }, { 0, glm::vec3(0.0f) }, 0.5f);
+	if (inRingsOpacity < 0.5f)
+	{
+		return Material(ResourceLoader::GetShader("InfraredBodyRings"), { /* texturesLoadedFromTheModel */ }, { 0, glm::vec3(0.0f) }, inRingsOpacity);
+	}
+	else
+	{
+		return Material(ResourceLoader::GetShader("VisibleBodyRings"), { /* texturesLoadedFromTheModel */ }, { 0, glm::vec3(0.0f) }, inRingsOpacity);
+	}
 }
 
 void BodyRings::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
 {
 	modelMatrix = ResourceLoader::GetBody(bodyName).GetModelMatrix();
+
+	// @todo - Make this model scaling work if possible
+	// modelMatrix = glm::scale(modelMatrix, glm::vec3(ringsData.radius));
 
 	// Rotate back (constant over time) around axis normal to orbital plane
 	modelMatrix = glm::rotate(modelMatrix, -Utils::halfPi, Utils::rightVector);

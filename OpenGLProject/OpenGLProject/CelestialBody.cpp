@@ -36,23 +36,12 @@ preComputations(LoadPreComputations())
 			AttenuationParams{ 1.0f, 0.00045f, 0.00000075f });
 	}
 
-	if (name == "Saturn")
+	// Attach a ring system to the celestial body if one
+	if (bodyData.hasRings)
 	{
-		bodyRings = std::make_unique<BodyRings>("../Models/Rings/SaturnRings.obj", name);
+		bodyRings = std::make_unique<BodyRings>(std::move(ResourceLoader::GetBodyRings(name)));
 	}
-	else if (name == "Uranus")
-	{
-		bodyRings = std::make_unique<BodyRings>("../Models/Rings/UranusRings.obj", name);
-	}
-	else if (name == "Quaoar")
-	{
-		bodyRings = std::make_unique<BodyRings>("../Models/Rings/QuaoarUranusRings.obj", name);
-	}
-	// @todo - Add a model for Jupiter, Neptune and Haumea 
 }
-
-CelestialBody::CelestialBody(CelestialBody&& inCelestialBody) = default;
-CelestialBody::~CelestialBody() = default;
 
 Material CelestialBody::InitialiseParent(const std::filesystem::path& inTexturePath)
 {

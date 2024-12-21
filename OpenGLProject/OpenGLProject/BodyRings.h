@@ -12,19 +12,29 @@ class Renderer;
 
 
 
+struct RingsData
+{
+	std::filesystem::path modelPath;
+	std::string bodyName;
+	float radius{ 0.0f };
+	float opacity{ 0.5f };
+};
+
 class BodyRings : public SceneEntity
 {
 public:
-	BodyRings(const std::string& modelPath, const std::string& inBodyName);
+	BodyRings(RingsData&& inRingsData);
+
+	RingsData ringsData;
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 
 private:
-	std::string bodyName;
-
 	Model model;
 
-	static Material InitialiseParent(const std::filesystem::path& inTexturePath);
+	std::string bodyName;
+
+	static Material InitialiseParent(const float inRingsOpacity);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override;
 };

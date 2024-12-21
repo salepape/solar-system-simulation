@@ -6,7 +6,6 @@
 
 #include "Application.h"
 #include "Billboard.h"
-#include "BodyRings.h"
 #include "Camera.h"
 #include "Controller.h"
 #include "Orbit.h"
@@ -97,4 +96,10 @@ std::vector<Belt> SolarSystem::belts;
 std::vector<Belt>& SolarSystem::GetBeltsVector()
 {
 	return belts;
+};
+
+std::vector<BodyRings> SolarSystem::rings;
+std::vector<BodyRings>& SolarSystem::GetRingsVector()
+{
+	return rings;
 };
