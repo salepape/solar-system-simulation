@@ -192,6 +192,12 @@
     <ClInclude Include="SpotLight.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
+    <ClInclude Include="Spacecraft.h">
+      <Filter>Header Files\Solar System</Filter>
+    </ClInclude>
+    <ClInclude Include="Headlamp.h">
+      <Filter>Header Files\Interactions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -313,6 +319,12 @@
     </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Spacecraft.cpp">
+      <Filter>Source Files\Solar System</Filter>
+    </ClCompile>
+    <ClCompile Include="Headlamp.cpp">
+      <Filter>Source Files\Interactions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

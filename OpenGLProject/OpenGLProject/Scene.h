@@ -7,7 +7,6 @@
 #include "TextRenderer.h"
 
 class Application;
-class Controller;
 class Window;
 
 
@@ -27,8 +26,6 @@ public:
 
 	Renderer renderer;
 	TextRenderer textRenderer;
-
-	std::shared_ptr<Controller> controller;
 };
 
 

@@ -11,6 +11,7 @@
 #include "Orbit.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
+#include "Spacecraft.h"
 #include "TextRenderer.h"
 #include "Window.h"
 
@@ -31,21 +32,17 @@ SolarSystem::SolarSystem() :
 	textRenderer.FreeFTResources();
 
 	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun - farthest celestial body'
-	controller = std::make_shared<Controller>(glm::vec3(0.0f, ResourceLoader::GetBody("Sun").bodyData.radius * 1.75f, -25.0f), glm::vec3(0.0f, -25.0f, 90.0f), 45.0f, 2.0f * ResourceLoader::GetBody("Sedna").bodyData.distanceToParent);
-	if (controller == nullptr)
-	{
-		return;
-	}
-	openWindow.controller = controller;
+	spacecraft = std::make_shared<Spacecraft>(glm::vec3(0.0f, ResourceLoader::GetBody("Sun").bodyData.radius * 1.75f, -25.0f), glm::vec3(0.0f, -25.0f, 90.0f), 45.0f, 2.0f * ResourceLoader::GetBody("Sedna").bodyData.distanceToParent);
 }
 
 void SolarSystem::Update()
 {
 	renderer.Clear();
 
-	controller->ProcessKeyboardInput(runningApp.deltaTime);
+	Controller& cameraController = spacecraft->cameraController;
+	cameraController.ProcessKeyboardInput(runningApp.deltaTime);
 
-	Camera& camera = controller->GetCamera();
+	Camera& camera = cameraController.GetCamera();
 	camera.SetProjectionViewVUniform(openWindow.GetAspectRatio());
 	camera.SetPositionFUniform();
 	const glm::vec3& cameraPosition = camera.GetPosition();

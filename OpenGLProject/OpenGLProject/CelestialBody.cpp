@@ -19,9 +19,9 @@
 // @todo - Find a way to avoid building this string (GetNameFromTexturePath method) 3 times
 CelestialBody::CelestialBody(BodyData&& inBodyData) : SceneEntity(InitialiseParent(inBodyData.texturePath)),
 bodyData(inBodyData),
-sphere({ inBodyData.radius }),
 orbit({ inBodyData.texturePath, bodyData.distanceToParent }),
 billboard({ ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath) }),
+sphere({ inBodyData.radius }),
 preComputations(LoadPreComputations())
 {
 	// Compute position first so the point light is correctly initialised in the case of the Sun

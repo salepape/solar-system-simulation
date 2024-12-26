@@ -66,7 +66,6 @@ public:
 	~CelestialBody() = default;
 
 	BodyData bodyData;
-	std::unique_ptr<BodyRings> bodyRings;
 	Orbit orbit;
 	Billboard billboard;
 
@@ -81,6 +80,7 @@ private:
 	Sphere sphere;
 	PreComputations preComputations;
 	std::unique_ptr<LightSource> lightSource;
+	std::unique_ptr<BodyRings> bodyRings;
 
 	// Store body position in Cartesian coordinates, computed from Spherical ones
 	glm::vec3 position{ 0.0f };

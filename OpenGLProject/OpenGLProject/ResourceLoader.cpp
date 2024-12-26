@@ -44,7 +44,7 @@ namespace ResourceLoader
 		}
 	}
 
-	std::string GetNameFromTexturePath(const std::filesystem::path& inTexturePath)
+	const std::string GetNameFromTexturePath(const std::filesystem::path& inTexturePath)
 	{
 		std::string bodyFileName = inTexturePath.filename().string();
 
@@ -73,6 +73,7 @@ namespace ResourceLoader
 
 	void LoadShaders()
 	{
+		// @todo - Find a solution to avoid having to update this number when adding a new shader, or a warning at the very least (white screen otherwise!)
 		shaders.reserve(8);
 
 		// RendererID will be identical for all shaders if we do not instantiate them line by line before pushing them into the vector
@@ -85,6 +86,7 @@ namespace ResourceLoader
 		shaders.emplace_back("VisibleBodyRings", "DefaultShader.vs", "DefaultShader.fs");
 		shaders.emplace_back("InfraredBodyRings", "DefaultShader.vs", "DefaultShader.fs");
 
+		// @todo - Find a solution to avoid having to update this number when adding a new UBO, or a warning at the very least (white screen otherwise!)
 		ubos.reserve(5);
 
 		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID(), GetShader("TextGlyph").GetRendererID(), GetShader("MilkyWay").GetRendererID() },

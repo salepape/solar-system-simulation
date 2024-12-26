@@ -19,9 +19,9 @@ public:
 
 	GLFWwindow* GLFWWindow{ nullptr };
 
-	// Needed unfortunately, to be able to access it from a GLFWwindow scroll and cursor position callbacks
-	// @todo - Implement a custom event system, to get rid of this pointer?
-	std::shared_ptr<Controller> controller;
+	// Needed unfortunately, to be able to access it from GLFWwindow scroll/cursor position callbacks
+	// @todo - Implement a custom event system, to get rid of this pointer
+	Controller* controller{ nullptr };
 
 	// Tell GLFW that we want the context of the window to be the current single one for the current thread
 	int32_t MakeContextCurrent();

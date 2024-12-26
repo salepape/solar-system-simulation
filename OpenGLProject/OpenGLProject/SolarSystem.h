@@ -9,6 +9,8 @@
 #include "MilkyWay.h"
 #include "Scene.h"
 
+class Spacecraft;
+
 
 
 // All member containers of this class are filled using the ResourceLoader
@@ -31,6 +33,8 @@ private:
 	static std::vector<Belt> belts;
 
 	MilkyWay milkyWay;
+
+	std::shared_ptr<Spacecraft> spacecraft;
 };
 
 

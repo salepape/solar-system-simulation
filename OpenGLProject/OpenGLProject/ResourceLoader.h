@@ -27,13 +27,12 @@ namespace ResourceLoader
 	// Build/compile shaders and their corresponding programs
 	void LoadShaders();
 
-	// @todo - Load raw data from .csv file
-	// Fill data structures above with "spherical" celestial bodies information (collected from NASA website, Wikipedia and passionates)
-	// Note: data is scaled so we can visualise the whole Solar System without having to travel too much time.
+	// Instantiate "spherical" celestial bodies/ring systems/belt systems, after loading data from .csv files,
+	// and re-scaling it so we can visualise the whole Solar System without having to travel for too long
 	void LoadAssets();
 	void LoadCelestialBodies();
 	void LoadRings();
 	void LoadBelts();
 
-	std::string GetNameFromTexturePath(const std::filesystem::path& inTexturePath);
+	const std::string GetNameFromTexturePath(const std::filesystem::path& inTexturePath);
 }

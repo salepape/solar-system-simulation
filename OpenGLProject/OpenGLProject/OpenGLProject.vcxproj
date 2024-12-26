@@ -162,6 +162,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CelestialBody.h" />
     <ClInclude Include="Controller.h" />
+    <ClInclude Include="Headlamp.h" />
     <ClInclude Include="MilkyWay.h" />
     <ClInclude Include="Orbit.h" />
     <ClInclude Include="ResourceLoader.h" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="SolarSystem.h" />
     <ClInclude Include="SolarSystemSimulation.h" />
+    <ClInclude Include="Spacecraft.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="TextRenderer.h" />
@@ -205,6 +207,7 @@
     <ClCompile Include="DataBuffer.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Headlamp.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="LightSource.cpp" />
@@ -226,6 +229,7 @@
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="SolarSystem.cpp" />
     <ClCompile Include="SolarSystemSimulation.cpp" />
+    <ClCompile Include="Spacecraft.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="TextRenderer.cpp" />

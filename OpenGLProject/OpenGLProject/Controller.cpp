@@ -4,7 +4,6 @@
 #include <glm/common.hpp>
 #include <glm/trigonometric.hpp>
 #include <iostream>
-#include <memory>
 
 #include "Application.h"
 #include "InputHandler.h"
@@ -14,8 +13,9 @@
 
 
 Controller::Controller(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inZoomMaxLevel, const float inFarPlane) :
-	camera({ inPosition, inRotation, inZoomMaxLevel, inFarPlane }), zoomMaxLevel(inZoomMaxLevel),
-	flashLight(inPosition, glm::vec3(0.0f, 0.0f, -1.0f), { glm::vec3(0.2f), glm::vec3(0.8f), glm::vec3(1.0f) }, { 1.0f, 0.007f, 0.0002f }, { glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f)) })
+	camera({ inPosition, inRotation, inZoomMaxLevel, inFarPlane }),
+	headlamp({ inPosition }),
+	zoomMaxLevel(inZoomMaxLevel)
 {
 	zoomLeft = inZoomMaxLevel;
 	mouseSensitivity = mouseMaxSensitivity;
@@ -75,23 +75,22 @@ void Controller::ProcessKeyboardInput(const float deltaTime)
 		camera.UpdateUpPosition(-distance);
 	}
 	if (const auto& inputHandler = InputHandler::GetInstance();
-		flashLightStartTime > 0.0 && (
-			inputHandler.IsKeyPressed(GLFW_KEY_W) ||
-			inputHandler.IsKeyPressed(GLFW_KEY_S) ||
-			inputHandler.IsKeyPressed(GLFW_KEY_A) ||
-			inputHandler.IsKeyPressed(GLFW_KEY_D) ||
-			inputHandler.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) ||
-			inputHandler.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT)))
+		inputHandler.IsKeyPressed(GLFW_KEY_W) ||
+		inputHandler.IsKeyPressed(GLFW_KEY_S) ||
+		inputHandler.IsKeyPressed(GLFW_KEY_A) ||
+		inputHandler.IsKeyPressed(GLFW_KEY_D) ||
+		inputHandler.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) ||
+		inputHandler.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT))
 	{
-		UpdateFlashLight();
+		GetHeadlamp().UpdateHeadlight(camera);
 	}
 
-	// Modify controller speed
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_X))
+	// Modify speed
+	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_LEFT_SHIFT))
 	{
 		IncreaseTravelSpeed(2.5f);
 	}
-	if (InputHandler::GetInstance().IsKeyReleased(GLFW_KEY_X))
+	if (InputHandler::GetInstance().IsKeyReleased(GLFW_KEY_LEFT_SHIFT))
 	{
 		DecreaseTravelSpeed(2.5f);
 	}
@@ -130,17 +129,6 @@ void Controller::DecreaseTravelSpeed(const float factor)
 	travelSpeed *= 1.0f / factor;
 }
 
-void Controller::SetFlashLightState(const bool isActive)
-{
-	flashLight.SetIsCameraFlashLightFUniform(isActive);
-}
-
-void Controller::UpdateFlashLight()
-{
-	flashLight.SetLightPositionFUniform(camera.GetPosition());
-	flashLight.SetLightDirectionFUniform(camera.GetForward());
-}
-
 void Controller::Callback_DetectMouseInput()
 {
 	glfwSetCursorPosCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, const double xPosition, const double yPosition)
@@ -152,20 +140,19 @@ void Controller::Callback_DetectMouseInput()
 			return;
 		}
 
-		const std::shared_ptr<Controller>& controller = window->controller;
+		Controller* const controller = window->controller;
 		if (controller == nullptr)
 		{
 			std::cout << "ERROR::CONTROLLER - No controller attached to the window..." << std::endl;
 			return;
 		}
 
-		const glm::vec2& offset = window->ComputeCursorOffset(static_cast<float>(xPosition), static_cast<float>(yPosition));
-		controller->GetCamera().UpdateRotation(offset * controller->mouseSensitivity);
+		Camera& camera = controller->GetCamera();
 
-		if (controller->flashLightStartTime > 0.0)
-		{
-			controller->UpdateFlashLight();
-		}
+		const glm::vec2& offset = window->ComputeCursorOffset(static_cast<float>(xPosition), static_cast<float>(yPosition));
+		camera.UpdateRotation(offset * controller->mouseSensitivity);
+
+		controller->GetHeadlamp().UpdateHeadlight(camera);
 	});
 }
 
@@ -180,7 +167,7 @@ void Controller::Callback_DetectMouseWheelInput()
 			return;
 		}
 
-		const std::shared_ptr<Controller>& controller = window->controller;
+		Controller* const controller = window->controller;
 		if (controller == nullptr)
 		{
 			std::cout << "ERROR::CONTROLLER - No controller attached to the window..." << std::endl;
@@ -208,7 +195,7 @@ void Controller::Callback_DetectKeyboardInput()
 			return window;
 		};
 
-		const auto& GetController = [&GLFWWindow, &GetWindow]() -> std::shared_ptr<Controller>
+		const auto& GetController = [&GLFWWindow, &GetWindow]() -> Controller*
 		{
 			const Window* const window = GetWindow();
 			if (window == nullptr)
@@ -216,7 +203,7 @@ void Controller::Callback_DetectKeyboardInput()
 				return nullptr;
 			}
 
-			const std::shared_ptr<Controller>& controller = window->controller;
+			Controller* const controller = window->controller;
 			if (controller == nullptr)
 			{
 				std::cout << "ERROR::CONTROLLER - No controller attached to the window..." << std::endl;
@@ -227,13 +214,13 @@ void Controller::Callback_DetectKeyboardInput()
 
 		const auto& IsReleaseActionRegistered = [&GetController](const double pressTime) -> bool
 		{
-			const std::shared_ptr<Controller>& controller = GetController();
+			const Controller* const controller = GetController();
 			return Application::GetInstance().GetTime() - pressTime > controller->timeBeforeReleaseRegistered;
 		};
 
 		if (key == GLFW_KEY_SPACE)
 		{
-			const std::shared_ptr<Controller>& controller = GetController();
+			Controller* const controller = GetController();
 			if (controller == nullptr)
 			{
 				return;
@@ -253,7 +240,7 @@ void Controller::Callback_DetectKeyboardInput()
 		}
 		else if (key == GLFW_KEY_TAB)
 		{
-			const std::shared_ptr<Controller>& controller = GetController();
+			Controller* const controller = GetController();
 			if (controller == nullptr)
 			{
 				return;
@@ -273,7 +260,7 @@ void Controller::Callback_DetectKeyboardInput()
 		}
 		else if (key == GLFW_KEY_L)
 		{
-			const std::shared_ptr<Controller>& controller = GetController();
+			Controller* const controller = GetController();
 			if (controller == nullptr)
 			{
 				return;
@@ -291,25 +278,15 @@ void Controller::Callback_DetectKeyboardInput()
 				controller->displayLegendStartTime = 0.0;
 			}
 		}
-		else if (key == GLFW_KEY_F)
+		else if (key == GLFW_KEY_H)
 		{
-			const std::shared_ptr<Controller>& controller = GetController();
+			Controller* const controller = GetController();
 			if (controller == nullptr)
 			{
 				return;
 			}
 
-			if (action == GLFW_PRESS && controller->flashLightStartTime == 0.0)
-			{
-				controller->SetFlashLightState(true);
-				controller->flashLightStartTime = Application::GetInstance().GetTime();
-			}
-
-			if (action == GLFW_RELEASE && IsReleaseActionRegistered(controller->flashLightStartTime))
-			{
-				controller->SetFlashLightState(false);
-				controller->flashLightStartTime = 0.0;
-			}
+			controller->GetHeadlamp().UpdateHeadlightState(*controller, action);
 		}
 	});
 }
