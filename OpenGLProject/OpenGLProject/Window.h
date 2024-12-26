@@ -5,7 +5,7 @@
 #include <memory>
 #include <string>
 
-#include "Controller.h"
+#include "PerspectiveCameraController.h"
 
 struct GLFWwindow;
 
@@ -21,7 +21,7 @@ public:
 
 	// Needed unfortunately, to be able to access it from GLFWwindow scroll/cursor position callbacks
 	// @todo - Implement a custom event system, to get rid of this pointer
-	Controller* controller{ nullptr };
+	PerspectiveCameraController* cameraController{ nullptr };
 
 	// Tell GLFW that we want the context of the window to be the current single one for the current thread
 	int32_t MakeContextCurrent();

@@ -1,4 +1,4 @@
-#include "Controller.h"
+#include "PerspectiveCameraController.h"
 
 #include <glfw3.h>
 #include <glm/common.hpp>
@@ -12,7 +12,7 @@
 
 
 
-Controller::Controller(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inZoomMaxLevel, const float inFarPlane) :
+PerspectiveCameraController::PerspectiveCameraController(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inZoomMaxLevel, const float inFarPlane) :
 	camera({ inPosition, inRotation, inZoomMaxLevel, inFarPlane }),
 	headlamp({ inPosition }),
 	zoomMaxLevel(inZoomMaxLevel)
@@ -25,7 +25,7 @@ Controller::Controller(const glm::vec3& inPosition, const glm::vec3& inRotation,
 	Callback_DetectKeyboardInput();
 }
 
-void Controller::ProcessKeyboardInput(const float deltaTime)
+void PerspectiveCameraController::ProcessKeyboardInput(const float deltaTime)
 {
 	// Quit the simulation
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_ESCAPE))
@@ -96,7 +96,7 @@ void Controller::ProcessKeyboardInput(const float deltaTime)
 	}
 }
 
-void Controller::UpdateZoomLeft(const float yOffset)
+void PerspectiveCameraController::UpdateZoomLeft(const float yOffset)
 {
 	constexpr float zoomMinLevel = 1.0f;
 	if (zoomLeft >= zoomMinLevel && zoomLeft <= zoomMaxLevel)
@@ -109,7 +109,7 @@ void Controller::UpdateZoomLeft(const float yOffset)
 	mouseSensitivity = glm::clamp(mouseSensitivity, mouseMaxSensitivity * 1.0f / 10, mouseMaxSensitivity);
 }
 
-void Controller::IncreaseTravelSpeed(const float factor)
+void PerspectiveCameraController::IncreaseTravelSpeed(const float factor)
 {
 	if (travelSpeed > factor * travelSpeedDefault)
 	{
@@ -119,7 +119,7 @@ void Controller::IncreaseTravelSpeed(const float factor)
 	travelSpeed *= factor;
 }
 
-void Controller::DecreaseTravelSpeed(const float factor)
+void PerspectiveCameraController::DecreaseTravelSpeed(const float factor)
 {
 	if (travelSpeed < travelSpeedDefault)
 	{
@@ -129,57 +129,57 @@ void Controller::DecreaseTravelSpeed(const float factor)
 	travelSpeed *= 1.0f / factor;
 }
 
-void Controller::Callback_DetectMouseInput()
+void PerspectiveCameraController::Callback_DetectMouseInput()
 {
 	glfwSetCursorPosCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, const double xPosition, const double yPosition)
 	{
 		Window* const window = Utils::GetGLFWCallbackData(GLFWWindow);
 		if (window == nullptr)
 		{
-			std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
+			std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
 			return;
 		}
 
-		Controller* const controller = window->controller;
-		if (controller == nullptr)
+		PerspectiveCameraController* const cameraController = window->cameraController;
+		if (cameraController == nullptr)
 		{
-			std::cout << "ERROR::CONTROLLER - No controller attached to the window..." << std::endl;
+			std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - No controller attached to the window..." << std::endl;
 			return;
 		}
 
-		Camera& camera = controller->GetCamera();
+		Camera& camera = cameraController->GetCamera();
 
 		const glm::vec2& offset = window->ComputeCursorOffset(static_cast<float>(xPosition), static_cast<float>(yPosition));
-		camera.UpdateRotation(offset * controller->mouseSensitivity);
+		camera.UpdateRotation(offset * cameraController->mouseSensitivity);
 
-		controller->GetHeadlamp().UpdateHeadlight(camera);
+		cameraController->GetHeadlamp().UpdateHeadlight(camera);
 	});
 }
 
-void Controller::Callback_DetectMouseWheelInput()
+void PerspectiveCameraController::Callback_DetectMouseWheelInput()
 {
 	glfwSetScrollCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, double /*xOffset*/, double yOffset)
 	{
 		const Window* const window = Utils::GetGLFWCallbackData(GLFWWindow);
 		if (window == nullptr)
 		{
-			std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
+			std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
 			return;
 		}
 
-		Controller* const controller = window->controller;
-		if (controller == nullptr)
+		PerspectiveCameraController* const cameraController = window->cameraController;
+		if (cameraController == nullptr)
 		{
-			std::cout << "ERROR::CONTROLLER - No controller attached to the window..." << std::endl;
+			std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - No controller attached to the window..." << std::endl;
 			return;
 		}
 
-		controller->UpdateZoomLeft(static_cast<float>(yOffset));
-		controller->GetCamera().SetFovY(controller->zoomLeft);
+		cameraController->UpdateZoomLeft(static_cast<float>(yOffset));
+		cameraController->GetCamera().SetFovY(cameraController->zoomLeft);
 	});
 }
 
-void Controller::Callback_DetectKeyboardInput()
+void PerspectiveCameraController::Callback_DetectKeyboardInput()
 {
 	glfwSetKeyCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, const int32_t key, const int32_t /*scanCode*/, const int32_t action, const int32_t /*mods*/)
 	{
@@ -188,14 +188,14 @@ void Controller::Callback_DetectKeyboardInput()
 			Window* const window = Utils::GetGLFWCallbackData(GLFWWindow);
 			if (window == nullptr)
 			{
-				std::cout << "ERROR::CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
+				std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
 				return nullptr;
 			}
 
 			return window;
 		};
 
-		const auto& GetController = [&GLFWWindow, &GetWindow]() -> Controller*
+		const auto& GetCameraController = [&GLFWWindow, &GetWindow]() -> PerspectiveCameraController*
 		{
 			const Window* const window = GetWindow();
 			if (window == nullptr)
@@ -203,90 +203,90 @@ void Controller::Callback_DetectKeyboardInput()
 				return nullptr;
 			}
 
-			Controller* const controller = window->controller;
-			if (controller == nullptr)
+			PerspectiveCameraController* const cameraController = window->cameraController;
+			if (cameraController == nullptr)
 			{
-				std::cout << "ERROR::CONTROLLER - No controller attached to the window..." << std::endl;
+				std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - No controller attached to the window..." << std::endl;
 			}
 
-			return controller;
+			return cameraController;
 		};
 
-		const auto& IsReleaseActionRegistered = [&GetController](const double pressTime) -> bool
+		const auto& IsReleaseActionRegistered = [&GetCameraController](const double pressTime) -> bool
 		{
-			const Controller* const controller = GetController();
-			return Application::GetInstance().GetTime() - pressTime > controller->timeBeforeReleaseRegistered;
+			const PerspectiveCameraController* const cameraController = GetCameraController();
+			return Application::GetInstance().GetTime() - pressTime > cameraController->timeBeforeReleaseRegistered;
 		};
 
 		if (key == GLFW_KEY_SPACE)
 		{
-			Controller* const controller = GetController();
-			if (controller == nullptr)
+			PerspectiveCameraController* const cameraController = GetCameraController();
+			if (cameraController == nullptr)
 			{
 				return;
 			}
 
-			if (action == GLFW_PRESS && controller->pauseStartTime == 0.0)
+			if (action == GLFW_PRESS && cameraController->pauseStartTime == 0.0)
 			{
 				Application::GetInstance().Pause(true);
-				controller->pauseStartTime = Application::GetInstance().GetTime();
+				cameraController->pauseStartTime = Application::GetInstance().GetTime();
 			}
 
-			if (action == GLFW_RELEASE && IsReleaseActionRegistered(controller->pauseStartTime))
+			if (action == GLFW_RELEASE && IsReleaseActionRegistered(cameraController->pauseStartTime))
 			{
 				Application::GetInstance().Pause(false);
-				controller->pauseStartTime = 0.0;
+				cameraController->pauseStartTime = 0.0;
 			}
 		}
 		else if (key == GLFW_KEY_TAB)
 		{
-			Controller* const controller = GetController();
-			if (controller == nullptr)
+			PerspectiveCameraController* const cameraController = GetCameraController();
+			if (cameraController == nullptr)
 			{
 				return;
 			}
 
-			if (action == GLFW_PRESS && controller->cursorModeStartTime == 0.0)
+			if (action == GLFW_PRESS && cameraController->cursorModeStartTime == 0.0)
 			{
 				GetWindow()->SetCursorMode(GLFW_CURSOR_NORMAL);
-				controller->cursorModeStartTime = Application::GetInstance().GetTime();
+				cameraController->cursorModeStartTime = Application::GetInstance().GetTime();
 			}
 
-			if (action == GLFW_RELEASE && IsReleaseActionRegistered(controller->cursorModeStartTime))
+			if (action == GLFW_RELEASE && IsReleaseActionRegistered(cameraController->cursorModeStartTime))
 			{
 				GetWindow()->SetCursorMode(GLFW_CURSOR_DISABLED);
-				controller->cursorModeStartTime = 0.0;
+				cameraController->cursorModeStartTime = 0.0;
 			}
 		}
 		else if (key == GLFW_KEY_L)
 		{
-			Controller* const controller = GetController();
-			if (controller == nullptr)
+			PerspectiveCameraController* const cameraController = GetCameraController();
+			if (cameraController == nullptr)
 			{
 				return;
 			}
 
-			if (action == GLFW_PRESS && controller->displayLegendStartTime == 0.0)
+			if (action == GLFW_PRESS && cameraController->displayLegendStartTime == 0.0)
 			{
 				Application::GetInstance().DisplayLegend(true);
-				controller->displayLegendStartTime = Application::GetInstance().GetTime();
+				cameraController->displayLegendStartTime = Application::GetInstance().GetTime();
 			}
 
-			if (action == GLFW_RELEASE && IsReleaseActionRegistered(controller->displayLegendStartTime))
+			if (action == GLFW_RELEASE && IsReleaseActionRegistered(cameraController->displayLegendStartTime))
 			{
 				Application::GetInstance().DisplayLegend(false);
-				controller->displayLegendStartTime = 0.0;
+				cameraController->displayLegendStartTime = 0.0;
 			}
 		}
 		else if (key == GLFW_KEY_H)
 		{
-			Controller* const controller = GetController();
-			if (controller == nullptr)
+			PerspectiveCameraController* const cameraController = GetCameraController();
+			if (cameraController == nullptr)
 			{
 				return;
 			}
 
-			controller->GetHeadlamp().UpdateHeadlightState(*controller, action);
+			cameraController->GetHeadlamp().UpdateHeadlightState(cameraController->timeBeforeReleaseRegistered, action);
 		}
 	});
 }

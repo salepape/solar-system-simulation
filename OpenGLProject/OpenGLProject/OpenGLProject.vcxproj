@@ -160,8 +160,9 @@
     <ClInclude Include="Belt.h" />
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="PerspectiveCamera.h" />
     <ClInclude Include="CelestialBody.h" />
-    <ClInclude Include="Controller.h" />
+    <ClInclude Include="PerspectiveCameraController.h" />
     <ClInclude Include="Headlamp.h" />
     <ClInclude Include="MilkyWay.h" />
     <ClInclude Include="Orbit.h" />
@@ -202,8 +203,9 @@
     <ClCompile Include="Belt.cpp" />
     <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="PerspectiveCamera.cpp" />
     <ClCompile Include="CelestialBody.cpp" />
-    <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="PerspectiveCameraController.cpp" />
     <ClCompile Include="DataBuffer.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="glad.c" />

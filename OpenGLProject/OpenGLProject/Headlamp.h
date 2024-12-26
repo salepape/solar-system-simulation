@@ -20,7 +20,7 @@ public:
 
 	// Call corresponding GLFW callback functions
 	void Callback_DetectMouseInput(Controller& cameraController);
-	void UpdateHeadlightState(Controller& cameraController, int32_t action);
+	void UpdateHeadlightState(double timeBeforeReleaseRegistered, int32_t action);
 
 private:
 	SpotLight headlight;

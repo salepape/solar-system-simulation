@@ -5,7 +5,7 @@
 
 #include "Application.h"
 #include "Camera.h"
-#include "Controller.h"
+#include "PerspectiveCameraController.h"
 
 
 
@@ -29,9 +29,9 @@ void Headlamp::UpdateHeadlight(const Camera& camera)
 	}
 }
 
-void Headlamp::UpdateHeadlightState(Controller& cameraController, int32_t action)
+void Headlamp::UpdateHeadlightState(double timeBeforeReleaseRegistered, int32_t action)
 {
-	const bool isReleaseActionRegistered = Application::GetInstance().GetTime() - headlightStartTime > cameraController.timeBeforeReleaseRegistered;
+	const bool isReleaseActionRegistered = Application::GetInstance().GetTime() - headlightStartTime > timeBeforeReleaseRegistered;
 
 	if (action == GLFW_PRESS && headlightStartTime == 0.0)
 	{

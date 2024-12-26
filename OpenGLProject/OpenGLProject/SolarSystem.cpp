@@ -6,9 +6,10 @@
 
 #include "Application.h"
 #include "Billboard.h"
-#include "Camera.h"
-#include "Controller.h"
+#include "BodyRings.h"
 #include "Orbit.h"
+#include "PerspectiveCamera.h"
+#include "PerspectiveCameraController.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Spacecraft.h"
@@ -39,10 +40,10 @@ void SolarSystem::Update()
 {
 	renderer.Clear();
 
-	Controller& cameraController = spacecraft->cameraController;
+	PerspectiveCameraController& cameraController = spacecraft->cameraController;
 	cameraController.ProcessKeyboardInput(runningApp.deltaTime);
 
-	Camera& camera = cameraController.GetCamera();
+	PerspectiveCamera& camera = cameraController.GetCamera();
 	camera.SetProjectionViewVUniform(openWindow.GetAspectRatio());
 	camera.SetPositionFUniform();
 	const glm::vec3& cameraPosition = camera.GetPosition();

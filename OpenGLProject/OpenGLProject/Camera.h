@@ -6,11 +6,11 @@
 #include <glm/vec3.hpp>
 #include <vector>
 
-class Shader;
 class UniformBuffer;
 
 
 
+// Base class that contain all getters/setters needed for all types of Cameras
 class Camera
 {
 public:
@@ -22,26 +22,29 @@ public:
 
 	void ResetTransform();
 
-	void UpdateForwardPosition(const float distance);
-	void UpdateUpPosition(const float distance);
-	void UpdateRightPosition(const float distance);
-	void UpdateRotation(const glm::vec2& offset);
+	virtual void UpdateForwardPosition(const float distance) = 0;
+	virtual void UpdateUpPosition(const float distance) = 0;
+	virtual void UpdateRightPosition(const float distance) = 0;
+	virtual void UpdateRotation(const glm::vec2& offset) = 0;
 
 	void SetFovY(const float zoomLeft) { fovY = zoomLeft; }
 
-	glm::mat4 ComputePerspectiveProjection(const float windowAspectRatio) const;
-	glm::mat4 ComputeView() const;
-	glm::mat4 ComputeInfiniteView() const;
+	virtual glm::mat4 ComputeProjection(const float windowAspectRatio) const = 0;
+	virtual glm::mat4 ComputeView() const = 0;
+	virtual glm::mat4 ComputeInfiniteView() const;
 
 	void SetProjectionViewVUniform(const float windowAspectRatio);
 	void SetInfiniteProjectionViewVUniform(const float windowAspectRatio);
 	void SetPositionFUniform();
 
-private:
+protected:
 	glm::vec3 initialPosition{ 0.0f };
 	glm::vec3 initialRotation{ 0.0f };
 
 	glm::vec3 position{ 0.0f };
+
+	// Rotation angle around the Forward vector [in degrees]
+	float roll{ 0.0f };
 
 	// Rotation angle around the Right vector [in degrees]
 	float pitch{ 0.0f };
@@ -61,7 +64,7 @@ private:
 	UniformBuffer& positionUBO;
 
 	// Compute new Forward, Right and Up vectors from new Euler Angles
-	void UpdateCameraVectors();
+	virtual void UpdateCameraVectors() = 0;
 };
 
 

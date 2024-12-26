@@ -135,9 +135,6 @@
     <ClInclude Include="InputHandler.h">
       <Filter>Header Files\Interactions</Filter>
     </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>Header Files\Interactions</Filter>
-    </ClInclude>
     <ClInclude Include="Belt.h">
       <Filter>Header Files\Solar System</Filter>
     </ClInclude>
@@ -180,9 +177,6 @@
     <ClInclude Include="SceneEntity.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
@@ -197,6 +191,15 @@
     </ClInclude>
     <ClInclude Include="Headlamp.h">
       <Filter>Header Files\Interactions</Filter>
+    </ClInclude>
+    <ClInclude Include="PerspectiveCamera.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="PerspectiveCameraController.h">
+      <Filter>Header Files\Interactions</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -260,9 +263,6 @@
     <ClCompile Include="InputHandler.cpp">
       <Filter>Source Files\Interactions</Filter>
     </ClCompile>
-    <ClCompile Include="Controller.cpp">
-      <Filter>Source Files\Interactions</Filter>
-    </ClCompile>
     <ClCompile Include="Belt.cpp">
       <Filter>Source Files\Solar System</Filter>
     </ClCompile>
@@ -302,9 +302,6 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="SceneEntity.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
@@ -324,6 +321,15 @@
       <Filter>Source Files\Solar System</Filter>
     </ClCompile>
     <ClCompile Include="Headlamp.cpp">
+      <Filter>Source Files\Interactions</Filter>
+    </ClCompile>
+    <ClCompile Include="PerspectiveCamera.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="PerspectiveCameraController.cpp">
       <Filter>Source Files\Interactions</Filter>
     </ClCompile>
   </ItemGroup>

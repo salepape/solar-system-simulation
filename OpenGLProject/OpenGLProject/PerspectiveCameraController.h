@@ -1,22 +1,22 @@
-#ifndef CONTROLLER_H
-#define CONTROLLER_H
+#ifndef PERSPECTIVE_CAMERA_CONTROLLER_H
+#define PERSPECTIVE_CAMERA_CONTROLLER_H
 
 #include <glm/vec3.hpp>
 
-#include "Camera.h"
+#include "PerspectiveCamera.h"
 #include "Headlamp.h"
 
 
 
 // Camera controller that processes all keyboard user input
-class Controller
+class PerspectiveCameraController
 {
 public:
-	Controller(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inZoomMaxLevel, const float inFarPlane);
+	PerspectiveCameraController(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inZoomMaxLevel, const float inFarPlane);
 
 	void ProcessKeyboardInput(const float deltaTime);
 
-	Camera& GetCamera() { return camera; }
+	PerspectiveCamera& GetCamera() { return camera; }
 	Headlamp& GetHeadlamp() { return headlamp; }
 
 	// [dimensionless]
@@ -27,7 +27,7 @@ public:
 	double timeBeforeReleaseRegistered{ 1.0 };
 
 private:
-	Camera camera;
+	PerspectiveCamera camera;
 	Headlamp headlamp;
 
 	// [in degrees]
@@ -57,4 +57,4 @@ private:
 
 
 
-#endif // CONTROLLER_H
+#endif // PERSPECTIVE_CAMERA_CONTROLLER_H
