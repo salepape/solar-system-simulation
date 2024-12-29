@@ -23,10 +23,10 @@ circle({ radius })
 
 void Orbit::SetDataPostConstruction()
 {
-	const CelestialBody& body = ResourceLoader::GetBody(bodyName);
-	bodyID = body.GetID();
-	parentBodyID = body.bodyData.parentID;
-	bodyPreComputations = std::make_unique<PreComputations>(body.GetPreComputations());
+	const BodySystem& bodySystem = ResourceLoader::GetBodySystem(bodyName);
+	bodyID = bodySystem.celestialBody.GetID();
+	parentBodyID = bodySystem.celestialBody.bodyData.parentID;
+	bodyPreComputations = std::make_unique<PreComputations>(bodySystem.GetPreComputations());
 }
 
 Material Orbit::InitialiseParent(const std::filesystem::path& inTexturePath)
@@ -44,7 +44,7 @@ void Orbit::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
 	// Center the orbit (non-constant over time) around the parent planet for satellites
 	if (parentBodyID != -1)
 	{
-		modelMatrix = glm::translate(modelMatrix, ResourceLoader::GetBody(parentBodyID).GetPosition());
+		modelMatrix = glm::translate(modelMatrix, ResourceLoader::GetBodySystem(parentBodyID).celestialBody.GetPosition());
 	}
 
 	// Rotate the orbit (constant over time) around axis colinear to orbit direction to reproduce the orbital plane

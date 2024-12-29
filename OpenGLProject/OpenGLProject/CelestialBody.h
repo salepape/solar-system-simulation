@@ -12,8 +12,7 @@
 #include "SceneEntity.h"
 #include "Sphere.h"
 
-class BodyRings;
-class LightSource;
+struct PreComputations;
 class Renderer;
 
 
@@ -34,24 +33,7 @@ struct BodyData
 	int32_t parentID{ -1 };					// Pointer to the planet mesh around which a moon rotates
 };
 
-// Represent all Render loop constants of a celestial body
-struct PreComputations
-{
-	float orbitAngularFreq{ 0.0f };			// Angular frequency for orbital motion [in radians/Earth days]
-	float spinAngularFreq{ 0.0f };			// Angular frequency for spin motion [in radians/Earth days]
-
-	float obliquityInRad{ 0.0f };			// Obliquity converted [in radians]
-	float orbInclinationInRad{ 0.0f };		// Orbital Inclination converted [in radians]
-
-	float distCosOrbInclination{ 0.0f };
-	float distSinOrbInclination{ 0.0f };
-
-	float textHeight{ 0.0f };
-	float textScale{ 0.0f };
-};
-
-// @todo - Sphere is a Mesh whereas Orbit is a SceneEntity. Create another class as a clear combination of CelestialBody (that would only contain a Sphere) and Orbit (already containing a Circle)?
-// Represent a planet, dwarf planet, moon etc..., its orbit and its name on a billboard
+// Represent a spherical mesh body, e.g. a planet, a dwarf planet or a moon
 class CelestialBody : public SceneEntity
 {
 public:
@@ -66,21 +48,17 @@ public:
 	~CelestialBody() = default;
 
 	BodyData bodyData;
-	Orbit orbit;
-	Billboard billboard;
+
+	void SetDataPostConstruction();
 
 	void ComputeCartesianPosition(const float elapsedTime);
 	const glm::vec3& GetPosition() const { return position; }
-
-	const PreComputations& GetPreComputations() const { return preComputations; }
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 
 private:
 	Sphere sphere;
-	PreComputations preComputations;
-	std::unique_ptr<LightSource> lightSource;
-	std::unique_ptr<BodyRings> bodyRings;
+	std::unique_ptr<PreComputations> bodyPreComputations;
 
 	// Store body position in Cartesian coordinates, computed from Spherical ones
 	glm::vec3 position{ 0.0f };
@@ -89,7 +67,6 @@ private:
 	float travelledAngle{ 0.0f };
 
 	static Material InitialiseParent(const std::filesystem::path& inTexturePath);
-	PreComputations LoadPreComputations();
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 1.0f) override;
 };

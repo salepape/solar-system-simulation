@@ -25,7 +25,7 @@ namespace ResourceLoader
 	// Paths to retrieve DDS textures (convention: size_name.dds)
 	std::unordered_map<std::string, std::filesystem::path> assetPaths;
 
-	std::vector<CelestialBody>& celestialBodiesRef = SolarSystem::GetCelestialBodiesVector();
+	std::vector<BodySystem>& bodySystemsRef = SolarSystem::GetBodySystemsVector();
 	std::vector<BodyRings>& ringsRef = SolarSystem::GetRingsVector();
 	std::vector<Belt>& beltsRef = SolarSystem::GetBeltsVector();
 
@@ -152,8 +152,8 @@ namespace ResourceLoader
 			const std::string& celestialBodyName = celestialBodyParams[0];
 			const std::string& celestialBodyType = celestialBodyParams[1];
 			const std::string& celestialBodyParentName = (celestialBodyType == "Moon") ? celestialBodyParams[9] : "";
-			const float distanceToParent = std::stof(celestialBodyParams[3]);
 
+			const float distanceToParent = std::stof(celestialBodyParams[3]);
 			float scaledDistanceToParent = 0.0f;
 			if (celestialBodyType == "Star")
 			{
@@ -161,30 +161,32 @@ namespace ResourceLoader
 			}
 			else if (celestialBodyType == "Moon")
 			{
-				scaledDistanceToParent = GetBody(celestialBodyParentName).bodyData.radius + distanceToParent / sunEarthDistance * RADIUS_SCALE_FACTOR;
+				scaledDistanceToParent = GetBodySystem(celestialBodyParentName).celestialBody.bodyData.radius + distanceToParent / sunEarthDistance * RADIUS_SCALE_FACTOR;
 			}
 			else
 			{
+				const BodyData& celestialBodyData = GetBodySystem(celestialBodyNameCache).celestialBody.bodyData;
+				const float realScaledDistance = distanceToParent / sunEarthDistance * DISTANCE_SCALE_FACTOR;
 				if (celestialBodyName == "Mercury")
 				{
-					scaledDistanceToParent = GetBody(celestialBodyNameCache).bodyData.radius * 2.0f + distanceToParent / sunEarthDistance * DISTANCE_SCALE_FACTOR;
+					scaledDistanceToParent = celestialBodyData.radius * 2.0f + realScaledDistance;
 				}
 				else
 				{
-					scaledDistanceToParent = GetBody(celestialBodyNameCache).bodyData.distanceToParent + distanceToParent / sunEarthDistance * DISTANCE_SCALE_FACTOR;
+					scaledDistanceToParent = celestialBodyData.distanceToParent + realScaledDistance;
 				}
 			}
 
 			const std::filesystem::path& texturePath = assetPaths[celestialBodyName];
 			const float scaledRadius = std::stof(celestialBodyParams[2]) / earthRadius * (celestialBodyType == "Star" ? 0.5f : 1.0f);
 			const float obliquity = std::stof(celestialBodyParams[4]);
-			const float scaledOrbitalPeriod = std::stof(celestialBodyParams[5]) * (celestialBodyType == "DwarfPlanet" ? GetBody("Earth").bodyData.orbitalPeriod : 1.0f);
+			const float scaledOrbitalPeriod = std::stof(celestialBodyParams[5]) * (celestialBodyType == "DwarfPlanet" ? GetBodySystem("Earth").celestialBody.bodyData.orbitalPeriod : 1.0f);
 			const float spinPeriod = std::stof(celestialBodyParams[6]);
 			const float orbitalInclination = std::stof(celestialBodyParams[7]);
 			const bool hasRings = std::stoi(celestialBodyParams[8]) > 0 ? true : false;
-			const int32_t parentID = celestialBodyType == "Moon" ? GetBody(celestialBodyParentName).GetID() : -1;
+			const int32_t parentID = celestialBodyType == "Moon" ? GetBodySystem(celestialBodyParentName).celestialBody.GetID() : -1;
 
-			celestialBodiesRef.emplace_back(BodyData{ texturePath, scaledRadius, scaledDistanceToParent, obliquity, scaledOrbitalPeriod, spinPeriod, orbitalInclination, hasRings, parentID });
+			bodySystemsRef.emplace_back(BodyData{ texturePath, scaledRadius, scaledDistanceToParent, obliquity, scaledOrbitalPeriod, spinPeriod, orbitalInclination, hasRings, parentID });
 
 			celestialBodyNameCache = celestialBodyName;
 		}
@@ -251,8 +253,8 @@ namespace ResourceLoader
 			const uint32_t instanceCount = std::stoi(beltParams[2]);
 			const float sizeRangeLowerBound = std::stof(beltParams[3]);
 			const uint32_t sizeRangeSpan = std::stoi(beltParams[4]);
-			const float outerBound = GetBody(beltParams[5]).bodyData.distanceToParent;
-			const float innerBound = GetBody(beltParams[6]).bodyData.distanceToParent;
+			const float outerBound = GetBodySystem(beltParams[5]).celestialBody.bodyData.distanceToParent;
+			const float innerBound = GetBodySystem(beltParams[6]).celestialBody.bodyData.distanceToParent;
 			float majorRadius = 0.0f;
 			if (beltName == "AsteroidBelt")
 			{
@@ -277,14 +279,14 @@ namespace ResourceLoader
 		}
 	}
 
-	CelestialBody& GetBody(const std::string& inBodyName)
+	BodySystem& GetBodySystem(const std::string& inBodyName)
 	{
-		const auto& bodyIt = std::find_if(celestialBodiesRef.begin(), celestialBodiesRef.end(), [&inBodyName](const CelestialBody& body)
+		const auto& bodyIt = std::find_if(bodySystemsRef.begin(), bodySystemsRef.end(), [&inBodyName](const BodySystem& body)
 		{
-			return body.GetName() == inBodyName;
+			return body.celestialBody.GetName() == inBodyName;
 		});
 
-		if (bodyIt == celestialBodiesRef.end())
+		if (bodyIt == bodySystemsRef.end())
 		{
 			std::cout << "ERROR::RESOURCE_LOADER - Celestial body " << inBodyName << " does not exist!" << std::endl;
 		}
@@ -292,14 +294,14 @@ namespace ResourceLoader
 		return *bodyIt;
 	}
 
-	CelestialBody& GetBody(const int32_t inBodyID)
+	BodySystem& GetBodySystem(const int32_t inBodyID)
 	{
-		const auto& bodyIt = std::find_if(celestialBodiesRef.begin(), celestialBodiesRef.end(), [&inBodyID](const CelestialBody& body)
+		const auto& bodyIt = std::find_if(bodySystemsRef.begin(), bodySystemsRef.end(), [&inBodyID](const BodySystem& bodySystem)
 		{
-			return body.GetID() == inBodyID;
+			return bodySystem.celestialBody.GetID() == inBodyID;
 		});
 
-		if (bodyIt == celestialBodiesRef.end())
+		if (bodyIt == bodySystemsRef.end())
 		{
 			std::cout << "ERROR::RESOURCE_LOADER - Celestial body ID " << inBodyID << " does not exist!" << std::endl;
 		}
@@ -337,7 +339,7 @@ namespace ResourceLoader
 		return *shaderIt;
 	}
 
-	UniformBuffer & GetUBO(const std::string& inUniformName)
+	UniformBuffer& GetUBO(const std::string& inUniformName)
 	{
 		const auto& uboIt = std::find_if(ubos.begin(), ubos.end(), [&inUniformName](const UniformBuffer& inUBO)
 		{

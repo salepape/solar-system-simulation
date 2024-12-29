@@ -159,6 +159,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Belt.h" />
     <ClInclude Include="Billboard.h" />
+    <ClInclude Include="BodySystem.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="PerspectiveCamera.h" />
     <ClInclude Include="CelestialBody.h" />
@@ -202,6 +203,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Belt.cpp" />
     <ClCompile Include="Billboard.cpp" />
+    <ClCompile Include="BodySystem.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="PerspectiveCamera.cpp" />
     <ClCompile Include="CelestialBody.cpp" />

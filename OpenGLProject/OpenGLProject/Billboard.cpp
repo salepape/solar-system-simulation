@@ -25,8 +25,7 @@ Material Billboard::InitialiseParent()
 
 void Billboard::SetDataPostConstruction(TextRenderer& textRenderer)
 {
-	const CelestialBody& body = ResourceLoader::GetBody(name);
-	bodyPreComputations = std::make_unique<PreComputations>(body.GetPreComputations());
+	bodyPreComputations = std::make_unique<PreComputations>(ResourceLoader::GetBodySystem(name).GetPreComputations());
 
 	// Texture creation is handled by the Text Renderer for now (glyph rendering issue if textures created in this method)
 	textRenderer.LoadASCIICharacters(name);

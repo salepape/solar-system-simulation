@@ -4,7 +4,7 @@
 #include <string>
 
 #include "BodyRings.h"
-#include "CelestialBody.h"
+#include "BodySystem.h"
 #include "Shader.h"
 #include "UniformBuffer.h"
 
@@ -16,8 +16,8 @@ namespace ResourceLoader
 	constexpr float DISTANCE_SCALE_FACTOR = 10.0f;
 	constexpr float RADIUS_SCALE_FACTOR = 1000.0f;
 
-	CelestialBody& GetBody(const std::string& inBodyName);
-	CelestialBody& GetBody(const int32_t inBodyID);
+	BodySystem& GetBodySystem(const std::string& inBodyName);
+	BodySystem& GetBodySystem(const int32_t inBodyID);
 
 	BodyRings& GetBodyRings(const std::string& inBodyName);
 

@@ -34,7 +34,7 @@ Material BodyRings::InitialiseParent(const float inRingsOpacity)
 
 void BodyRings::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
 {
-	modelMatrix = ResourceLoader::GetBody(bodyName).GetModelMatrix();
+	modelMatrix = ResourceLoader::GetBodySystem(bodyName).celestialBody.GetModelMatrix();
 
 	// @todo - Make this model scaling work if possible
 	// modelMatrix = glm::scale(modelMatrix, glm::vec3(ringsData.radius));

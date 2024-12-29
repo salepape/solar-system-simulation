@@ -5,7 +5,7 @@
 
 #include "Belt.h"
 #include "BodyRings.h"
-#include "CelestialBody.h"
+#include "BodySystem.h"
 #include "MilkyWay.h"
 #include "Scene.h"
 
@@ -21,14 +21,12 @@ public:
 
 	void Update() override;
 
-	static std::vector<CelestialBody>& GetCelestialBodiesVector();
+	static std::vector<BodySystem>& GetBodySystemsVector();
 	static std::vector<BodyRings>& GetRingsVector();
 	static std::vector<Belt>& GetBeltsVector();
 
 private:
-	// Container for all planets, dwarf planets, and moons
-	static std::vector<CelestialBody> celestialBodies;
-
+	static std::vector<BodySystem> bodySystems;
 	static std::vector<BodyRings> rings;
 	static std::vector<Belt> belts;
 

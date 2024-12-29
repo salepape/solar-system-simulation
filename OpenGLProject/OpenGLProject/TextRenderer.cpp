@@ -103,7 +103,7 @@ void TextRenderer::FreeFTResources() const
 
 void TextRenderer::Render(const std::string& text, float x, const float y, const float scale)
 {
-	const CelestialBody& body = ResourceLoader::GetBody(text);
+	const uint32_t bodySystemTextureUnit = ResourceLoader::GetBodySystem(text).billboard.GetMaterial().GetDiffuseTextureUnit();
 
 	// Left-shift billboard position to half its width to center-align it to the celestial body
 	x = -GetBillboardSize(text, scale) * 0.5f;
@@ -125,7 +125,7 @@ void TextRenderer::Render(const std::string& text, float x, const float y, const
 		Quad quad(xPosition, yPosition, width, height);
 		quad.StoreVertices(*vbo);
 
-		glyphParams.texture.Enable(body.billboard.GetMaterial().GetDiffuseTextureUnit());
+		glyphParams.texture.Enable(bodySystemTextureUnit);
 		quad.Render(renderer, *vao);
 		glyphParams.texture.Disable();
 

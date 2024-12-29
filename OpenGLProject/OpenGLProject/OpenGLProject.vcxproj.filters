@@ -201,6 +201,9 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="BodySystem.h">
+      <Filter>Header Files\Solar System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -331,6 +334,9 @@
     </ClCompile>
     <ClCompile Include="PerspectiveCameraController.cpp">
       <Filter>Source Files\Interactions</Filter>
+    </ClCompile>
+    <ClCompile Include="BodySystem.cpp">
+      <Filter>Source Files\Solar System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
