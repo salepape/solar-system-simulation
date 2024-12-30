@@ -14,19 +14,15 @@
 
 
 
-Orbit::Orbit(const std::filesystem::path& inTexturePath, const float radius) : SceneEntity(InitialiseParent(inTexturePath)),
-circle({ radius })
+Orbit::Orbit(BodyData&& inBodyData) : SceneEntity(InitialiseParent(inBodyData.texturePath)),
+circle({ inBodyData.distanceToParent })
 {
-	bodyName = ResourceLoader::GetNameFromTexturePath(inTexturePath);
+	bodyName = ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath);
 	name = bodyName + "Orbit";
-}
 
-void Orbit::SetDataPostConstruction()
-{
-	const BodySystem& bodySystem = ResourceLoader::GetBodySystem(bodyName);
-	bodyID = bodySystem.celestialBody.GetID();
-	parentBodyID = bodySystem.celestialBody.bodyData.parentID;
-	bodyPreComputations = std::make_unique<PreComputations>(bodySystem.GetPreComputations());
+	parentBodyID = inBodyData.parentID;
+
+	orbInclinationInRad = glm::radians(inBodyData.orbitalInclination);
 }
 
 Material Orbit::InitialiseParent(const std::filesystem::path& inTexturePath)
@@ -48,7 +44,7 @@ void Orbit::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
 	}
 
 	// Rotate the orbit (constant over time) around axis colinear to orbit direction to reproduce the orbital plane
-	modelMatrix = glm::rotate(modelMatrix, bodyPreComputations->orbInclinationInRad, Utils::forwardVector);
+	modelMatrix = glm::rotate(modelMatrix, orbInclinationInRad, Utils::forwardVector);
 }
 
 void Orbit::Render(const Renderer& renderer, const float /*elapsedTime*/)

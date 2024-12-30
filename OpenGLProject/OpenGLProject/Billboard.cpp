@@ -4,6 +4,7 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
 
+#include "CelestialBody.h"
 #include "Renderer.h"
 #include "TextRenderer.h"
 #include "ResourceLoader.h"
@@ -12,23 +13,27 @@
 
 
 
-Billboard::Billboard(const std::string& legend) : SceneEntity(InitialiseParent())
+Billboard::Billboard(BodyData&& inBodyData) : SceneEntity(InitialiseParent())
 {
-	name = legend;
+	name = ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath);
+
+	float textHeightFactor = 1.5f;
+	float textScaleFactor = 0.01f;
+	// If the current celestial body is a satellite (i.e. has a parent)
+	if (inBodyData.parentID != -1)
+	{
+		textHeightFactor = 3.5f;
+		textScaleFactor = 0.03f;
+	}
+
+	textHeight = inBodyData.radius * textHeightFactor;
+	textScale = inBodyData.radius * textScaleFactor;
 }
 
 Material Billboard::InitialiseParent()
 {
 	// Add textures after construction finishes via the text renderer passed in argument
 	return Material(ResourceLoader::GetShader("TextGlyph"), { /* texturesLoadedFromTheTextRenderer */ });
-}
-
-void Billboard::SetDataPostConstruction(TextRenderer& textRenderer)
-{
-	bodyPreComputations = std::make_unique<PreComputations>(ResourceLoader::GetBodySystem(name).GetPreComputations());
-
-	// Texture creation is handled by the Text Renderer for now (glyph rendering issue if textures created in this method)
-	textRenderer.LoadASCIICharacters(name);
 }
 
 void Billboard::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& forward, const glm::vec3& right)
@@ -54,7 +59,7 @@ void Billboard::Render(TextRenderer& textRenderer, const glm::vec3& bodyPosition
 	material.SetDiffuseSamplerFUniform();
 	material.SetDiffuseColourFUniform(Utils::whiteColour);
 
-	textRenderer.Render(name, 0.0f, bodyPreComputations->textHeight, bodyPreComputations->textScale);
+	textRenderer.Render(name, 0.0f, textHeight, textScale);
 
 	shader.Disable();
 }

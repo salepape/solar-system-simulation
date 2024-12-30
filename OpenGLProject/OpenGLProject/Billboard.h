@@ -8,7 +8,7 @@
 #include "Material.h"
 #include "SceneEntity.h"
 
-struct PreComputations;
+struct BodyData;
 class Renderer;
 class TextRenderer;
 
@@ -17,19 +17,19 @@ class TextRenderer;
 class Billboard : public SceneEntity
 {
 public:
-	Billboard(const std::string& legend);
-	void SetDataPostConstruction(TextRenderer& textRenderer);
+	Billboard(BodyData&& inBodyData);
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
 	void Render(TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
 
 private:
-	std::unique_ptr<PreComputations> bodyPreComputations;
-
 	static Material InitialiseParent();
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
+
+	float textHeight{ 0.0f };
+	float textScale{ 0.0f };
 };
 
 

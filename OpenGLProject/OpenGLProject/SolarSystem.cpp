@@ -23,13 +23,10 @@ SolarSystem::SolarSystem() :
 {
 	ResourceLoader::LoadAssets();
 
-	// Fill remaining Body, Orbit and Billboard data just after construction ended
-	// @todo - See if we can move the data post-construction call in SceneEntity
-	for (BodySystem& bodySystem : bodySystems)
+	for (const BodySystem& bodySystem : bodySystems)
 	{
-		bodySystem.celestialBody.SetDataPostConstruction();
-		bodySystem.orbit.SetDataPostConstruction();
-		bodySystem.billboard.SetDataPostConstruction(textRenderer);
+		// Texture creation is handled by the Text Renderer for now (glyph rendering issue when textures created otherwise)
+		textRenderer.LoadASCIICharacters(bodySystem.celestialBody.GetName());
 	}
 	// Free FT resources once we don't have any more letters to load
 	textRenderer.FreeFTResources();

@@ -12,7 +12,6 @@
 #include "SceneEntity.h"
 #include "Sphere.h"
 
-struct PreComputations;
 class Renderer;
 
 
@@ -49,8 +48,7 @@ public:
 
 	BodyData bodyData;
 
-	void SetDataPostConstruction();
-
+	// Compute body position in Cartesian coordinates from Spherical ones
 	void ComputeCartesianPosition(const float elapsedTime);
 	const glm::vec3& GetPosition() const { return position; }
 
@@ -58,13 +56,23 @@ public:
 
 private:
 	Sphere sphere;
-	std::unique_ptr<PreComputations> bodyPreComputations;
 
-	// Store body position in Cartesian coordinates, computed from Spherical ones
 	glm::vec3 position{ 0.0f };
 
 	// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
 	float travelledAngle{ 0.0f };
+
+	// Angular frequency for orbital motion [in radians/Earth days]
+	float orbitAngularFreq{ 0.0f };
+
+	// Angular frequency for spin motion [in radians/Earth days]
+	float spinAngularFreq{ 0.0f };
+
+	// Obliquity converted [in radians]
+	float obliquityInRad{ 0.0f };
+
+	float distCosOrbInclination{ 0.0f };
+	float distSinOrbInclination{ 0.0f };
 
 	static Material InitialiseParent(const std::filesystem::path& inTexturePath);
 

@@ -9,7 +9,7 @@
 #include "Material.h"
 #include "SceneEntity.h"
 
-struct PreComputations;
+struct BodyData;
 class Renderer;
 
 
@@ -17,8 +17,7 @@ class Renderer;
 class Orbit : public SceneEntity
 {
 public:
-	Orbit(const std::filesystem::path& inTexturePath, const float radius);
-	void SetDataPostConstruction();
+	Orbit(BodyData&& inBodyData);
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 
@@ -27,9 +26,10 @@ private:
 	Circle circle;
 
 	std::string bodyName;
-	int32_t bodyID{ -1 };
 	int32_t parentBodyID{ -1 };
-	std::unique_ptr<PreComputations> bodyPreComputations;
+
+	// Orbital Inclination converted [in radians]
+	float orbInclinationInRad{ 0.0f };
 
 	static Material InitialiseParent(const std::filesystem::path& inTexturePath);
 

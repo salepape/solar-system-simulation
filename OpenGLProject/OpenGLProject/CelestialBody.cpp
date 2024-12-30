@@ -19,11 +19,15 @@ bodyData(inBodyData),
 sphere({ inBodyData.radius })
 {
 	name = ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath);
-}
 
-void CelestialBody::SetDataPostConstruction()
-{
-	bodyPreComputations = std::make_unique<PreComputations>(ResourceLoader::GetBodySystem(name).GetPreComputations());
+	orbitAngularFreq = inBodyData.orbitalPeriod == 0.0f ? 0.0f : Utils::doublePi * 1.0f / inBodyData.orbitalPeriod;
+	spinAngularFreq = inBodyData.spinPeriod == 0.0f ? 0.0f : Utils::doublePi * 1.0f / inBodyData.spinPeriod;
+
+	obliquityInRad = glm::radians(inBodyData.obliquity);
+
+	const float orbitalInclinationInRad = glm::radians(inBodyData.orbitalInclination);
+	distCosOrbInclination = inBodyData.distanceToParent * glm::cos(orbitalInclinationInRad);
+	distSinOrbInclination = inBodyData.distanceToParent * glm::sin(orbitalInclinationInRad);
 }
 
 Material CelestialBody::InitialiseParent(const std::filesystem::path& inTexturePath)
@@ -50,10 +54,10 @@ void CelestialBody::ComputeModelMatrixVUniform(const float elapsedTime)
 	modelMatrix = glm::translate(modelMatrix, position);
 
 	// Rotate the body (constant over time) around an axis colinear to orbit direction to reproduce its axial tilt
-	modelMatrix = glm::rotate(modelMatrix, bodyPreComputations->obliquityInRad, Utils::forwardVector);
+	modelMatrix = glm::rotate(modelMatrix, obliquityInRad, Utils::forwardVector);
 
 	// Angle travelled by the celestial body around itself since the simulation started [in radians]
-	const float travelledSpinAngle = bodyPreComputations->spinAngularFreq * elapsedTime;
+	const float travelledSpinAngle = spinAngularFreq * elapsedTime;
 
 	// Rotate the body (non-constant over time) around axis normal to orbital plane to reproduce its spin
 	modelMatrix = glm::rotate(modelMatrix, travelledSpinAngle, Utils::upVector);
@@ -67,7 +71,7 @@ void CelestialBody::ComputeCartesianPosition(const float elapsedTime)
 	position = glm::vec3(0.0f);
 
 	// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
-	const float travelledOrbitAngle = bodyPreComputations->orbitAngularFreq * elapsedTime;
+	const float travelledOrbitAngle = orbitAngularFreq * elapsedTime;
 	if (bodyData.parentID == -1)
 	{
 		travelledAngle = travelledOrbitAngle;
@@ -75,23 +79,21 @@ void CelestialBody::ComputeCartesianPosition(const float elapsedTime)
 	// Circular translation of satellite around corresponding planet, taking into account satellite "orbital tilt"
 	else
 	{
-		const BodySystem& satelliteParent = ResourceLoader::GetBodySystem(bodyData.parentID);
-		const PreComputations& satelliteParentPreComputations = satelliteParent.GetPreComputations();
-
-		const float sinTravelledAngleParent = glm::sin(satelliteParent.celestialBody.travelledAngle);
+		const CelestialBody& satelliteParentBody = ResourceLoader::GetBodySystem(bodyData.parentID).celestialBody;
+		const float sinTravelledAngleParent = glm::sin(satelliteParentBody.travelledAngle);
 
 		position += glm::vec3(
-			satelliteParentPreComputations.distCosOrbInclination * sinTravelledAngleParent,
-			satelliteParentPreComputations.distSinOrbInclination * sinTravelledAngleParent,
-			satelliteParent.celestialBody.bodyData.distanceToParent * glm::cos(satelliteParent.celestialBody.travelledAngle));
+			satelliteParentBody.distCosOrbInclination * sinTravelledAngleParent,
+			satelliteParentBody.distSinOrbInclination * sinTravelledAngleParent,
+			satelliteParentBody.bodyData.distanceToParent * glm::cos(satelliteParentBody.travelledAngle));
 	}
 
 	// Circular translation of body around Sun, taking into account body "orbital tilt"
 	const float sinTravelledAngle = glm::sin(travelledOrbitAngle);
 
 	position += glm::vec3(
-		bodyPreComputations->distCosOrbInclination * sinTravelledAngle,
-		bodyPreComputations->distSinOrbInclination * sinTravelledAngle,
+		distCosOrbInclination * sinTravelledAngle,
+		distSinOrbInclination * sinTravelledAngle,
 		bodyData.distanceToParent * glm::cos(travelledOrbitAngle));
 }
 
