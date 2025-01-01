@@ -25,7 +25,7 @@ instanceParams(inInstanceParams), torusParams(inTorusParams), model({ inInstance
 
 Material Belt::InitialiseParent(const std::filesystem::path& inTexturePath)
 {
-	return Material(ResourceLoader::GetShader("BeltBody"), { /* texturesLoadedFromTheModel */ });
+	return Material(ResourceLoader::GetShader("Belt"), { /* texturesLoadedFromTheModel */ });
 }
 
 void Belt::ComputeInstanceModelMatrices()
