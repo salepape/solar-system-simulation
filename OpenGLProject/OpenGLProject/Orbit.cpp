@@ -17,8 +17,7 @@
 Orbit::Orbit(BodyData&& inBodyData) : SceneEntity(InitialiseParent(inBodyData.texturePath)),
 circle({ inBodyData.distanceToParent })
 {
-	bodyName = ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath);
-	name = bodyName + "Orbit";
+	name = ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath) + "Orbit";
 
 	parentBodyID = inBodyData.parentID;
 

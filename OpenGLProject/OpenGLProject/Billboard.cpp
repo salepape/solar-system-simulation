@@ -15,7 +15,8 @@
 
 Billboard::Billboard(BodyData&& inBodyData) : SceneEntity(InitialiseParent())
 {
-	name = ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath);
+	bodyName = ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath);
+	name = bodyName + "Billboard";
 
 	float textHeightFactor = 1.5f;
 	float textScaleFactor = 0.01f;
@@ -59,7 +60,7 @@ void Billboard::Render(TextRenderer& textRenderer, const glm::vec3& bodyPosition
 	material.SetDiffuseSamplerFUniform();
 	material.SetDiffuseColourFUniform(Utils::whiteColour);
 
-	textRenderer.Render(name, 0.0f, textHeight, textScale);
+	textRenderer.Render(bodyName, 0.0f, textHeight, textScale);
 
 	shader.Disable();
 }

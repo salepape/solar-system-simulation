@@ -12,13 +12,12 @@
 
 
 
-Belt::Belt(InstanceParams&& inInstanceParams, TorusParams&& inTorusParams) : SceneEntity(InitialiseParent("")),
+Belt::Belt(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams) : SceneEntity(InitialiseParent("")),
 instanceParams(inInstanceParams), torusParams(inTorusParams), model({ inInstanceParams.modelPath })
 {
-	material.SetTextures(model.GetTextures());
+	name = inName;
 
-	// @todo - See if we can adapt and reuse function in ResourceLoader when no '_' in the name
-	name = "Belt";
+	material.SetTextures(model.GetTextures());
 
 	ComputeInstanceModelMatrices();
 	StoreInstanceModelMatrices();

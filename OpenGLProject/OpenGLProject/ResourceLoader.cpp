@@ -275,7 +275,7 @@ namespace ResourceLoader
 			}
 			const float flatnessFactor = std::stof(beltParams[7]);
 
-			beltsRef.emplace_back(InstanceParams{ modelPath, instanceCount, sizeRangeLowerBound, sizeRangeSpan }, TorusParams{ majorRadius, minorRadius, flatnessFactor });
+			beltsRef.emplace_back(beltName, InstanceParams{ modelPath, instanceCount, sizeRangeLowerBound, sizeRangeSpan }, TorusParams{ majorRadius, minorRadius, flatnessFactor });
 		}
 	}
 
