@@ -32,9 +32,9 @@ BodySystem::BodySystem(BodyData&& inBodyData) :
 	}
 }
 
-void BodySystem::Render(const Renderer& renderer, const float /*elapsedTime*/)
+void BodySystem::Render(const Renderer& renderer, const float elapsedTime)
 {
-	celestialBody.Render(renderer);
+	celestialBody.Render(renderer, elapsedTime);
 
 	orbit.Render(renderer);
 
