@@ -79,8 +79,8 @@ namespace ResourceLoader
 		// RendererID will be identical for all shaders if we do not instantiate them line by line before pushing them into the vector
 		shaders.emplace_back("CelestialBody", "DefaultShader.vs", "DefaultShader.fs");
 		shaders.emplace_back("Sun", "DefaultShader.vs", "SunShader.fs");
-		shaders.emplace_back("TextGlyph", "TextShader.vs", "TextShader.fs");
-		shaders.emplace_back("BeltBody", "InstancedModelShader.vs", "DefaultShader.fs");
+		shaders.emplace_back("Billboard", "BillboardShader.vs", "BillboardShader.fs");
+		shaders.emplace_back("Belt", "InstancedModelShader.vs", "DefaultShader.fs");
 		shaders.emplace_back("MilkyWay", "SkyboxShader.vs", "SkyboxShader.fs");
 		shaders.emplace_back("Orbit", "DefaultShader.vs", "DefaultShader.fs");
 		shaders.emplace_back("VisibleBodyRings", "DefaultShader.vs", "DefaultShader.fs");
@@ -89,12 +89,12 @@ namespace ResourceLoader
 		// @todo - Find a solution to avoid having to update this number when adding a new UBO, or a warning at the very least (white screen otherwise!)
 		ubos.reserve(5);
 
-		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID(), GetShader("TextGlyph").GetRendererID(), GetShader("MilkyWay").GetRendererID() },
+		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("Belt").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID(), GetShader("Billboard").GetRendererID(), GetShader("MilkyWay").GetRendererID() },
 			"ubo_ProjectionView", Utils::mat4v4SizeInBytes);
-		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
+		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("Belt").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
 			"ubo_CameraPosition", Utils::vec4SizeInBytes);
 
-		const std::vector<uint32_t> bodyShaderIDs{ GetShader("CelestialBody").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() };
+		const std::vector<uint32_t> bodyShaderIDs{ GetShader("CelestialBody").GetRendererID(), GetShader("Belt").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() };
 		ubos.emplace_back(bodyShaderIDs, "ubo_DirectionalLight", 4 * Utils::vec4SizeInBytes + Utils::scalarSizeInBytes);
 		ubos.emplace_back(bodyShaderIDs, "ubo_PointLight", 4 * Utils::vec4SizeInBytes + 4 * Utils::scalarSizeInBytes);
 		ubos.emplace_back(bodyShaderIDs, "ubo_SpotLight", 5 * Utils::vec4SizeInBytes + 7 * Utils::scalarSizeInBytes);

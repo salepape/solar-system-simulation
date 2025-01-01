@@ -346,12 +346,6 @@
     <None Include="SkyboxShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="TextShader.vs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="TextShader.fs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="InstancedModelShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
@@ -362,6 +356,12 @@
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="SunShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="BillboardShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="BillboardShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>

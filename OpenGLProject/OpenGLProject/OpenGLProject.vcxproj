@@ -252,8 +252,8 @@
     <None Include="SkyboxShader.fs" />
     <None Include="SkyboxShader.vs" />
     <None Include="SunShader.fs" />
-    <None Include="TextShader.fs" />
-    <None Include="TextShader.vs" />
+    <None Include="BillboardShader.fs" />
+    <None Include="BillboardShader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
