@@ -10,7 +10,7 @@
 class VertexBuffer : public DataBuffer
 {
 public:
-	VertexBuffer(const void* data, const size_t size, const int usage = GL_STATIC_DRAW);
+	VertexBuffer(const void* data, const size_t sizeInBytes, const int usage = GL_STATIC_DRAW);
 };
 
 

@@ -21,7 +21,8 @@ struct GlyphParams
 {
 	Texture texture;
 
-	glm::ivec2 size{ 0, 0 };
+	float width = 0.0f;
+	float height = 0.0f;
 
 	// Offset from baseline to left/top of glyph
 	glm::ivec2 bearing{ 0, 0 };

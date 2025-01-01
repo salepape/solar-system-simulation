@@ -6,7 +6,7 @@ uint32_t UniformBuffer::blockBindingPoint = 0;
 
 
 
-UniformBuffer::UniformBuffer(const std::vector<uint32_t>& shaderIDs, const std::string& inUniformName, const size_t size)
+UniformBuffer::UniformBuffer(const std::vector<uint32_t>& shaderIDs, const std::string& inUniformName, const size_t sizeInBytes)
 {
 	target = GL_UNIFORM_BUFFER;
 	uniformName = inUniformName;
@@ -26,8 +26,8 @@ UniformBuffer::UniformBuffer(const std::vector<uint32_t>& shaderIDs, const std::
 	// @todo - Move functions below in proper class to avoid having the size as parameter in ResourceLoader?
 
 	// Allocate memory space (in bytes) to the UBO and store data in it
-	glBufferData(target, size, nullptr, GL_STATIC_DRAW);
+	glBufferData(target, sizeInBytes, nullptr, GL_STATIC_DRAW);
 
 	// Define the range of the buffer that links to a uniform binding point
-	glBindBufferRange(target, blockBindingPoint++, rendererID, 0, size);
+	glBindBufferRange(target, blockBindingPoint++, rendererID, 0, sizeInBytes);
 }

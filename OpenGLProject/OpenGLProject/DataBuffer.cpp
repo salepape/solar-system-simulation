@@ -4,7 +4,7 @@
 
 
 
-DataBuffer::DataBuffer(const void* data, const size_t size, const uint32_t inTarget, const uint32_t usage) :
+DataBuffer::DataBuffer(const void* data, const size_t sizeInBytes, const uint32_t inTarget, const uint32_t usage) :
 	target(inTarget)
 {
 	// Reserve an ID available to be used by the BO as a binding point
@@ -13,7 +13,7 @@ DataBuffer::DataBuffer(const void* data, const size_t size, const uint32_t inTar
 	Bind();
 
 	// Allocate memory space (in bytes) to the BO and store data in it
-	glBufferData(target, size, data, usage);
+	glBufferData(target, sizeInBytes, data, usage);
 }
 
 DataBuffer::~DataBuffer()
@@ -35,12 +35,12 @@ void DataBuffer::Unbind() const
 	glBindBuffer(target, 0);
 }
 
-void DataBuffer::SetSubData(const void* data, const size_t size, const uint32_t dataStart)
+void DataBuffer::SetSubData(const void* data, const size_t sizeInBytes, const uint32_t dataStart)
 {
 	Bind();
 
 	// Update the data stored in the specified subset of memory space (in bytes), avoiding the reallocation cost
-	glBufferSubData(target, dataStart, size, data);
+	glBufferSubData(target, dataStart, sizeInBytes, data);
 
 	Unbind();
 }
@@ -54,9 +54,9 @@ void DataBuffer::SetSubData(const std::vector<SubData>& data, const uint32_t dat
 	for (const SubData& subdata : data)
 	{
 		// Update the data stored in the specified subset of memory space (in bytes), avoiding the reallocation cost
-		glBufferSubData(target, offset, subdata.size, subdata.data);
+		glBufferSubData(target, offset, subdata.sizeInBytes, subdata.data);
 
-		offset += static_cast<uint32_t>(subdata.size);
+		offset += static_cast<uint32_t>(subdata.sizeInBytes);
 	}
 
 	Unbind();

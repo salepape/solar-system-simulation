@@ -23,7 +23,7 @@ class Model
 public:
 	Model(const std::filesystem::path& inPath, const bool inGammaCorrection = false);
 
-	void StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t size) const;
+	void StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t sizeInBytes);
 
 	void Render(const Renderer& renderer) const;
 	void RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const;

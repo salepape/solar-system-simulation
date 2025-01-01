@@ -19,10 +19,10 @@ namespace Utils
 	std::string ReadFile(const std::string & path)
 	{
 		std::ifstream fileStream(path, std::ios::in | std::ios::binary);
-		const uintmax_t fileSize = std::filesystem::file_size(path);
+		const uintmax_t fileSizeInBytes = std::filesystem::file_size(path);
 
-		std::string fileContent(static_cast<uint32_t>(fileSize), '\0');
-		fileStream.read(fileContent.data(), fileSize);
+		std::string fileContent(static_cast<uint32_t>(fileSizeInBytes), '\0');
+		fileStream.read(fileContent.data(), fileSizeInBytes);
 
 		return fileContent;
 	}

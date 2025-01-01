@@ -9,7 +9,7 @@
 struct SubData
 {
 	const void* data{ nullptr };
-	const size_t size{ 0 };
+	const size_t sizeInBytes{ 0 };
 };
 
 class DataBuffer
@@ -17,7 +17,7 @@ class DataBuffer
 public:
 	// Default constructor needed for UniformBuffer constructor not using DataBuffer user-defined one
 	DataBuffer() = default;
-	DataBuffer(const void* data, const size_t size, const uint32_t inTarget, const uint32_t usage = GL_STATIC_DRAW);
+	DataBuffer(const void* data, const size_t sizeInBytes, const uint32_t inTarget, const uint32_t usage = GL_STATIC_DRAW);
 	~DataBuffer();
 
 	// Select the VBO we want to use
@@ -27,7 +27,7 @@ public:
 	void Unbind() const;
 
 	// Set data in the memory region starting after the indicated amount of bytes
-	void SetSubData(const void* data, const size_t size, const uint32_t dataStart = 0);
+	void SetSubData(const void* data, const size_t sizeInBytes, const uint32_t dataStart = 0);
 	void SetSubData(const std::vector<SubData>& data, const uint32_t dataStart = 0);
 
 protected:

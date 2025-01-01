@@ -86,7 +86,8 @@ void TextRenderer::LoadASCIICharacters(const std::string& text)
 		// Use direct-list-initialisation to avoid having to add constrcutors in the plain-old data struct
 		GlyphParams glyphParams{
 			std::move(glyphTexture),
-			glm::ivec2(glyph->bitmap.width, glyph->bitmap.rows),
+			glyph->bitmap.width,
+			glyph->bitmap.rows,
 			glm::ivec2(glyph->bitmap_left, glyph->bitmap_top),
 			face->glyph->advance.x
 		};
@@ -116,11 +117,11 @@ void TextRenderer::Render(const std::string& text, float x, const float y, const
 
 		// Position of the quad on the billboard
 		const float xPosition = x + glyphParams.bearing.x * scale;
-		const float yPosition = y - (glyphParams.size.y - glyphParams.bearing.y) * scale;
+		const float yPosition = y - (glyphParams.height - glyphParams.bearing.y) * scale;
 
 		// Size of the quad
-		const float width = glyphParams.size.x * scale;
-		const float height = glyphParams.size.y * scale;
+		const float width = glyphParams.width * scale;
+		const float height = glyphParams.height * scale;
 
 		Quad quad(xPosition, yPosition, width, height);
 		quad.StoreVertices(*vbo);

@@ -156,10 +156,10 @@ void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 	}
 }
 
-void Model::StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t size) const
+void Model::StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t sizeInBytes)
 {
 	// Configure instanced array
-	VertexBuffer vbo(static_cast<const void*>(modelMatrices.data()), size);
+	VertexBuffer vbo(static_cast<const void*>(modelMatrices.data()), sizeInBytes);
 
 	// Set transformation matrices as an instance vertex attribute for each mesh VAO already created
 	for (const Mesh& mesh : meshes)

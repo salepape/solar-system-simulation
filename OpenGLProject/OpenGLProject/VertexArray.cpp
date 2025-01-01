@@ -56,8 +56,8 @@ void VertexArray::AddInstancedBuffer(const VertexBuffer& vbo, const VertexBuffer
 {
 	Bind();
 
-	const size_t mat4Size = sizeof(glm::mat4);
-	const size_t vec4size = sizeof(glm::vec4);
+	const size_t mat4SizeInBytes = sizeof(glm::mat4);
+	const size_t vec4sizeInBytes = sizeof(glm::vec4);
 	size_t offset = 0;
 
 	// Iterate through the instanced matrix only
@@ -67,12 +67,12 @@ void VertexArray::AddInstancedBuffer(const VertexBuffer& vbo, const VertexBuffer
 		glEnableVertexAttribArray(attributeLayout.location);
 
 		// Store in the currently bound VBO how we want OpenGL to interpret the data corresponding to the 4x4 matrix
-		glVertexAttribPointer(attributeLayout.location, attributeLayout.count, attributeLayout.type, attributeLayout.normalised, mat4Size, reinterpret_cast<const void*>(offset));
+		glVertexAttribPointer(attributeLayout.location, attributeLayout.count, attributeLayout.type, attributeLayout.normalised, mat4SizeInBytes, reinterpret_cast<const void*>(offset));
 
 		// Set the rate at which the attribute index advance when rendering multiple instances of primitives in a single draw call
 		glVertexAttribDivisor(attributeLayout.location, 1);
 
-		offset += vec4size;
+		offset += vec4sizeInBytes;
 	}
 
 	Unbind();

@@ -46,7 +46,7 @@ namespace ResourceLoader
 
 	const std::string GetNameFromTexturePath(const std::filesystem::path& inTexturePath)
 	{
-		std::string bodyFileName = inTexturePath.filename().string();
+		const std::string& bodyFileName = inTexturePath.filename().string();
 
 		size_t firstTrimSymbol = bodyFileName.find_first_of("_");
 		if (firstTrimSymbol == std::string::npos)
@@ -57,14 +57,14 @@ namespace ResourceLoader
 				return "";
 			}
 		}
-		std::string fileWithoutSize = firstTrimSymbol == bodyFileName.find_first_of("_") ? bodyFileName.substr(firstTrimSymbol + 1, bodyFileName.length() - firstTrimSymbol - 1) : bodyFileName.substr(0, firstTrimSymbol);
+		const std::string& fileNameWithSizeTrimmed = firstTrimSymbol == bodyFileName.find_first_of("_") ? bodyFileName.substr(firstTrimSymbol + 1, bodyFileName.length() - firstTrimSymbol - 1) : bodyFileName.substr(0, firstTrimSymbol);
 
-		size_t lastTrimSymbol = fileWithoutSize.find_first_of("_");
+		size_t lastTrimSymbol = fileNameWithSizeTrimmed.find_first_of("_");
 		if (lastTrimSymbol == std::string::npos)
 		{
-			lastTrimSymbol = fileWithoutSize.find_first_of(".");
+			lastTrimSymbol = fileNameWithSizeTrimmed.find_first_of(".");
 		}
-		std::string bodyName = fileWithoutSize.substr(0, lastTrimSymbol);
+		std::string bodyName = fileNameWithSizeTrimmed.substr(0, lastTrimSymbol);
 
 		bodyName[0] = toupper(bodyName[0]);
 
@@ -90,14 +90,14 @@ namespace ResourceLoader
 		ubos.reserve(5);
 
 		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID(), GetShader("TextGlyph").GetRendererID(), GetShader("MilkyWay").GetRendererID() },
-			"ubo_ProjectionView", Utils::mat4v4Size);
+			"ubo_ProjectionView", Utils::mat4v4SizeInBytes);
 		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
-			"ubo_CameraPosition", Utils::vec4Size);
+			"ubo_CameraPosition", Utils::vec4SizeInBytes);
 
 		const std::vector<uint32_t> bodyShaderIDs{ GetShader("CelestialBody").GetRendererID(), GetShader("BeltBody").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() };
-		ubos.emplace_back(bodyShaderIDs, "ubo_DirectionalLight", 4 * Utils::vec4Size + Utils::scalarSize);
-		ubos.emplace_back(bodyShaderIDs, "ubo_PointLight", 4 * Utils::vec4Size + 4 * Utils::scalarSize);
-		ubos.emplace_back(bodyShaderIDs, "ubo_SpotLight", 5 * Utils::vec4Size + 7 * Utils::scalarSize);
+		ubos.emplace_back(bodyShaderIDs, "ubo_DirectionalLight", 4 * Utils::vec4SizeInBytes + Utils::scalarSizeInBytes);
+		ubos.emplace_back(bodyShaderIDs, "ubo_PointLight", 4 * Utils::vec4SizeInBytes + 4 * Utils::scalarSizeInBytes);
+		ubos.emplace_back(bodyShaderIDs, "ubo_SpotLight", 5 * Utils::vec4SizeInBytes + 7 * Utils::scalarSizeInBytes);
 	}
 
 	std::vector<std::filesystem::path> GetSubfolderPaths(const std::string& subfolder)

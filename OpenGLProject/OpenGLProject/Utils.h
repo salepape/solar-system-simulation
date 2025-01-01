@@ -22,10 +22,10 @@ namespace Utils
 	const glm::vec3 whiteColour(1.0f);
 
 	// Compute the data size (in bytes) of each GLSL uniform variable, and their respective offset following the std140 layout base alignement rules 
-	constexpr size_t GLSL_SCALAR_SIZE = 4;
-	const size_t scalarSize = GLSL_SCALAR_SIZE;
-	const size_t vec4Size = 4 * GLSL_SCALAR_SIZE;
-	const size_t mat4v4Size = 16 * GLSL_SCALAR_SIZE;
+	constexpr size_t GLSL_SCALAR_SIZE_IN_BYTES = 4;
+	const size_t scalarSizeInBytes = GLSL_SCALAR_SIZE_IN_BYTES;
+	const size_t vec4SizeInBytes = 4 * GLSL_SCALAR_SIZE_IN_BYTES;
+	const size_t mat4v4SizeInBytes = 16 * GLSL_SCALAR_SIZE_IN_BYTES;
 
 	// Register user data field to access it later from within static GLFWwindow callbacks (to avoid making variable global)
 	void SetGLFWCallbackData(GLFWwindow* GLFWWindow, Window* data);

@@ -34,5 +34,6 @@ namespace ResourceLoader
 	void LoadRings();
 	void LoadBelts();
 
+	// Get body name from texture path (by convention, texture name stored in folders follows: [num]k_[bodyName]_[bodyNameOptionalPrecisions])
 	const std::string GetNameFromTexturePath(const std::filesystem::path& inTexturePath);
 }
