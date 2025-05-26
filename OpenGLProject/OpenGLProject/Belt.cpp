@@ -73,7 +73,7 @@ void Belt::ComputeInstanceModelMatrices()
 	}
 }
 
-void Belt::StoreInstanceModelMatrices() const
+void Belt::StoreInstanceModelMatrices()
 {
 	model.StoreInstanceModelMatrices(modelMatrices, static_cast<size_t>(instanceParams.count) * sizeof(glm::mat4));
 }

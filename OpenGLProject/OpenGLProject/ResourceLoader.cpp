@@ -138,8 +138,11 @@ namespace ResourceLoader
 
 		while (std::getline(csvLineStream, line, '\n'))
 		{
-			// @todo - Optimise...
-			line.erase(line.find('\r'));
+			const size_t carriageReturn = line.find('\r');
+			if (carriageReturn != std::string::npos)
+			{
+				line.erase(carriageReturn);
+			}
 
 			std::stringstream csvFieldStream(line);
 			std::string field;
@@ -205,8 +208,11 @@ namespace ResourceLoader
 
 		while (std::getline(csvLineStream, line, '\n'))
 		{
-			// @todo - Optimise...
-			line.erase(line.find('\r'));
+			const size_t carriageReturn = line.find('\r');
+			if (carriageReturn != std::string::npos)
+			{
+				line.erase(carriageReturn);
+			}
 
 			std::stringstream csvFieldStream(line);
 			std::string field;
@@ -237,8 +243,11 @@ namespace ResourceLoader
 
 		while (std::getline(csvLineStream, line, '\n'))
 		{
-			// @todo - Optimise...
-			line.erase(line.find('\r'));
+			const size_t carriageReturn = line.find('\r');
+			if (carriageReturn != std::string::npos)
+			{
+				line.erase(carriageReturn);
+			}
 
 			std::stringstream csvFieldStream(line);
 			std::string field;
