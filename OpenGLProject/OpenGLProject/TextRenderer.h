@@ -3,16 +3,18 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
+#include <cstdint>
 #include <glm/vec2.hpp>
 #include <memory>
 #include <unordered_map>
 #include <string>
 
 #include "Texture.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
 
 class Renderer;
-class VertexArray;
-class VertexBuffer;
 
 
 

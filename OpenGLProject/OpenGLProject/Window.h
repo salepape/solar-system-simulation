@@ -1,12 +1,11 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include <cstdint>
 #include <glm/vec2.hpp>
-#include <memory>
 #include <string>
 
-#include "PerspectiveCameraController.h"
-
+class PerspectiveCameraController;
 struct GLFWwindow;
 
 
@@ -44,7 +43,7 @@ public:
 private:
 	uint32_t width{ 0 };
 	uint32_t height{ 0 };
-	const std::string title;
+	std::string title;
 
 	float aspectRatio{ 0.0f };
 

@@ -1,6 +1,7 @@
 #ifndef HEADLAMP_H
 #define HEADLAMP_H
 
+#include <cstdint>
 #include <glm/vec3.hpp>
 
 #include "SpotLight.h"

@@ -1,6 +1,7 @@
 #ifndef BELT_H
 #define BELT_H
 
+#include <cstdint>
 #include <filesystem>
 #include <glm/mat4x4.hpp>
 #include <string>

@@ -1,6 +1,8 @@
 #ifndef SKYBOX_H
 #define SKYBOX_H
 
+#include <cstdint>
+
 #include "Mesh.h"
 
 class Renderer;

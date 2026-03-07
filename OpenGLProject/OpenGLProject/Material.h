@@ -1,12 +1,11 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
+#include <cstdint>
 #include <glm/vec3.hpp>
-#include <memory>
 #include <vector>
 
 #include "Texture.h"
-#include "UniformBuffer.h"
 
 class Shader;
 

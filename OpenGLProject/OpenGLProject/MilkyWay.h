@@ -2,7 +2,6 @@
 #define MILKY_WAY_H
 
 #include <filesystem>
-#include <string>
 
 #include "Material.h"
 #include "SceneEntity.h"

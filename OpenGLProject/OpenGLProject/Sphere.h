@@ -1,6 +1,8 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
+#include <cstdint>
+
 #include "Mesh.h"
 
 

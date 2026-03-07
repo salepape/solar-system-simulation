@@ -1,14 +1,11 @@
 #ifndef CELESTIAL_BODY_H
 #define CELESTIAL_BODY_H
 
+#include <cstdint>
 #include <filesystem>
 #include <glm/vec3.hpp>
-#include <memory>
-#include <string>
 
-#include "Billboard.h"
 #include "Material.h"
-#include "Orbit.h"
 #include "SceneEntity.h"
 #include "Sphere.h"
 

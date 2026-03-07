@@ -1,6 +1,7 @@
 #ifndef UNIFORMBUFFER_H
 #define UNIFORMBUFFER_H
 
+#include <cstdint>
 #include <string>
 #include <vector>
 

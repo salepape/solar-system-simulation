@@ -1,9 +1,9 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include <assimp/material.h>
+#include <cstdint>
 #include <filesystem>
-#include <glm/ext/matrix_transform.hpp>
+#include <glm/mat4x4.hpp>
 #include <string>
 #include <vector>
 
@@ -15,6 +15,7 @@ struct aiNode;
 struct aiScene;
 class Renderer;
 struct Vertex;
+
 
 
 // Set of meshes with textures already applied in a 3D Software

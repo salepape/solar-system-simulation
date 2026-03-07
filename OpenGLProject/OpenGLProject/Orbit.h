@@ -1,8 +1,8 @@
 #ifndef ORBIT_H
 #define ORBIT_H
 
+#include <cstdint>
 #include <filesystem>
-#include <memory>
 #include <string>
 
 #include "Circle.h"

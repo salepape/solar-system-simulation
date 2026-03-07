@@ -1,10 +1,9 @@
 #ifndef QUAD_H
 #define QUAD_H
 
+#include <cstdint>
 #include <glm/vec2.hpp>
 #include <vector>
-
-
 
 class Renderer;
 class VertexArray;

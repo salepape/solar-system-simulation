@@ -1,6 +1,7 @@
 #ifndef DATABUFFER_H
 #define DATABUFFER_H
 
+#include <cstdint>
 #include <glad.h>
 #include <vector>
 

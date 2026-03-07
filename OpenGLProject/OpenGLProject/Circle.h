@@ -1,7 +1,7 @@
 #ifndef CIRCLE_H
 #define CIRCLE_H
 
-#include <string>
+#include <cstdint>
 
 #include "Mesh.h"
 

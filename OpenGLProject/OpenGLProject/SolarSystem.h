@@ -1,6 +1,7 @@
 #ifndef SOLAR_SYSTEM_H
 #define SOLAR_SYSTEM_H
 
+#include <memory>
 #include <vector>
 
 #include "Belt.h"
@@ -8,8 +9,7 @@
 #include "BodySystem.h"
 #include "MilkyWay.h"
 #include "Scene.h"
-
-class Spacecraft;
+#include "Spacecraft.h"
 
 
 

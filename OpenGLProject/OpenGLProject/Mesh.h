@@ -1,15 +1,15 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include <cstdint>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <memory>
 #include <vector>
 
-class VertexArray;
-class VertexBuffer;
 class IndexBuffer;
 class Renderer;
+class VertexArray;
 class VertexBuffer;
 
 

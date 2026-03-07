@@ -1,6 +1,8 @@
 #ifndef INDEXBUFFER_H
 #define INDEXBUFFER_H
 
+#include <cstdint>
+
 #include "DataBuffer.h"
 
 

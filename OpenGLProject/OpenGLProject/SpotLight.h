@@ -22,7 +22,7 @@ public:
 	SpotLight(const glm::vec3& inPosition, const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const SpotParams& inSpotParams, const bool inIsBlinn = false);
 
 	void SetPosition(const glm::vec3& inPosition) { position = inPosition; }
-	void SetDirection(const glm::vec3 inDirection) { direction = inDirection; }
+	void SetDirection(const glm::vec3& inDirection) { direction = inDirection; }
 	void SetActivationState(const bool isActive) { isCameraFlashLight = isActive; }
 
 	void SetFUniforms() override;

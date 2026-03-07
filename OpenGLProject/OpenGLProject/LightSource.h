@@ -2,7 +2,6 @@
 #define LIGHT_SOURCE_H
 
 #include <glm/vec3.hpp>
-#include <vector>
 
 
 
