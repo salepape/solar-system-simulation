@@ -2,9 +2,9 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Constants.h"
 #include "ResourceLoader.h"
 #include "UniformBuffer.h"
-#include "Utils.h"
 
 
 
@@ -17,35 +17,35 @@ position(inPosition), direction(inDirection), attenuationParams(inAttenuationPar
 void SpotLight::SetFUniforms()
 {
 	ubo.SetSubData({
-		{ static_cast<const void*>(glm::value_ptr(position)), Utils::vec4SizeInBytes },
-		{ static_cast<const void*>(glm::value_ptr(direction)), Utils::vec4SizeInBytes },
-		{ static_cast<const void*>(glm::value_ptr(reflectionParams.ambient)), Utils::vec4SizeInBytes },
-		{ static_cast<const void*>(glm::value_ptr(reflectionParams.diffuse)), Utils::vec4SizeInBytes },
-		{ static_cast<const void*>(glm::value_ptr(reflectionParams.specular)), Utils::vec4SizeInBytes },
-		{ static_cast<const void*>(&attenuationParams.constant), Utils::scalarSizeInBytes },
-		{ static_cast<const void*>(&attenuationParams.linear), Utils::scalarSizeInBytes },
-		{ static_cast<const void*>(&attenuationParams.quadratic), Utils::scalarSizeInBytes },
-		{ static_cast<const void*>(&spotParams.cutoff), Utils::scalarSizeInBytes },
-		{ static_cast<const void*>(&spotParams.outerCutoff), Utils::scalarSizeInBytes },
-		{ static_cast<const void*>(&isBlinn), Utils::scalarSizeInBytes },
-		{ static_cast<const void*>(&isCameraFlashLight), Utils::scalarSizeInBytes }
+		{ static_cast<const void*>(glm::value_ptr(position)), GLSLConstants::vec4SizeInBytes },
+		{ static_cast<const void*>(glm::value_ptr(direction)), GLSLConstants::vec4SizeInBytes },
+		{ static_cast<const void*>(glm::value_ptr(reflectionParams.ambient)), GLSLConstants::vec4SizeInBytes },
+		{ static_cast<const void*>(glm::value_ptr(reflectionParams.diffuse)), GLSLConstants::vec4SizeInBytes },
+		{ static_cast<const void*>(glm::value_ptr(reflectionParams.specular)), GLSLConstants::vec4SizeInBytes },
+		{ static_cast<const void*>(&attenuationParams.constant), GLSLConstants::scalarSizeInBytes },
+		{ static_cast<const void*>(&attenuationParams.linear), GLSLConstants::scalarSizeInBytes },
+		{ static_cast<const void*>(&attenuationParams.quadratic), GLSLConstants::scalarSizeInBytes },
+		{ static_cast<const void*>(&spotParams.cutoff), GLSLConstants::scalarSizeInBytes },
+		{ static_cast<const void*>(&spotParams.outerCutoff), GLSLConstants::scalarSizeInBytes },
+		{ static_cast<const void*>(&isBlinn), GLSLConstants::scalarSizeInBytes },
+		{ static_cast<const void*>(&isCameraFlashLight), GLSLConstants::scalarSizeInBytes }
 		});
 }
 
 void SpotLight::SetLightPositionFUniform(const glm::vec3& inPosition)
 {
 	SetPosition(inPosition);
-	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inPosition)), Utils::vec4SizeInBytes);
+	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inPosition)), GLSLConstants::vec4SizeInBytes);
 }
 
 void SpotLight::SetLightDirectionFUniform(const glm::vec3& inDirection)
 {
 	SetDirection(inDirection);
-	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inDirection)), Utils::vec4SizeInBytes, Utils::vec4SizeInBytes);
+	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inDirection)), GLSLConstants::vec4SizeInBytes, GLSLConstants::vec4SizeInBytes);
 }
 
 void SpotLight::SetIsCameraFlashLightFUniform(const bool isActive)
 {
 	SetActivationState(isActive);
-	ubo.SetSubData(static_cast<const void*>(&isActive), Utils::scalarSizeInBytes, 5 * Utils::vec4SizeInBytes + 6 * Utils::scalarSizeInBytes);
+	ubo.SetSubData(static_cast<const void*>(&isActive), GLSLConstants::scalarSizeInBytes, 5 * GLSLConstants::vec4SizeInBytes + 6 * GLSLConstants::scalarSizeInBytes);
 }

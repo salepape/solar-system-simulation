@@ -4,6 +4,7 @@
 #include <fstream>
 
 
+
 namespace Utils
 {
 	void SetGLFWCallbackData(GLFWwindow* GLFWWindow, Window* data)

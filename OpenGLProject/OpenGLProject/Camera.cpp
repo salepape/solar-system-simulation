@@ -2,6 +2,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Constants.h"
 #include "ResourceLoader.h"
 #include "UniformBuffer.h"
 #include "Utils.h"
@@ -34,17 +35,17 @@ glm::mat4 Camera::ComputeInfiniteView() const
 void Camera::SetProjectionViewVUniform(const float windowAspectRatio)
 {
 	const glm::mat4& projectionView = ComputeProjection(windowAspectRatio) * ComputeView();
-	projectionViewUBO.SetSubData(static_cast<const void*>(glm::value_ptr(projectionView)), Utils::mat4v4SizeInBytes);
+	projectionViewUBO.SetSubData(static_cast<const void*>(glm::value_ptr(projectionView)), GLSLConstants::mat4v4SizeInBytes);
 }
 
 void Camera::SetInfiniteProjectionViewVUniform(const float windowAspectRatio)
 {
 	const glm::mat4& infiniteProjectionView = ComputeProjection(windowAspectRatio) * ComputeInfiniteView();
-	projectionViewUBO.SetSubData(static_cast<const void*>(glm::value_ptr(infiniteProjectionView)), Utils::mat4v4SizeInBytes);
+	projectionViewUBO.SetSubData(static_cast<const void*>(glm::value_ptr(infiniteProjectionView)), GLSLConstants::mat4v4SizeInBytes);
 }
 
 void Camera::SetPositionFUniform()
 {
 	const glm::vec4& position = glm::vec4(GetPosition(), 0.0f);
-	positionUBO.SetSubData(static_cast<const void*>(glm::value_ptr(position)), Utils::vec4SizeInBytes);
+	positionUBO.SetSubData(static_cast<const void*>(glm::value_ptr(position)), GLSLConstants::vec4SizeInBytes);
 }

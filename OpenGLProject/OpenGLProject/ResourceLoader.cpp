@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "Belt.h"
+#include "Constants.h"
 #include "SolarSystem.h"
 #include "Utils.h"
 
@@ -90,14 +91,14 @@ namespace ResourceLoader
 		ubos.reserve(5);
 
 		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("Belt").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID(), GetShader("Billboard").GetRendererID(), GetShader("MilkyWay").GetRendererID() },
-			"ubo_ProjectionView", Utils::mat4v4SizeInBytes);
+			"ubo_ProjectionView", GLSLConstants::mat4v4SizeInBytes);
 		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("Belt").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
-			"ubo_CameraPosition", Utils::vec4SizeInBytes);
+			"ubo_CameraPosition", GLSLConstants::vec4SizeInBytes);
 
 		const std::vector<uint32_t> bodyShaderIDs{ GetShader("CelestialBody").GetRendererID(), GetShader("Belt").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() };
-		ubos.emplace_back(bodyShaderIDs, "ubo_DirectionalLight", 4 * Utils::vec4SizeInBytes + Utils::scalarSizeInBytes);
-		ubos.emplace_back(bodyShaderIDs, "ubo_PointLight", 4 * Utils::vec4SizeInBytes + 4 * Utils::scalarSizeInBytes);
-		ubos.emplace_back(bodyShaderIDs, "ubo_SpotLight", 5 * Utils::vec4SizeInBytes + 7 * Utils::scalarSizeInBytes);
+		ubos.emplace_back(bodyShaderIDs, "ubo_DirectionalLight", 4 * GLSLConstants::vec4SizeInBytes + GLSLConstants::scalarSizeInBytes);
+		ubos.emplace_back(bodyShaderIDs, "ubo_PointLight", 4 * GLSLConstants::vec4SizeInBytes + 4 * GLSLConstants::scalarSizeInBytes);
+		ubos.emplace_back(bodyShaderIDs, "ubo_SpotLight", 5 * GLSLConstants::vec4SizeInBytes + 7 * GLSLConstants::scalarSizeInBytes);
 	}
 
 	std::vector<std::filesystem::path> GetSubfolderPaths(const std::string& subfolder)

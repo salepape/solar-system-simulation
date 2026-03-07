@@ -5,7 +5,7 @@
 #include <glm/vec3.hpp>
 #include <utility>
 
-#include "Utils.h"
+#include "Constants.h"
 
 
 
@@ -31,7 +31,7 @@ void Sphere::ComputeVertices()
 		const float iInvParallelStripsCount = i * invParallelStripsCount;
 
 		// Angle between two squares of one parallel strip (in radians)
-		const float theta = Utils::unitPi * (0.5f - iInvParallelStripsCount);
+		const float theta = GLMConstants::unitPi * (0.5f - iInvParallelStripsCount);
 		const float rCosTheta = radius * glm::cos(theta);
 		const float zCoor = radius * glm::sin(theta);
 
@@ -39,7 +39,7 @@ void Sphere::ComputeVertices()
 		{
 			// Angle between two squares of one meridian strip (in radians)
 			const float jInvMeridianStripsCount = j * invMeridianStripsCount;
-			const float phi = Utils::doublePi * jInvMeridianStripsCount;
+			const float phi = GLMConstants::doublePi * jInvMeridianStripsCount;
 			const float xCoor = rCosTheta * glm::cos(phi);
 			const float yCoor = rCosTheta * glm::sin(phi);
 

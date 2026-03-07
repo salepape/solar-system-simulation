@@ -5,6 +5,7 @@
 #include <glm/mat4x4.hpp>
 #include <utility>
 
+#include "Constants.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
@@ -20,8 +21,8 @@ sphere({ inBodyData.radius })
 {
 	name = ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath);
 
-	orbitAngularFreq = inBodyData.orbitalPeriod == 0.0f ? 0.0f : Utils::doublePi * 1.0f / inBodyData.orbitalPeriod;
-	spinAngularFreq = inBodyData.spinPeriod == 0.0f ? 0.0f : Utils::doublePi * 1.0f / inBodyData.spinPeriod;
+	orbitAngularFreq = inBodyData.orbitalPeriod == 0.0f ? 0.0f : GLMConstants::doublePi * 1.0f / inBodyData.orbitalPeriod;
+	spinAngularFreq = inBodyData.spinPeriod == 0.0f ? 0.0f : GLMConstants::doublePi * 1.0f / inBodyData.spinPeriod;
 
 	obliquityInRad = glm::radians(inBodyData.obliquity);
 
@@ -54,16 +55,16 @@ void CelestialBody::ComputeModelMatrixVUniform(const float elapsedTime)
 	modelMatrix = glm::translate(modelMatrix, position);
 
 	// Rotate the body (constant over time) around an axis colinear to orbit direction to reproduce its axial tilt
-	modelMatrix = glm::rotate(modelMatrix, obliquityInRad, Utils::forwardVector);
+	modelMatrix = glm::rotate(modelMatrix, obliquityInRad, GLMConstants::forwardVector);
 
 	// Angle travelled by the celestial body around itself since the simulation started [in radians]
 	const float travelledSpinAngle = spinAngularFreq * elapsedTime;
 
 	// Rotate the body (non-constant over time) around axis normal to orbital plane to reproduce its spin
-	modelMatrix = glm::rotate(modelMatrix, travelledSpinAngle, Utils::upVector);
+	modelMatrix = glm::rotate(modelMatrix, travelledSpinAngle, GLMConstants::upVector);
 
 	// Rotate the body (constant over time) around axis colinear to orbital plane so its poles appear vertically
-	modelMatrix = glm::rotate(modelMatrix, Utils::halfPi, Utils::rightVector);
+	modelMatrix = glm::rotate(modelMatrix, GLMConstants::halfPi, GLMConstants::rightVector);
 }
 
 void CelestialBody::ComputeCartesianPosition(const float elapsedTime)

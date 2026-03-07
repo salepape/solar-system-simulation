@@ -161,6 +161,7 @@
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="BodySystem.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="PerspectiveCamera.h" />
     <ClInclude Include="CelestialBody.h" />
     <ClInclude Include="PerspectiveCameraController.h" />

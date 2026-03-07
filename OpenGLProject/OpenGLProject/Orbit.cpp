@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "CelestialBody.h"
+#include "Constants.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
@@ -43,7 +44,7 @@ void Orbit::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
 	}
 
 	// Rotate the orbit (constant over time) around axis colinear to orbit direction to reproduce the orbital plane
-	modelMatrix = glm::rotate(modelMatrix, orbInclinationInRad, Utils::forwardVector);
+	modelMatrix = glm::rotate(modelMatrix, orbInclinationInRad, GLMConstants::forwardVector);
 }
 
 void Orbit::Render(const Renderer& renderer, const float /*elapsedTime*/)

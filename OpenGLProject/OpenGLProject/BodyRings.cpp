@@ -4,6 +4,7 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
 
+#include "Constants.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
@@ -41,7 +42,7 @@ void BodyRings::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
 	// modelMatrix = glm::scale(modelMatrix, glm::vec3(ringsData.radius));
 
 	// Rotate back (constant over time) around axis normal to orbital plane
-	modelMatrix = glm::rotate(modelMatrix, -Utils::halfPi, Utils::rightVector);
+	modelMatrix = glm::rotate(modelMatrix, -GLMConstants::halfPi, GLMConstants::rightVector);
 }
 
 void BodyRings::Render(const Renderer& renderer, const float /*elapsedTime*/)

@@ -5,8 +5,8 @@
 #include <glm/vec3.hpp>
 #include <utility>
 
+#include "Constants.h"
 #include "Renderer.h"
-#include "Utils.h"
 
 
 
@@ -19,7 +19,7 @@ Circle::Circle(const float inRadius) :
 
 void Circle::ComputeVertices()
 {
-	const float thetaAngle = Utils::doublePi * 1.0f / meridianStripsCount;
+	const float thetaAngle = GLMConstants::doublePi * 1.0f / meridianStripsCount;
 
 	const glm::vec3 zeroVector(0.0f);
 

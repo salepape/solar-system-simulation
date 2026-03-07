@@ -5,11 +5,11 @@
 #include <glm/vec4.hpp>
 
 #include "CelestialBody.h"
+#include "Constants.h"
 #include "Renderer.h"
 #include "TextRenderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
-#include "Utils.h"
 
 
 
@@ -58,7 +58,7 @@ void Billboard::Render(TextRenderer& textRenderer, const glm::vec3& bodyPosition
 	SetModelMatrixVUniform(modelMatrix);
 
 	material.SetDiffuseSamplerFUniform();
-	material.SetDiffuseColourFUniform(Utils::whiteColour);
+	material.SetDiffuseColourFUniform(GLMConstants::whiteColour);
 
 	textRenderer.Render(bodyName, 0.0f, textHeight, textScale);
 

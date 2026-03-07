@@ -2,9 +2,9 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Constants.h"
 #include "ResourceLoader.h"
 #include "UniformBuffer.h"
-#include "Utils.h"
 
 
 
@@ -17,15 +17,15 @@ direction(inDirection), ubo(ResourceLoader::GetUBO("ubo_DirectionalLight"))
 void DirectionalLight::SetFUniforms()
 {
 	ubo.SetSubData({
-		{ static_cast<const void*>(glm::value_ptr(direction)), Utils::vec4SizeInBytes },
-		{ static_cast<const void*>(glm::value_ptr(reflectionParams.ambient)), Utils::vec4SizeInBytes },
-		{ static_cast<const void*>(glm::value_ptr(reflectionParams.diffuse)), Utils::vec4SizeInBytes },
-		{ static_cast<const void*>(glm::value_ptr(reflectionParams.specular)), Utils::vec4SizeInBytes },
-		{ static_cast<const void*>(&isBlinn), Utils::scalarSizeInBytes }
+		{ static_cast<const void*>(glm::value_ptr(direction)), GLSLConstants::vec4SizeInBytes },
+		{ static_cast<const void*>(glm::value_ptr(reflectionParams.ambient)), GLSLConstants::vec4SizeInBytes },
+		{ static_cast<const void*>(glm::value_ptr(reflectionParams.diffuse)), GLSLConstants::vec4SizeInBytes },
+		{ static_cast<const void*>(glm::value_ptr(reflectionParams.specular)), GLSLConstants::vec4SizeInBytes },
+		{ static_cast<const void*>(&isBlinn), GLSLConstants::scalarSizeInBytes }
 		});
 }
 
 void DirectionalLight::SetLightDirectionFUniform(const glm::vec3& inDirection)
 {
-	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inDirection)), Utils::vec4SizeInBytes);
+	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inDirection)), GLSLConstants::vec4SizeInBytes);
 }
