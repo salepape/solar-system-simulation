@@ -22,7 +22,7 @@ Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::strin
 		return;
 	}
 
-	Utils::SetGLFWCallbackData(GLFWWindow, this);
+	GLFWUtils::SetGLFWCallbackData(GLFWWindow, this);
 
 	if (MakeContextCurrent() == -1)
 	{
@@ -84,7 +84,7 @@ void Window::Callback_DetectWindowResize()
 		glViewport(0, 0, width, height);
 
 		// Access contextual data from within GLFWwindow callback
-		Window* const window = Utils::GetGLFWCallbackData(GLFWWindow);
+		Window* const window = GLFWUtils::GetGLFWCallbackData(GLFWWindow);
 		if (window == nullptr)
 		{
 			std::cout << "ERROR::WINDOW - Failed to cast glfwGetWindowUserPointer()!" << std::endl;

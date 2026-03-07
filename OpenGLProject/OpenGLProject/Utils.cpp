@@ -2,29 +2,29 @@
 
 #include <filesystem>
 #include <fstream>
+#include <glfw3.h>
+
+#include "Window.h"
 
 
 
-namespace Utils
+void GLFWUtils::SetGLFWCallbackData(GLFWwindow* GLFWWindow, Window* data)
 {
-	void SetGLFWCallbackData(GLFWwindow* GLFWWindow, Window* data)
-	{
-		glfwSetWindowUserPointer(GLFWWindow, static_cast<void*>(data));
-	}
+	glfwSetWindowUserPointer(GLFWWindow, static_cast<void*>(data));
+}
 
-	Window* const GetGLFWCallbackData(GLFWwindow* GLFWWindow)
-	{
-		return static_cast<Window*>(glfwGetWindowUserPointer(GLFWWindow));
-	}
+Window* const GLFWUtils::GetGLFWCallbackData(GLFWwindow* GLFWWindow)
+{
+	return static_cast<Window*>(glfwGetWindowUserPointer(GLFWWindow));
+}
 
-	std::string ReadFile(const std::string & path)
-	{
-		std::ifstream fileStream(path, std::ios::in | std::ios::binary);
-		const uintmax_t fileSizeInBytes = std::filesystem::file_size(path);
+std::string FileUtils::ReadFile(const std::string & path)
+{
+	std::ifstream fileStream(path, std::ios::in | std::ios::binary);
+	const uintmax_t fileSizeInBytes = std::filesystem::file_size(path);
 
-		std::string fileContent(static_cast<uint32_t>(fileSizeInBytes), '\0');
-		fileStream.read(fileContent.data(), fileSizeInBytes);
+	std::string fileContent(static_cast<uint32_t>(fileSizeInBytes), '\0');
+	fileStream.read(fileContent.data(), fileSizeInBytes);
 
-		return fileContent;
-	}
+	return fileContent;
 }

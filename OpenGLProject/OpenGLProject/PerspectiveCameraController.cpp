@@ -133,7 +133,7 @@ void PerspectiveCameraController::Callback_DetectMouseInput()
 {
 	glfwSetCursorPosCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, const double xPosition, const double yPosition)
 	{
-		Window* const window = Utils::GetGLFWCallbackData(GLFWWindow);
+		Window* const window = GLFWUtils::GetGLFWCallbackData(GLFWWindow);
 		if (window == nullptr)
 		{
 			std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
@@ -160,7 +160,7 @@ void PerspectiveCameraController::Callback_DetectMouseWheelInput()
 {
 	glfwSetScrollCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, double /*xOffset*/, double yOffset)
 	{
-		const Window* const window = Utils::GetGLFWCallbackData(GLFWWindow);
+		const Window* const window = GLFWUtils::GetGLFWCallbackData(GLFWWindow);
 		if (window == nullptr)
 		{
 			std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
@@ -185,7 +185,7 @@ void PerspectiveCameraController::Callback_DetectKeyboardInput()
 	{
 		auto GetWindow = [&GLFWWindow]() -> Window*
 		{
-			Window* const window = Utils::GetGLFWCallbackData(GLFWWindow);
+			Window* const window = GLFWUtils::GetGLFWCallbackData(GLFWWindow);
 			if (window == nullptr)
 			{
 				std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;

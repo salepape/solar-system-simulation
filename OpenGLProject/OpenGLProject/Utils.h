@@ -1,23 +1,28 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <glfw3.h>
 #include <string>
 
-#include "Window.h"
+struct GLFWwindow;
+class Window;
 
 
 
-namespace Utils
+class GLFWUtils
 {
+public:
 	// Register user data field to access it later from within static GLFWwindow callbacks (to avoid making variable global)
-	void SetGLFWCallbackData(GLFWwindow* GLFWWindow, Window* data);
+	static void SetGLFWCallbackData(GLFWwindow* GLFWWindow, Window* data);
 
 	// Access user data field from within static GLFWwindow callbacks
-	Window* const GetGLFWCallbackData(GLFWwindow* GLFWWindow);
+	static Window* const GetGLFWCallbackData(GLFWwindow* GLFWWindow);
+};
 
-	std::string ReadFile(const std::string& path);
-}
+class FileUtils
+{
+public:
+	static std::string ReadFile(const std::string& path);
+};
 
 
 

@@ -130,7 +130,7 @@ namespace ResourceLoader
 
 		std::string celestialBodyNameCache = "";
 
-		const std::string& csvFile = Utils::ReadFile("../Data/CelestialBodyData.csv");
+		const std::string& csvFile = FileUtils::ReadFile("../Data/CelestialBodyData.csv");
 		std::string line;
 		std::stringstream csvLineStream(csvFile);
 
@@ -200,7 +200,7 @@ namespace ResourceLoader
 	{
 		FillAssetMap("../Models/Rings/");
 
-		const std::string& csvFile = Utils::ReadFile("../Data/RingData.csv");
+		const std::string& csvFile = FileUtils::ReadFile("../Data/RingData.csv");
 		std::string line;
 		std::stringstream csvLineStream(csvFile);
 
@@ -235,7 +235,7 @@ namespace ResourceLoader
 	{
 		FillAssetMap("../Models/Belts/");
 
-		const std::string& csvFile = Utils::ReadFile("../Data/BeltData.csv");
+		const std::string& csvFile = FileUtils::ReadFile("../Data/BeltData.csv");
 		std::string line;
 		std::stringstream csvLineStream(csvFile);
 

@@ -4,11 +4,11 @@
 #include <memory>
 
 #include "Billboard.h"
+#include "BodyRings.h"
 #include "CelestialBody.h"
+#include "LightSource.h"
 #include "Orbit.h"
 
-class LightSource;
-class BodyRings;
 class Renderer;
 
 
