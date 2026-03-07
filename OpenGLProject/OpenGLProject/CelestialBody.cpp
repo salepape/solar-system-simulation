@@ -1,5 +1,6 @@
 #include "CelestialBody.h"
 
+#include <glad/glad.h>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
 #include <glm/mat4x4.hpp>
@@ -10,7 +11,6 @@
 #include "ResourceLoader.h"
 #include "Shader.h"
 #include "Texture.h"
-#include "Utils.h"
 
 
 

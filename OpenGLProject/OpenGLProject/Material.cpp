@@ -1,11 +1,9 @@
 #include "Material.h"
 
-#include <glm/gtc/type_ptr.hpp>
+#include <string>
 #include <utility>
 
-#include "Material.h"
 #include "Shader.h"
-#include "Utils.h"
 
 
 

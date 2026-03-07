@@ -5,7 +5,7 @@
 #include FT_FREETYPE_H
 
 #include <cstdint>
-#include <glm/vec2.hpp>
+#include <glm/ext/vector_int2.hpp>
 #include <memory>
 #include <unordered_map>
 #include <string>

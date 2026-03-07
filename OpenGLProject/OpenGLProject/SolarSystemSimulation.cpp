@@ -1,7 +1,6 @@
 #include "SolarSystemSimulation.h"
 
 #include "ResourceLoader.h"
-#include "SolarSystem.h"
 
 
 

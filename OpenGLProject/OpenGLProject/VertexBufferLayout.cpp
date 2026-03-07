@@ -1,6 +1,5 @@
 #include "VertexBufferLayout.h"
 
-#include <glad.h>
 #include <utility>
 
 

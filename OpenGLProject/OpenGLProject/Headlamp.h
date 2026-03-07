@@ -7,7 +7,6 @@
 #include "SpotLight.h"
 
 class Camera;
-class Controller;
 
 
 
@@ -20,7 +19,6 @@ public:
 	void UpdateHeadlight(const Camera& camera);
 
 	// Call corresponding GLFW callback functions
-	void Callback_DetectMouseInput(Controller& cameraController);
 	void UpdateHeadlightState(double timeBeforeReleaseRegistered, int32_t action);
 
 private:

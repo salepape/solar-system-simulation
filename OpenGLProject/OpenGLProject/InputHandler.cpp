@@ -3,7 +3,6 @@
 #include <glfw3.h>
 
 #include "Application.h"
-#include "Window.h"
 
 InputHandler* InputHandler::instance = nullptr;
 

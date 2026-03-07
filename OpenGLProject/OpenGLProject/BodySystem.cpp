@@ -2,9 +2,8 @@
 
 #include <glm/vec3.hpp>
 #include <string>
+#include <utility>
 
-#include "BodyRings.h"
-#include "LightSource.h"
 #include "PointLight.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"

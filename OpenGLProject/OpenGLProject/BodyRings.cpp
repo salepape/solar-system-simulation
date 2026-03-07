@@ -1,14 +1,12 @@
 #include "BodyRings.h"
 
 #include <glm/ext/matrix_transform.hpp>
-#include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
 
 #include "Constants.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
-#include "Utils.h"
 
 
 

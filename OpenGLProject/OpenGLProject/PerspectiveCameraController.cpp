@@ -2,7 +2,6 @@
 
 #include <glfw3.h>
 #include <glm/common.hpp>
-#include <glm/trigonometric.hpp>
 #include <iostream>
 
 #include "Application.h"
@@ -147,7 +146,7 @@ void PerspectiveCameraController::Callback_DetectMouseInput()
 			return;
 		}
 
-		Camera& camera = cameraController->GetCamera();
+		PerspectiveCamera& camera = cameraController->GetCamera();
 
 		const glm::vec2& offset = window->ComputeCursorOffset(static_cast<float>(xPosition), static_cast<float>(yPosition));
 		camera.UpdateRotation(offset * cameraController->mouseSensitivity);

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <assimp/Importer.hpp>
+#include <assimp/material.h>
 #include <assimp/mesh.h>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
@@ -12,6 +13,7 @@
 #include <iostream>
 #include <utility>
 
+#include "Renderer.h"
 #include "VertexBuffer.h"
 
 

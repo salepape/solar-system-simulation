@@ -6,13 +6,10 @@
 
 #include "Application.h"
 #include "Billboard.h"
-#include "BodyRings.h"
-#include "Orbit.h"
 #include "PerspectiveCamera.h"
 #include "PerspectiveCameraController.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
-#include "Spacecraft.h"
 #include "TextRenderer.h"
 #include "Window.h"
 
@@ -39,6 +36,8 @@ void SolarSystem::Update()
 {
 	renderer.Clear();
 
+	const Application& app = runningApp;
+
 	PerspectiveCameraController& cameraController = spacecraft->cameraController;
 	cameraController.ProcessKeyboardInput(runningApp.deltaTime);
 
@@ -52,7 +51,7 @@ void SolarSystem::Update()
 	std::map<float, uint32_t> bodiesSortedByDistance;
 	for (BodySystem& bodySystem : bodySystems)
 	{
-		bodySystem.celestialBody.ComputeCartesianPosition(runningApp.elapsedTime * runningApp.speedFactor);
+		bodySystem.celestialBody.ComputeCartesianPosition(app.elapsedTime * app.speedFactor);
 		bodiesSortedByDistance.insert({ glm::distance(cameraPosition, bodySystem.celestialBody.GetPosition()), bodySystem.celestialBody.GetID() });
 	}
 
@@ -60,9 +59,9 @@ void SolarSystem::Update()
 	{
 		// Draw celestial bodies, and animate them accordingly over time
 		BodySystem& bodySystem = ResourceLoader::GetBodySystem(bodyit->second);
-		bodySystem.Render(renderer, runningApp.elapsedTime * runningApp.speedFactor);
+		bodySystem.Render(renderer, app.elapsedTime * app.speedFactor);
 
-		if (runningApp.IsLegendDisplayed())
+		if (app.IsLegendDisplayed())
 		{
 			// Orient text billboards so their readable side always faces the camera
 			const glm::vec3& forward = glm::normalize(cameraPosition - bodySystem.celestialBody.GetPosition());

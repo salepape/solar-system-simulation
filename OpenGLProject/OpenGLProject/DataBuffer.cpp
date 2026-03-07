@@ -1,7 +1,5 @@
 #include "DataBuffer.h"
 
-#include <glad/glad.h>
-
 
 
 DataBuffer::DataBuffer(const void* data, const size_t sizeInBytes, const uint32_t inTarget, const uint32_t usage) :

@@ -1,6 +1,7 @@
 #pragma once
 
-#include <memory>
+#include <cstdint>
+#include <filesystem>
 #include <string>
 
 #include "BodyRings.h"

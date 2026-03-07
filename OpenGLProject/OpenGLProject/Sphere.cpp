@@ -23,8 +23,6 @@ void Sphere::ComputeVertices()
 	const float invParallelStripsCount = 1.0f / parallelStripsCount;
 	const float invRadius = 1.0f / radius;
 
-	const glm::vec3 zeroVector(0.0f);
-
 	vertices.reserve((parallelStripsCount + 1) * (meridianStripsCount + 1));
 	for (uint32_t i = 0; i <= parallelStripsCount; ++i)
 	{
@@ -47,8 +45,8 @@ void Sphere::ComputeVertices()
 			vertex.position = glm::vec3(xCoor, yCoor, zCoor);
 			vertex.normal = glm::vec3(xCoor * invRadius, yCoor * invRadius, zCoor * invRadius);
 			vertex.texCoords = glm::vec2(jInvMeridianStripsCount, iInvParallelStripsCount);
-			vertex.tangent = zeroVector;
-			vertex.biTangent = zeroVector;
+			vertex.tangent = GLMConstants::zeroVector;
+			vertex.biTangent = GLMConstants::zeroVector;
 			vertices.push_back(std::move(vertex));
 		}
 	}
