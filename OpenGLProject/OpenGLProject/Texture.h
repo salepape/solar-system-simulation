@@ -21,9 +21,9 @@ enum class TextureType
 
 struct WrapOptions
 {
-	const uint32_t s{ 0 };
-	const uint32_t t{ 0 };
-	const uint32_t r{ 0 };
+	uint32_t s{ 0 };
+	uint32_t t{ 0 };
+	uint32_t r{ 0 };
 
 	WrapOptions(const uint32_t inSame) : s(inSame), t(inSame), r(inSame) {};
 	WrapOptions(const uint32_t inS, const uint32_t inT) : s(inS), t(inT) {};
@@ -32,8 +32,8 @@ struct WrapOptions
 
 struct FilterOptions
 {
-	const uint32_t min{ 0 };
-	const uint32_t mag{ 0 };
+	uint32_t min{ 0 };
+	uint32_t mag{ 0 };
 
 	FilterOptions(const uint32_t inSame) : min(inSame), mag(inSame) {};
 	FilterOptions(const uint32_t inMin, const uint32_t inMag) : min(inMin), mag(inMag) {};

@@ -107,7 +107,7 @@ void Window::SetCursorMode(const int modeValue)
 	glfwSetInputMode(GLFWWindow, GLFW_CURSOR, modeValue);
 }
 
-const glm::vec2 Window::ComputeCursorOffset(const double xPosition, const double yPosition)
+glm::vec2 Window::ComputeCursorOffset(const double xPosition, const double yPosition)
 {
 	// Avoid little jump 
 	if (isFirstMouseInput)

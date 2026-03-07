@@ -45,7 +45,7 @@ namespace ResourceLoader
 		}
 	}
 
-	const std::string GetNameFromTexturePath(const std::filesystem::path& inTexturePath)
+	std::string GetNameFromTexturePath(const std::filesystem::path& inTexturePath)
 	{
 		const std::string& bodyFileName = inTexturePath.filename().string();
 

@@ -35,7 +35,7 @@ public:
 	float GetAspectRatio() const { return aspectRatio; }
 	void Resize(const uint32_t newWidth, const uint32_t newHeight);
 
-	const glm::vec2 ComputeCursorOffset(const double xPosition, const double yPosition);
+	glm::vec2 ComputeCursorOffset(const double xPosition, const double yPosition);
 
 	// Show/Hide the cursor and lock its motion to the window if hidden
 	void SetCursorMode(const int modeValue);

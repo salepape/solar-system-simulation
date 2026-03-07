@@ -20,24 +20,24 @@ struct InstanceParams
 {
 	std::filesystem::path modelPath;
 
-	const uint32_t count{ 0 };
+	uint32_t count{ 0 };
 
 	// Range from where a random number will be picked from to determine the model size
-	const float sizeRangeLowerBound{ 0.0f };
-	const uint32_t sizeRangeSpan{ 0 };
+	float sizeRangeLowerBound{ 0.0f };
+	uint32_t sizeRangeSpan{ 0 };
 };
 
 // Torus built with instances (not with vertices like a real geometrical shape)
 struct TorusParams
 {
 	// Distance tube center - torus center
-	const float majorRadius{ 0.0f };
+	float majorRadius{ 0.0f };
 
 	// Tube radius
-	const float minorRadius{ 0.0f };
+	float minorRadius{ 0.0f };
 
 	// Factor reducing y-coordinate value for each instance
-	const float flatnessFactor{ 0.0f };
+	float flatnessFactor{ 0.0f };
 };
 
 class Belt : public SceneEntity

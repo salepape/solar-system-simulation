@@ -10,7 +10,7 @@
 struct SubData
 {
 	const void* data{ nullptr };
-	const size_t sizeInBytes{ 0 };
+	size_t sizeInBytes{ 0 };
 };
 
 class DataBuffer
