@@ -43,8 +43,11 @@ void Texture::LoadDDS()
 
 void Texture::LoadCubemapDDS()
 {
+	// EWUDNS = East West Up Down North South
+	const char* faceOrder = "EWUDNS";
+	
 	// Already contains glGenTextures function call!!!
-	rendererID = SOIL_load_OGL_single_cubemap(path.string().c_str(), "EWUDNS", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
+	rendererID = SOIL_load_OGL_single_cubemap(path.string().c_str(), faceOrder, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_DDS_LOAD_DIRECT);
 
 	if (rendererID == 0)
 	{
