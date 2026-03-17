@@ -3,6 +3,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/vec3.hpp>
 
+#include "BodySystem.h"
 #include "Constants.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
@@ -34,7 +35,8 @@ Material BodyRings::InitialiseParent(const float inRingsOpacity)
 
 void BodyRings::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
 {
-	modelMatrix = ResourceLoader::GetBodySystem(bodyName).celestialBody.GetModelMatrix();
+	const BodySystem& bodySystem = ResourceLoader::GetBodySystem(bodyName);
+	modelMatrix = bodySystem.celestialBody.GetModelMatrix();
 
 	// @todo - Make this model scaling work if possible
 	// modelMatrix = glm::scale(modelMatrix, glm::vec3(ringsData.radius));

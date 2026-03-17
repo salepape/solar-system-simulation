@@ -6,6 +6,7 @@
 #include <glm/mat4x4.hpp>
 #include <utility>
 
+#include "BodySystem.h"
 #include "Constants.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
@@ -80,7 +81,8 @@ void CelestialBody::ComputeCartesianPosition(const float elapsedTime)
 	// Circular translation of satellite around corresponding planet, taking into account satellite "orbital tilt"
 	else
 	{
-		const CelestialBody& satelliteParentBody = ResourceLoader::GetBodySystem(bodyData.parentID).celestialBody;
+		const BodySystem& satelliteParentBodySystem = ResourceLoader::GetBodySystem(bodyData.parentID);
+		const CelestialBody& satelliteParentBody = satelliteParentBodySystem.celestialBody;
 		const float sinTravelledAngleParent = glm::sin(satelliteParentBody.travelledAngle);
 
 		position += glm::vec3(

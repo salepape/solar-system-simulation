@@ -5,6 +5,7 @@
 #include <iostream>
 #include <utility>
 
+#include "BodySystem.h"
 #include "Quad.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
@@ -102,7 +103,8 @@ void TextRenderer::FreeFTResources() const
 
 void TextRenderer::Render(const std::string& text, float x, const float y, const float scale)
 {
-	const uint32_t bodySystemTextureUnit = ResourceLoader::GetBodySystem(text).billboard.GetMaterial().GetDiffuseTextureUnit();
+	const BodySystem& bodySystem = ResourceLoader::GetBodySystem(text);
+	const uint32_t bodySystemTextureUnit = bodySystem.billboard.GetMaterial().GetDiffuseTextureUnit();
 
 	// Left-shift billboard position to half its width to center-align it to the celestial body
 	x = -GetBillboardSize(text, scale) * 0.5f;

@@ -6,6 +6,7 @@
 #include <glm/trigonometric.hpp>
 #include <utility>
 
+#include "BodySystem.h"
 #include "CelestialBody.h"
 #include "Constants.h"
 #include "Renderer.h"
@@ -40,7 +41,8 @@ void Orbit::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
 	// Center the orbit (non-constant over time) around the parent planet for satellites
 	if (parentBodyID != -1)
 	{
-		modelMatrix = glm::translate(modelMatrix, ResourceLoader::GetBodySystem(parentBodyID).celestialBody.GetPosition());
+		const BodySystem& parentBodySystem = ResourceLoader::GetBodySystem(parentBodyID);
+		modelMatrix = glm::translate(modelMatrix, parentBodySystem.celestialBody.GetPosition());
 	}
 
 	// Rotate the orbit (constant over time) around axis colinear to orbit direction to reproduce the orbital plane
