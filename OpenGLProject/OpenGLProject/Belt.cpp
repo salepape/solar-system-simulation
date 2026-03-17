@@ -1,5 +1,6 @@
 #include "Belt.h"
 
+#include <cstdlib> // std::srand() and std::rand()
 #include <cstddef> // std::size_t
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
@@ -38,7 +39,7 @@ void Belt::ComputeInstanceModelMatrices()
 	const int32_t rangeSpanOffset = static_cast<int32_t>(upperBoundOffset - lowerBoundOffset);
 
 	// Initialise random seed
-	srand(static_cast<uint32_t>(Application::GetInstance().GetTime()));
+	std::srand(static_cast<uint32_t>(Application::GetInstance().GetTime()));
 
 	modelMatrices.reserve(instanceParams.count);
 	for (uint32_t i = 0; i < instanceParams.count; ++i)
@@ -47,14 +48,14 @@ void Belt::ComputeInstanceModelMatrices()
 
 		const float angle = i * angleValue;
 
-		const float xOffset = lowerBoundOffset + static_cast<float>(rand() % rangeSpanOffset);
+		const float xOffset = lowerBoundOffset + static_cast<float>(std::rand() % rangeSpanOffset);
 		const float x = glm::sin(angle) * torusParams.majorRadius + xOffset;
 
 		// Keep height of model field smaller compared to width of x and z
-		const float yOffset = lowerBoundOffset + static_cast<float>(rand() % rangeSpanOffset);
+		const float yOffset = lowerBoundOffset + static_cast<float>(std::rand() % rangeSpanOffset);
 		const float y = yOffset * torusParams.flatnessFactor;
 
-		const float zOffset = lowerBoundOffset + static_cast<float>(rand() % rangeSpanOffset);
+		const float zOffset = lowerBoundOffset + static_cast<float>(std::rand() % rangeSpanOffset);
 		const float z = glm::cos(angle) * torusParams.majorRadius + zOffset;
 
 		// Move instance along circle of radius majorRadius in [-minorRadius, minorRadius]
@@ -62,11 +63,11 @@ void Belt::ComputeInstanceModelMatrices()
 		modelMatrix = glm::translate(modelMatrix, glm::vec3(x, y, z));
 
 		// Resize instance in range [sizeRangeLowerBound, "sizeRangeLowerBound + 0.sizeRangeSpan"]
-		const float scale = instanceParams.sizeRangeLowerBound + 0.01f * static_cast<float>(rand() % instanceParams.sizeRangeSpan);
+		const float scale = instanceParams.sizeRangeLowerBound + 0.01f * static_cast<float>(std::rand() % instanceParams.sizeRangeSpan);
 		modelMatrix = glm::scale(modelMatrix, glm::vec3(scale));
 
 		// Rotate instance by num degrees in range [0, 360] around a pre-determined axis
-		const float rotAngle = static_cast<float>(rand() % 361);
+		const float rotAngle = static_cast<float>(std::rand() % 361);
 		modelMatrix = glm::rotate(modelMatrix, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
 
 		// Add current model matrix to the list

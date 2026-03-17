@@ -70,8 +70,7 @@ namespace ResourceLoader
 			lastTrimSymbol = fileNameWithSizeTrimmed.find_first_of(".");
 		}
 		std::string bodyName = fileNameWithSizeTrimmed.substr(0, lastTrimSymbol);
-
-		bodyName[0] = toupper(bodyName[0]);
+		bodyName[0] = std::toupper(bodyName[0]);
 
 		return bodyName;
 	}
