@@ -1,6 +1,7 @@
 #ifndef QUAD_H
 #define QUAD_H
 
+#include <cstddef> // std::size_t
 #include <cstdint>
 #include <glm/vec2.hpp>
 #include <vector>
@@ -32,7 +33,7 @@ public:
 	void Render(const Renderer& renderer, const VertexArray& vao);
 
 	static constexpr int32_t VERTICES_COUNT = 6;
-	static constexpr size_t GetSize() { return static_cast<size_t>(Quad::VERTICES_COUNT) * sizeof(QuadVertex); }
+	static constexpr std::size_t GetSize() { return static_cast<std::size_t>(Quad::VERTICES_COUNT) * sizeof(QuadVertex); }
 
 private:
 	float xPosition{ 0.0f };

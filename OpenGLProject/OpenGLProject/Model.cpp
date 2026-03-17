@@ -158,7 +158,7 @@ void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 	}
 }
 
-void Model::StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t sizeInBytes)
+void Model::StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const std::size_t sizeInBytes) const
 {
 	// Configure instanced array
 	VertexBuffer vbo(static_cast<const void*>(modelMatrices.data()), sizeInBytes);

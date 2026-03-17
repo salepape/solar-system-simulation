@@ -1,6 +1,7 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <cstddef> // std::size_t
 #include <glm/ext/scalar_constants.hpp>
 #include <glm/vec3.hpp>
 
@@ -10,13 +11,13 @@
 namespace GLSLConstants
 {
 	// Correspond to 1 * Int size
-	constexpr size_t scalarSizeInBytes = 4;
+	constexpr std::size_t scalarSizeInBytes = 4;
 
 	// Correspond to 4 * Int size
-	constexpr size_t vec4SizeInBytes = 16;
+	constexpr std::size_t vec4SizeInBytes = 16;
 
 	// Correspond to 16 * Int size
-	constexpr size_t mat4v4SizeInBytes = 64;
+	constexpr std::size_t mat4v4SizeInBytes = 64;
 }
 
 namespace GLMConstants

@@ -2,7 +2,7 @@
 
 
 
-DataBuffer::DataBuffer(const void* data, const size_t sizeInBytes, const uint32_t inTarget, const uint32_t usage) :
+DataBuffer::DataBuffer(const void* data, const std::size_t sizeInBytes, const uint32_t inTarget, const uint32_t usage) :
 	target(inTarget)
 {
 	// Reserve an ID available to be used by the BO as a binding point
@@ -33,7 +33,7 @@ void DataBuffer::Unbind() const
 	glBindBuffer(target, 0);
 }
 
-void DataBuffer::SetSubData(const void* data, const size_t sizeInBytes, const uint32_t dataStart)
+void DataBuffer::SetSubData(const void* data, const std::size_t sizeInBytes, const uint32_t dataStart) const
 {
 	Bind();
 

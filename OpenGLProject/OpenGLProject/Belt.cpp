@@ -1,5 +1,6 @@
 #include "Belt.h"
 
+#include <cstddef> // std::size_t
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
@@ -75,7 +76,7 @@ void Belt::ComputeInstanceModelMatrices()
 
 void Belt::StoreInstanceModelMatrices()
 {
-	model.StoreInstanceModelMatrices(modelMatrices, static_cast<size_t>(instanceParams.count) * sizeof(glm::mat4));
+	model.StoreInstanceModelMatrices(modelMatrices, static_cast<std::size_t>(instanceParams.count) * sizeof(glm::mat4));
 }
 
 void Belt::Render(const Renderer& renderer, const float /*elapsedTime*/)

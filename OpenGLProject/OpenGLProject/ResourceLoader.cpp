@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <ctype.h>
+#include <cstddef> // std::size_t
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -49,7 +50,7 @@ namespace ResourceLoader
 	{
 		const std::string& bodyFileName = inTexturePath.filename().string();
 
-		size_t firstTrimSymbol = bodyFileName.find_first_of("_");
+		std::size_t firstTrimSymbol = bodyFileName.find_first_of("_");
 		if (firstTrimSymbol == std::string::npos)
 		{
 			firstTrimSymbol = bodyFileName.find_first_of(".");
@@ -60,7 +61,7 @@ namespace ResourceLoader
 		}
 		const std::string& fileNameWithSizeTrimmed = firstTrimSymbol == bodyFileName.find_first_of("_") ? bodyFileName.substr(firstTrimSymbol + 1, bodyFileName.length() - firstTrimSymbol - 1) : bodyFileName.substr(0, firstTrimSymbol);
 
-		size_t lastTrimSymbol = fileNameWithSizeTrimmed.find_first_of("_");
+		std::size_t lastTrimSymbol = fileNameWithSizeTrimmed.find_first_of("_");
 		if (lastTrimSymbol == std::string::npos)
 		{
 			lastTrimSymbol = fileNameWithSizeTrimmed.find_first_of(".");
@@ -139,7 +140,7 @@ namespace ResourceLoader
 
 		while (std::getline(csvLineStream, line, '\n'))
 		{
-			const size_t carriageReturn = line.find('\r');
+			const std::size_t carriageReturn = line.find('\r');
 			if (carriageReturn != std::string::npos)
 			{
 				line.erase(carriageReturn);
@@ -209,7 +210,7 @@ namespace ResourceLoader
 
 		while (std::getline(csvLineStream, line, '\n'))
 		{
-			const size_t carriageReturn = line.find('\r');
+			const std::size_t carriageReturn = line.find('\r');
 			if (carriageReturn != std::string::npos)
 			{
 				line.erase(carriageReturn);
@@ -244,7 +245,7 @@ namespace ResourceLoader
 
 		while (std::getline(csvLineStream, line, '\n'))
 		{
-			const size_t carriageReturn = line.find('\r');
+			const std::size_t carriageReturn = line.find('\r');
 			if (carriageReturn != std::string::npos)
 			{
 				line.erase(carriageReturn);

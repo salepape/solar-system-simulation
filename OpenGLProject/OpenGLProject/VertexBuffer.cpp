@@ -4,7 +4,7 @@
 
 
 
-VertexBuffer::VertexBuffer(const void* data, const size_t sizeInBytes, const int usage) : DataBuffer(data, sizeInBytes, GL_ARRAY_BUFFER, usage)
+VertexBuffer::VertexBuffer(const void* data, const std::size_t sizeInBytes, const int usage) : DataBuffer(data, sizeInBytes, GL_ARRAY_BUFFER, usage)
 {
 
 }

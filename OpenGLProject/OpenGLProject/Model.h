@@ -1,6 +1,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include <cstddef> // std::size_t
 #include <cstdint>
 #include <filesystem>
 #include <glm/mat4x4.hpp>
@@ -23,8 +24,8 @@ class Model
 {
 public:
 	Model(const std::filesystem::path& inPath, const bool inGammaCorrection = false);
-
-	void StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const size_t sizeInBytes);
+	
+	void StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const std::size_t sizeInBytes) const;
 
 	void Render(const Renderer& renderer) const;
 	void RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const;

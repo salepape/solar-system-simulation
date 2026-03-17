@@ -6,7 +6,7 @@ uint32_t UniformBuffer::blockBindingPoint = 0;
 
 
 
-UniformBuffer::UniformBuffer(const std::vector<uint32_t>& shaderIDs, const std::string& inUniformName, const size_t sizeInBytes)
+UniformBuffer::UniformBuffer(const std::vector<uint32_t>& shaderIDs, const std::string& inUniformName, const std::size_t sizeInBytes)
 {
 	target = GL_UNIFORM_BUFFER;
 	uniformName = inUniformName;
