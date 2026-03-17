@@ -1,9 +1,7 @@
 #include "Utils.h"
 
-#include <cstdint>
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 #include <glfw3.h>
 
 #include "Window.h"

@@ -3,7 +3,6 @@
 #include <glad/glad.h>
 
 #include "Renderer.h"
-#include "VertexArray.h"
 #include "VertexBuffer.h"
 
 

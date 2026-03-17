@@ -1,19 +1,22 @@
 #include "ResourceLoader.h"
 
 #include <algorithm>
-#include <ctype.h>
+#include <cctype>  // std::toupper()	
 #include <cstddef> // std::size_t
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <unordered_map>
-#include <utility>
 #include <vector>
 
 #include "Belt.h"
+#include "BodyRings.h"
+#include "BodySystem.h"
 #include "Constants.h"
+#include "Shader.h"
 #include "SolarSystem.h"
+#include "UniformBuffer.h"
 #include "Utils.h"
 
 

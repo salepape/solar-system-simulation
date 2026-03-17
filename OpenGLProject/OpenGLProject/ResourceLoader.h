@@ -4,10 +4,10 @@
 #include <filesystem>
 #include <string>
 
-#include "BodyRings.h"
-#include "BodySystem.h"
-#include "Shader.h"
-#include "UniformBuffer.h"
+class BodyRings;
+class BodySystem;
+class Shader;
+class UniformBuffer;
 
 
 

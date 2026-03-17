@@ -5,7 +5,6 @@
 #include <cstdint>
 #include <filesystem>
 #include <glm/mat4x4.hpp>
-#include <string>
 #include <vector>
 
 #include "Mesh.h"
