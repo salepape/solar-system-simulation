@@ -59,7 +59,7 @@ private:
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeInstanceModelMatrices();
-	void StoreInstanceModelMatrices();
+	void StoreInstanceModelMatrices() const;
 };
 
 

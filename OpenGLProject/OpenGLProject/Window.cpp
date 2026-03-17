@@ -34,7 +34,7 @@ Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::strin
 	SetCursorMode(GLFW_CURSOR_DISABLED);
 }
 
-GLFWwindow* const Window::InitGLFWWindow()
+GLFWwindow* Window::InitGLFWWindow() const
 {
 	// Initialise GLFW library
 	glfwInit();
@@ -49,7 +49,7 @@ GLFWwindow* const Window::InitGLFWWindow()
 	return glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 }
 
-int32_t Window::MakeContextCurrent()
+int32_t Window::MakeContextCurrent() const
 {
 	glfwMakeContextCurrent(GLFWWindow);
 
@@ -62,22 +62,22 @@ int32_t Window::MakeContextCurrent()
 	return 0;
 }
 
-void Window::SwapFrontAndBackBuffers()
+void Window::SwapFrontAndBackBuffers() const
 {
 	glfwSwapBuffers(GLFWWindow);
 }
 
-void Window::ProcessPendingEvents()
+void Window::ProcessPendingEvents() const
 {
 	glfwPollEvents();
 }
 
-void Window::ClearResources()
+void Window::ClearResources() const
 {
 	glfwTerminate();
 }
 
-void Window::Callback_DetectWindowResize()
+void Window::Callback_DetectWindowResize() const
 {
 	glfwSetFramebufferSizeCallback(GLFWWindow, [](GLFWwindow* GLFWWindow, int32_t width, int32_t height)
 	{
@@ -102,7 +102,7 @@ void Window::Resize(const uint32_t newWidth, const uint32_t newHeight)
 	aspectRatio = width * 1.0f / height;
 }
 
-void Window::SetCursorMode(const int modeValue)
+void Window::SetCursorMode(const int modeValue) const
 {
 	glfwSetInputMode(GLFWWindow, GLFW_CURSOR, modeValue);
 }

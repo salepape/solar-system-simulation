@@ -15,7 +15,7 @@ Scene::Scene() :
 	//renderer.EnableFaceCulling();
 }
 
-void Scene::Clear()
+void Scene::Clear() const
 {
 	//renderer.DisableFaceCulling();
 	renderer.DisableBlending();

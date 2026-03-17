@@ -32,9 +32,9 @@ public:
 	virtual glm::mat4 ComputeView() const = 0;
 	virtual glm::mat4 ComputeInfiniteView() const;
 
-	void SetProjectionViewVUniform(const float windowAspectRatio);
-	void SetInfiniteProjectionViewVUniform(const float windowAspectRatio);
-	void SetPositionFUniform();
+	void SetProjectionViewVUniform(const float windowAspectRatio) const;
+	void SetInfiniteProjectionViewVUniform(const float windowAspectRatio) const;
+	void SetPositionFUniform() const;
 
 protected:
 	glm::vec3 initialPosition{ 0.0f };

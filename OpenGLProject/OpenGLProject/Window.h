@@ -23,14 +23,14 @@ public:
 	PerspectiveCameraController* cameraController{ nullptr };
 
 	// Tell GLFW that we want the context of the window to be the current single one for the current thread
-	int32_t MakeContextCurrent();
+	int32_t MakeContextCurrent() const;
 
-	void SwapFrontAndBackBuffers();
+	void SwapFrontAndBackBuffers() const;
 
 	// Call all window callbacks associated with each queueing events
-	void ProcessPendingEvents();
+	void ProcessPendingEvents() const;
 
-	void ClearResources();
+	void ClearResources() const;
 
 	float GetAspectRatio() const { return aspectRatio; }
 	void Resize(const uint32_t newWidth, const uint32_t newHeight);
@@ -38,7 +38,7 @@ public:
 	glm::vec2 ComputeCursorOffset(const double xPosition, const double yPosition);
 
 	// Show/Hide the cursor and lock its motion to the window if hidden
-	void SetCursorMode(const int modeValue);
+	void SetCursorMode(const int modeValue) const;
 
 private:
 	uint32_t width{ 0 };
@@ -50,9 +50,9 @@ private:
 	bool isFirstMouseInput{ true };
 	glm::vec2 lastCursorPosition;
 
-	GLFWwindow* const InitGLFWWindow();
+	GLFWwindow* InitGLFWWindow() const;
 
-	void Callback_DetectWindowResize();
+	void Callback_DetectWindowResize() const;
 };
 
 

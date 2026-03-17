@@ -43,7 +43,7 @@ void DataBuffer::SetSubData(const void* data, const std::size_t sizeInBytes, con
 	Unbind();
 }
 
-void DataBuffer::SetSubData(const std::vector<SubData>& data, const uint32_t dataStart)
+void DataBuffer::SetSubData(const std::vector<SubData>& data, const uint32_t dataStart) const
 {
 	Bind();
 

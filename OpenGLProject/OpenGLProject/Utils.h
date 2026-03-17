@@ -15,7 +15,7 @@ public:
 	static void SetGLFWCallbackData(GLFWwindow* GLFWWindow, Window* data);
 
 	// Access user data field from within static GLFWwindow callbacks
-	static Window* const GetGLFWCallbackData(GLFWwindow* GLFWWindow);
+	static Window* GetGLFWCallbackData(GLFWwindow* GLFWWindow);
 };
 
 class FileUtils

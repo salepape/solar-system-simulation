@@ -16,7 +16,7 @@ public:
 	Scene();
 
 	virtual void Update() = 0;
-	void Clear();
+	void Clear() const;
 
 	// Cache Application and Window so we don't need to get their instance each frame in the Render loop
 	Application& runningApp;

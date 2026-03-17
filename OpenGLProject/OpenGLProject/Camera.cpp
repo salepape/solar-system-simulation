@@ -33,19 +33,19 @@ glm::mat4 Camera::ComputeInfiniteView() const
 	return glm::mat4(glm::mat3(ComputeView()));
 }
 
-void Camera::SetProjectionViewVUniform(const float windowAspectRatio)
+void Camera::SetProjectionViewVUniform(const float windowAspectRatio) const
 {
 	const glm::mat4& projectionView = ComputeProjection(windowAspectRatio) * ComputeView();
 	projectionViewUBO.SetSubData(static_cast<const void*>(glm::value_ptr(projectionView)), GLSLConstants::mat4v4SizeInBytes);
 }
 
-void Camera::SetInfiniteProjectionViewVUniform(const float windowAspectRatio)
+void Camera::SetInfiniteProjectionViewVUniform(const float windowAspectRatio) const
 {
 	const glm::mat4& infiniteProjectionView = ComputeProjection(windowAspectRatio) * ComputeInfiniteView();
 	projectionViewUBO.SetSubData(static_cast<const void*>(glm::value_ptr(infiniteProjectionView)), GLSLConstants::mat4v4SizeInBytes);
 }
 
-void Camera::SetPositionFUniform()
+void Camera::SetPositionFUniform() const
 {
 	const glm::vec4& position = glm::vec4(GetPosition(), 0.0f);
 	positionUBO.SetSubData(static_cast<const void*>(glm::value_ptr(position)), GLSLConstants::vec4SizeInBytes);

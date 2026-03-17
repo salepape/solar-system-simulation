@@ -25,7 +25,7 @@ void DirectionalLight::SetFUniforms()
 		});
 }
 
-void DirectionalLight::SetLightDirectionFUniform(const glm::vec3& inDirection)
+void DirectionalLight::SetLightDirectionFUniform(const glm::vec3& inDirection) const
 {
 	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inDirection)), GLSLConstants::vec4SizeInBytes);
 }

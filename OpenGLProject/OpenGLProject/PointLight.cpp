@@ -28,7 +28,7 @@ void PointLight::SetFUniforms()
 		});
 }
 
-void PointLight::SetLightPositionFUniform(const glm::vec3& inPosition)
+void PointLight::SetLightPositionFUniform(const glm::vec3& inPosition) const
 {
 	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inPosition)), GLSLConstants::vec4SizeInBytes);
 }

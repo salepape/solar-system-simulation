@@ -38,14 +38,14 @@ public:
 	Material(Shader& inShader, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties, const float inTransparency = 1.0f);
 	Material(Material&& inMaterial);
 
-	void SetFUniforms();
-	void SetDiffuseSamplerFUniform();
-	void SetDiffuseColourFUniform(const glm::vec3& colour);
+	void SetFUniforms() const;
+	void SetDiffuseSamplerFUniform() const;
+	void SetDiffuseColourFUniform(const glm::vec3& colour) const;
 
-	void EnableTextures();
-	void DisableTextures();
+	void EnableTextures() const;
+	void DisableTextures() const;
 
-	Shader& GetShader() { return shader; }
+	Shader& GetShader() const { return shader; }
 	uint32_t GetDiffuseTextureUnit() const { return diffuseProperties.textureUnit; }
 
 	// Needed for models since we are loading textures using Assimp, done post SceneEntity creation

@@ -18,7 +18,7 @@ public:
 	void SetPosition(const glm::vec3& inPosition) { position = inPosition; }
 
 	void SetFUniforms() override;
-	void SetLightPositionFUniform(const glm::vec3& inPosition);
+	void SetLightPositionFUniform(const glm::vec3& inPosition) const;
 
 private:
 	glm::vec3 position{ 0.0f };

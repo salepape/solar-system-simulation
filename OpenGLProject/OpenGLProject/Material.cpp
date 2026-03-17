@@ -25,7 +25,7 @@ Material::Material(Material&& inMaterial) :
 
 }
 
-void Material::SetFUniforms()
+void Material::SetFUniforms() const
 {
 	shader.Enable();
 
@@ -56,17 +56,17 @@ void Material::SetFUniforms()
 	shader.Disable();
 }
 
-void Material::SetDiffuseSamplerFUniform()
+void Material::SetDiffuseSamplerFUniform() const
 {
 	shader.setUniformInt("material.fu_DiffuseTex", diffuseProperties.textureUnit);
 }
 
-void Material::SetDiffuseColourFUniform(const glm::vec3& colour)
+void Material::SetDiffuseColourFUniform(const glm::vec3& colour) const
 {
 	shader.setUniformVec3("material.fu_DiffuseColour", colour);
 }
 
-void Material::EnableTextures()
+void Material::EnableTextures() const
 {
 	for (const Texture& texture : textures)
 	{
@@ -74,7 +74,7 @@ void Material::EnableTextures()
 	}
 }
 
-void Material::DisableTextures()
+void Material::DisableTextures() const
 {
 	for (const Texture& texture : textures)
 	{

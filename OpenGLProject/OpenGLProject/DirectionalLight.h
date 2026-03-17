@@ -15,7 +15,7 @@ public:
 	DirectionalLight() = delete;
 	DirectionalLight(const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn = false);
 
-	void SetLightDirectionFUniform(const glm::vec3& inDirection);
+	void SetLightDirectionFUniform(const glm::vec3& inDirection) const;
 
 private:
 	glm::vec3 direction{ 0.0f };

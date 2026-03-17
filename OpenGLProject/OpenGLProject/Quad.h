@@ -27,10 +27,10 @@ public:
 	Quad(const float inXPosition, const float inYPosition, const float inWidth, const float inHeight);
 
 	// Update content of VBO memory with quad data
-	void StoreVertices(VertexBuffer& vbo);
+	void StoreVertices(VertexBuffer& vbo) const;
 
 	// Render texture over the quad (e.g. the one of a character glyph)
-	void Render(const Renderer& renderer, const VertexArray& vao);
+	void Render(const Renderer& renderer, const VertexArray& vao) const;
 
 	static constexpr int32_t VERTICES_COUNT = 6;
 	static constexpr std::size_t GetSize() { return static_cast<std::size_t>(Quad::VERTICES_COUNT) * sizeof(QuadVertex); }

@@ -40,7 +40,7 @@ public:
 	bool IsLegendDisplayed() const { return isLegendDisplayed; }
 	void DisplayLegend(const bool inIsLegendDisplayed) { isLegendDisplayed = inIsLegendDisplayed; }
 
-	double GetTime();
+	double GetTime() const;
 
 	// @todo - Jumps in the simulation are due to the Model matrix of each body being computed from elapsed time and not delta time. Worth solving it? Seems complex...
 	// See what the simulation looks like with celestial body slower/faster movements (does not keep body positions between different speed simulations)

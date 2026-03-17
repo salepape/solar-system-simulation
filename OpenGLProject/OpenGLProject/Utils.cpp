@@ -15,7 +15,7 @@ void GLFWUtils::SetGLFWCallbackData(GLFWwindow* GLFWWindow, Window* data)
 	glfwSetWindowUserPointer(GLFWWindow, static_cast<void*>(data));
 }
 
-Window* const GLFWUtils::GetGLFWCallbackData(GLFWwindow* GLFWWindow)
+Window* GLFWUtils::GetGLFWCallbackData(GLFWwindow* GLFWWindow)
 {
 	return static_cast<Window*>(glfwGetWindowUserPointer(GLFWWindow));
 }

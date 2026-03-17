@@ -12,7 +12,7 @@
 
 
 
-TextRenderer::TextRenderer(const Renderer& inRenderer, const std::string& fontPath, const uint32_t pixelFontWidth, const uint32_t pixelFontHeight) :
+TextRenderer::TextRenderer(Renderer& inRenderer, const std::string& fontPath, const uint32_t pixelFontWidth, const uint32_t pixelFontHeight) :
 	renderer(inRenderer)
 {
 	AllocateBufferObjects();

@@ -29,12 +29,12 @@ void Quad::ComputeVertices()
 		});
 }
 
-void Quad::StoreVertices(VertexBuffer& vbo)
+void Quad::StoreVertices(VertexBuffer& vbo) const
 {
 	vbo.SetSubData(static_cast<const void*>(vertexCoor.data()), Quad::GetSize());
 }
 
-void Quad::Render(const Renderer& renderer, const VertexArray& vao)
+void Quad::Render(const Renderer& renderer, const VertexArray& vao) const
 {
 	renderer.Draw(vao, GL_TRIANGLES, Quad::VERTICES_COUNT);
 }

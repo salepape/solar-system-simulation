@@ -74,7 +74,7 @@ void Application::Pause(const bool inIsPaused)
 	}
 }
 
-double Application::GetTime()
+double Application::GetTime() const
 {
 	return glfwGetTime();
 }
