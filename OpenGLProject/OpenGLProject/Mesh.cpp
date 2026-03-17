@@ -40,7 +40,7 @@ void Mesh::StoreVertices()
 	vbl.AddAttributeLayout(VertexAttributeLocation::TextCoord, GL_FLOAT, Vertex::TEXCOORDS_ELMTS_COUNT);
 	vbl.AddAttributeLayout(VertexAttributeLocation::Tangent, GL_FLOAT, Vertex::TANGENT_ELMTS_COUNT);
 	vbl.AddAttributeLayout(VertexAttributeLocation::Bitangent, GL_FLOAT, Vertex::BITANGENT_ELMTS_COUNT);
-	vao->AddBuffer(vbo, std::move(vbl));
+	vao->AddBuffer(std::move(vbl));
 
 	// Do NOT unbind IBO before VAO since the latter contains references to IBO BindBuffer
 	vao->Unbind();
@@ -58,7 +58,7 @@ void Mesh::StoreInstanceModelMatrices(const VertexBuffer& vbo) const
 	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol2, GL_FLOAT, Vertex::INSTANCE_MATRIX_ELMTS_COUNT);
 	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol3, GL_FLOAT, Vertex::INSTANCE_MATRIX_ELMTS_COUNT);
 	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol4, GL_FLOAT, Vertex::INSTANCE_MATRIX_ELMTS_COUNT);
-	vao->AddInstancedBuffer(vbo, std::move(vbl));
+	vao->AddInstancedBuffer(std::move(vbl));
 }
 
 void Mesh::Render(const Renderer& renderer) const

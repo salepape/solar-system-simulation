@@ -45,7 +45,7 @@ void TextRenderer::AllocateBufferObjects()
 
 	VertexBufferLayout vbl;
 	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, QuadVertex::ELMTS_COUNT);
-	vao->AddBuffer(*vbo, std::move(vbl));
+	vao->AddBuffer(std::move(vbl));
 
 	vao->Unbind();
 	vbo->Unbind();

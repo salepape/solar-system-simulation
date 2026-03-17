@@ -18,10 +18,10 @@ public:
 	// Unselect the currently used VAO
 	void Unbind() const;
 
-	void AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout);
+	void AddBuffer(const VertexBufferLayout& layout);
 
 	// @todo - See if we need to support other types than mat4 (with vec4 as an offset) for instancing
-	void AddInstancedBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout);
+	void AddInstancedBuffer(const VertexBufferLayout& layout) const;
 
 private:
 	unsigned int rendererID{ 0 };

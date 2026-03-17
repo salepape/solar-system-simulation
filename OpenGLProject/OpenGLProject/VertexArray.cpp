@@ -5,7 +5,6 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
 
-#include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 
 
@@ -37,7 +36,7 @@ void VertexArray::Unbind() const
 	glBindVertexArray(0);
 }
 
-void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout)
+void VertexArray::AddBuffer(const VertexBufferLayout& layout)
 {
 	std::size_t offset = 0;
 
@@ -53,7 +52,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& l
 	}
 }
 
-void VertexArray::AddInstancedBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout)
+void VertexArray::AddInstancedBuffer(const VertexBufferLayout& layout) const
 {
 	Bind();
 
