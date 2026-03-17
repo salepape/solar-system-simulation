@@ -64,7 +64,7 @@ void CelestialBody::ComputeModelMatrixVUniform(const float elapsedTime)
 	// Rotate the body (non-constant over time) around axis normal to orbital plane to reproduce its spin
 	modelMatrix = glm::rotate(modelMatrix, travelledSpinAngle, GLMConstants::upVector);
 
-	// Rotate the body (constant over time) around axis colinear to orbital plane so its poles appear vertically
+	// Rotate the body (constant over time) around axis collinear to orbital plane so its poles appear vertically
 	modelMatrix = glm::rotate(modelMatrix, GLMConstants::halfPi, GLMConstants::rightVector);
 }
 

@@ -55,10 +55,10 @@ void SolarSystem::Update()
 		bodiesSortedByDistance.insert({ glm::distance(cameraPosition, bodySystem.celestialBody.GetPosition()), bodySystem.celestialBody.GetID() });
 	}
 
-	for (auto bodyit = bodiesSortedByDistance.rbegin(); bodyit != bodiesSortedByDistance.rend(); ++bodyit)
+	for (auto bodyIt = bodiesSortedByDistance.rbegin(); bodyIt != bodiesSortedByDistance.rend(); ++bodyIt)
 	{
 		// Draw celestial bodies, and animate them accordingly over time
-		BodySystem& bodySystem = ResourceLoader::GetBodySystem(bodyit->second);
+		BodySystem& bodySystem = ResourceLoader::GetBodySystem(bodyIt->second);
 		bodySystem.Render(renderer, app.elapsedTime * app.speedFactor);
 
 		if (app.IsLegendDisplayed())
