@@ -7,9 +7,9 @@
 #include "CelestialBody.h"
 #include "Constants.h"
 #include "Renderer.h"
-#include "TextRenderer.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
+#include "TextRenderer.h"
 
 
 
@@ -48,7 +48,7 @@ void Billboard::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const 
 	modelMatrix[3] = glm::vec4(bodyPosition, 1.0f);
 }
 
-void Billboard::Render(TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)
+void Billboard::Render(TextRenderer& textRenderer, const uint32_t textureUnit, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)
 {
 	ComputeModelMatrixVUniform(bodyPosition, cameraForward, cameraRight);
 
@@ -60,7 +60,7 @@ void Billboard::Render(TextRenderer& textRenderer, const glm::vec3& bodyPosition
 	material.SetDiffuseSamplerFUniform();
 	material.SetDiffuseColourFUniform(GLMConstants::whiteColour);
 
-	textRenderer.Render(bodyName, 0.0f, textHeight, textScale);
+	textRenderer.Render(textureUnit, bodyName, 0.0f, textHeight, textScale);
 
 	shader.Disable();
 }

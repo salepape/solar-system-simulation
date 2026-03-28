@@ -1,6 +1,7 @@
 #ifndef BILLBOARD_H
 #define BILLBOARD_H
 
+#include <cstdint>
 #include <glm/vec3.hpp>
 #include <string>
 
@@ -19,7 +20,7 @@ public:
 	Billboard(BodyData&& inBodyData);
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
-	void Render(TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
+	void Render(TextRenderer& textRenderer, const uint32_t textureUnit, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
 
 private:
 	std::string bodyName;

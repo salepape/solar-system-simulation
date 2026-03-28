@@ -47,7 +47,7 @@ public:
 	void FreeFTResources() const;
 
 	// Update VBO for each character of the text provided as input
-	void Render(const std::string& text, float x, const float y, const float scale);
+	void Render(const uint32_t textureUnit, const std::string& text, float x, const float y, const float scale);
 
 private:
 	static TextRenderer* instance;

@@ -67,7 +67,7 @@ void SolarSystem::Update()
 			const glm::vec3& forward = glm::normalize(cameraPosition - bodySystem.celestialBody.GetPosition());
 			const glm::vec3& right = glm::cross(camera.GetUp(), forward);
 
-			bodySystem.billboard.Render(textRenderer, bodySystem.celestialBody.GetPosition(), forward, right);
+			bodySystem.billboard.Render(textRenderer, bodySystem.billboard.GetMaterial().GetDiffuseTextureUnit(), bodySystem.celestialBody.GetPosition(), forward, right);
 		}
 	}
 
