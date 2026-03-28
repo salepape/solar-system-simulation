@@ -1,12 +1,8 @@
 #include "ResourceLoader.h"
 
 #include <algorithm>
-#include <cctype>  // std::toupper()	
-#include <cstddef> // std::size_t
 #include <filesystem>
-#include <fstream>
 #include <iostream>
-#include <sstream>
 #include <unordered_map>
 #include <vector>
 
@@ -26,54 +22,9 @@ std::vector<UniformBuffer> ubos;
 
 namespace ResourceLoader
 {
-	// @todo - Use asset handles instead of strings for asset IDs
-	// Paths to retrieve DDS textures (convention: size_name.dds)
-	std::unordered_map<std::string, std::filesystem::path> assetPaths;
-
 	std::vector<BodySystem>& bodySystemsRef = SolarSystem::GetBodySystemsVector();
 	std::vector<BodyRings>& ringsRef = SolarSystem::GetRingsVector();
 	std::vector<Belt>& beltsRef = SolarSystem::GetBeltsVector();
-
-	void FillAssetMap(const std::filesystem::path& inTexturePath)
-	{
-		for (const auto& directory : std::filesystem::recursive_directory_iterator(inTexturePath))
-		{
-			const std::filesystem::path& directoryPath = directory.path();
-			const std::string& modelName = GetNameFromTexturePath(directoryPath);
-			if (modelName == "")
-			{
-				continue;
-			}
-
-			assetPaths[modelName] = directoryPath;
-		}
-	}
-
-	std::string GetNameFromTexturePath(const std::filesystem::path& inTexturePath)
-	{
-		const std::string& bodyFileName = inTexturePath.filename().string();
-
-		std::size_t firstTrimSymbol = bodyFileName.find_first_of("_");
-		if (firstTrimSymbol == std::string::npos)
-		{
-			firstTrimSymbol = bodyFileName.find_first_of(".");
-			if (firstTrimSymbol == std::string::npos)
-			{
-				return "";
-			}
-		}
-		const std::string& fileNameWithSizeTrimmed = firstTrimSymbol == bodyFileName.find_first_of("_") ? bodyFileName.substr(firstTrimSymbol + 1, bodyFileName.length() - firstTrimSymbol - 1) : bodyFileName.substr(0, firstTrimSymbol);
-
-		std::size_t lastTrimSymbol = fileNameWithSizeTrimmed.find_first_of("_");
-		if (lastTrimSymbol == std::string::npos)
-		{
-			lastTrimSymbol = fileNameWithSizeTrimmed.find_first_of(".");
-		}
-		std::string bodyName = fileNameWithSizeTrimmed.substr(0, lastTrimSymbol);
-		bodyName[0] = std::toupper(bodyName[0]);
-
-		return bodyName;
-	}
 
 	void LoadShaders()
 	{
@@ -104,58 +55,27 @@ namespace ResourceLoader
 		ubos.emplace_back(bodyShaderIDs, "ubo_SpotLight", 5 * GLSLConstants::vec4SizeInBytes + 7 * GLSLConstants::scalarSizeInBytes);
 	}
 
-	std::vector<std::filesystem::path> GetSubfolderPaths(const std::string& subfolder)
-	{
-		std::vector<std::filesystem::path> subfolderPaths;
-		for (const auto& directory : std::filesystem::recursive_directory_iterator(std::filesystem::path(subfolder)))
-		{
-			subfolderPaths.emplace_back(directory.path());
-		}
-
-		return subfolderPaths;
-	}
-
-	void LoadAssets()
-	{
-		LoadRings();
-		LoadCelestialBodies();
-
-		LoadBelts();
-	}
-
 	void LoadCelestialBodies()
 	{
-		FillAssetMap("../Textures/CelestialBodies/");
+		// @todo - First number to be replaced by an access from the .csv file
+		constexpr long int sunEarthDistance = 149600000;
+		constexpr float DISTANCE_SCALE_FACTOR = 10.0f;
 
-		// @todo - To be replaced by an access from the .csv file
-		const int earthRadius = 6371;
-		const long int sunEarthDistance = 149600000;
+		// @todo - First number to be replaced by an access from the .csv file
+		constexpr int earthRadius = 6371;
+		constexpr float RADIUS_SCALE_FACTOR = 1000.0f;
 
+		// Needed to scale distance of current celestial body according to the previous one (diverging from proper simulation here, for travel end-user convenience)
 		std::string celestialBodyNameCache = "";
 
-		const std::string& csvFile = FileUtils::ReadFile("../Data/CelestialBodyData.csv");
-		std::string line;
-		std::stringstream csvLineStream(csvFile);
+		std::unordered_map<std::string, std::filesystem::path> bodyPaths;
+		FileUtils::ListPaths("../Textures/CelestialBodies/", bodyPaths);
 
-		// Overwrite the first line (legend) by reading it before looping
-		std::getline(csvLineStream, line, '\n');
+		ResourceCSVParser bodyCSVParser("../Data/CelestialBodyData.csv");
 
-		while (std::getline(csvLineStream, line, '\n'))
+		// Process each CSV line and create a Body instance out of it
+		for (const std::vector<std::string>& celestialBodyParams : bodyCSVParser.GetParsedCSV())
 		{
-			const std::size_t carriageReturn = line.find('\r');
-			if (carriageReturn != std::string::npos)
-			{
-				line.erase(carriageReturn);
-			}
-
-			std::stringstream csvFieldStream(line);
-			std::string field;
-			std::vector<std::string> celestialBodyParams;
-			while (std::getline(csvFieldStream, field, ','))
-			{
-				celestialBodyParams.emplace_back(field);
-			}
-
 			const std::string& celestialBodyName = celestialBodyParams[0];
 			const std::string& celestialBodyType = celestialBodyParams[1];
 			const std::string& celestialBodyParentName = (celestialBodyType == "Moon") ? celestialBodyParams[9] : "";
@@ -168,23 +88,25 @@ namespace ResourceLoader
 			}
 			else if (celestialBodyType == "Moon")
 			{
-				scaledDistanceToParent = GetBodySystem(celestialBodyParentName).celestialBody.bodyData.radius + distanceToParent / sunEarthDistance * RADIUS_SCALE_FACTOR;
+				const float scaledTravelDistance = distanceToParent / sunEarthDistance * RADIUS_SCALE_FACTOR;
+				scaledDistanceToParent = GetBodySystem(celestialBodyParentName).celestialBody.bodyData.radius + scaledTravelDistance;
 			}
+			// "Planet" and "Dwarf Planet" types
 			else
 			{
 				const BodyData& celestialBodyData = GetBodySystem(celestialBodyNameCache).celestialBody.bodyData;
-				const float realScaledDistance = distanceToParent / sunEarthDistance * DISTANCE_SCALE_FACTOR;
+				const float scaledTravelDistance = distanceToParent / sunEarthDistance * DISTANCE_SCALE_FACTOR;
 				if (celestialBodyName == "Mercury")
 				{
-					scaledDistanceToParent = celestialBodyData.radius * 2.0f + realScaledDistance;
+					scaledDistanceToParent = celestialBodyData.radius * 2.0f + scaledTravelDistance;
 				}
 				else
 				{
-					scaledDistanceToParent = celestialBodyData.distanceToParent + realScaledDistance;
+					scaledDistanceToParent = celestialBodyData.distanceToParent + scaledTravelDistance;
 				}
 			}
 
-			const std::filesystem::path& texturePath = assetPaths[celestialBodyName];
+			const std::filesystem::path& texturePath = bodyPaths[celestialBodyName];
 			const float scaledRadius = std::stof(celestialBodyParams[2]) / earthRadius * (celestialBodyType == "Star" ? 0.5f : 1.0f);
 			const float obliquity = std::stof(celestialBodyParams[4]);
 			const float scaledOrbitalPeriod = std::stof(celestialBodyParams[5]) * (celestialBodyType == "DwarfPlanet" ? GetBodySystem("Earth").celestialBody.bodyData.orbitalPeriod : 1.0f);
@@ -201,68 +123,35 @@ namespace ResourceLoader
 
 	void LoadRings()
 	{
-		FillAssetMap("../Models/Rings/");
+		std::unordered_map<std::string, std::filesystem::path> ringPaths;
+		FileUtils::ListPaths("../Models/Rings/", ringPaths);
 
-		const std::string& csvFile = FileUtils::ReadFile("../Data/RingData.csv");
-		std::string line;
-		std::stringstream csvLineStream(csvFile);
+		ResourceCSVParser ringCSVParser("../Data/RingData.csv");
 
-		// Overwrite the first line (legend) by reading it before looping
-		std::getline(csvLineStream, line, '\n');
-
-		while (std::getline(csvLineStream, line, '\n'))
+		// Process each CSV line and create a Rings instance out of it
+		for (const std::vector<std::string>& ringParams : ringCSVParser.GetParsedCSV())
 		{
-			const std::size_t carriageReturn = line.find('\r');
-			if (carriageReturn != std::string::npos)
-			{
-				line.erase(carriageReturn);
-			}
-
-			std::stringstream csvFieldStream(line);
-			std::string field;
-			std::vector<std::string> ringParams;
-			while (std::getline(csvFieldStream, field, ','))
-			{
-				ringParams.emplace_back(field);
-			}
-
 			const std::string& bodyName = ringParams[0];
-			const std::filesystem::path& modelPath = assetPaths[ringParams[1]];
+			const std::filesystem::path& modelPath = ringPaths[ringParams[1]];
 			const float radius = std::stof(ringParams[2]);
 			const float opacity = std::stof(ringParams[3]);
+
 			ringsRef.emplace_back(RingsData{ modelPath, bodyName, radius, opacity });
 		}
 	}
 
 	void LoadBelts()
 	{
-		FillAssetMap("../Models/Belts/");
+		std::unordered_map<std::string, std::filesystem::path> beltPaths;
+		FileUtils::ListPaths("../Models/Belts/", beltPaths);
 
-		const std::string& csvFile = FileUtils::ReadFile("../Data/BeltData.csv");
-		std::string line;
-		std::stringstream csvLineStream(csvFile);
+		ResourceCSVParser beltCSVParser("../Data/BeltData.csv");
 
-		// Overwrite the first line (legend) by reading it before looping
-		std::getline(csvLineStream, line, '\n');
-
-		while (std::getline(csvLineStream, line, '\n'))
+		// Process each CSV line and create a Belt instance out of it
+		for (const std::vector<std::string>& beltParams : beltCSVParser.GetParsedCSV())
 		{
-			const std::size_t carriageReturn = line.find('\r');
-			if (carriageReturn != std::string::npos)
-			{
-				line.erase(carriageReturn);
-			}
-
-			std::stringstream csvFieldStream(line);
-			std::string field;
-			std::vector<std::string> beltParams;
-			while (std::getline(csvFieldStream, field, ','))
-			{
-				beltParams.emplace_back(field);
-			}
-
 			const std::string& beltName = beltParams[0];
-			const std::filesystem::path& modelPath = assetPaths[beltParams[1]];
+			const std::filesystem::path& modelPath = beltPaths[beltParams[1]];
 			const uint32_t instanceCount = std::stoi(beltParams[2]);
 			const float sizeRangeLowerBound = std::stof(beltParams[3]);
 			const uint32_t sizeRangeSpan = std::stoi(beltParams[4]);
@@ -301,7 +190,7 @@ namespace ResourceLoader
 
 		if (bodyIt == bodySystemsRef.end())
 		{
-			std::cout << "ERROR::RESOURCE_LOADER - Celestial body " << inBodyName << " does not exist!" << std::endl;
+			std::cout << "ERROR::RESOURCE_LOADER - Celestial body " << inBodyName << " has not been found. Therefore, the iterator is pointing to nullptr, and dereferencing it is provoking the crash." << std::endl;
 		}
 
 		return *bodyIt;
@@ -316,7 +205,7 @@ namespace ResourceLoader
 
 		if (bodyIt == bodySystemsRef.end())
 		{
-			std::cout << "ERROR::RESOURCE_LOADER - Celestial body ID " << inBodyID << " does not exist!" << std::endl;
+			std::cout << "ERROR::RESOURCE_LOADER - Celestial body ID " << inBodyID << " has not been found. Therefore, the iterator is pointing to nullptr, and dereferencing it is provoking the crash." << std::endl;
 		}
 
 		return *bodyIt;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <filesystem>
 #include <string>
 
 class BodyRings;
@@ -11,12 +10,9 @@ class UniformBuffer;
 
 
 
-// @todo - Make everything static in this class?
+// @todo - Convert it to a pure static util class
 namespace ResourceLoader
 {
-	constexpr float DISTANCE_SCALE_FACTOR = 10.0f;
-	constexpr float RADIUS_SCALE_FACTOR = 1000.0f;
-
 	BodySystem& GetBodySystem(const std::string& inBodyName);
 	BodySystem& GetBodySystem(const int32_t inBodyID);
 
@@ -28,13 +24,10 @@ namespace ResourceLoader
 	// Build/compile shaders and their corresponding programs
 	void LoadShaders();
 
+	// @todo - Think about using a Builder Design Pattern to construct such class instances out of CSV files
 	// Instantiate "spherical" celestial bodies/ring systems/belt systems, after loading data from .csv files,
 	// and re-scaling it so we can visualise the whole Solar System without having to travel for too long
-	void LoadAssets();
 	void LoadCelestialBodies();
 	void LoadRings();
 	void LoadBelts();
-
-	// Get body name from texture path (by convention, texture name stored in folders follows: [num]k_[bodyName]_[bodyNameOptionalPrecisions])
-	std::string GetNameFromTexturePath(const std::filesystem::path& inTexturePath);
 }

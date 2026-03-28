@@ -18,7 +18,9 @@
 SolarSystem::SolarSystem() :
 	milkyWay({ "../Textures/MilkyWay/stars.dds" })
 {
-	ResourceLoader::LoadAssets();
+	ResourceLoader::LoadRings();
+	ResourceLoader::LoadCelestialBodies();
+	ResourceLoader::LoadBelts();
 
 	for (const BodySystem& bodySystem : bodySystems)
 	{
