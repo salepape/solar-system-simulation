@@ -15,8 +15,7 @@ BodySystem::BodySystem(BodyData&& inBodyData) :
 	orbit(std::move(inBodyData)),
 	billboard(std::move(inBodyData))
 {
-	const std::string& bodyName = celestialBody.GetName();
-	if (bodyName == "Sun")
+	if (inBodyData.name == "Sun")
 	{
 		// Set up the lighting for all scene entities according to Sun position/light emission parameters
 		lightSource = std::make_unique<PointLight>(celestialBody.GetPosition(),
@@ -27,7 +26,7 @@ BodySystem::BodySystem(BodyData&& inBodyData) :
 	// Attach a ring system to the celestial body if one
 	if (inBodyData.hasRings)
 	{
-		bodyRings = std::make_unique<BodyRings>(std::move(ResourceLoader::GetBodyRings(bodyName)));
+		bodyRings = std::make_unique<BodyRings>(std::move(ResourceLoader::GetBodyRings(inBodyData.name)));
 	}
 }
 

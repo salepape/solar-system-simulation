@@ -20,8 +20,6 @@ CelestialBody::CelestialBody(BodyData&& inBodyData) : SceneEntity(inBodyData.nam
 bodyData(inBodyData),
 sphere({ inBodyData.radius })
 {
-	name = ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath);
-
 	orbitAngularFreq = inBodyData.orbitalPeriod == 0.0f ? 0.0f : GLMConstants::doublePi * 1.0f / inBodyData.orbitalPeriod;
 	spinAngularFreq = inBodyData.spinPeriod == 0.0f ? 0.0f : GLMConstants::doublePi * 1.0f / inBodyData.spinPeriod;
 
