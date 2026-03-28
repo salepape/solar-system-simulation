@@ -193,7 +193,7 @@ namespace ResourceLoader
 			const bool hasRings = std::stoi(celestialBodyParams[8]) > 0 ? true : false;
 			const int32_t parentID = celestialBodyType == "Moon" ? GetBodySystem(celestialBodyParentName).celestialBody.GetID() : -1;
 
-			bodySystemsRef.emplace_back(BodyData{ texturePath, scaledRadius, scaledDistanceToParent, obliquity, scaledOrbitalPeriod, spinPeriod, orbitalInclination, hasRings, parentID });
+			bodySystemsRef.emplace_back(BodyData{ texturePath, celestialBodyName, scaledRadius, scaledDistanceToParent, obliquity, scaledOrbitalPeriod, spinPeriod, orbitalInclination, hasRings, parentID });
 
 			celestialBodyNameCache = celestialBodyName;
 		}

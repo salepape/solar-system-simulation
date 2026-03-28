@@ -16,7 +16,7 @@
 
 
 // @todo - Find a way to avoid building this string (GetNameFromTexturePath method) 3 times
-CelestialBody::CelestialBody(BodyData&& inBodyData) : SceneEntity(InitialiseParent(inBodyData.texturePath)),
+CelestialBody::CelestialBody(BodyData&& inBodyData) : SceneEntity(inBodyData.name, InitialiseParent(inBodyData.texturePath, inBodyData.name)),
 bodyData(inBodyData),
 sphere({ inBodyData.radius })
 {
@@ -32,13 +32,12 @@ sphere({ inBodyData.radius })
 	distSinOrbInclination = inBodyData.distanceToParent * glm::sin(orbitalInclinationInRad);
 }
 
-Material CelestialBody::InitialiseParent(const std::filesystem::path& inTexturePath)
+Material CelestialBody::InitialiseParent(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName)
 {
-	Texture texture(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::DIFFUSE);
+	Texture texture(inBodyTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::DIFFUSE);
 	texture.LoadDDS();
 
-	if (const std::string& bodyName = ResourceLoader::GetNameFromTexturePath(inTexturePath);
-		bodyName == "Sun")
+	if (inBodyName == "Sun")
 	{
 		return Material(ResourceLoader::GetShader("Sun"), { std::move(texture) }, { 0, glm::vec3(1.5f) });
 	}

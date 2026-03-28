@@ -8,8 +8,8 @@ uint32_t SceneEntity::entityIDCounter = 0;
 
 
 
-SceneEntity::SceneEntity(Material inMaterial) :
-	material(std::move(inMaterial))
+SceneEntity::SceneEntity(std::string inName, Material inMaterial) :
+	name(inName), material(std::move(inMaterial))
 {
 	ID = entityIDCounter++;
 }

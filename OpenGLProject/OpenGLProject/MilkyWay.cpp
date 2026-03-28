@@ -10,9 +10,9 @@
 
 
 
-MilkyWay::MilkyWay(const std::filesystem::path& inTexturePath) : SceneEntity(InitialiseParent(inTexturePath))
+MilkyWay::MilkyWay(const std::filesystem::path& inTexturePath) : SceneEntity("MilkyWay", InitialiseParent(inTexturePath))
 {
-	name = "MilkyWay";
+
 }
 
 Material MilkyWay::InitialiseParent(const std::filesystem::path& inTexturePath)

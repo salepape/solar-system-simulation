@@ -16,11 +16,9 @@
 
 
 
-Orbit::Orbit(BodyData&& inBodyData) : SceneEntity(InitialiseParent(inBodyData.texturePath)),
+Orbit::Orbit(BodyData&& inBodyData) : SceneEntity(inBodyData.name + "Orbit", InitialiseParent(inBodyData.texturePath)),
 circle({ inBodyData.distanceToParent })
 {
-	name = ResourceLoader::GetNameFromTexturePath(inBodyData.texturePath) + "Orbit";
-
 	parentBodyID = inBodyData.parentID;
 
 	orbInclinationInRad = glm::radians(inBodyData.orbitalInclination);

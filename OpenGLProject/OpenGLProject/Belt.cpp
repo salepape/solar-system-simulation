@@ -14,11 +14,9 @@
 
 
 
-Belt::Belt(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams) : SceneEntity(InitialiseParent("")),
+Belt::Belt(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams) : SceneEntity(inName, InitialiseParent("")),
 instanceParams(inInstanceParams), torusParams(inTorusParams), model({ inInstanceParams.modelPath })
 {
-	name = inName;
-
 	material.SetTextures(model.GetTextures());
 
 	ComputeInstanceModelMatrices();

@@ -23,7 +23,7 @@ public:
 	void Render(TextRenderer& textRenderer, const uint32_t textureUnit, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
 
 private:
-	std::string bodyName;
+	std::string legend;
 
 	float textHeight{ 0.0f };
 	float textScale{ 0.0f };

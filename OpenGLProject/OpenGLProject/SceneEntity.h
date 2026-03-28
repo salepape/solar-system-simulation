@@ -15,7 +15,7 @@ class Renderer;
 class SceneEntity
 {
 public:
-	SceneEntity(Material inMaterial);
+	SceneEntity(std::string inName, Material inMaterial);
 
 	int32_t GetID() const { return ID; }
 	const std::string& GetName() const { return name; }

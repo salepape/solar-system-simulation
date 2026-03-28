@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <glm/vec3.hpp>
+#include <string>
 
 #include "Material.h"
 #include "SceneEntity.h"
@@ -16,6 +17,7 @@ class Renderer;
 struct BodyData
 {
 	std::filesystem::path texturePath;		// DDS texture path
+	std::string name;						// Name of the celestial body
 
 	float radius{ 0.0f };					// Planet or moon (only those > pluto radius in length) radius divided by earth's radius [in kms]
 	float distanceToParent{ 0.0f };			// Distance between planet (resp. moon) and sun (resp. the planet around which they gravitate) divided by sun-earth distance (= 1AU) [in kms]
@@ -71,7 +73,7 @@ private:
 	float distCosOrbInclination{ 0.0f };
 	float distSinOrbInclination{ 0.0f };
 
-	static Material InitialiseParent(const std::filesystem::path& inTexturePath);
+	static Material InitialiseParent(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 1.0f) override;
 };
