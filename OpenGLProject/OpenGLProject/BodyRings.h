@@ -2,6 +2,7 @@
 #define BODY_RINGS_H
 
 #include <filesystem>
+#include <glm/mat4x4.hpp>
 #include <string>
 
 #include "Material.h"
@@ -27,7 +28,8 @@ public:
 
 	RingsData ringsData;
 
-	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
+	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
+	void Render(const Renderer& renderer, const glm::mat4& modelMatrix, const float elapsedTime = 0.0f);
 
 private:
 	Model model;
@@ -36,7 +38,8 @@ private:
 
 	static Material InitialiseParent(const float inRingsOpacity);
 
-	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override;
+	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
+	void ComputeModelMatrixVUniform(const glm::mat4& modelMatrix, const float elapsedTime = 0.0f);
 };
 
 

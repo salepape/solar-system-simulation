@@ -6,7 +6,6 @@
 #include <glm/trigonometric.hpp>
 #include <utility>
 
-#include "BodySystem.h"
 #include "CelestialBody.h"
 #include "Constants.h"
 #include "Renderer.h"
@@ -19,9 +18,11 @@
 Orbit::Orbit(BodyData&& inBodyData) : SceneEntity(inBodyData.name + "Orbit", InitialiseParent(inBodyData.texturePath)),
 circle({ inBodyData.distanceToParent })
 {
-	parentBodyID = inBodyData.parentID;
+	isMoon = (inBodyData.parentName.length() != 0);
 
 	orbInclinationInRad = glm::radians(inBodyData.orbitalInclination);
+
+	ComputeModelMatrixVUniform(glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
 Material Orbit::InitialiseParent(const std::filesystem::path& inTexturePath)
@@ -32,24 +33,28 @@ Material Orbit::InitialiseParent(const std::filesystem::path& inTexturePath)
 	return Material(ResourceLoader::GetShader("Orbit"), { std::move(texture) });
 }
 
-void Orbit::ComputeModelMatrixVUniform(const float /*elapsedTime*/)
+void Orbit::ComputeModelMatrixVUniform(const glm::vec3& parentPosition, const float /*elapsedTime*/)
 {
 	modelMatrix = glm::mat4(1.0f);
 
+	// @todo - Implement entity attachment to transforms inherited automatically in a 'is-a' composition relationship
 	// Center the orbit (non-constant over time) around the parent planet for satellites
-	if (parentBodyID != -1)
+	if (isMoon)
 	{
-		const BodySystem& parentBodySystem = ResourceLoader::GetBodySystem(parentBodyID);
-		modelMatrix = glm::translate(modelMatrix, parentBodySystem.celestialBody.GetPosition());
+		modelMatrix = glm::translate(modelMatrix, parentPosition);
 	}
 
 	// Rotate the orbit (constant over time) around axis colinear to orbit direction to reproduce the orbital plane
 	modelMatrix = glm::rotate(modelMatrix, orbInclinationInRad, GLMConstants::forwardVector);
 }
 
-void Orbit::Render(const Renderer& renderer, const float /*elapsedTime*/)
+void Orbit::Render(const Renderer& renderer, const glm::vec3& parentPosition, const float /*elapsedTime*/)
 {
-	ComputeModelMatrixVUniform();
+	// Only moons have their parent position (= Planet) moving, whereas planets have their parent position (= Sun) constant
+	if (isMoon)
+	{
+		ComputeModelMatrixVUniform(parentPosition);
+	}
 
 	Shader& shader = material.GetShader();
 	shader.Enable();

@@ -2,10 +2,10 @@
 #define SOLAR_SYSTEM_H
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "Belt.h"
-#include "BodyRings.h"
 #include "BodySystem.h"
 #include "MilkyWay.h"
 #include "Scene.h"
@@ -21,18 +21,25 @@ public:
 
 	void Update() override;
 
-	static std::vector<BodySystem>& GetBodySystemsVector();
-	static std::vector<BodyRings>& GetRingsVector();
-	static std::vector<Belt>& GetBeltsVector();
+	const std::vector<BodySystem>& GetBodySystems() const { return bodySystems; }
+	const std::vector<Belt>& GetBelts() const { return belts; }
+
+	BodySystem& GetBodySystem(const std::string& inBodyName);
 
 private:
-	static std::vector<BodySystem> bodySystems;
-	static std::vector<BodyRings> rings;
-	static std::vector<Belt> belts;
+	std::vector<BodySystem> bodySystems;
+	std::vector<Belt> belts;
 
 	MilkyWay milkyWay;
 
 	std::shared_ptr<Spacecraft> spacecraft;
+
+	// @todo - Think about using a Builder Design Pattern to construct such class instances out of CSV files
+	// Instantiate "spherical" celestial bodies/ring systems/belt systems, after loading data from .csv files,
+	// and re-scaling it so we can visualise the whole Solar System without having to travel for too long
+	void BuildBodySystems();
+	void BuildBodyRings();
+	void BuildBelts();
 };
 
 

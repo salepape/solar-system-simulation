@@ -1,7 +1,6 @@
 #ifndef CELESTIAL_BODY_H
 #define CELESTIAL_BODY_H
 
-#include <cstdint>
 #include <filesystem>
 #include <glm/vec3.hpp>
 #include <string>
@@ -26,9 +25,7 @@ struct BodyData
 	float spinPeriod{ 0.0f };				// Time (sideral) the planet takes to do a rotation on itself [in Earth days]	
 	float orbitalInclination{ 0.0f };		// Or "orbital tilt": angle between planet (resp. moon) orbit and the ecliptic [in degrees]
 
-	bool hasRings{ false };					// Does the celestial body has a ring system around it
-
-	int32_t parentID{ -1 };					// Pointer to the planet mesh around which a moon rotates
+	std::string parentName;					// Name of the celestial body parent, if any
 };
 
 // Represent a spherical mesh body, e.g. a planet, a dwarf planet or a moon
@@ -48,13 +45,15 @@ public:
 	BodyData bodyData;
 
 	// Compute body position in Cartesian coordinates from Spherical ones
-	void ComputeCartesianPosition(const float elapsedTime);
+	void ComputeCartesianPosition(const float elapsedTime, const CelestialBody* satelliteParentBody = nullptr);
 	const glm::vec3& GetPosition() const { return position; }
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 
 private:
 	Sphere sphere;
+
+	bool isMoon{ false };
 
 	glm::vec3 position{ 0.0f };
 

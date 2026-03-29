@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <filesystem>
+#include <glm/vec3.hpp>
 #include <string>
 
 #include "Circle.h"
@@ -19,21 +20,23 @@ class Orbit : public SceneEntity
 public:
 	Orbit(BodyData&& inBodyData);
 
-	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
+	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
+	void Render(const Renderer& renderer, const glm::vec3& parentPosition, const float elapsedTime = 0.0f);
 
 private:
 	// @todo - Implement ellipse for a more realistic simulation (circular orbits with eccentricities close to 0 for now)
 	Circle circle;
 
 	std::string bodyName;
-	int32_t parentBodyID{ -1 };
+	bool isMoon{ false };
 
 	// Orbital Inclination converted [in radians]
 	float orbInclinationInRad{ 0.0f };
 
 	static Material InitialiseParent(const std::filesystem::path& inTexturePath);
 
-	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override;
+	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
+	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const float elapsedTime = 0.0f);
 };
 
 

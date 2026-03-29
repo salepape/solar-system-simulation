@@ -34,9 +34,16 @@ struct SpecularProperties
 class Material
 {
 public:
-	Material(Shader& inShader, const std::vector<Texture>& inTextures);
-	Material(Shader& inShader, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties, const float inTransparency = 1.0f);
+	Material() = delete;
+	Material(Shader& inShader, const std::vector<Texture>& inTextures, const DiffuseProperties inDiffuseProperties = { 0, glm::vec3(0.0f) }, const float inTransparency = 1.0f);
+
+	Material(const Material& inMaterial) = delete;
+	Material& operator = (const Material& inMaterial) = delete;
+
 	Material(Material&& inMaterial);
+	Material& operator = (Material&& inMaterial) = delete;
+
+	virtual ~Material() = default;
 
 	void SetFUniforms() const;
 	void SetDiffuseSamplerFUniform() const;

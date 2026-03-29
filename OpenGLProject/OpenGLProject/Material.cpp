@@ -7,13 +7,7 @@
 
 
 
-Material::Material(Shader& inShader, const std::vector<Texture>& inTextures) :
-	shader(inShader), textures(inTextures), diffuseProperties({ 0, glm::vec3(0.0f) }), specularProperties({ glm::vec3(0.0f), 64.0f })
-{
-	SetFUniforms();
-}
-
-Material::Material(Shader& inShader, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties, const float inTransparency) :
+Material::Material(Shader& inShader, const std::vector<Texture>& inTextures, const DiffuseProperties inDiffuseProperties, const float inTransparency) :
 	shader(inShader), textures(inTextures), diffuseProperties(inDiffuseProperties), specularProperties({ glm::vec3(0.0f), 64.0f }), transparency(inTransparency)
 {
 	SetFUniforms();

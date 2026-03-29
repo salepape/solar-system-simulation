@@ -15,11 +15,12 @@
 
 
 
-// @todo - Find a way to avoid building this string (GetNameFromTexturePath method) 3 times
 CelestialBody::CelestialBody(BodyData&& inBodyData) : SceneEntity(inBodyData.name, InitialiseParent(inBodyData.texturePath, inBodyData.name)),
 bodyData(inBodyData),
 sphere({ inBodyData.radius })
 {
+	isMoon = inBodyData.parentName.length() != 0 ? true : false;
+
 	orbitAngularFreq = inBodyData.orbitalPeriod == 0.0f ? 0.0f : GLMConstants::doublePi * 1.0f / inBodyData.orbitalPeriod;
 	spinAngularFreq = inBodyData.spinPeriod == 0.0f ? 0.0f : GLMConstants::doublePi * 1.0f / inBodyData.spinPeriod;
 
@@ -65,27 +66,25 @@ void CelestialBody::ComputeModelMatrixVUniform(const float elapsedTime)
 	modelMatrix = glm::rotate(modelMatrix, GLMConstants::halfPi, GLMConstants::rightVector);
 }
 
-void CelestialBody::ComputeCartesianPosition(const float elapsedTime)
+void CelestialBody::ComputeCartesianPosition(const float elapsedTime, const CelestialBody* satelliteParentBody)
 {
 	position = glm::vec3(0.0f);
 
 	// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
 	const float travelledOrbitAngle = orbitAngularFreq * elapsedTime;
-	if (bodyData.parentID == -1)
+	if (isMoon == false || satelliteParentBody == nullptr)
 	{
 		travelledAngle = travelledOrbitAngle;
 	}
 	// Circular translation of satellite around corresponding planet, taking into account satellite "orbital tilt"
 	else
 	{
-		const BodySystem& satelliteParentBodySystem = ResourceLoader::GetBodySystem(bodyData.parentID);
-		const CelestialBody& satelliteParentBody = satelliteParentBodySystem.celestialBody;
-		const float sinTravelledAngleParent = glm::sin(satelliteParentBody.travelledAngle);
+		const float sinTravelledAngleParent = glm::sin(satelliteParentBody->travelledAngle);
 
 		position += glm::vec3(
-			satelliteParentBody.distCosOrbInclination * sinTravelledAngleParent,
-			satelliteParentBody.distSinOrbInclination * sinTravelledAngleParent,
-			satelliteParentBody.bodyData.distanceToParent * glm::cos(satelliteParentBody.travelledAngle));
+			satelliteParentBody->distCosOrbInclination * sinTravelledAngleParent,
+			satelliteParentBody->distSinOrbInclination * sinTravelledAngleParent,
+			satelliteParentBody->bodyData.distanceToParent * glm::cos(satelliteParentBody->travelledAngle));
 	}
 
 	// Circular translation of body around Sun, taking into account body "orbital tilt"

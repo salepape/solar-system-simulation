@@ -1,9 +1,11 @@
 #include "BodySystem.h"
 
-#include <glm/vec3.hpp>
+#include <cstdint>
+#include <glm/geometric.hpp>
 #include <string>
 #include <utility>
 
+#include "PerspectiveCamera.h"
 #include "PointLight.h"
 #include "Renderer.h"
 #include "ResourceLoader.h"
@@ -22,22 +24,26 @@ BodySystem::BodySystem(BodyData&& inBodyData) :
 			ReflectionParams{ glm::vec3(0.25f), glm::vec3(0.95f), glm::vec3(1.0f) },
 			AttenuationParams{ 1.0f, 0.00045f, 0.00000075f });
 	}
-
-	// Attach a ring system to the celestial body if one
-	if (inBodyData.hasRings)
-	{
-		bodyRings = std::make_unique<BodyRings>(std::move(ResourceLoader::GetBodyRings(inBodyData.name)));
-	}
 }
 
-void BodySystem::Render(const Renderer& renderer, const float elapsedTime)
+void BodySystem::Render(const Renderer& renderer, const bool isBillboard, TextRenderer& textRenderer, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float elapsedTime)
 {
 	celestialBody.Render(renderer, elapsedTime);
 
-	orbit.Render(renderer);
+	orbit.Render(renderer, parentPosition, elapsedTime);
 
-	if (bodyRings)
+	if (celestialBodyRings != nullptr)
 	{
-		bodyRings->Render(renderer);
+		celestialBodyRings->Render(renderer, celestialBody.GetModelMatrix(), elapsedTime);
+	}
+
+	if (isBillboard)
+	{
+		// Orient text billboards so their readable side always faces the camera
+		const glm::vec3& forward = glm::normalize(camera.GetPosition() - celestialBody.GetPosition());
+		const glm::vec3& right = glm::cross(camera.GetUp(), forward);
+
+		const uint32_t bodySystemTextureUnit = billboard.GetMaterial().GetDiffuseTextureUnit();
+		billboard.Render(textRenderer, bodySystemTextureUnit, celestialBody.GetPosition(), forward, right);
 	}
 }

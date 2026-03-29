@@ -20,7 +20,7 @@ Billboard::Billboard(BodyData&& inBodyData) : SceneEntity(inBodyData.name + "Bil
 	float textHeightFactor = 1.5f;
 	float textScaleFactor = 0.01f;
 	// If the current celestial body is a satellite (i.e. has a parent)
-	if (inBodyData.parentID != -1)
+	if (inBodyData.parentName.length() != 0)
 	{
 		textHeightFactor = 3.5f;
 		textScaleFactor = 0.03f;

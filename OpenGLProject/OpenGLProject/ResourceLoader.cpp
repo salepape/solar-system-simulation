@@ -1,19 +1,12 @@
 #include "ResourceLoader.h"
 
 #include <algorithm>
-#include <filesystem>
+#include <cstdint>
 #include <iostream>
-#include <unordered_map>
-#include <vector>
 
-#include "Belt.h"
-#include "BodyRings.h"
-#include "BodySystem.h"
 #include "Constants.h"
 #include "Shader.h"
-#include "SolarSystem.h"
 #include "UniformBuffer.h"
-#include "Utils.h"
 
 
 
@@ -22,10 +15,6 @@ std::vector<UniformBuffer> ubos;
 
 namespace ResourceLoader
 {
-	std::vector<BodySystem>& bodySystemsRef = SolarSystem::GetBodySystemsVector();
-	std::vector<BodyRings>& ringsRef = SolarSystem::GetRingsVector();
-	std::vector<Belt>& beltsRef = SolarSystem::GetBeltsVector();
-
 	void LoadShaders()
 	{
 		// @todo - Find a solution to avoid having to update this number when adding a new shader, or a warning at the very least (white screen otherwise!)
@@ -53,177 +42,6 @@ namespace ResourceLoader
 		ubos.emplace_back(bodyShaderIDs, "ubo_DirectionalLight", 4 * GLSLConstants::vec4SizeInBytes + GLSLConstants::scalarSizeInBytes);
 		ubos.emplace_back(bodyShaderIDs, "ubo_PointLight", 4 * GLSLConstants::vec4SizeInBytes + 4 * GLSLConstants::scalarSizeInBytes);
 		ubos.emplace_back(bodyShaderIDs, "ubo_SpotLight", 5 * GLSLConstants::vec4SizeInBytes + 7 * GLSLConstants::scalarSizeInBytes);
-	}
-
-	void LoadCelestialBodies()
-	{
-		// @todo - First number to be replaced by an access from the .csv file
-		constexpr long int sunEarthDistance = 149600000;
-		constexpr float DISTANCE_SCALE_FACTOR = 10.0f;
-
-		// @todo - First number to be replaced by an access from the .csv file
-		constexpr int earthRadius = 6371;
-		constexpr float RADIUS_SCALE_FACTOR = 1000.0f;
-
-		// Needed to scale distance of current celestial body according to the previous one (diverging from proper simulation here, for travel end-user convenience)
-		std::string celestialBodyNameCache = "";
-
-		std::unordered_map<std::string, std::filesystem::path> bodyPaths;
-		FileUtils::ListPaths("../Textures/CelestialBodies/", bodyPaths);
-
-		ResourceCSVParser bodyCSVParser("../Data/CelestialBodyData.csv");
-
-		// Process each CSV line and create a Body instance out of it
-		for (const std::vector<std::string>& celestialBodyParams : bodyCSVParser.GetParsedCSV())
-		{
-			const std::string& celestialBodyName = celestialBodyParams[0];
-			const std::string& celestialBodyType = celestialBodyParams[1];
-			const std::string& celestialBodyParentName = (celestialBodyType == "Moon") ? celestialBodyParams[9] : "";
-
-			const float distanceToParent = std::stof(celestialBodyParams[3]);
-			float scaledDistanceToParent = 0.0f;
-			if (celestialBodyType == "Star")
-			{
-				scaledDistanceToParent = 0.0f;
-			}
-			else if (celestialBodyType == "Moon")
-			{
-				const float scaledTravelDistance = distanceToParent / sunEarthDistance * RADIUS_SCALE_FACTOR;
-				scaledDistanceToParent = GetBodySystem(celestialBodyParentName).celestialBody.bodyData.radius + scaledTravelDistance;
-			}
-			// "Planet" and "Dwarf Planet" types
-			else
-			{
-				const BodyData& celestialBodyData = GetBodySystem(celestialBodyNameCache).celestialBody.bodyData;
-				const float scaledTravelDistance = distanceToParent / sunEarthDistance * DISTANCE_SCALE_FACTOR;
-				if (celestialBodyName == "Mercury")
-				{
-					scaledDistanceToParent = celestialBodyData.radius * 2.0f + scaledTravelDistance;
-				}
-				else
-				{
-					scaledDistanceToParent = celestialBodyData.distanceToParent + scaledTravelDistance;
-				}
-			}
-
-			const std::filesystem::path& texturePath = bodyPaths[celestialBodyName];
-			const float scaledRadius = std::stof(celestialBodyParams[2]) / earthRadius * (celestialBodyType == "Star" ? 0.5f : 1.0f);
-			const float obliquity = std::stof(celestialBodyParams[4]);
-			const float scaledOrbitalPeriod = std::stof(celestialBodyParams[5]) * (celestialBodyType == "DwarfPlanet" ? GetBodySystem("Earth").celestialBody.bodyData.orbitalPeriod : 1.0f);
-			const float spinPeriod = std::stof(celestialBodyParams[6]);
-			const float orbitalInclination = std::stof(celestialBodyParams[7]);
-			const bool hasRings = std::stoi(celestialBodyParams[8]) > 0 ? true : false;
-			const int32_t parentID = celestialBodyType == "Moon" ? GetBodySystem(celestialBodyParentName).celestialBody.GetID() : -1;
-
-			bodySystemsRef.emplace_back(BodyData{ texturePath, celestialBodyName, scaledRadius, scaledDistanceToParent, obliquity, scaledOrbitalPeriod, spinPeriod, orbitalInclination, hasRings, parentID });
-
-			celestialBodyNameCache = celestialBodyName;
-		}
-	}
-
-	void LoadRings()
-	{
-		std::unordered_map<std::string, std::filesystem::path> ringPaths;
-		FileUtils::ListPaths("../Models/Rings/", ringPaths);
-
-		ResourceCSVParser ringCSVParser("../Data/RingData.csv");
-
-		// Process each CSV line and create a Rings instance out of it
-		for (const std::vector<std::string>& ringParams : ringCSVParser.GetParsedCSV())
-		{
-			const std::string& bodyName = ringParams[0];
-			const std::filesystem::path& modelPath = ringPaths[ringParams[1]];
-			const float radius = std::stof(ringParams[2]);
-			const float opacity = std::stof(ringParams[3]);
-
-			ringsRef.emplace_back(RingsData{ modelPath, bodyName, radius, opacity });
-		}
-	}
-
-	void LoadBelts()
-	{
-		std::unordered_map<std::string, std::filesystem::path> beltPaths;
-		FileUtils::ListPaths("../Models/Belts/", beltPaths);
-
-		ResourceCSVParser beltCSVParser("../Data/BeltData.csv");
-
-		// Process each CSV line and create a Belt instance out of it
-		for (const std::vector<std::string>& beltParams : beltCSVParser.GetParsedCSV())
-		{
-			const std::string& beltName = beltParams[0];
-			const std::filesystem::path& modelPath = beltPaths[beltParams[1]];
-			const uint32_t instanceCount = std::stoi(beltParams[2]);
-			const float sizeRangeLowerBound = std::stof(beltParams[3]);
-			const uint32_t sizeRangeSpan = std::stoi(beltParams[4]);
-			const float outerBound = GetBodySystem(beltParams[5]).celestialBody.bodyData.distanceToParent;
-			const float innerBound = GetBodySystem(beltParams[6]).celestialBody.bodyData.distanceToParent;
-			float majorRadius = 0.0f;
-			if (beltName == "AsteroidBelt")
-			{
-				majorRadius = innerBound * 1.05f + 0.5f * (outerBound * 0.9f - innerBound * 1.05f);
-			}
-			else
-			{
-				majorRadius = innerBound + 0.5f * (outerBound - innerBound);
-			}
-			float minorRadius = 0.0f;
-			if (beltName == "AsteroidBelt")
-			{
-				minorRadius = 0.5f * (outerBound * 0.9f - innerBound * 1.05f);
-			}
-			else
-			{
-				minorRadius = 0.5f * (outerBound - innerBound);
-			}
-			const float flatnessFactor = std::stof(beltParams[7]);
-
-			beltsRef.emplace_back(beltName, InstanceParams{ modelPath, instanceCount, sizeRangeLowerBound, sizeRangeSpan }, TorusParams{ majorRadius, minorRadius, flatnessFactor });
-		}
-	}
-
-	BodySystem& GetBodySystem(const std::string& inBodyName)
-	{
-		const auto& bodyIt = std::find_if(bodySystemsRef.begin(), bodySystemsRef.end(), [&inBodyName](const BodySystem& body)
-		{
-			return body.celestialBody.GetName() == inBodyName;
-		});
-
-		if (bodyIt == bodySystemsRef.end())
-		{
-			std::cout << "ERROR::RESOURCE_LOADER - Celestial body " << inBodyName << " has not been found. Therefore, the iterator is pointing to nullptr, and dereferencing it is provoking the crash." << std::endl;
-		}
-
-		return *bodyIt;
-	}
-
-	BodySystem& GetBodySystem(const int32_t inBodyID)
-	{
-		const auto& bodyIt = std::find_if(bodySystemsRef.begin(), bodySystemsRef.end(), [&inBodyID](const BodySystem& bodySystem)
-		{
-			return bodySystem.celestialBody.GetID() == inBodyID;
-		});
-
-		if (bodyIt == bodySystemsRef.end())
-		{
-			std::cout << "ERROR::RESOURCE_LOADER - Celestial body ID " << inBodyID << " has not been found. Therefore, the iterator is pointing to nullptr, and dereferencing it is provoking the crash." << std::endl;
-		}
-
-		return *bodyIt;
-	}
-
-	BodyRings& GetBodyRings(const std::string& inBodyName)
-	{
-		const auto& ringsIt = std::find_if(ringsRef.begin(), ringsRef.end(), [&inBodyName](const BodyRings& rings)
-		{
-			return rings.ringsData.bodyName == inBodyName;
-		});
-
-		if (ringsIt == ringsRef.end())
-		{
-			std::cout << "ERROR::RESOURCE_LOADER - Ring system for " << inBodyName << " does not exist!" << std::endl;
-		}
-
-		return *ringsIt;
 	}
 
 	Shader& GetShader(const std::string& inShaderName)
