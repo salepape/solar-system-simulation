@@ -16,15 +16,20 @@ Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const f
 
 }
 
-void Camera::ResetTransform()
+void Camera::SetTransform(const glm::vec3& inPosition, const glm::vec3& inRotation)
 {
-	position = initialPosition;
+	position = inPosition;
 
-	roll = initialRotation.x;
-	pitch = initialRotation.y;
-	yaw = initialRotation.z;
+	roll = inRotation.x;
+	pitch = inRotation.y;
+	yaw = inRotation.z;
 
 	UpdateCameraVectors();
+}
+
+void Camera::ResetTransform()
+{
+	SetTransform(initialPosition, glm::vec3(initialRotation.x, initialRotation.y, initialRotation.z));
 }
 
 glm::mat4 Camera::ComputeInfiniteView() const

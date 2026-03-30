@@ -29,8 +29,9 @@ SolarSystem::SolarSystem() :
 	BuildBodySystems();
 	BuildBelts();
 
-	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun -> farthest celestial body'
-	spacecraft = std::make_shared<Spacecraft>(glm::vec3(0.0f, GetBodySystem("Sun").celestialBody.bodyData.radius * 1.75f, -25.0f), glm::vec3(0.0f, -25.0f, 90.0f), 45.0f, 2.0f * GetBodySystem("Sedna").celestialBody.bodyData.distanceToParent);
+	SetSpacecraftTransform(
+		glm::vec3(0.0f, GetBodySystem("Sun").celestialBody.bodyData.radius * 1.75f, -25.0f),
+		glm::vec3(0.0f, -25.0f, 90.0f));
 }
 
 void SolarSystem::Update()
@@ -39,12 +40,13 @@ void SolarSystem::Update()
 
 	const Application& app = runningApp;
 
-	PerspectiveCameraController& cameraController = spacecraft->cameraController;
+	PerspectiveCameraController& cameraController = spacecraft.cameraController;
 	cameraController.ProcessKeyboardInput(runningApp.deltaTime);
 
 	PerspectiveCamera& camera = cameraController.GetCamera();
 	camera.SetProjectionViewVUniform(openWindow.GetAspectRatio());
 	camera.SetPositionFUniform();
+
 	const glm::vec3& cameraPosition = camera.GetPosition();
 
 	// Compute celestial body positions and sort them from farthest to closest according to the camera, 
@@ -223,6 +225,11 @@ void SolarSystem::BuildBelts()
 			InstanceParams{ modelPath, instanceCount, sizeRangeLowerBound, sizeRangeSpan },
 			TorusParams{ majorRadius, minorRadius, flatnessFactor });
 	}
+}
+
+void SolarSystem::SetSpacecraftTransform(const glm::vec3& inPosition, const glm::vec3& inRotation)
+{
+	spacecraft.cameraController.GetCamera().SetTransform(inPosition, inRotation);
 }
 
 BodySystem& SolarSystem::GetBodySystem(const std::string& inBodyName)
