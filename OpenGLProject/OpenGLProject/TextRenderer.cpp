@@ -8,7 +8,7 @@
 #include "BodySystem.h"
 #include "Quad.h"
 #include "Renderer.h"
-#include "ResourceLoader.h"
+#include "ShaderLoader.h"
 #include "VertexBufferLayout.h"
 
 

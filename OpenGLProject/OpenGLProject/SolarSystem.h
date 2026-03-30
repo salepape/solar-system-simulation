@@ -13,7 +13,6 @@
 
 
 
-// All member containers of this class are filled using the ResourceLoader
 class SolarSystem : public Scene
 {
 public:

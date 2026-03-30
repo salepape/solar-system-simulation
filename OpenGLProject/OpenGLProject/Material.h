@@ -59,7 +59,7 @@ public:
 	void SetTextures(const std::vector<Texture>& inTextures);
 
 private:
-	// We need a reference so the shader persists even after Material destruction (Shader exists separately in ResourceLoader)
+	// We need a reference so the shader persists even after Material destruction (Shader exists separately in ShaderLoader)
 	Shader& shader;
 
 	// DDS textures that will be used as a 2D samplers (only diffuse textures for now)

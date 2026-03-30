@@ -23,7 +23,7 @@ UniformBuffer::UniformBuffer(const std::vector<uint32_t>& shaderIDs, const std::
 	// Bind the UBO ID to a target, which specifies our intent to store vertices in it
 	glBindBuffer(target, rendererID);
 
-	// @todo - Move functions below in proper class to avoid having the size as parameter in ResourceLoader?
+	// @todo - Move functions below in proper class to avoid having the size as parameter in ShaderLoader?
 
 	// Allocate memory space (in bytes) to the UBO and store data in it
 	glBufferData(target, sizeInBytes, nullptr, GL_STATIC_DRAW);

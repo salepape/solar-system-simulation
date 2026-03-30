@@ -1,6 +1,6 @@
 #include "SolarSystemSimulation.h"
 
-#include "ResourceLoader.h"
+#include "ShaderLoader.h"
 
 
 

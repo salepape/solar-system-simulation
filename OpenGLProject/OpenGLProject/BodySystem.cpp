@@ -8,7 +8,7 @@
 #include "PerspectiveCamera.h"
 #include "PointLight.h"
 #include "Renderer.h"
-#include "ResourceLoader.h"
+#include "ShaderLoader.h"
 
 
 

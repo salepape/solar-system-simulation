@@ -4,7 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Constants.h"
-#include "ResourceLoader.h"
+#include "ShaderLoader.h"
 #include "UniformBuffer.h"
 
 

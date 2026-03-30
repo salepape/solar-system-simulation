@@ -15,7 +15,7 @@
 #include "PerspectiveCamera.h"
 #include "PerspectiveCameraController.h"
 #include "Renderer.h"
-#include "ResourceLoader.h"
+#include "ShaderLoader.h"
 #include "TextRenderer.h"
 #include "Utils.h"
 #include "Window.h"
