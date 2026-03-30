@@ -4,18 +4,26 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include <assimp/material.h>
 #include <cstdint>
 #include <filesystem>
+#include <vector>
 
 
 
-// Be careful to keep the same elements order as aiTextureType enum
-enum class TextureType
+// Warning: keep the same order of elements as aiTextureType enum, to ensure of a correct mapping between the 2 enums when casting
+namespace TextureType
 {
-	NONE,
-	DIFFUSE,
-	SPECULAR,
-	AMBIENT,
+	enum Enum
+	{
+		NONE = aiTextureType_NONE,
+		DIFFUSE = aiTextureType_DIFFUSE,
+		SPECULAR = aiTextureType_SPECULAR,
+		AMBIENT = aiTextureType_AMBIENT,
+		EMISSIVE = aiTextureType_EMISSIVE,
+	};
+
+	static const std::vector<Enum> All = { NONE, DIFFUSE, SPECULAR, AMBIENT, EMISSIVE };
 };
 
 struct WrapOptions
@@ -43,7 +51,7 @@ class Texture
 public:
 	// Default constructor needed for GlyphParams struct declaration
 	Texture() = default;
-	Texture(const std::filesystem::path& inPath, const uint32_t inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType& inTextureType);
+	Texture(const std::filesystem::path& inPath, const uint32_t inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType::Enum& inTextureType);
 
 	void LoadFTBitmap(const FT_Bitmap& bitmap, const uint32_t format);
 	void LoadDDS();
@@ -75,8 +83,7 @@ private:
 	uint32_t target{ 0 };
 	uint32_t rendererID{ 0 };
 
-	// @todo - Use this variable to identify the type of the texture used in a specific model and process samplers accordingly in shaders
-	TextureType textureType;
+	TextureType::Enum textureType;
 };
 
 

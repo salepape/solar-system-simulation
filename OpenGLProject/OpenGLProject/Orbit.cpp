@@ -27,7 +27,7 @@ circle({ inBodyData.distanceToParent })
 
 Material Orbit::InitialiseParent(const std::filesystem::path& inTexturePath)
 {
-	Texture texture(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::DIFFUSE);
+	Texture texture(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadDDS();
 
 	return Material(ShaderLoader::GetShader("Orbit"), { std::move(texture) });

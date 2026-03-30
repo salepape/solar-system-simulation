@@ -33,7 +33,7 @@ sphere({ inBodyData.radius })
 
 Material CelestialBody::InitialiseParent(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName)
 {
-	Texture texture(inBodyTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::DIFFUSE);
+	Texture texture(inBodyTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadDDS();
 
 	if (inBodyName == "Sun")

@@ -17,7 +17,7 @@ MilkyWay::MilkyWay(const std::filesystem::path& inTexturePath) : SceneEntity("Mi
 
 Material MilkyWay::InitialiseParent(const std::filesystem::path& inTexturePath)
 {
-	Texture texture(inTexturePath, GL_TEXTURE_CUBE_MAP, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::DIFFUSE);
+	Texture texture(inTexturePath, GL_TEXTURE_CUBE_MAP, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadCubemapDDS();
 
 	return Material(ShaderLoader::GetShader("MilkyWay"), { std::move(texture) });

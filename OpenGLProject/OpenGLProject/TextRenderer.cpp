@@ -65,7 +65,7 @@ void TextRenderer::LoadASCIICharacters(const std::string& fontPath, const std::s
 
 		// No need to specify an image path here since the glyph bitmap directly contains the data
 		// @todo - Store all characters into a single texture atlas/sprite sheet for better performance
-		Texture glyphTexture("", GL_TEXTURE_2D, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::DIFFUSE);
+		Texture glyphTexture("", GL_TEXTURE_2D, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 
 		// FreeType glyph bitmaps are 8-bit grayscale images: it means only one channel (black/white) will be used, encoded with 8 bits,
 		// so we just need to store the colour result in the first vector component, equivalent to red for RGBA
