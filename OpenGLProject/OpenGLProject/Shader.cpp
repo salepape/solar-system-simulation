@@ -1,5 +1,6 @@
 #include "Shader.h"
 
+#include <cassert>
 #include <iostream>
 #include <glad.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -128,12 +129,20 @@ void Shader::CheckValidity(const uint32_t ID, const ShaderProcessStage processSt
 		{
 			int32_t logLength = 0;
 			glGetShaderiv(ID, GL_INFO_LOG_LENGTH, &logLength);
+			if (logLength <= 2)
+			{
+				std::cout << "ERROR::SHADER for Scene Entity '" << entityName << "'\nReason: No specific error message returned - Log length too short.\n" << std::endl;
+				assert(false);
+			}
 
 			// We can't stack-allocate a char* and std::string is const, but we can use std::vector instead of heap-allocate
 			std::vector<char> errorMessage(logLength);
 			glGetShaderInfoLog(ID, logLength, &logLength, errorMessage.data());
-
-			std::cout << "ERROR::SHADER for " << entityName << " - Error: " << errorMessage.data() << std::endl;
+			if (errorMessage.data() == nullptr)
+			{
+				std::cout << "ERROR::SHADER for Scene Entity '" << entityName << "'\nReason: no specific error message returned by glGetShaderInfoLog().\n" << std::endl;
+				assert(false);
+			}
 		}
 
 		break;
@@ -146,12 +155,20 @@ void Shader::CheckValidity(const uint32_t ID, const ShaderProcessStage processSt
 		{
 			int32_t logLength = 0;
 			glGetProgramiv(ID, GL_INFO_LOG_LENGTH, &logLength);
+			if (logLength <= 2)
+			{
+				std::cout << "ERROR::PROGRAM for Scene Entity '" << entityName << "'\nReason: No specific error message returned - Log length too short.\n" << std::endl;
+				assert(false);
+			}
 
 			// We can't stack-allocate a char* and std::string is const, but we can use std::vector instead of heap-allocate
 			std::vector<char> errorMessage(logLength);
 			glGetProgramInfoLog(ID, logLength, &logLength, errorMessage.data());
-
-			std::cout << "ERROR::PROGRAM for " << entityName << " - Error: " << errorMessage.data() << std::endl;
+			if (errorMessage.data() == nullptr)
+			{
+				std::cout << "ERROR::PROGRAM for Scene Entity '" << entityName << "'\nReason: no specific error message returned by glGetProgramInfoLog().\n" << std::endl;
+				assert(false);
+			}
 		}
 
 		break;

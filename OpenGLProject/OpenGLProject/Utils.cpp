@@ -1,6 +1,7 @@
 #include "Utils.h"
 
 #include <algorithm>
+#include <cassert>
 #include <cctype>  // std::toupper()
 #include <cstddef> // std::size_t
 #include <cstdint>
@@ -73,8 +74,8 @@ std::string FileUtils::ReadFile(const std::string& path)
 	std::ifstream fileStream(path, std::ios::in | std::ios::binary);
 	if (fileStream.fail())
 	{
-		std::cout << "ERROR::UTILS - " << "File " << FileUtils::GetNameFromPath(path) << " has not been successfully read.\nReason: " << GetErrorStateFlagMessage(fileStream) << std::endl;
-		return std::string();
+		std::cout << "ERROR::UTILS - " << "File " << FileUtils::GetNameFromPath(path) << " has not been successfully read.\nReason: " << GetErrorStateFlagMessage(fileStream) << "\n" << std::endl;
+		assert(false);
 	}
 
 	// Read file buffer content as a stream
@@ -95,22 +96,22 @@ std::string FileUtils::GetErrorStateFlagMessage(const std::ifstream& fileStream)
 	{
 	case std::ios::eofbit:
 	{
-		result = "End-of-File reached on input operation";
+		result = "End-of-File reached on input operation.";
 		break;
 	}
 	case std::ios::failbit:
 	{
-		result = "Logical error on input/output operation";
+		result = "Logical error on input/output operation.";
 		break;
 	}
 	case std::ios::badbit:
 	{
-		result = "Read/writing error on input/output operation";
+		result = "Read/writing error on input/output operation.";
 		break;
 	}
 	default:
 	{
-		result = "No specific error state flag returned by std::fstream";
+		result = "No specific error state flag returned by std::fstream().";
 		break;
 	}
 	}
