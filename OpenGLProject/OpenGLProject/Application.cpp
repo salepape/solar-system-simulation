@@ -1,5 +1,6 @@
 #include "Application.h"
 
+#include <cassert>
 #include <iostream>
 #include <glad.h>
 #include <glfw3.h>
@@ -16,6 +17,7 @@ Application::Application()
 	if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
 	{
 		std::cout << "ERROR::GLAD - Failed to initialise GLAD..." << std::endl;
+		assert(false);
 	}
 
 	instance = this;

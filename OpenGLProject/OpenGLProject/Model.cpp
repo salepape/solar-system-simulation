@@ -7,6 +7,7 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <assimp/types.h>
+#include <cassert>
 #include <glad.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
@@ -32,7 +33,7 @@ void Model::LoadModel(const std::filesystem::path& path)
 	if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
 	{
 		std::cout << "ERROR::ASSIMP - Error when reading model file located at " << path.string() << ": " << importer.GetErrorString() << std::endl;
-		return;
+		assert(false);
 	}
 
 	// Process ASSIMP root node recursively
@@ -50,7 +51,7 @@ void Model::ProcessNode(const aiNode& node, const aiScene& scene)
 		if (mesh == nullptr)
 		{
 			std::cout << "ERROR::ASSIMP - No mesh found in array mMeshes index " << node.mMeshes[i] << std::endl;
-			continue;
+			assert(false);
 		}
 
 		meshes.emplace_back(ProcessMesh(*mesh, scene));
@@ -124,7 +125,7 @@ void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 	if (material == nullptr)
 	{
 		std::cout << "ERROR::ASSIMP - No materials found in array mMaterials index " << mesh.mMaterialIndex << std::endl;
-		return;
+		assert(false);
 	}
 
 	const std::vector<aiTextureType> textureTypes{ aiTextureType_AMBIENT, aiTextureType_DIFFUSE, aiTextureType_SPECULAR };

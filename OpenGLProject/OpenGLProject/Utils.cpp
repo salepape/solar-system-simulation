@@ -21,7 +21,14 @@ void GLFWUtils::SetGLFWCallbackData(GLFWwindow* GLFWWindow, Window* data)
 
 Window* GLFWUtils::GetGLFWCallbackData(GLFWwindow* GLFWWindow)
 {
-	return static_cast<Window*>(glfwGetWindowUserPointer(GLFWWindow));
+	Window* const callbackData = static_cast<Window*>(glfwGetWindowUserPointer(GLFWWindow));
+	if (callbackData == nullptr)
+	{
+		std::cout << "ERROR::UTILS - Failed to cast glfwGetWindowUserPointer() to Window*." << std::endl;
+		assert(false);
+	}
+
+	return callbackData;
 }
 
 
@@ -169,6 +176,7 @@ const ResourceCSVParser::CSVLine& ResourceCSVParser::GetParsedCSVLine(const std:
 	if (csvLineIt == csvParsed.end())
 	{
 		std::cout << "ERROR::UTILS - CSV line corresponding to " << sceneEntityName << " has not been found!" << std::endl;
+		assert(false);
 	}
 
 	return *csvLineIt;

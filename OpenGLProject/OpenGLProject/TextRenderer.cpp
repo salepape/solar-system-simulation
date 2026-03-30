@@ -1,5 +1,6 @@
 #include "TextRenderer.h"
 
+#include <cassert>
 #include <freetype/freetype.h>
 #include <glad.h>
 #include <iostream>
@@ -21,12 +22,14 @@ TextRenderer::TextRenderer(Renderer& inRenderer, const std::string& fontPath, co
 	if (FT_Init_FreeType(&FreeTypeLibrary))
 	{
 		std::cout << "ERROR::FREETYPE - Failed to initialise FreeType Library" << std::endl;
+		assert(false);
 	}
 
 	// Load font as face object
 	if (FT_New_Face(FreeTypeLibrary, fontPath.c_str(), 0, &face))
 	{
 		std::cout << "ERROR::FREETYPE - Failed to load the font located at " << fontPath << "!" << std::endl;
+		assert(false);
 	}
 
 	// Set pixel font size (i.e. render quality) we want to retrieve from this face object
@@ -64,14 +67,14 @@ void TextRenderer::LoadASCIICharacters(const std::string& text)
 		if (FT_Load_Char(face, character, FT_LOAD_RENDER))
 		{
 			std::cout << "ERROR::FREETYTPE - Failed to load the face object glyph for character " << character << "!" << std::endl;
-			continue;
+			assert(false);
 		}
 
 		FT_GlyphSlot glyph = face->glyph;
 		if (glyph == nullptr)
 		{
 			std::cout << "ERROR::FREETYPE - Glyph slot for character " << character << " is abnormally empty!" << std::endl;
-			continue;
+			assert(false);
 		}
 
 		// No need to specify an image path here since the glyph bitmap directly contains the data

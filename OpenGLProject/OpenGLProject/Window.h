@@ -22,8 +22,8 @@ public:
 	// @todo - Implement a custom event system, to get rid of this pointer
 	PerspectiveCameraController* cameraController{ nullptr };
 
-	// Tell GLFW that we want the context of the window to be the current single one for the current thread
-	int32_t MakeContextCurrent() const;
+	// Tell GLFW that we want the context of the window to be the single one for the current thread
+	void MakeContextCurrent() const;
 
 	void SwapFrontAndBackBuffers() const;
 

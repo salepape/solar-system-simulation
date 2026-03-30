@@ -1,5 +1,6 @@
 #include "PerspectiveCameraController.h"
 
+#include <cassert>
 #include <glfw3.h>
 #include <glm/common.hpp>
 #include <iostream>
@@ -133,17 +134,11 @@ void PerspectiveCameraController::Callback_DetectMouseInput()
 	glfwSetCursorPosCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, const double xPosition, const double yPosition)
 	{
 		Window* const window = GLFWUtils::GetGLFWCallbackData(GLFWWindow);
-		if (window == nullptr)
-		{
-			std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
-			return;
-		}
-
 		PerspectiveCameraController* const cameraController = window->cameraController;
 		if (cameraController == nullptr)
 		{
 			std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - No controller attached to the window..." << std::endl;
-			return;
+			assert(false);
 		}
 
 		PerspectiveCamera& camera = cameraController->GetCamera();
@@ -160,17 +155,11 @@ void PerspectiveCameraController::Callback_DetectMouseWheelInput()
 	glfwSetScrollCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, double /*xOffset*/, double yOffset)
 	{
 		const Window* const window = GLFWUtils::GetGLFWCallbackData(GLFWWindow);
-		if (window == nullptr)
-		{
-			std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
-			return;
-		}
-
 		PerspectiveCameraController* const cameraController = window->cameraController;
 		if (cameraController == nullptr)
 		{
 			std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - No controller attached to the window..." << std::endl;
-			return;
+			assert(false);
 		}
 
 		cameraController->UpdateZoomLeft(static_cast<float>(yOffset));
@@ -182,30 +171,21 @@ void PerspectiveCameraController::Callback_DetectKeyboardInput()
 {
 	glfwSetKeyCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, const int32_t key, const int32_t /*scanCode*/, const int32_t action, const int32_t /*mods*/)
 	{
-		auto GetWindow = [&GLFWWindow]() -> Window*
+		Window* const window = GLFWUtils::GetGLFWCallbackData(GLFWWindow);
+
+		const auto& GetCameraController = [&GLFWWindow, &window]() -> PerspectiveCameraController*
 		{
-			Window* const window = GLFWUtils::GetGLFWCallbackData(GLFWWindow);
 			if (window == nullptr)
 			{
-				std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
-				return nullptr;
-			}
-
-			return window;
-		};
-
-		const auto& GetCameraController = [&GLFWWindow, &GetWindow]() -> PerspectiveCameraController*
-		{
-			const Window* const window = GetWindow();
-			if (window == nullptr)
-			{
-				return nullptr;
+				std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - No window found..." << std::endl;
+				assert(false);
 			}
 
 			PerspectiveCameraController* const cameraController = window->cameraController;
 			if (cameraController == nullptr)
 			{
 				std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - No controller attached to the window..." << std::endl;
+				assert(false);
 			}
 
 			return cameraController;
@@ -220,11 +200,6 @@ void PerspectiveCameraController::Callback_DetectKeyboardInput()
 		if (key == GLFW_KEY_SPACE)
 		{
 			PerspectiveCameraController* const cameraController = GetCameraController();
-			if (cameraController == nullptr)
-			{
-				return;
-			}
-
 			if (action == GLFW_PRESS && cameraController->pauseStartTime == 0.0)
 			{
 				Application::GetInstance().Pause(true);
@@ -240,31 +215,21 @@ void PerspectiveCameraController::Callback_DetectKeyboardInput()
 		else if (key == GLFW_KEY_TAB)
 		{
 			PerspectiveCameraController* const cameraController = GetCameraController();
-			if (cameraController == nullptr)
-			{
-				return;
-			}
-
 			if (action == GLFW_PRESS && cameraController->cursorModeStartTime == 0.0)
 			{
-				GetWindow()->SetCursorMode(GLFW_CURSOR_NORMAL);
+				window->SetCursorMode(GLFW_CURSOR_NORMAL);
 				cameraController->cursorModeStartTime = Application::GetInstance().GetTime();
 			}
 
 			if (action == GLFW_RELEASE && IsReleaseActionRegistered(cameraController->cursorModeStartTime))
 			{
-				GetWindow()->SetCursorMode(GLFW_CURSOR_DISABLED);
+				window->SetCursorMode(GLFW_CURSOR_DISABLED);
 				cameraController->cursorModeStartTime = 0.0;
 			}
 		}
 		else if (key == GLFW_KEY_L)
 		{
 			PerspectiveCameraController* const cameraController = GetCameraController();
-			if (cameraController == nullptr)
-			{
-				return;
-			}
-
 			if (action == GLFW_PRESS && cameraController->displayLegendStartTime == 0.0)
 			{
 				Application::GetInstance().DisplayLegend(true);
@@ -280,11 +245,6 @@ void PerspectiveCameraController::Callback_DetectKeyboardInput()
 		else if (key == GLFW_KEY_H)
 		{
 			PerspectiveCameraController* const cameraController = GetCameraController();
-			if (cameraController == nullptr)
-			{
-				return;
-			}
-
 			cameraController->GetHeadlamp().UpdateHeadlightState(cameraController->timeBeforeReleaseRegistered, action);
 		}
 	});

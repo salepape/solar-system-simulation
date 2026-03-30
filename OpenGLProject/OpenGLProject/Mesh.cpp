@@ -1,5 +1,6 @@
 #include "Mesh.h"
 
+#include <cassert>
 #include <glad.h>
 #include <iostream>
 #include <utility>
@@ -23,7 +24,7 @@ void Mesh::StoreVertices()
 	if (vertices.empty())
 	{
 		std::cout << "ERROR::MESH - No vertices found!" << std::endl;
-		return;
+		assert(false);
 	}
 	const bool isIndexBuffer = indices.empty() == false;
 
@@ -66,7 +67,7 @@ void Mesh::Render(const Renderer& renderer) const
 	if (indices.empty())
 	{
 		std::cout << "ERROR::MESH - The base version of Render() needs indices array to be non null!" << std::endl;
-		return;
+		assert(false);
 	}
 
 	renderer.Draw(*vao, *ibo);

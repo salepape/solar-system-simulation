@@ -1,5 +1,6 @@
 #include "Texture.h"
 
+#include <cassert>
 #include <glad.h>
 #include <iostream>
 #include <SOIL2.h>
@@ -38,6 +39,7 @@ void Texture::LoadDDS()
 	if (rendererID == 0)
 	{
 		std::cout << "ERROR::SOIL - Loading error: " << SOIL_last_result() << std::endl;
+		assert(false);
 	}
 }
 
@@ -52,6 +54,7 @@ void Texture::LoadCubemapDDS()
 	if (rendererID == 0)
 	{
 		std::cout << "ERROR::SOIL - Loading error: " << SOIL_last_result() << std::endl;
+		assert(false);
 	}
 }
 

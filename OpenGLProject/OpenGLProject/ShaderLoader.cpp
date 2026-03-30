@@ -1,6 +1,7 @@
 #include "ShaderLoader.h"
 
 #include <algorithm>
+#include <cassert>
 #include <cstdint>
 #include <iostream>
 
@@ -50,6 +51,7 @@ Shader& ShaderLoader::GetShader(const std::string& inShaderName)
 	if (shaderIt == shaders.end())
 	{
 		std::cout << "ERROR::SHADER_LOADER - Shader " << inShaderName << " does not exist!" << std::endl;
+		assert(false);
 	}
 
 	return *shaderIt;
@@ -65,6 +67,7 @@ UniformBuffer& ShaderLoader::GetUBO(const std::string& inUniformName)
 	if (uboIt == ubos.end())
 	{
 		std::cout << "ERROR::SHADER_LOADER - Uniform " << inUniformName << " does not exist!" << std::endl;
+		assert(false);
 	}
 
 	return *uboIt;

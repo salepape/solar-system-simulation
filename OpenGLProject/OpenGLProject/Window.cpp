@@ -1,5 +1,6 @@
 #include "Window.h"
 
+#include <cassert>
 #include <glad/glad.h>
 #include <glfw3.h>
 #include <iostream>
@@ -19,16 +20,12 @@ Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::strin
 	if (GLFWWindow == nullptr)
 	{
 		std::cout << "ERROR::GLFW - Failed to create GLFW window!" << std::endl;
-		glfwTerminate();
-		return;
+		assert(false);
 	}
 
 	GLFWUtils::SetGLFWCallbackData(GLFWWindow, this);
 
-	if (MakeContextCurrent() == -1)
-	{
-		return;
-	}
+	MakeContextCurrent();
 
 	Callback_DetectWindowResize();
 
@@ -50,17 +47,15 @@ GLFWwindow* Window::InitGLFWWindow() const
 	return glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 }
 
-int32_t Window::MakeContextCurrent() const
+void Window::MakeContextCurrent() const
 {
 	glfwMakeContextCurrent(GLFWWindow);
 
 	if (glfwGetCurrentContext() == nullptr)
 	{
 		std::cout << "ERROR::GLFW - Failed to get current context: OpenGL functions will not work correctly!" << std::endl;
-		return -1;
+		assert(false);
 	}
-
-	return 0;
 }
 
 void Window::SwapFrontAndBackBuffers() const
@@ -86,12 +81,6 @@ void Window::Callback_DetectWindowResize() const
 
 		// Access contextual data from within GLFWwindow callback
 		Window* const window = GLFWUtils::GetGLFWCallbackData(GLFWWindow);
-		if (window == nullptr)
-		{
-			std::cout << "ERROR::WINDOW - Failed to cast glfwGetWindowUserPointer()!" << std::endl;
-			return;
-		}
-
 		window->Resize(width, height);
 	});
 }

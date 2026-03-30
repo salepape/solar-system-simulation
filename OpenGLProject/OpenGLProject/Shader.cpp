@@ -69,6 +69,8 @@ int32_t Shader::GetUniformLocation(const std::string& name)
 	{
 		// @todo - Avoid triggering the text when method called from outside this class
 		//std::cout << "ERROR::SHADER " << entityName << " - uniform " << name << " is not active in the program!" << std::endl;
+		//assert(false);
+
 		return -1;
 	}
 

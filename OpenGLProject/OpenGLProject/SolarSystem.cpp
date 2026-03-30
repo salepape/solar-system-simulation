@@ -1,6 +1,7 @@
 #include "SolarSystem.h"
 
 #include <algorithm>
+#include <cassert>
 #include <cstdint>
 #include <glm/geometric.hpp>
 #include <glm/vec3.hpp>
@@ -231,6 +232,7 @@ BodySystem& SolarSystem::GetBodySystem(const std::string& inBodyName)
 	if (bodyIt == bodySystems.end())
 	{
 		std::cout << "ERROR::SOLAR_SYSTEM - Celestial body " << inBodyName << " has not been found. Therefore, the iterator is pointing to nullptr, and accessing its content is provoking the crash." << std::endl;
+		assert(false);
 	}
 
 	return *bodyIt;
