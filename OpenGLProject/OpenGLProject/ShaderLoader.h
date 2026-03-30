@@ -9,7 +9,6 @@
 
 
 
-// @todo - To be renamed ShaderLoader
 class ShaderLoader
 {
 public:

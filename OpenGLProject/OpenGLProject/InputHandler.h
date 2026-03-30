@@ -9,7 +9,6 @@ class InputHandler
 public:
 	static InputHandler& GetInstance();
 
-	// @todo - Implement our own key codes
 	static bool IsKeyPressed(const int keyCode);
 	static bool IsKeyReleased(const int keyCode);
 

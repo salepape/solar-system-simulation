@@ -6,7 +6,6 @@
 
 
 
-// @todo - Move this code inside VertexBuffer class?
 // List of locations of attributes defined as layouts in a vertex shader (we assume this convention for all shader files)
 enum VertexAttributeLocation
 {

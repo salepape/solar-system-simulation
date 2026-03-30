@@ -19,8 +19,6 @@ public:
 	void Unbind() const;
 
 	void AddBuffer(const VertexBufferLayout& layout);
-
-	// @todo - See if we need to support other types than mat4 (with vec4 as an offset) for instancing
 	void AddInstancedBuffer(const VertexBufferLayout& layout) const;
 
 private:
