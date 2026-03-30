@@ -1,5 +1,5 @@
-#ifndef SHADERLOADER_H
-#define SHADERLOADER_H
+#ifndef SHADER_LOADER_H
+#define SHADER_LOADER_H
 
 #include <string>
 #include <vector>
@@ -25,4 +25,4 @@ private:
 
 
 
-#endif // SHADERLOADER_H
+#endif // SHADER_LOADER_H

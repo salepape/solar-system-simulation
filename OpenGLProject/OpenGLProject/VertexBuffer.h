@@ -1,5 +1,5 @@
-#ifndef VERTEXBUFFER_H
-#define VERTEXBUFFER_H
+#ifndef VERTEX_BUFFER_H
+#define VERTEX_BUFFER_H
 
 #include <cstddef> // std::size_t
 #include <glad.h>
@@ -16,4 +16,4 @@ public:
 
 
 
-#endif // VERTEXBUFFER_H
+#endif // VERTEX_BUFFER_H

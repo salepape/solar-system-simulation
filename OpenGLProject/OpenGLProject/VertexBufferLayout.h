@@ -1,5 +1,5 @@
-#ifndef VERTEXBUFFERLAYOUT_H
-#define VERTEXBUFFERLAYOUT_H
+#ifndef VERTEX_BUFFER_LAYOUT_H
+#define VERTEX_BUFFER_LAYOUT_H
 
 #include <cstdint>
 #include <vector>
@@ -48,4 +48,4 @@ private:
 
 
 
-#endif // VERTEXBUFFERLAYOUT_H
+#endif // VERTEX_BUFFER_LAYOUT_H
