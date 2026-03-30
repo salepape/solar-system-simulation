@@ -37,22 +37,18 @@ struct GlyphParams
 class TextRenderer
 {
 public:
-	// Put such default parameters to let the FT_Face dynamically compute the width based on the non-null height
-	TextRenderer(Renderer& inRenderer, const std::string& inFontPath, const uint32_t pixelFontWidth = 0, const uint32_t pixelFontHeight = 100);
-	TextRenderer(const TextRenderer&) = delete;
-	~TextRenderer() = default;
+	TextRenderer();
 
 	// Load ASCII characters (data + texture creation) of the text provided as input
-	void LoadASCIICharacters(const std::string& text);
+	void LoadASCIICharacters(const std::string& inFontPath, const std::string& text);
+	void SetFont(const std::string& fontPath);
 	void FreeFTResources() const;
 
 	// Update VBO for each character of the text provided as input
-	void Render(const uint32_t textureUnit, const std::string& text, float x, const float y, const float scale);
+	void Render(const Renderer& renderer, const uint32_t textureUnit, const std::string& text, float x, const float y, const float scale);
 
 private:
 	static TextRenderer* instance;
-
-	Renderer& renderer;
 
 	FT_Library FreeTypeLibrary;
 	FT_Face face;

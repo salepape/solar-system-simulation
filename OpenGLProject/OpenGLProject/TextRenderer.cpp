@@ -14,8 +14,7 @@
 
 
 
-TextRenderer::TextRenderer(Renderer& inRenderer, const std::string& fontPath, const uint32_t pixelFontWidth, const uint32_t pixelFontHeight) :
-	renderer(inRenderer)
+TextRenderer::TextRenderer()
 {
 	AllocateBufferObjects();
 
@@ -24,21 +23,6 @@ TextRenderer::TextRenderer(Renderer& inRenderer, const std::string& fontPath, co
 		std::cout << "ERROR::FREETYPE - Failed to initialise FreeType Library" << std::endl;
 		assert(false);
 	}
-
-	// Load font as face object
-	if (FT_New_Face(FreeTypeLibrary, fontPath.c_str(), 0, &face))
-	{
-		std::cout << "ERROR::FREETYPE - Failed to load the font located at " << fontPath << "!" << std::endl;
-		assert(false);
-	}
-
-	// Set pixel font size (i.e. render quality) we want to retrieve from this face object
-	// @todo - Might consider Signed Distance Field Fonts technique instead of hardcode pixel size values 
-	FT_Set_Pixel_Sizes(face, pixelFontWidth, pixelFontHeight);
-
-	// Disable default OpenGL restriction for each texel to be coded as a multiple of 4 bytes (rgba) due to 
-	// each FreeType glyph bitmap colour being coded on 1 byte
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
 void TextRenderer::AllocateBufferObjects()
@@ -54,8 +38,10 @@ void TextRenderer::AllocateBufferObjects()
 	vbo->Unbind();
 }
 
-void TextRenderer::LoadASCIICharacters(const std::string& text)
+void TextRenderer::LoadASCIICharacters(const std::string& fontPath, const std::string& text)
 {
+	SetFont(fontPath);
+
 	for (const char& character : text)
 	{
 		// Avoid loading a character previously loaded
@@ -98,13 +84,35 @@ void TextRenderer::LoadASCIICharacters(const std::string& text)
 	}
 }
 
+void TextRenderer::SetFont(const std::string& fontPath)
+{
+	// Load font as face object
+	if (FT_New_Face(FreeTypeLibrary, fontPath.c_str(), 0, &face))
+	{
+		std::cout << "ERROR::FREETYPE - Failed to load the font located at " << fontPath << "!" << std::endl;
+		assert(false);
+	}
+
+	// Put such default parameters to let the FT_Face dynamically compute the width based on the non-null height
+	constexpr uint32_t pixelFontWidth = 0;
+	constexpr uint32_t pixelFontHeight = 100;
+
+	// Set pixel font size (i.e. render quality) we want to retrieve from this face object
+	// @todo - Might consider Signed Distance Field Fonts technique instead of hardcode pixel size values 
+	FT_Set_Pixel_Sizes(face, pixelFontWidth, pixelFontHeight);
+
+	// Disable default OpenGL restriction for each texel to be coded as a multiple of 4 bytes (rgba) due to 
+	// each FreeType glyph bitmap colour being coded on 1 byte
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+}
+
 void TextRenderer::FreeFTResources() const
 {
 	FT_Done_Face(face);
 	FT_Done_FreeType(FreeTypeLibrary);
 }
 
-void TextRenderer::Render(const uint32_t textureUnit, const std::string& text, float x, const float y, const float scale)
+void TextRenderer::Render(const Renderer& renderer, const uint32_t textureUnit, const std::string& text, float x, const float y, const float scale)
 {
 	// Left-shift billboard position to half its width to center-align it to the celestial body
 	x = -GetBillboardSize(text, scale) * 0.5f;

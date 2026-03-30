@@ -47,7 +47,7 @@ void Billboard::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const 
 	modelMatrix[3] = glm::vec4(bodyPosition, 1.0f);
 }
 
-void Billboard::Render(TextRenderer& textRenderer, const uint32_t textureUnit, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)
+void Billboard::Render(const Renderer& renderer, TextRenderer& textRenderer, const uint32_t textureUnit, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)
 {
 	ComputeModelMatrixVUniform(bodyPosition, cameraForward, cameraRight);
 
@@ -59,7 +59,7 @@ void Billboard::Render(TextRenderer& textRenderer, const uint32_t textureUnit, c
 	material.SetDiffuseSamplerFUniform();
 	material.SetDiffuseColourFUniform(GLMConstants::whiteColour);
 
-	textRenderer.Render(textureUnit, legend, 0.0f, textHeight, textScale);
+	textRenderer.Render(renderer, textureUnit, legend, 0.0f, textHeight, textScale);
 
 	shader.Disable();
 }

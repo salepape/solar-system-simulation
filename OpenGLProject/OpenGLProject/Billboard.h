@@ -20,7 +20,7 @@ public:
 	Billboard(BodyData&& inBodyData);
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
-	void Render(TextRenderer& textRenderer, const uint32_t textureUnit, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
+	void Render(const Renderer& renderer, TextRenderer& textRenderer, const uint32_t textureUnit, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
 
 private:
 	std::string legend;

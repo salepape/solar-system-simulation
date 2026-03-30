@@ -44,6 +44,6 @@ void BodySystem::Render(const Renderer& renderer, const bool isBillboard, TextRe
 		const glm::vec3& right = glm::cross(camera.GetUp(), forward);
 
 		const uint32_t bodySystemTextureUnit = billboard.GetMaterial().GetDiffuseTextureUnit();
-		billboard.Render(textRenderer, bodySystemTextureUnit, celestialBody.GetPosition(), forward, right);
+		billboard.Render(renderer, textRenderer, bodySystemTextureUnit, celestialBody.GetPosition(), forward, right);
 	}
 }
