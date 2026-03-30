@@ -27,21 +27,9 @@ SolarSystem::SolarSystem() :
 	milkyWay({ "../Textures/MilkyWay/stars.dds" })
 {
 	BuildBodySystems();
-
-	// @todo - Should not be called from here ideally
-	BuildBodyRings();
-
 	BuildBelts();
 
-	for (const BodySystem& bodySystem : bodySystems)
-	{
-		// Texture creation is handled by the Text Renderer for now (glyph rendering issue when textures created otherwise)
-		textRenderer.LoadASCIICharacters("../Fonts/arial.ttf", bodySystem.celestialBody.GetName());
-	}
-	// Free FT resources once we don't have any more letters to load
-	textRenderer.FreeFTResources();
-
-	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun - farthest celestial body'
+	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun -> farthest celestial body'
 	spacecraft = std::make_shared<Spacecraft>(glm::vec3(0.0f, GetBodySystem("Sun").celestialBody.bodyData.radius * 1.75f, -25.0f), glm::vec3(0.0f, -25.0f, 90.0f), 45.0f, 2.0f * GetBodySystem("Sedna").celestialBody.bodyData.distanceToParent);
 }
 
@@ -154,6 +142,21 @@ void SolarSystem::BuildBodySystems()
 
 		celestialBodyNameCache = celestialBodyName;
 	}
+
+	BuildBodySystemsLegend();
+
+	BuildBodyRings();
+}
+
+void SolarSystem::BuildBodySystemsLegend()
+{
+	for (const BodySystem& bodySystem : bodySystems)
+	{
+		// Texture creation is handled by the Text Renderer for now (glyph rendering issue when textures created otherwise)
+		textRenderer.LoadASCIICharacters("../Fonts/arial.ttf", bodySystem.celestialBody.GetName());
+	}
+	// Free FT resources once we don't have any more letters to load
+	textRenderer.FreeFTResources();
 }
 
 void SolarSystem::BuildBodyRings()
