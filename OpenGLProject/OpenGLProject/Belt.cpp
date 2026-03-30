@@ -18,6 +18,7 @@ Belt::Belt(const std::string& inName, InstanceParams&& inInstanceParams, TorusPa
 instanceParams(inInstanceParams), torusParams(inTorusParams), model({ inInstanceParams.modelPath })
 {
 	material.SetTextures(model.GetTextures());
+	material.SetDiffuseSamplerFUniform();
 
 	ComputeInstanceModelMatrices();
 	StoreInstanceModelMatrices();
@@ -82,8 +83,6 @@ void Belt::Render(const Renderer& renderer, const float /*elapsedTime*/)
 {
 	Shader& shader = material.GetShader();
 	shader.Enable();
-
-	material.SetDiffuseSamplerFUniform();
 
 	material.EnableTextures();
 	model.RenderInstances(renderer, instanceParams.count);

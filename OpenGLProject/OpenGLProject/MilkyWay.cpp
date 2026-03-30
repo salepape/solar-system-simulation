@@ -12,7 +12,7 @@
 
 MilkyWay::MilkyWay(const std::filesystem::path& inTexturePath) : SceneEntity("MilkyWay", InitialiseParent(inTexturePath))
 {
-
+	material.SetDiffuseSamplerFUniform();
 }
 
 Material MilkyWay::InitialiseParent(const std::filesystem::path& inTexturePath)
@@ -27,8 +27,6 @@ void MilkyWay::Render(const Renderer& renderer, const float /*elapsedTime*/)
 {
 	Shader& shader = material.GetShader();
 	shader.Enable();
-
-	material.SetDiffuseSamplerFUniform();
 
 	renderer.SetDepthFctToEqual();
 

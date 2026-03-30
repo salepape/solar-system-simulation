@@ -29,6 +29,8 @@ sphere({ inBodyData.radius })
 	const float orbitalInclinationInRad = glm::radians(inBodyData.orbitalInclination);
 	distCosOrbInclination = inBodyData.distanceToParent * glm::cos(orbitalInclinationInRad);
 	distSinOrbInclination = inBodyData.distanceToParent * glm::sin(orbitalInclinationInRad);
+
+	material.SetDiffuseSamplerFUniform();
 }
 
 Material CelestialBody::InitialiseParent(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName)
@@ -105,8 +107,6 @@ void CelestialBody::Render(const Renderer& renderer, const float elapsedTime)
 	shader.Enable();
 
 	SetModelMatrixVUniform(modelMatrix);
-
-	material.SetDiffuseSamplerFUniform();
 
 	material.EnableTextures();
 	sphere.Render(renderer);

@@ -28,6 +28,8 @@ Billboard::Billboard(BodyData&& inBodyData) : SceneEntity(inBodyData.name + "Bil
 
 	textHeight = inBodyData.radius * textHeightFactor;
 	textScale = inBodyData.radius * textScaleFactor;
+
+	material.SetDiffuseSamplerFUniform();
 }
 
 Material Billboard::InitialiseParent()
@@ -56,8 +58,12 @@ void Billboard::Render(const Renderer& renderer, TextRenderer& textRenderer, con
 
 	SetModelMatrixVUniform(modelMatrix);
 
-	material.SetDiffuseSamplerFUniform();
-	material.SetDiffuseColourFUniform(GLMConstants::whiteColour);
+	if (MaterialUniformColourChanged == false)
+	{
+		material.SetDiffuseColourFUniform(GLMConstants::whiteColour);
+
+		MaterialUniformColourChanged = true;
+	}
 
 	textRenderer.Render(renderer, textureUnit, legend, 0.0f, textHeight, textScale);
 

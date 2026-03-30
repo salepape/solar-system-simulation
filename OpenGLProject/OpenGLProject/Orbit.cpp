@@ -23,6 +23,7 @@ circle({ inBodyData.distanceToParent })
 	orbInclinationInRad = glm::radians(inBodyData.orbitalInclination);
 
 	ComputeModelMatrixVUniform(glm::vec3(0.0f, 0.0f, 0.0f));
+	material.SetDiffuseSamplerFUniform();
 }
 
 Material Orbit::InitialiseParent(const std::filesystem::path& inTexturePath)
@@ -60,8 +61,6 @@ void Orbit::Render(const Renderer& renderer, const glm::vec3& parentPosition, co
 	shader.Enable();
 
 	SetModelMatrixVUniform(modelMatrix);
-
-	material.SetDiffuseSamplerFUniform();
 
 	material.EnableTextures();
 	circle.Render(renderer);

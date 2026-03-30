@@ -14,6 +14,7 @@ BodyRings::BodyRings(RingsData&& inRingsData) : SceneEntity(inRingsData.bodyName
 model({ inRingsData.modelPath }), ringsData(inRingsData)
 {
 	material.SetTextures(model.GetTextures());
+	material.SetDiffuseSamplerFUniform();
 
 	bodyName = ringsData.bodyName;
 }
@@ -49,8 +50,6 @@ void BodyRings::Render(const Renderer& renderer, const glm::mat4& inModelMatrix,
 	shader.Enable();
 
 	SetModelMatrixVUniform(modelMatrix);
-
-	material.SetDiffuseSamplerFUniform();
 
 	material.EnableTextures();
 	model.Render(renderer);
