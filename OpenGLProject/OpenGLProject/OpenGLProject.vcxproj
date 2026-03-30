@@ -168,7 +168,7 @@
     <ClInclude Include="Headlamp.h" />
     <ClInclude Include="MilkyWay.h" />
     <ClInclude Include="Orbit.h" />
-    <ClInclude Include="ResourceLoader.h" />
+    <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="DataBuffer.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="IndexBuffer.h" />
@@ -226,7 +226,7 @@
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="ResourceLoader.cpp" />
+    <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="BodyRings.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneEntity.cpp" />

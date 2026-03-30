@@ -52,17 +52,11 @@
     <Filter Include="Header Files\Interactions">
       <UniqueIdentifier>{1b71018e-a757-47a6-aa94-b0ef7aafbe0e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Data">
-      <UniqueIdentifier>{b1218cc2-67f3-458e-a34d-4b81430aad57}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Application">
       <UniqueIdentifier>{369e21a9-7846-4fa4-b168-7b9fb6320f1f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Application">
       <UniqueIdentifier>{c79210e4-b536-4342-9eeb-5afc26fa249a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Data">
-      <UniqueIdentifier>{fd18e00d-5086-4e98-98f8-10d71e7a7516}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Scene">
       <UniqueIdentifier>{c44d696d-e7a1-423e-9627-a21bbc29d455}</UniqueIdentifier>
@@ -78,6 +72,12 @@
     </Filter>
     <Filter Include="Header Files\Constants">
       <UniqueIdentifier>{f0e2ec4c-fbb6-4918-ba23-8e778a04a005}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{fd18e00d-5086-4e98-98f8-10d71e7a7516}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{b1218cc2-67f3-458e-a34d-4b81430aad57}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -115,7 +115,7 @@
       <Filter>Header Files\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
-      <Filter>Header Files\Data</Filter>
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Quad.h">
       <Filter>Header Files\Meshes</Filter>
@@ -143,9 +143,6 @@
     </ClInclude>
     <ClInclude Include="CelestialBody.h">
       <Filter>Header Files\Solar System</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceLoader.h">
-      <Filter>Header Files\Data</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Header Files\Application</Filter>
@@ -209,6 +206,9 @@
     </ClInclude>
     <ClInclude Include="Constants.h">
       <Filter>Header Files\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLoader.h">
+      <Filter>Header Files\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -284,9 +284,6 @@
     <ClCompile Include="Window.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceLoader.cpp">
-      <Filter>Source Files\Data</Filter>
-    </ClCompile>
     <ClCompile Include="BodyRings.cpp">
       <Filter>Source Files\Solar System</Filter>
     </ClCompile>
@@ -324,7 +321,7 @@
       <Filter>Source Files\Lights</Filter>
     </ClCompile>
     <ClCompile Include="Utils.cpp">
-      <Filter>Source Files\Data</Filter>
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Spacecraft.cpp">
       <Filter>Source Files\Solar System</Filter>
@@ -343,6 +340,9 @@
     </ClCompile>
     <ClCompile Include="BodySystem.cpp">
       <Filter>Source Files\Solar System</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderLoader.cpp">
+      <Filter>Source Files\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
