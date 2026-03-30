@@ -9,7 +9,7 @@
 
 
 SpotLight::SpotLight(const glm::vec3& inPosition, const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const SpotParams& inSpotParams, const bool inIsBlinn) : LightSource(inReflectionParams),
-position(inPosition), direction(inDirection), attenuationParams(inAttenuationParams), spotParams(inSpotParams), ubo(ResourceLoader::GetUBO("ubo_SpotLight"))
+position(inPosition), direction(inDirection), attenuationParams(inAttenuationParams), spotParams(inSpotParams), ubo(ShaderLoader::GetUBO("ubo_SpotLight"))
 {
 	SetFUniforms();
 }

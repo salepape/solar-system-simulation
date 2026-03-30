@@ -1,5 +1,5 @@
-#ifndef RESOURCELOADER_H
-#define RESOURCELOADER_H
+#ifndef SHADERLOADER_H
+#define SHADERLOADER_H
 
 #include <string>
 #include <vector>
@@ -10,11 +10,11 @@
 
 
 // @todo - To be renamed ShaderLoader
-class ResourceLoader
+class ShaderLoader
 {
 public:
 	// Build/compile shaders and their corresponding programs
-	static void LoadShaders();
+	static void BuildShaders();
 
 	static Shader& GetShader(const std::string& inShaderName);
 	static UniformBuffer& GetUBO(const std::string& inUniformName);
@@ -26,4 +26,4 @@ private:
 
 
 
-#endif // RESOURCELOADER_H
+#endif // SHADERLOADER_H

@@ -6,7 +6,7 @@
 
 void SolarSystemSimulation::SetUp()
 {
-	ResourceLoader::LoadShaders();
+	ShaderLoader::BuildShaders();
 
 	solarSystemScene = std::make_unique<SolarSystem>();
 }

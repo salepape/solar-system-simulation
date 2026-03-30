@@ -22,11 +22,11 @@ Material BodyRings::InitialiseParent(const float inRingsOpacity)
 {
 	if (inRingsOpacity < 0.5f)
 	{
-		return Material(ResourceLoader::GetShader("InfraredBodyRings"), { /* texturesLoadedFromTheModel */ }, { 0, glm::vec3(0.0f) }, inRingsOpacity);
+		return Material(ShaderLoader::GetShader("InfraredBodyRings"), { /* texturesLoadedFromTheModel */ }, { 0, glm::vec3(0.0f) }, inRingsOpacity);
 	}
 	else
 	{
-		return Material(ResourceLoader::GetShader("VisibleBodyRings"), { /* texturesLoadedFromTheModel */ }, { 0, glm::vec3(0.0f) }, inRingsOpacity);
+		return Material(ShaderLoader::GetShader("VisibleBodyRings"), { /* texturesLoadedFromTheModel */ }, { 0, glm::vec3(0.0f) }, inRingsOpacity);
 	}
 }
 

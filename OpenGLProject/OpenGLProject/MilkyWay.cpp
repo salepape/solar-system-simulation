@@ -20,7 +20,7 @@ Material MilkyWay::InitialiseParent(const std::filesystem::path& inTexturePath)
 	Texture texture(inTexturePath, GL_TEXTURE_CUBE_MAP, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::DIFFUSE);
 	texture.LoadCubemapDDS();
 
-	return Material(ResourceLoader::GetShader("MilkyWay"), { std::move(texture) });
+	return Material(ShaderLoader::GetShader("MilkyWay"), { std::move(texture) });
 }
 
 void MilkyWay::Render(const Renderer& renderer, const float /*elapsedTime*/)

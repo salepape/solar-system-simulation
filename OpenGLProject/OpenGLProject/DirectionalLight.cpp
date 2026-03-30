@@ -9,7 +9,7 @@
 
 
 DirectionalLight::DirectionalLight(const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn) : LightSource(inReflectionParams, inIsBlinn),
-direction(inDirection), ubo(ResourceLoader::GetUBO("ubo_DirectionalLight"))
+direction(inDirection), ubo(ShaderLoader::GetUBO("ubo_DirectionalLight"))
 {
 	SetFUniforms();
 }

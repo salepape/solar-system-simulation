@@ -30,7 +30,7 @@ Material Orbit::InitialiseParent(const std::filesystem::path& inTexturePath)
 	Texture texture(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::DIFFUSE);
 	texture.LoadDDS();
 
-	return Material(ResourceLoader::GetShader("Orbit"), { std::move(texture) });
+	return Material(ShaderLoader::GetShader("Orbit"), { std::move(texture) });
 }
 
 void Orbit::ComputeModelMatrixVUniform(const glm::vec3& parentPosition, const float /*elapsedTime*/)

@@ -11,7 +11,7 @@
 
 Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane) :
 	initialPosition(inPosition), initialRotation(inRotation), position(inPosition), roll(inRotation.x), pitch(inRotation.y), yaw(inRotation.z), fovY(inFovY), farPlane(inFarPlane),
-	projectionViewUBO(ResourceLoader::GetUBO("ubo_ProjectionView")), positionUBO(ResourceLoader::GetUBO("ubo_CameraPosition"))
+	projectionViewUBO(ShaderLoader::GetUBO("ubo_ProjectionView")), positionUBO(ShaderLoader::GetUBO("ubo_CameraPosition"))
 {
 
 }

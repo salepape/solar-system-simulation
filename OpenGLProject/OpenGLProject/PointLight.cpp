@@ -9,7 +9,7 @@
 
 
 PointLight::PointLight(const glm::vec3& inPosition, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const bool inIsBlinn) : LightSource(inReflectionParams, inIsBlinn),
-position(inPosition), attenuationParams(inAttenuationParams), ubo(ResourceLoader::GetUBO("ubo_PointLight"))
+position(inPosition), attenuationParams(inAttenuationParams), ubo(ShaderLoader::GetUBO("ubo_PointLight"))
 {
 	SetFUniforms();
 }

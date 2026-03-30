@@ -8,10 +8,10 @@
 
 
 
-std::vector<Shader> ResourceLoader::shaders;
-std::vector<UniformBuffer> ResourceLoader::ubos;
+std::vector<Shader> ShaderLoader::shaders;
+std::vector<UniformBuffer> ShaderLoader::ubos;
 
-void ResourceLoader::LoadShaders()
+void ShaderLoader::BuildShaders()
 {
 	// @todo - Find a solution to avoid having to update this number when adding a new shader, or a warning at the very least (white screen otherwise!)
 	shaders.reserve(8);
@@ -40,7 +40,7 @@ void ResourceLoader::LoadShaders()
 	ubos.emplace_back(bodyShaderIDs, "ubo_SpotLight", 5 * GLSLConstants::vec4SizeInBytes + 7 * GLSLConstants::scalarSizeInBytes);
 }
 
-Shader& ResourceLoader::GetShader(const std::string& inShaderName)
+Shader& ShaderLoader::GetShader(const std::string& inShaderName)
 {
 	const auto& shaderIt = std::find_if(shaders.begin(), shaders.end(), [&inShaderName](const Shader& inShader)
 	{
@@ -49,13 +49,13 @@ Shader& ResourceLoader::GetShader(const std::string& inShaderName)
 
 	if (shaderIt == shaders.end())
 	{
-		std::cout << "ERROR::RESOURCE_LOADER - Shader " << inShaderName << " does not exist!" << std::endl;
+		std::cout << "ERROR::SHADER_LOADER - Shader " << inShaderName << " does not exist!" << std::endl;
 	}
 
 	return *shaderIt;
 }
 
-UniformBuffer& ResourceLoader::GetUBO(const std::string& inUniformName)
+UniformBuffer& ShaderLoader::GetUBO(const std::string& inUniformName)
 {
 	const auto& uboIt = std::find_if(ubos.begin(), ubos.end(), [&inUniformName](const UniformBuffer& inUBO)
 	{
@@ -64,7 +64,7 @@ UniformBuffer& ResourceLoader::GetUBO(const std::string& inUniformName)
 
 	if (uboIt == ubos.end())
 	{
-		std::cout << "ERROR::RESOURCE_LOADER - Uniform " << inUniformName << " does not exist!" << std::endl;
+		std::cout << "ERROR::SHADER_LOADER - Uniform " << inUniformName << " does not exist!" << std::endl;
 	}
 
 	return *uboIt;
