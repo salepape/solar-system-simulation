@@ -223,9 +223,9 @@ void SolarSystem::BuildBelts()
 
 BodySystem& SolarSystem::GetBodySystem(const std::string& inBodyName)
 {
-	const auto& bodyIt = std::find_if(bodySystems.begin(), bodySystems.end(), [&inBodyName](const BodySystem& body)
+	const auto& bodyIt = std::find_if(bodySystems.begin(), bodySystems.end(), [&inBodyName](const BodySystem& inBodySystem)
 	{
-		return body.celestialBody.GetName() == inBodyName;
+		return inBodySystem.celestialBody.GetName() == inBodyName;
 	});
 
 	if (bodyIt == bodySystems.end())

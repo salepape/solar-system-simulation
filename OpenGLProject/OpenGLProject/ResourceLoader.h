@@ -1,18 +1,29 @@
-#pragma once
+#ifndef RESOURCELOADER_H
+#define RESOURCELOADER_H
 
 #include <string>
+#include <vector>
 
-class Shader;
-class UniformBuffer;
+#include "Shader.h"
+#include "UniformBuffer.h"
 
 
 
-// @todo - Convert it to a pure static util class
-namespace ResourceLoader
+// @todo - To be renamed ShaderLoader
+class ResourceLoader
 {
-	Shader& GetShader(const std::string& inShaderName);
-	UniformBuffer& GetUBO(const std::string& inUniformName);
-
+public:
 	// Build/compile shaders and their corresponding programs
-	void LoadShaders();
-}
+	static void LoadShaders();
+
+	static Shader& GetShader(const std::string& inShaderName);
+	static UniformBuffer& GetUBO(const std::string& inUniformName);
+
+private:
+	static std::vector<Shader> shaders;
+	static std::vector<UniformBuffer> ubos;
+};
+
+
+
+#endif // RESOURCELOADER_H

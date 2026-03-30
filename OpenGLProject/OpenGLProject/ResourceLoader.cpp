@@ -5,72 +5,67 @@
 #include <iostream>
 
 #include "Constants.h"
-#include "Shader.h"
-#include "UniformBuffer.h"
 
 
 
-std::vector<Shader> shaders;
-std::vector<UniformBuffer> ubos;
+std::vector<Shader> ResourceLoader::shaders;
+std::vector<UniformBuffer> ResourceLoader::ubos;
 
-namespace ResourceLoader
+void ResourceLoader::LoadShaders()
 {
-	void LoadShaders()
+	// @todo - Find a solution to avoid having to update this number when adding a new shader, or a warning at the very least (white screen otherwise!)
+	shaders.reserve(8);
+
+	// RendererID will be identical for all shaders if we do not instantiate them line by line before pushing them into the vector
+	shaders.emplace_back("CelestialBody", "DefaultShader.vs", "DefaultShader.fs");
+	shaders.emplace_back("Sun", "DefaultShader.vs", "SunShader.fs");
+	shaders.emplace_back("Billboard", "BillboardShader.vs", "BillboardShader.fs");
+	shaders.emplace_back("Belt", "InstancedModelShader.vs", "DefaultShader.fs");
+	shaders.emplace_back("MilkyWay", "SkyboxShader.vs", "SkyboxShader.fs");
+	shaders.emplace_back("Orbit", "DefaultShader.vs", "DefaultShader.fs");
+	shaders.emplace_back("VisibleBodyRings", "DefaultShader.vs", "DefaultShader.fs");
+	shaders.emplace_back("InfraredBodyRings", "DefaultShader.vs", "DefaultShader.fs");
+
+	// @todo - Find a solution to avoid having to update this number when adding a new UBO, or a warning at the very least (white screen otherwise!)
+	ubos.reserve(5);
+
+	ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("Belt").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID(), GetShader("Billboard").GetRendererID(), GetShader("MilkyWay").GetRendererID() },
+		"ubo_ProjectionView", GLSLConstants::mat4v4SizeInBytes);
+	ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("Belt").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
+		"ubo_CameraPosition", GLSLConstants::vec4SizeInBytes);
+
+	const std::vector<uint32_t> bodyShaderIDs{ GetShader("CelestialBody").GetRendererID(), GetShader("Belt").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() };
+	ubos.emplace_back(bodyShaderIDs, "ubo_DirectionalLight", 4 * GLSLConstants::vec4SizeInBytes + GLSLConstants::scalarSizeInBytes);
+	ubos.emplace_back(bodyShaderIDs, "ubo_PointLight", 4 * GLSLConstants::vec4SizeInBytes + 4 * GLSLConstants::scalarSizeInBytes);
+	ubos.emplace_back(bodyShaderIDs, "ubo_SpotLight", 5 * GLSLConstants::vec4SizeInBytes + 7 * GLSLConstants::scalarSizeInBytes);
+}
+
+Shader& ResourceLoader::GetShader(const std::string& inShaderName)
+{
+	const auto& shaderIt = std::find_if(shaders.begin(), shaders.end(), [&inShaderName](const Shader& inShader)
 	{
-		// @todo - Find a solution to avoid having to update this number when adding a new shader, or a warning at the very least (white screen otherwise!)
-		shaders.reserve(8);
+		return inShader.GetEntityName() == inShaderName;
+	});
 
-		// RendererID will be identical for all shaders if we do not instantiate them line by line before pushing them into the vector
-		shaders.emplace_back("CelestialBody", "DefaultShader.vs", "DefaultShader.fs");
-		shaders.emplace_back("Sun", "DefaultShader.vs", "SunShader.fs");
-		shaders.emplace_back("Billboard", "BillboardShader.vs", "BillboardShader.fs");
-		shaders.emplace_back("Belt", "InstancedModelShader.vs", "DefaultShader.fs");
-		shaders.emplace_back("MilkyWay", "SkyboxShader.vs", "SkyboxShader.fs");
-		shaders.emplace_back("Orbit", "DefaultShader.vs", "DefaultShader.fs");
-		shaders.emplace_back("VisibleBodyRings", "DefaultShader.vs", "DefaultShader.fs");
-		shaders.emplace_back("InfraredBodyRings", "DefaultShader.vs", "DefaultShader.fs");
-
-		// @todo - Find a solution to avoid having to update this number when adding a new UBO, or a warning at the very least (white screen otherwise!)
-		ubos.reserve(5);
-
-		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("Belt").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID(), GetShader("Billboard").GetRendererID(), GetShader("MilkyWay").GetRendererID() },
-			"ubo_ProjectionView", GLSLConstants::mat4v4SizeInBytes);
-		ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("Belt").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() },
-			"ubo_CameraPosition", GLSLConstants::vec4SizeInBytes);
-
-		const std::vector<uint32_t> bodyShaderIDs{ GetShader("CelestialBody").GetRendererID(), GetShader("Belt").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID() };
-		ubos.emplace_back(bodyShaderIDs, "ubo_DirectionalLight", 4 * GLSLConstants::vec4SizeInBytes + GLSLConstants::scalarSizeInBytes);
-		ubos.emplace_back(bodyShaderIDs, "ubo_PointLight", 4 * GLSLConstants::vec4SizeInBytes + 4 * GLSLConstants::scalarSizeInBytes);
-		ubos.emplace_back(bodyShaderIDs, "ubo_SpotLight", 5 * GLSLConstants::vec4SizeInBytes + 7 * GLSLConstants::scalarSizeInBytes);
+	if (shaderIt == shaders.end())
+	{
+		std::cout << "ERROR::RESOURCE_LOADER - Shader " << inShaderName << " does not exist!" << std::endl;
 	}
 
-	Shader& GetShader(const std::string& inShaderName)
+	return *shaderIt;
+}
+
+UniformBuffer& ResourceLoader::GetUBO(const std::string& inUniformName)
+{
+	const auto& uboIt = std::find_if(ubos.begin(), ubos.end(), [&inUniformName](const UniformBuffer& inUBO)
 	{
-		const auto& shaderIt = std::find_if(shaders.begin(), shaders.end(), [&inShaderName](const Shader& inShader)
-		{
-			return inShader.GetEntityName() == inShaderName;
-		});
+		return inUBO.GetUniformName() == inUniformName;
+	});
 
-		if (shaderIt == shaders.end())
-		{
-			std::cout << "ERROR::RESOURCE_LOADER - Shader " << inShaderName << " does not exist!" << std::endl;
-		}
-
-		return *shaderIt;
+	if (uboIt == ubos.end())
+	{
+		std::cout << "ERROR::RESOURCE_LOADER - Uniform " << inUniformName << " does not exist!" << std::endl;
 	}
 
-	UniformBuffer& GetUBO(const std::string& inUniformName)
-	{
-		const auto& uboIt = std::find_if(ubos.begin(), ubos.end(), [&inUniformName](const UniformBuffer& inUBO)
-		{
-			return inUBO.GetUniformName() == inUniformName;
-		});
-
-		if (uboIt == ubos.end())
-		{
-			std::cout << "ERROR::RESOURCE_LOADER - Uniform " << inUniformName << " does not exist!" << std::endl;
-		}
-
-		return *uboIt;
-	}
+	return *uboIt;
 }
