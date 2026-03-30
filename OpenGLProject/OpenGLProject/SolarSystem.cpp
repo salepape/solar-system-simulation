@@ -84,21 +84,19 @@ void SolarSystem::Update()
 
 void SolarSystem::BuildBodySystems()
 {
-	// @todo - First number to be replaced by an access from the .csv file
-	constexpr long int sunEarthDistance = 149600000;
-	constexpr float DISTANCE_SCALE_FACTOR = 10.0f;
-
-	// @todo - First number to be replaced by an access from the .csv file
-	constexpr int earthRadius = 6371;
-	constexpr float RADIUS_SCALE_FACTOR = 1000.0f;
-
-	// Needed to scale distance of current celestial body according to the previous one (diverging from proper simulation here, for travel end-user convenience)
+	// Required to scale distance of current celestial body according to the previous one 
+	// (diverging from proper simulation here, for travel end-user convenience)
 	std::string celestialBodyNameCache = "";
 
 	std::unordered_map<std::string, std::filesystem::path> bodyPaths;
 	FileUtils::ListPaths("../Textures/CelestialBodies/", bodyPaths);
 
 	ResourceCSVParser bodyCSVParser("../Data/CelestialBodyData.csv");
+
+	// Required to scale radius and distance to Sun of each celestial body for end user experience convenience
+	const std::vector<std::string>& EarthLine = bodyCSVParser.GetParsedCSVLine("Earth");
+	const float earthRadius = std::stof(EarthLine[2]);
+	const float sunEarthDistance = std::stof(EarthLine[3]);
 
 	// Process each CSV line and create a Body instance out of it
 	for (const std::vector<std::string>& celestialBodyParams : bodyCSVParser.GetParsedCSV())
@@ -115,14 +113,18 @@ void SolarSystem::BuildBodySystems()
 		}
 		else if (celestialBodyType == "Moon")
 		{
-			const float scaledTravelDistance = distanceToParent / sunEarthDistance * RADIUS_SCALE_FACTOR;
+			constexpr float earthRadiusScaleFactor = 1000.0f;
+
+			const float scaledTravelDistance = distanceToParent / sunEarthDistance * earthRadiusScaleFactor;
 			scaledDistanceToParent = GetBodySystem(celestialBodyParentName).celestialBody.bodyData.radius + scaledTravelDistance;
 		}
 		// "Planet" and "Dwarf Planet" types
 		else
 		{
+			constexpr float sunEarthDistanceScaleFactor = 10.0f;
+
 			const BodyData& celestialBodyData = GetBodySystem(celestialBodyNameCache).celestialBody.bodyData;
-			const float scaledTravelDistance = distanceToParent / sunEarthDistance * DISTANCE_SCALE_FACTOR;
+			const float scaledTravelDistance = distanceToParent / sunEarthDistance * sunEarthDistanceScaleFactor;
 			if (celestialBodyName == "Mercury")
 			{
 				scaledDistanceToParent = celestialBodyData.radius * 2.0f + scaledTravelDistance;
