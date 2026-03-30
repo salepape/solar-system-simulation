@@ -32,7 +32,6 @@ void SceneEntity::SetVUniforms() const
 
 void SceneEntity::SetModelMatrixVUniform(const glm::mat4& inModelMatrix)
 {
-	// @todo - More optimised way to copy a mat4?
 	modelMatrix = inModelMatrix;
 
 	Shader& shader = material.GetShader();

@@ -74,6 +74,5 @@ void Material::DisableTextures() const
 
 void Material::SetTextures(const std::vector<Texture>& inTextures)
 {
-	// @todo - More optimised way to copy an std::vector?
 	textures = inTextures;
 }
