@@ -91,7 +91,7 @@ std::vector<Vertex> Model::GetMeshVertices(const aiMesh& mesh)
 		}
 		else
 		{
-			vertex.texCoords = glm::vec2(0.0f, 0.0f);
+			vertex.texCoords = glm::vec2(0.0f);
 		}
 
 		vertex.tangent = glm::vec3(mesh.mTangents[i].x, mesh.mTangents[i].y, mesh.mTangents[i].z);

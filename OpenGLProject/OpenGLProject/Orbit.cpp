@@ -22,7 +22,7 @@ circle({ inBodyData.distanceToParent })
 
 	orbInclinationInRad = glm::radians(inBodyData.orbitalInclination);
 
-	ComputeModelMatrixVUniform(glm::vec3(0.0f, 0.0f, 0.0f));
+	ComputeModelMatrixVUniform(glm::vec3(0.0f));
 	material.SetDiffuseSamplerFUniform();
 }
 

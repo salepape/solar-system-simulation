@@ -67,7 +67,7 @@ void SolarSystem::Update()
 	{
 		// Draw celestial bodies, and animate them accordingly over time
 		BodySystem& bodySystem = bodyIt->second;
-		const glm::vec3& parentPosition = bodySystem.celestialBody.bodyData.parentName != "" ? GetBodySystem(bodySystem.celestialBody.bodyData.parentName).celestialBody.GetPosition() : glm::vec3(0.0f, 0.0f, 0.0f);
+		const glm::vec3& parentPosition = bodySystem.celestialBody.bodyData.parentName != "" ? GetBodySystem(bodySystem.celestialBody.bodyData.parentName).celestialBody.GetPosition() : glm::vec3(0.0f);
 		bodySystem.Render(renderer, app.IsLegendDisplayed(), textRenderer, camera, parentPosition, app.elapsedTime * app.speedFactor);
 	}
 
