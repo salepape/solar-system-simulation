@@ -71,8 +71,6 @@ void SolarSystem::Update()
 			bodySystem });
 	}
 
-	// @todo - Shouldn't need to update anything else than text orientation when legend is displayed
-
 	// Draw all the body systems of the Solar System
 	for (auto bodyIt = bodiesSortedByDistance.rbegin(); bodyIt != bodiesSortedByDistance.rend(); ++bodyIt)
 	{
