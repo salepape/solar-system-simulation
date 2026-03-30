@@ -30,10 +30,8 @@ void SceneEntity::SetVUniforms() const
 	shader.Disable();
 }
 
-void SceneEntity::SetModelMatrixVUniform(const glm::mat4& inModelMatrix)
+void SceneEntity::SetModelMatrixVUniform()
 {
-	modelMatrix = inModelMatrix;
-
 	Shader& shader = material.GetShader();
-	shader.setUniformMat4("vu_Model", inModelMatrix);
+	shader.setUniformMat4("vu_Model", modelMatrix);
 }

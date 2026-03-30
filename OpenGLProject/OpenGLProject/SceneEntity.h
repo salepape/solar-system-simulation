@@ -34,8 +34,9 @@ protected:
 
 	virtual void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) = 0;
 
-	// Called on a per-frame basis to update the camera view. Shader should already be enabled in each Scene Entity child Render() method prior to call this one
-	void SetModelMatrixVUniform(const glm::mat4& inModelMatrix);
+	// Called on a per-frame basis to update the camera view.
+	// Shader should already be enabled in each Scene Entity child Render() method prior to call this one. Uniform to be updated in child classes
+	void SetModelMatrixVUniform();
 
 private:
 	static uint32_t entityIDCounter;

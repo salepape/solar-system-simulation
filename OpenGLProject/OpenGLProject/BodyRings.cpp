@@ -48,7 +48,7 @@ void BodyRings::Render(const Renderer& renderer, const glm::mat4& inModelMatrix,
 	Shader& shader = material.GetShader();
 	shader.Enable();
 
-	SetModelMatrixVUniform(modelMatrix);
+	SetModelMatrixVUniform();
 
 	material.EnableTextures();
 	model.Render(renderer);

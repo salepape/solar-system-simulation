@@ -59,7 +59,7 @@ void Orbit::Render(const Renderer& renderer, const glm::vec3& parentPosition, co
 	Shader& shader = material.GetShader();
 	shader.Enable();
 
-	SetModelMatrixVUniform(modelMatrix);
+	SetModelMatrixVUniform();
 
 	material.EnableTextures();
 	circle.Render(renderer);

@@ -98,13 +98,12 @@ void CelestialBody::ComputeCartesianPosition(const float elapsedTime, const Cele
 
 void CelestialBody::Render(const Renderer& renderer, const float elapsedTime)
 {
-	// Update material uniforms and draw sphere
 	ComputeModelMatrixVUniform(elapsedTime);
 
 	Shader& shader = material.GetShader();
 	shader.Enable();
 
-	SetModelMatrixVUniform(modelMatrix);
+	SetModelMatrixVUniform();
 
 	material.EnableTextures();
 	sphere.Render(renderer);

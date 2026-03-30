@@ -54,7 +54,7 @@ void Billboard::Render(const Renderer& renderer, TextRenderer& textRenderer, con
 	Shader& shader = material.GetShader();
 	shader.Enable();
 
-	SetModelMatrixVUniform(modelMatrix);
+	SetModelMatrixVUniform();
 
 	textRenderer.Render(renderer, textureUnit, legend, 0.0f, textHeight, textScale);
 
