@@ -14,10 +14,9 @@ std::vector<UniformBuffer> ShaderLoader::ubos;
 
 void ShaderLoader::BuildShaders()
 {
-	// @todo - Find a solution to avoid having to update this number when adding a new shader, or a warning at the very least (white screen otherwise!)
-	shaders.reserve(8);
+	constexpr int numOfShaders = 8;
+	shaders.reserve(numOfShaders);
 
-	// RendererID will be identical for all shaders if we do not instantiate them line by line before pushing them into the vector
 	shaders.emplace_back("CelestialBody", "DefaultShader.vs", "DefaultShader.fs");
 	shaders.emplace_back("Sun", "DefaultShader.vs", "SunShader.fs");
 	shaders.emplace_back("Billboard", "BillboardShader.vs", "BillboardShader.fs");
@@ -27,8 +26,14 @@ void ShaderLoader::BuildShaders()
 	shaders.emplace_back("VisibleBodyRings", "DefaultShader.vs", "DefaultShader.fs");
 	shaders.emplace_back("InfraredBodyRings", "DefaultShader.vs", "DefaultShader.fs");
 
-	// @todo - Find a solution to avoid having to update this number when adding a new UBO, or a warning at the very least (white screen otherwise!)
-	ubos.reserve(5);
+	if (shaders.size() != numOfShaders)
+	{
+		std::cout << "ERROR::SHADER_LOADER - Shader vector count is different than the reserved one: preemptive count is " << numOfShaders << " while actual count is " << static_cast<int>(shaders.size()) << std::endl;
+		assert(false);
+	}
+
+	constexpr int numOfUBOs = 5;
+	ubos.reserve(numOfUBOs);
 
 	ubos.emplace_back(std::vector<uint32_t>{ GetShader("CelestialBody").GetRendererID(), GetShader("Sun").GetRendererID(), GetShader("Belt").GetRendererID(), GetShader("VisibleBodyRings").GetRendererID(), GetShader("InfraredBodyRings").GetRendererID(), GetShader("Orbit").GetRendererID(), GetShader("Billboard").GetRendererID(), GetShader("MilkyWay").GetRendererID() },
 		"ubo_ProjectionView", GLSLConstants::mat4v4SizeInBytes);
@@ -39,6 +44,12 @@ void ShaderLoader::BuildShaders()
 	ubos.emplace_back(bodyShaderIDs, "ubo_DirectionalLight", 4 * GLSLConstants::vec4SizeInBytes + GLSLConstants::scalarSizeInBytes);
 	ubos.emplace_back(bodyShaderIDs, "ubo_PointLight", 4 * GLSLConstants::vec4SizeInBytes + 4 * GLSLConstants::scalarSizeInBytes);
 	ubos.emplace_back(bodyShaderIDs, "ubo_SpotLight", 5 * GLSLConstants::vec4SizeInBytes + 7 * GLSLConstants::scalarSizeInBytes);
+
+	if (ubos.size() != numOfUBOs)
+	{
+		std::cout << "ERROR::SHADER_LOADER - UBO vector count is different than the reserved one: preemptive count is " << numOfUBOs << " while actual count is " << static_cast<int>(ubos.size()) << std::endl;
+		assert(false);
+	}
 }
 
 Shader& ShaderLoader::GetShader(const std::string& inShaderName)
