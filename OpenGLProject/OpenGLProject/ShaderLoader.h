@@ -13,7 +13,7 @@
 class ShaderLoader
 {
 public:
-	// Build/compile shaders and their corresponding programs
+	// Build/compile shaders, their corresponding programs, and register all needed Uniform Buffer variables (common across several shaders)
 	static void BuildShaders();
 
 	static Shader& GetShader(const std::string& inShaderName);

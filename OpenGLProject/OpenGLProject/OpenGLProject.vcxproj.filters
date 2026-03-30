@@ -79,6 +79,9 @@
     <Filter Include="Header Files\Utils">
       <UniqueIdentifier>{b1218cc2-67f3-458e-a34d-4b81430aad57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders\GLSL">
+      <UniqueIdentifier>{cc1f627f-b8f8-43dc-8003-0083453b9f1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VertexBufferLayout.h">
@@ -346,29 +349,29 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SkyboxShader.fs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="SkyboxShader.vs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="InstancedModelShader.vs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="DefaultShader.fs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="DefaultShader.vs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="SunShader.fs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="BillboardShader.fs">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\Shaders\GLSL</Filter>
     </None>
     <None Include="BillboardShader.vs">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\Shaders\GLSL</Filter>
+    </None>
+    <None Include="DefaultShader.fs">
+      <Filter>Source Files\Shaders\GLSL</Filter>
+    </None>
+    <None Include="DefaultShader.vs">
+      <Filter>Source Files\Shaders\GLSL</Filter>
+    </None>
+    <None Include="InstancedModelShader.vs">
+      <Filter>Source Files\Shaders\GLSL</Filter>
+    </None>
+    <None Include="SunShader.fs">
+      <Filter>Source Files\Shaders\GLSL</Filter>
+    </None>
+    <None Include="SkyboxShader.fs">
+      <Filter>Source Files\Shaders\GLSL</Filter>
+    </None>
+    <None Include="SkyboxShader.vs">
+      <Filter>Source Files\Shaders\GLSL</Filter>
     </None>
   </ItemGroup>
 </Project>
