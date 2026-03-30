@@ -13,7 +13,7 @@ class Shader;
 
 struct DiffuseProperties
 {
-	// @todo - build a struct to have each texture with its associated unit in the referenced shader, or/and move it to Texture class
+	// @todo - Build a struct to have each texture with its associated unit in the referenced shader, or/and move it to Texture class
 	// Texture unit corresponding to the diffuse texture in the referenced shader
 	uint32_t textureUnit{ 0 };
 
@@ -24,7 +24,7 @@ struct DiffuseProperties
 struct SpecularProperties
 {
 	// Colour of the specular highlight on the surface (instead of a texture)
-	glm::vec3 emissiveColour{ 0.0f };
+	glm::vec3 specularColour{ 0.0f };
 
 	// Coefficient altering the radius of the specular highlight
 	float shininess{ 64.0f };
@@ -35,7 +35,7 @@ class Material
 {
 public:
 	Material() = delete;
-	Material(Shader& inShader, const std::vector<Texture>& inTextures, const DiffuseProperties inDiffuseProperties = { 0, glm::vec3(0.0f) }, const float inTransparency = 1.0f);
+	Material(Shader& inShader, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties = { 0, glm::vec3(0.0f) }, const SpecularProperties& inSpecularProperties = { glm::vec3(0.0f), 64.0f }, const float inTransparency = 1.0f);
 
 	Material(const Material& inMaterial) = delete;
 	Material& operator = (const Material& inMaterial) = delete;
@@ -44,10 +44,6 @@ public:
 	Material& operator = (Material&& inMaterial) = delete;
 
 	virtual ~Material() = default;
-
-	void SetFUniforms() const;
-	void SetDiffuseSamplerFUniform() const;
-	void SetDiffuseColourFUniform(const glm::vec3& colour) const;
 
 	void EnableTextures() const;
 	void DisableTextures() const;
@@ -70,6 +66,8 @@ private:
 
 	// Coefficient corresponding to the alpha value in a colour vector
 	float transparency{ 1.0f };
+
+	void SetFUniforms() const;
 };
 
 

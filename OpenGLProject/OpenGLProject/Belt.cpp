@@ -18,7 +18,6 @@ Belt::Belt(const std::string& inName, InstanceParams&& inInstanceParams, TorusPa
 instanceParams(inInstanceParams), torusParams(inTorusParams), model({ inInstanceParams.modelPath })
 {
 	material.SetTextures(model.GetTextures());
-	material.SetDiffuseSamplerFUniform();
 
 	ComputeInstanceModelMatrices();
 	StoreInstanceModelMatrices();

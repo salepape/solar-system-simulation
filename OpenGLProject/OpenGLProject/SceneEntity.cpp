@@ -12,10 +12,27 @@ SceneEntity::SceneEntity(std::string inName, Material inMaterial) :
 	name(inName), material(std::move(inMaterial))
 {
 	ID = entityIDCounter++;
+
+	SetVUniforms();
+}
+
+void SceneEntity::SetVUniforms() const
+{
+	Shader& shader = material.GetShader();
+	shader.Enable();
+
+	const std::string& modelVU = "vu_Model";
+	if (shader.IsUniformRequired(modelVU.c_str()))
+	{
+		shader.setUniformMat4("vu_Model", glm::mat4(0.0f));
+	}
+
+	shader.Disable();
 }
 
 void SceneEntity::SetModelMatrixVUniform(const glm::mat4& inModelMatrix)
 {
+	// @todo - More optimised way to copy a mat4?
 	modelMatrix = inModelMatrix;
 
 	Shader& shader = material.GetShader();

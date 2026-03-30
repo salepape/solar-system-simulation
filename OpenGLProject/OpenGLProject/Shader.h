@@ -35,8 +35,8 @@ public:
 	void setUniformVec3(const std::string& name, const float x, const float y, const float z);
 	void setUniformMat4(const std::string& name, const glm::mat4& mat);
 
-	// Prevent glGetUniformLocation duplicate calls
-	int32_t GetUniformLocation(const std::string& name);
+	// Return whether the Uniform is required for the Shader and perform caching of its location if so. Should always be called prior to attempt setting a Uniform 
+	bool IsUniformRequired(const std::string& name);
 
 	uint32_t GetRendererID() const { return rendererID; }
 	const std::string& GetEntityName() const { return entityName; }
@@ -45,6 +45,7 @@ private:
 	uint32_t rendererID{ 0 };
 	std::string entityName;
 
+	// Prevent glGetUniformLocation() duplicate calls while also guaranteeing the Uniform is required by the Shader
 	std::unordered_map<std::string, int32_t> uniformLocationCache;
 
 	// Create and compile a shader object
@@ -55,6 +56,9 @@ private:
 
 	// Utility function to check object compilation/linking errors
 	void CheckValidity(const uint32_t ID, const ShaderProcessStage shaderProcessStage) const;
+
+	// Should only be called internally, and always after a IsUniformRequired() call so the local Uniform cache is set up appropriately
+	int32_t GetUniformLocation(const std::string& name);
 };
 
 

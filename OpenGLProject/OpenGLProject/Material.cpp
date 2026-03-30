@@ -7,8 +7,8 @@
 
 
 
-Material::Material(Shader& inShader, const std::vector<Texture>& inTextures, const DiffuseProperties inDiffuseProperties, const float inTransparency) :
-	shader(inShader), textures(inTextures), diffuseProperties(inDiffuseProperties), specularProperties({ glm::vec3(0.0f), 64.0f }), transparency(inTransparency)
+Material::Material(Shader& inShader, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties, const SpecularProperties& inSpecularProperties, const float inTransparency) :
+	shader(inShader), textures(inTextures), diffuseProperties(inDiffuseProperties), specularProperties(inSpecularProperties), transparency(inTransparency)
 {
 	SetFUniforms();
 }
@@ -23,41 +23,37 @@ void Material::SetFUniforms() const
 {
 	shader.Enable();
 
+	const std::string& diffuseTexFU = "material.fu_DiffuseTex";
+	if (shader.IsUniformRequired(diffuseTexFU.c_str()))
+	{
+		shader.setUniformInt("material.fu_DiffuseTex", diffuseProperties.textureUnit);
+	}
+
 	const std::string& diffuseColourFU = "material.fu_DiffuseColour";
-	if (shader.GetUniformLocation(diffuseColourFU.c_str()) != -1)
+	if (shader.IsUniformRequired(diffuseColourFU.c_str()))
 	{
 		shader.setUniformVec3(diffuseColourFU, diffuseProperties.emissiveColour);
 	}
 
 	const std::string& specularColourFU = "material.fu_SpecularColour";
-	if (shader.GetUniformLocation(specularColourFU.c_str()) != -1)
+	if (shader.IsUniformRequired(specularColourFU.c_str()))
 	{
-		shader.setUniformVec3(specularColourFU, specularProperties.emissiveColour);
+		shader.setUniformVec3(specularColourFU, specularProperties.specularColour);
 	}
 
 	const std::string& shininessFU = "material.fu_Shininess";
-	if (shader.GetUniformLocation(shininessFU.c_str()) != -1)
+	if (shader.IsUniformRequired(shininessFU.c_str()))
 	{
 		shader.setUniformFloat(shininessFU, specularProperties.shininess);
 	}
 
 	const std::string& transparencyFU = "material.fu_Transparency";
-	if (shader.GetUniformLocation(transparencyFU.c_str()) != -1)
+	if (shader.IsUniformRequired(transparencyFU.c_str()))
 	{
 		shader.setUniformFloat(transparencyFU, transparency);
 	}
 
 	shader.Disable();
-}
-
-void Material::SetDiffuseSamplerFUniform() const
-{
-	shader.setUniformInt("material.fu_DiffuseTex", diffuseProperties.textureUnit);
-}
-
-void Material::SetDiffuseColourFUniform(const glm::vec3& colour) const
-{
-	shader.setUniformVec3("material.fu_DiffuseColour", colour);
 }
 
 void Material::EnableTextures() const
@@ -78,5 +74,6 @@ void Material::DisableTextures() const
 
 void Material::SetTextures(const std::vector<Texture>& inTextures)
 {
+	// @todo - More optimised way to copy an std::vector?
 	textures = inTextures;
 }

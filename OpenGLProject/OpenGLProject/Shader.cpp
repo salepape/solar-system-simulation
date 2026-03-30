@@ -59,24 +59,32 @@ void Shader::CreateProgram(const uint32_t vertexShaderID, const uint32_t fragmen
 
 int32_t Shader::GetUniformLocation(const std::string& name)
 {
+	if (uniformLocationCache.find(name) == uniformLocationCache.end())
+	{
+		std::cout << "ERROR::SHADER - Attempting to set Uniform " << name << " for Scene Entity " << entityName << ", but Uniform has not been cached beforehand./nCheck if you can do it at initialisation time.\n" << std::endl;
+		assert(false);
+	}
+
+	return uniformLocationCache[name];
+}
+
+bool Shader::IsUniformRequired(const std::string& name)
+{
 	if (uniformLocationCache.find(name) != uniformLocationCache.end())
 	{
-		return uniformLocationCache[name];
+		return true;
 	}
 
 	const int32_t uniformLocation = glGetUniformLocation(rendererID, name.c_str());
-	if (uniformLocation == -1)
+	if (uniformLocation != -1)
 	{
-		// @todo - Avoid triggering the text when method called from outside this class
-		//std::cout << "ERROR::SHADER " << entityName << " - uniform " << name << " is not active in the program!" << std::endl;
-		//assert(false);
-
-		return -1;
+		uniformLocationCache[name] = uniformLocation;
+		return true;
 	}
-
-	uniformLocationCache[name] = uniformLocation;
-
-	return uniformLocation;
+	else
+	{
+		return false;
+	}
 }
 
 void Shader::Enable() const

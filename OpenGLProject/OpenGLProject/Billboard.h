@@ -29,7 +29,6 @@ private:
 	float textScale{ 0.0f };
 
 	static Material InitialiseParent();
-	bool MaterialUniformColourChanged{ false };
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);

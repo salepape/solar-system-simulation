@@ -12,7 +12,7 @@
 
 MilkyWay::MilkyWay(const std::filesystem::path& inTexturePath) : SceneEntity("MilkyWay", InitialiseParent(inTexturePath))
 {
-	material.SetDiffuseSamplerFUniform();
+
 }
 
 Material MilkyWay::InitialiseParent(const std::filesystem::path& inTexturePath)
