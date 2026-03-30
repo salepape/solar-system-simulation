@@ -4,8 +4,8 @@
 #include <cctype>  // std::toupper()
 #include <cstddef> // std::size_t
 #include <cstdint>
-#include <fstream>
 #include <glfw3.h>
+#include <ios>
 #include <iostream>
 #include <sstream>
 
@@ -68,15 +68,54 @@ std::string FileUtils::GetNameFromPath(const std::filesystem::path& inPath)
 	return modelName;
 }
 
-std::string FileUtils::ReadFile(const std::string & path)
+std::string FileUtils::ReadFile(const std::string& path)
 {
 	std::ifstream fileStream(path, std::ios::in | std::ios::binary);
-	const uintmax_t fileSizeInBytes = std::filesystem::file_size(path);
+	if (fileStream.fail())
+	{
+		std::cout << "ERROR::UTILS - " << "File " << FileUtils::GetNameFromPath(path) << " has not been successfully read.\nReason: " << GetErrorStateFlagMessage(fileStream) << std::endl;
+		return std::string();
+	}
 
-	std::string fileContent(static_cast<uint32_t>(fileSizeInBytes), '\0');
-	fileStream.read(fileContent.data(), fileSizeInBytes);
+	// Read file buffer content as a stream
+	std::stringstream fileStringStream;
+	fileStringStream << fileStream.rdbuf();
 
-	return fileContent;
+	fileStream.close();
+
+	return fileStringStream.str();
+}
+
+std::string FileUtils::GetErrorStateFlagMessage(const std::ifstream& fileStream)
+{
+	std::string result;
+
+	std::ios_base::iostate errorStateFlag = fileStream.rdstate();
+	switch (errorStateFlag)
+	{
+	case std::ios::eofbit:
+	{
+		result = "End-of-File reached on input operation";
+		break;
+	}
+	case std::ios::failbit:
+	{
+		result = "Logical error on input/output operation";
+		break;
+	}
+	case std::ios::badbit:
+	{
+		result = "Read/writing error on input/output operation";
+		break;
+	}
+	default:
+	{
+		result = "No specific error state flag returned by std::fstream";
+		break;
+	}
+	}
+
+	return result;
 }
 
 

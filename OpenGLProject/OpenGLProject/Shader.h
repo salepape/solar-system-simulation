@@ -47,9 +47,6 @@ private:
 
 	std::unordered_map<std::string, int32_t> uniformLocationCache;
 
-	// Store shader file (.vs or .fs) content into a string (used C code for better efficiency when it comes to read a file)
-	std::string ParseShader(const std::string& path) const;
-
 	// Create and compile a shader object
 	uint32_t CreateShader(const uint32_t type, const std::string& source) const;
 

@@ -1,19 +1,19 @@
 #include "Shader.h"
 
-#include <fstream>
 #include <iostream>
 #include <glad.h>
 #include <glm/gtc/type_ptr.hpp>
-#include <sstream>
 #include <vector>
+
+#include "Utils.h"
 
 
 
 Shader::Shader(const std::string& inEntityName, const std::string& vsPath, const std::string& fsPath) :
 	entityName(inEntityName)
 {
-	const std::string& vsContent = ParseShader(vsPath);
-	const std::string& fsContent = ParseShader(fsPath);
+	const std::string& vsContent = FileUtils::ReadFile(vsPath);
+	const std::string& fsContent = FileUtils::ReadFile(fsPath);
 
 	const uint32_t vsID = CreateShader(GL_VERTEX_SHADER, vsContent);
 	const uint32_t fsID = CreateShader(GL_FRAGMENT_SHADER, fsContent);
@@ -24,24 +24,6 @@ Shader::Shader(const std::string& inEntityName, const std::string& vsPath, const
 Shader::~Shader()
 {
 	glDeleteProgram(rendererID);
-}
-
-std::string Shader::ParseShader(const std::string& path) const
-{
-	std::ifstream shaderFile(path);
-	if (!shaderFile)
-	{
-		std::cout << "ERROR::SHADER - " << entityName << " file has not been successfully read!" << std::endl;
-		return std::string();
-	}
-
-	// Read file's buffer content into stream
-	std::stringstream shaderStream;
-	shaderStream << shaderFile.rdbuf();
-
-	shaderFile.close();
-
-	return shaderStream.str();
 }
 
 uint32_t Shader::CreateShader(const uint32_t type, const std::string& content) const

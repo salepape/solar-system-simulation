@@ -2,6 +2,7 @@
 #define UTILS_H
 
 #include <filesystem>
+#include <fstream>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -27,12 +28,16 @@ public:
 class FileUtils
 {
 public:
+	// Return file buffer content as a string
 	static std::string ReadFile(const std::string& path);
 
 	static void ListPaths(const std::filesystem::path& inMap, std::unordered_map<std::string, std::filesystem::path>& outPaths);
 
 	// Get model name from path (e.g. by convention, texture name stored in folders follows: [num]k_[bodyName]_[bodyNameOptionalPrecisions])
 	static std::string GetNameFromPath(const std::filesystem::path& inPath);
+
+private:
+	static std::string GetErrorStateFlagMessage(const std::ifstream& fileStream);
 };
 
 
