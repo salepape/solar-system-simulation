@@ -13,10 +13,6 @@
 
 struct DiffuseProperties
 {
-	// @todo - Build a struct to have each texture with its associated unit in the referenced shader, or/and move it to Texture class
-	// Texture unit corresponding to the diffuse texture in the referenced shader
-	uint32_t textureUnit{ 0 };
-
 	// Used for a uniform emissive intensity like the Sun or glyphs
 	glm::vec3 emissiveColour{ 0.0f };
 };
@@ -30,12 +26,12 @@ struct SpecularProperties
 	float shininess{ 64.0f };
 };
 
-// Material properties of the surface
+// Class managing the application of a GLSL Shader composed of several Textures2D on a Mesh or a Model 
 class Material
 {
 public:
 	Material() = delete;
-	Material(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties = { 0, glm::vec3(0.0f) }, const SpecularProperties& inSpecularProperties = { glm::vec3(0.0f), 64.0f }, const float inTransparency = 1.0f);
+	Material(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties = { glm::vec3(0.0f) }, const SpecularProperties& inSpecularProperties = { glm::vec3(0.0f), 64.0f }, const float inTransparency = 1.0f);
 
 	Material(const Material& inMaterial) = delete;
 	Material& operator = (const Material& inMaterial) = delete;
@@ -50,7 +46,6 @@ public:
 	void DisableTextures() const;
 
 	Shader& GetShader() const { return ShaderLoader::GetShader(shaderLookUpID); }
-	uint32_t GetDiffuseTextureUnit() const { return diffuseProperties.textureUnit; }
 
 	// Needed for models since we are loading textures using Assimp, done post SceneEntity creation
 	void SetTextures(const std::vector<Texture>& inTextures);
@@ -58,8 +53,11 @@ public:
 private:
 	ShaderLookUpID::Enum shaderLookUpID;
 
-	// DDS textures that will be used as a 2D samplers (only diffuse textures for now)
+	// DDS Ttextures2D to be bound to as many Samplers2D in a Shader where this Material is used
 	std::vector<Texture> textures;
+
+	// Indexes of the Sampler2D slots storing the Texture2Ds of a Shader for look-up operations
+	int NumOfTextureUnits{ 0 };
 
 	DiffuseProperties diffuseProperties;
 	SpecularProperties specularProperties;
@@ -68,6 +66,8 @@ private:
 	float transparency{ 1.0f };
 
 	void SetFUniforms() const;
+
+	void IncrementTextureUnitCount(int& TextureUnit) const;
 };
 
 

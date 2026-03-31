@@ -76,6 +76,13 @@ void Texture::SetFilters(const FilterOptions& filterOptions) const
 
 void Texture::Activate(const uint32_t textureUnit) const
 {
+	// GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS = 35661
+	if (textureUnit >= GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)
+	{
+		std::cout << textureUnit << " ERROR::TEXTURE - Attempted to use a Texture Unit with an index that is greater than the maximum number of Texture Units allowed by OpenGL (" << GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS << ")!" << std::endl;
+		assert(false);
+	}
+
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
 }
 

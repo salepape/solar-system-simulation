@@ -1,5 +1,6 @@
 #include "Material.h"
 
+#include <iostream>
 #include <string>
 #include <utility>
 
@@ -8,6 +9,9 @@
 Material::Material(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties, const SpecularProperties& inSpecularProperties, const float inTransparency) :
 	shaderLookUpID(inShaderLookUpID), textures(inTextures), diffuseProperties(inDiffuseProperties), specularProperties(inSpecularProperties), transparency(inTransparency)
 {
+	// Need as many Texture Units as Samplers2D (i.e. Textures2D) for the GLSL Shader used by this Material
+	NumOfTextureUnits = static_cast<int>(inTextures.size());
+
 	SetFUniforms();
 }
 
@@ -22,11 +26,13 @@ void Material::SetFUniforms() const
 	Shader& shader = GetShader();
 	shader.Enable();
 
-	const std::string& diffuseTexFU = "material.fu_DiffuseTex";
+	int diffuseTexFUTextureUnit = 0;
+	const std::string& diffuseTexFU = "material.fu_DiffuseTex_" + diffuseTexFUTextureUnit;
 	if (shader.IsUniformRequired(diffuseTexFU.c_str()))
 	{
-		shader.setUniformInt("material.fu_DiffuseTex", diffuseProperties.textureUnit);
+		shader.setUniformInt("material.fu_DiffuseTex", diffuseTexFUTextureUnit);
 	}
+	IncrementTextureUnitCount(diffuseTexFUTextureUnit);
 
 	const std::string& diffuseColourFU = "material.fu_DiffuseColour";
 	if (shader.IsUniformRequired(diffuseColourFU.c_str()))
@@ -55,11 +61,25 @@ void Material::SetFUniforms() const
 	shader.Disable();
 }
 
+void Material::IncrementTextureUnitCount(int& TextureUnit) const
+{
+	if (TextureUnit <= NumOfTextureUnits)
+	{
+		TextureUnit++;
+	}
+	else
+	{
+		std::cout << "ERROR::MATERIAL - Max num of Texture Units for this Material (" << NumOfTextureUnits << ") has been exceeded. Please check the size of the 'Textures' vector!" << std::endl;
+	}
+}
+
 void Material::EnableTextures() const
 {
+	int textureUnit = 0;
 	for (const Texture& texture : textures)
 	{
-		texture.Enable(diffuseProperties.textureUnit);
+		texture.Enable(textureUnit);
+		IncrementTextureUnitCount(textureUnit);
 	}
 }
 

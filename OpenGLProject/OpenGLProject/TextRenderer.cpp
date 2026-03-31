@@ -134,6 +134,7 @@ void TextRenderer::Render(const Renderer& renderer, const uint32_t textureUnit, 
 		Quad quad(xPosition, yPosition, width, height);
 		quad.StoreVertices(*vbo);
 
+		// @todo - Enabling/Disabling operations should be brought outside the for-loop for optimisation num of permutations
 		glyphParams.texture.Enable(textureUnit);
 		quad.Render(renderer, *vao);
 		glyphParams.texture.Disable();

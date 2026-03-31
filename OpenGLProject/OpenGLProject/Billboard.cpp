@@ -32,8 +32,8 @@ Billboard::Billboard(BodyData&& inBodyData) : SceneEntity(inBodyData.name + "Bil
 
 Material Billboard::InitialiseParent()
 {
-	// Add textures after construction finishes via the text renderer passed in argument
-	return Material(ShaderLookUpID::Enum::BILLBOARD, { /* texturesLoadedFromTheTextRenderer */ }, { 0, GLMConstants::whiteColour });
+	// All Textures2D used by the Billboard are Glyph Textures2D managed in the Text Renderer directly, so not linked in this Material
+	return Material(ShaderLookUpID::Enum::BILLBOARD, { /* texturesLoadedFromTheTextRenderer */ }, { GLMConstants::whiteColour });
 }
 
 void Billboard::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& forward, const glm::vec3& right)
@@ -47,7 +47,7 @@ void Billboard::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const 
 	modelMatrix[3] = glm::vec4(bodyPosition, 1.0f);
 }
 
-void Billboard::Render(const Renderer& renderer, TextRenderer& textRenderer, const uint32_t textureUnit, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)
+void Billboard::Render(const Renderer& renderer, TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)
 {
 	ComputeModelMatrixVUniform(bodyPosition, cameraForward, cameraRight);
 

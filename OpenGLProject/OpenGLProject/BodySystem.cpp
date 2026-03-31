@@ -39,11 +39,9 @@ void BodySystem::Render(const Renderer& renderer, const bool isBillboard, TextRe
 
 	if (isBillboard)
 	{
-		// Orient text billboards so their readable side always faces the camera
+		// Orient text billboards so the correct side (i.e. with the glyphs rendered in the correct direction) always faces the camera
 		const glm::vec3& forward = glm::normalize(camera.GetPosition() - celestialBody.GetPosition());
 		const glm::vec3& right = glm::cross(camera.GetUp(), forward);
-
-		const uint32_t bodySystemTextureUnit = billboard.GetMaterial().GetDiffuseTextureUnit();
-		billboard.Render(renderer, textRenderer, bodySystemTextureUnit, celestialBody.GetPosition(), forward, right);
+		billboard.Render(renderer, textRenderer, celestialBody.GetPosition(), forward, right);
 	}
 }

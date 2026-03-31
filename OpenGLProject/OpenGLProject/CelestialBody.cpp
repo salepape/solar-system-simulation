@@ -38,7 +38,7 @@ Material CelestialBody::InitialiseParent(const std::filesystem::path& inBodyText
 
 	if (inBodyName == "Sun")
 	{
-		return Material(ShaderLookUpID::Enum::SUN, { std::move(texture) }, { 0, glm::vec3(1.5f) });
+		return Material(ShaderLookUpID::Enum::SUN, { std::move(texture) }, { glm::vec3(1.5f) });
 	}
 	else
 	{

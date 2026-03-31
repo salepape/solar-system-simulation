@@ -6,10 +6,9 @@ in vec2 vo_TexCoords;
 
 out vec4 fo_Colour;
 
-// See C++ class Material
 struct Material
 {
-    sampler2D fu_DiffuseTex;
+    sampler2D fu_DiffuseTex_0;
 
     vec3 fu_SpecularColour;
     float fu_Shininess;
@@ -73,7 +72,7 @@ layout (std140) uniform vec4 ubo_CameraPosition;
 vec3 ComputeDirectionalLightPhongIllumination()
 {
     // uv-coordinates need to be inversed due to DDS compressing
-    vec3 diffuseTex = texture(material.fu_DiffuseTex, vec2(1.0 - vo_TexCoords.x, 1.0 - vo_TexCoords.y)).rgb;
+    vec3 diffuseTex = texture(material.fu_DiffuseTex_0, vec2(1.0 - vo_TexCoords.x, 1.0 - vo_TexCoords.y)).rgb;
 
     // Ambient component
     vec3 ambientIntensity = directionalLight.fu_AmbientReflectCoef.xyz * diffuseTex;
@@ -105,7 +104,7 @@ vec3 ComputeDirectionalLightPhongIllumination()
 vec3 ComputePointLightPhongIllumination()
 {
     // uv-coordinates need to be inversed due to DDS compressing
-    vec3 diffuseTex = texture(material.fu_DiffuseTex, vec2(1.0 - vo_TexCoords.x, 1.0 - vo_TexCoords.y)).rgb;
+    vec3 diffuseTex = texture(material.fu_DiffuseTex_0, vec2(1.0 - vo_TexCoords.x, 1.0 - vo_TexCoords.y)).rgb;
 
     // Ambient component
     vec3 ambientIntensity = pointLight.fu_AmbientReflectCoef.xyz * diffuseTex;
@@ -141,7 +140,7 @@ vec3 ComputePointLightPhongIllumination()
 vec3 ComputeSpotLightPhongIllumination()
 {
     // uv-coordinates need to be inversed due to DDS compressing
-    vec3 diffuseTex = texture(material.fu_DiffuseTex, vec2(1.0 - vo_TexCoords.x, 1.0 - vo_TexCoords.y)).rgb;
+    vec3 diffuseTex = texture(material.fu_DiffuseTex_0, vec2(1.0 - vo_TexCoords.x, 1.0 - vo_TexCoords.y)).rgb;
 
     // Ambient component
     vec3 ambientIntensity = spotLight.fu_AmbientReflectCoef.xyz * diffuseTex;

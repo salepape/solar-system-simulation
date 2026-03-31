@@ -6,17 +6,17 @@ out vec4 fo_Colour;
 
 struct Material
 { 
-    sampler2D fu_DiffuseTex;
+    sampler2D fu_DiffuseTex_0;
     vec3 fu_DiffuseColour;
 };
 uniform Material material;
 
 void main()
 {
-	// FreeType glyph bitmap colours have been stored in their red component (just black/white) 
-    float diffuseTexColour = texture(material.fu_DiffuseTex, vo_TexCoords).r;
+    // FreeType glyph bitmap colours have been stored in their red component (just black/white) 
+    float diffuseTexColour = texture(material.fu_DiffuseTex_0, vo_TexCoords).r;
 
     // We want each pixel to be transparent for glyph background colours and visible for character colour, 
     // so we sample the colour above as the alpha value
-	fo_Colour = vec4(material.fu_DiffuseColour, 1.0) * vec4(1.0, 1.0, 1.0, diffuseTexColour);
+    fo_Colour = vec4(material.fu_DiffuseColour, 1.0) * vec4(1.0, 1.0, 1.0, diffuseTexColour);
 }

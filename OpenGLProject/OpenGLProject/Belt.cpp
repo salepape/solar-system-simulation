@@ -25,6 +25,7 @@ instanceParams(inInstanceParams), torusParams(inTorusParams), model({ inInstance
 
 Material Belt::InitialiseParent(const std::filesystem::path& inTexturePath)
 {
+	// All Textures2D added from the ones read in the Belt Model
 	return Material(ShaderLookUpID::Enum::BELT, { /* texturesLoadedFromTheModel */ });
 }
 
