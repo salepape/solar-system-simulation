@@ -51,7 +51,7 @@ class Texture
 public:
 	// Default constructor needed for GlyphParams struct declaration
 	Texture() = default;
-	Texture(const std::filesystem::path& inPath, const uint32_t inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType::Enum& inTextureType);
+	Texture(const std::filesystem::path& inImagePath, const uint32_t inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType::Enum& inTextureType);
 
 	void LoadFTBitmap(const FT_Bitmap& bitmap, const uint32_t format);
 	void LoadDDS();
@@ -76,10 +76,10 @@ public:
 	void Disable() const;
 
 	uint32_t GetRendererID() const { return rendererID; }
-	const std::filesystem::path& GetPath() const { return path; }
+	const std::filesystem::path& GetImagePath() const { return imagePath; }
 
 private:
-	std::filesystem::path path;
+	std::filesystem::path imagePath;
 	uint32_t target{ 0 };
 	uint32_t rendererID{ 0 };
 

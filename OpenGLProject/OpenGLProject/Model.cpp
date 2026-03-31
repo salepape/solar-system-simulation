@@ -137,14 +137,14 @@ void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 		for (uint32_t i = 0; i < textureCount; ++i)
 		{
 			// Get texture path
-			aiString texturePath;
-			material->GetTexture(assimpTextureType, i, &texturePath);
-			const std::string& textureStringPath = std::string(texturePath.C_Str(), texturePath.length);
+			aiString textureImagePath;
+			material->GetTexture(assimpTextureType, i, &textureImagePath);
+			const std::string& textureImageStringPath = std::string(textureImagePath.C_Str(), textureImagePath.length);
 
 			// Skip texture creation if already done
-			const auto& loadedTextureIt = find_if(textures.begin(), textures.end(), [&textureStringPath](const Texture& loadedTexture)
+			const auto& loadedTextureIt = find_if(textures.begin(), textures.end(), [&textureImageStringPath](const Texture& loadedTexture)
 			{
-				return textureStringPath == loadedTexture.GetPath();
+				return textureImageStringPath == loadedTexture.GetImagePath();
 			});
 
 			if (loadedTextureIt != textures.end())
@@ -153,7 +153,7 @@ void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 			}
 
 			// Create a DDS texture from the ASSIMP one
-			Texture texture(textureStringPath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, textureType);
+			Texture texture(textureImageStringPath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, textureType);
 			texture.LoadDDS();
 			textures.push_back(std::move(texture));
 		}
