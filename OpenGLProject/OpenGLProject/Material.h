@@ -40,7 +40,8 @@ public:
 	Material(const Material& inMaterial) = delete;
 	Material& operator = (const Material& inMaterial) = delete;
 
-	Material(Material&& inMaterial) = delete;
+	// Needed when moving the Material instance to the SceneEntity member attribute from the Child initialisation list
+	Material(Material&& inMaterial);
 	Material& operator = (Material&& inMaterial) = delete;
 
 	virtual ~Material() = default;
