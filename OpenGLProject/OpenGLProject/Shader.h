@@ -9,6 +9,26 @@
 
 
 
+// Ensure look_up ID is always correct when instantiating or looking for a Shader
+namespace ShaderLookUpID
+{
+	enum Enum
+	{
+		CELESTIAL_BODY = 0,
+		SUN,
+		BILLBOARD,
+		BELT,
+		MILKY_WAY,
+		ORBIT,
+		VISIBLE_BODY_RINGS,
+		INFRARED_BODY_RINGS,
+	};
+
+	static const std::vector<Enum> All = { CELESTIAL_BODY, SUN, BILLBOARD, BELT, MILKY_WAY, ORBIT, VISIBLE_BODY_RINGS, INFRARED_BODY_RINGS, };
+
+	static const Enum Get(const int index) { return All[index]; }
+};
+
 // Used to check validity of all shaders, and the program they are attached to
 enum class ShaderProcessStage
 {
@@ -20,7 +40,7 @@ enum class ShaderProcessStage
 class Shader
 {
 public:
-	Shader(const std::string& inEntityName, const std::string& vsPath, const std::string& fsPath);
+	Shader(const ShaderLookUpID::Enum inEntityName, const std::string& vsPath, const std::string& fsPath);
 	~Shader();
 
 	// Needs to be called before we initialise a uniform of the shader
@@ -39,11 +59,11 @@ public:
 	bool IsUniformRequired(const std::string& name);
 
 	uint32_t GetRendererID() const { return rendererID; }
-	const std::string& GetShaderLookUpID() const { return lookUpID; }
+	const ShaderLookUpID::Enum GetShaderLookUpID() const { return lookUpID; }
 
 private:
 	uint32_t rendererID{ 0 };
-	std::string lookUpID;
+	ShaderLookUpID::Enum lookUpID;
 
 	// Prevent glGetUniformLocation() duplicate calls while also guaranteeing the Uniform is required by the Shader
 	std::unordered_map<std::string, int32_t> uniformLocationCache;

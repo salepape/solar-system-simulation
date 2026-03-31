@@ -15,7 +15,7 @@ public:
 	// Build/compile shaders, their corresponding programs, and register all needed Uniform Buffer variables (common across several shaders)
 	static void BuildShaders();
 
-	static Shader& GetShader(const std::string& inShaderName);
+	static Shader& GetShader(const ShaderLookUpID::Enum inShaderName);
 	static UniformBuffer& GetUBO(const std::string& inUniformName);
 
 private:

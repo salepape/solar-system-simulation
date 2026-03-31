@@ -20,7 +20,7 @@ Material MilkyWay::InitialiseParent(const std::filesystem::path& inTexturePath)
 	Texture texture(inTexturePath, GL_TEXTURE_CUBE_MAP, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadCubemapDDS();
 
-	return Material("MilkyWay", { std::move(texture) });
+	return Material(ShaderLookUpID::Enum::MILKY_WAY, { std::move(texture) });
 }
 
 void MilkyWay::Render(const Renderer& renderer, const float /*elapsedTime*/)

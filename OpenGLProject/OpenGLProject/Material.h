@@ -5,10 +5,9 @@
 #include <glm/vec3.hpp>
 #include <vector>
 
+#include "Shader.h"
 #include "ShaderLoader.h"
 #include "Texture.h"
-
-class Shader;
 
 
 
@@ -36,12 +35,12 @@ class Material
 {
 public:
 	Material() = delete;
-	Material(const std::string& inShaderLookUpID, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties = { 0, glm::vec3(0.0f) }, const SpecularProperties& inSpecularProperties = { glm::vec3(0.0f), 64.0f }, const float inTransparency = 1.0f);
+	Material(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties = { 0, glm::vec3(0.0f) }, const SpecularProperties& inSpecularProperties = { glm::vec3(0.0f), 64.0f }, const float inTransparency = 1.0f);
 
 	Material(const Material& inMaterial) = delete;
 	Material& operator = (const Material& inMaterial) = delete;
 
-	Material(Material&& inMaterial);
+	Material(Material&& inMaterial) = delete;
 	Material& operator = (Material&& inMaterial) = delete;
 
 	virtual ~Material() = default;
@@ -56,8 +55,7 @@ public:
 	void SetTextures(const std::vector<Texture>& inTextures);
 
 private:
-	// ID of rhe
-	std::string shaderLookUpID;
+	ShaderLookUpID::Enum shaderLookUpID;
 
 	// DDS textures that will be used as a 2D samplers (only diffuse textures for now)
 	std::vector<Texture> textures;

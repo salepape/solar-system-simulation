@@ -3,11 +3,9 @@
 #include <string>
 #include <utility>
 
-#include "Shader.h"
 
 
-
-Material::Material(const std::string& inShaderLookUpID, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties, const SpecularProperties& inSpecularProperties, const float inTransparency) :
+Material::Material(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties, const SpecularProperties& inSpecularProperties, const float inTransparency) :
 	shaderLookUpID(inShaderLookUpID), textures(inTextures), diffuseProperties(inDiffuseProperties), specularProperties(inSpecularProperties), transparency(inTransparency)
 {
 	SetFUniforms();
