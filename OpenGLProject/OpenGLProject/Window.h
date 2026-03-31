@@ -22,9 +22,6 @@ public:
 	// @todo - Implement a custom event system, to get rid of this pointer
 	PerspectiveCameraController* cameraController{ nullptr };
 
-	// Tell GLFW that we want the context of the window to be the single one for the current thread
-	void MakeContextCurrent() const;
-
 	void SwapFrontAndBackBuffers() const;
 
 	// Call all window callbacks associated with each queueing events
@@ -33,7 +30,6 @@ public:
 	void ClearResources() const;
 
 	float GetAspectRatio() const { return aspectRatio; }
-	void Resize(const uint32_t newWidth, const uint32_t newHeight);
 
 	glm::vec2 ComputeCursorOffset(const double xPosition, const double yPosition);
 
@@ -53,6 +49,11 @@ private:
 	GLFWwindow* InitGLFWWindow() const;
 
 	void Callback_DetectWindowResize() const;
+
+	// Tell GLFW that we want the context of the window to be the single one for the current thread
+	void MakeContextCurrent() const;
+
+	void Resize(const uint32_t newWidth, const uint32_t newHeight);
 };
 
 
