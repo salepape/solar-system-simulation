@@ -39,11 +39,11 @@ public:
 	bool IsUniformRequired(const std::string& name);
 
 	uint32_t GetRendererID() const { return rendererID; }
-	const std::string& GetEntityName() const { return entityName; }
+	const std::string& GetShaderLookUpID() const { return lookUpID; }
 
 private:
 	uint32_t rendererID{ 0 };
-	std::string entityName;
+	std::string lookUpID;
 
 	// Prevent glGetUniformLocation() duplicate calls while also guaranteeing the Uniform is required by the Shader
 	std::unordered_map<std::string, int32_t> uniformLocationCache;

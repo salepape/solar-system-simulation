@@ -10,8 +10,8 @@
 
 
 
-Shader::Shader(const std::string& inEntityName, const std::string& vsPath, const std::string& fsPath) :
-	entityName(inEntityName)
+Shader::Shader(const std::string& inLookUpID, const std::string& vsPath, const std::string& fsPath) :
+	lookUpID(inLookUpID)
 {
 	const std::string& vsContent = FileUtils::ReadFile(vsPath);
 	const std::string& fsContent = FileUtils::ReadFile(fsPath);
@@ -61,7 +61,7 @@ int32_t Shader::GetUniformLocation(const std::string& name)
 {
 	if (uniformLocationCache.find(name) == uniformLocationCache.end())
 	{
-		std::cout << "ERROR::SHADER - Attempting to set Uniform " << name << " for Scene Entity " << entityName << ", but Uniform has not been cached beforehand./nCheck if you can do it at initialisation time.\n" << std::endl;
+		std::cout << "ERROR::SHADER - Attempting to set Uniform " << name << " for Scene Entity " << lookUpID << ", but Uniform has not been cached beforehand./nCheck if you can do it at initialisation time.\n" << std::endl;
 		assert(false);
 	}
 
@@ -141,7 +141,7 @@ void Shader::CheckValidity(const uint32_t ID, const ShaderProcessStage processSt
 			glGetShaderiv(ID, GL_INFO_LOG_LENGTH, &logLength);
 			if (logLength <= 2)
 			{
-				std::cout << "ERROR::SHADER for Scene Entity '" << entityName << "'\nReason: No specific error message returned - Log length too short.\n" << std::endl;
+				std::cout << "ERROR::SHADER for Scene Entity '" << lookUpID << "'\nReason: No specific error message returned - Log length too short.\n" << std::endl;
 				assert(false);
 			}
 
@@ -150,7 +150,7 @@ void Shader::CheckValidity(const uint32_t ID, const ShaderProcessStage processSt
 			glGetShaderInfoLog(ID, logLength, &logLength, errorMessage.data());
 			if (errorMessage.data() == nullptr)
 			{
-				std::cout << "ERROR::SHADER for Scene Entity '" << entityName << "'\nReason: no specific error message returned by glGetShaderInfoLog().\n" << std::endl;
+				std::cout << "ERROR::SHADER for Scene Entity '" << lookUpID << "'\nReason: no specific error message returned by glGetShaderInfoLog().\n" << std::endl;
 				assert(false);
 			}
 		}
@@ -167,7 +167,7 @@ void Shader::CheckValidity(const uint32_t ID, const ShaderProcessStage processSt
 			glGetProgramiv(ID, GL_INFO_LOG_LENGTH, &logLength);
 			if (logLength <= 2)
 			{
-				std::cout << "ERROR::PROGRAM for Scene Entity '" << entityName << "'\nReason: No specific error message returned - Log length too short.\n" << std::endl;
+				std::cout << "ERROR::PROGRAM for Scene Entity '" << lookUpID << "'\nReason: No specific error message returned - Log length too short.\n" << std::endl;
 				assert(false);
 			}
 
@@ -176,7 +176,7 @@ void Shader::CheckValidity(const uint32_t ID, const ShaderProcessStage processSt
 			glGetProgramInfoLog(ID, logLength, &logLength, errorMessage.data());
 			if (errorMessage.data() == nullptr)
 			{
-				std::cout << "ERROR::PROGRAM for Scene Entity '" << entityName << "'\nReason: no specific error message returned by glGetProgramInfoLog().\n" << std::endl;
+				std::cout << "ERROR::PROGRAM for Scene Entity '" << lookUpID << "'\nReason: no specific error message returned by glGetProgramInfoLog().\n" << std::endl;
 				assert(false);
 			}
 		}

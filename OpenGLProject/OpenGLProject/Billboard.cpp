@@ -33,7 +33,7 @@ Billboard::Billboard(BodyData&& inBodyData) : SceneEntity(inBodyData.name + "Bil
 Material Billboard::InitialiseParent()
 {
 	// Add textures after construction finishes via the text renderer passed in argument
-	return Material(ShaderLoader::GetShader("Billboard"), { /* texturesLoadedFromTheTextRenderer */ }, { 0, GLMConstants::whiteColour });
+	return Material("Billboard", { /* texturesLoadedFromTheTextRenderer */ }, { 0, GLMConstants::whiteColour });
 }
 
 void Billboard::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& forward, const glm::vec3& right)

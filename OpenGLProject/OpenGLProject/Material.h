@@ -5,6 +5,7 @@
 #include <glm/vec3.hpp>
 #include <vector>
 
+#include "ShaderLoader.h"
 #include "Texture.h"
 
 class Shader;
@@ -35,7 +36,7 @@ class Material
 {
 public:
 	Material() = delete;
-	Material(Shader& inShader, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties = { 0, glm::vec3(0.0f) }, const SpecularProperties& inSpecularProperties = { glm::vec3(0.0f), 64.0f }, const float inTransparency = 1.0f);
+	Material(const std::string& inShaderLookUpID, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties = { 0, glm::vec3(0.0f) }, const SpecularProperties& inSpecularProperties = { glm::vec3(0.0f), 64.0f }, const float inTransparency = 1.0f);
 
 	Material(const Material& inMaterial) = delete;
 	Material& operator = (const Material& inMaterial) = delete;
@@ -48,15 +49,15 @@ public:
 	void EnableTextures() const;
 	void DisableTextures() const;
 
-	Shader& GetShader() const { return shader; }
+	Shader& GetShader() const { return ShaderLoader::GetShader(shaderLookUpID); }
 	uint32_t GetDiffuseTextureUnit() const { return diffuseProperties.textureUnit; }
 
 	// Needed for models since we are loading textures using Assimp, done post SceneEntity creation
 	void SetTextures(const std::vector<Texture>& inTextures);
 
 private:
-	// We need a reference so the shader persists even after Material destruction (Shader exists separately in ShaderLoader)
-	Shader& shader;
+	// ID of rhe
+	std::string shaderLookUpID;
 
 	// DDS textures that will be used as a 2D samplers (only diffuse textures for now)
 	std::vector<Texture> textures;

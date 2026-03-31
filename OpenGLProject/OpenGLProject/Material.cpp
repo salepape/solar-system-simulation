@@ -7,20 +7,21 @@
 
 
 
-Material::Material(Shader& inShader, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties, const SpecularProperties& inSpecularProperties, const float inTransparency) :
-	shader(inShader), textures(inTextures), diffuseProperties(inDiffuseProperties), specularProperties(inSpecularProperties), transparency(inTransparency)
+Material::Material(const std::string& inShaderLookUpID, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties, const SpecularProperties& inSpecularProperties, const float inTransparency) :
+	shaderLookUpID(inShaderLookUpID), textures(inTextures), diffuseProperties(inDiffuseProperties), specularProperties(inSpecularProperties), transparency(inTransparency)
 {
 	SetFUniforms();
 }
 
 Material::Material(Material&& inMaterial) :
-	shader(inMaterial.shader), textures(std::move(inMaterial.textures)), diffuseProperties(std::move(inMaterial.diffuseProperties)), specularProperties(std::move(inMaterial.specularProperties)), transparency(inMaterial.transparency)
+	shaderLookUpID(inMaterial.shaderLookUpID), textures(std::move(inMaterial.textures)), diffuseProperties(std::move(inMaterial.diffuseProperties)), specularProperties(std::move(inMaterial.specularProperties)), transparency(inMaterial.transparency)
 {
 
 }
 
 void Material::SetFUniforms() const
 {
+	Shader& shader = GetShader();
 	shader.Enable();
 
 	const std::string& diffuseTexFU = "material.fu_DiffuseTex";

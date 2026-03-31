@@ -52,16 +52,16 @@ void ShaderLoader::BuildShaders()
 	}
 }
 
-Shader& ShaderLoader::GetShader(const std::string& inShaderName)
+Shader& ShaderLoader::GetShader(const std::string& inShaderLookUpID)
 {
-	const auto& shaderIt = std::find_if(shaders.begin(), shaders.end(), [&inShaderName](const Shader& inShader)
+	const auto& shaderIt = std::find_if(shaders.begin(), shaders.end(), [&inShaderLookUpID](const Shader& inShader)
 	{
-		return inShader.GetEntityName() == inShaderName;
+		return inShader.GetShaderLookUpID() == inShaderLookUpID;
 	});
 
 	if (shaderIt == shaders.end())
 	{
-		std::cout << "ERROR::SHADER_LOADER - Shader " << inShaderName << " does not exist!" << std::endl;
+		std::cout << "ERROR::SHADER_LOADER - Shader " << inShaderLookUpID << " does not exist!" << std::endl;
 		assert(false);
 	}
 
