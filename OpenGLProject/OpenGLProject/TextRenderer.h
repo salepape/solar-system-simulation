@@ -40,9 +40,11 @@ public:
 	TextRenderer();
 
 	// Load ASCII characters (data + texture creation) of the text provided as input
-	void LoadASCIICharacters(const std::string& inFontPath, const std::string& text);
-	void SetFont(const std::string& fontPath);
+	void LoadFTGlyphs(const std::string& text);
 	void FreeFTResources() const;
+
+	// Set FreeType font type and size used in the Simulation
+	void SetFTFont(const std::string& fontPath);
 
 	// Update VBO for each character of the text provided as input
 	void Render(const Renderer& renderer, const uint32_t textureUnit, const std::string& text, float x, const float y, const float scale);

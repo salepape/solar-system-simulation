@@ -154,11 +154,14 @@ void SolarSystem::BuildBodySystems()
 
 void SolarSystem::BuildBodySystemsLegend()
 {
+	textRenderer.SetFTFont("../Fonts/arial.ttf");
+
 	for (const BodySystem& bodySystem : bodySystems)
 	{
 		// Texture creation is handled by the Text Renderer for now (glyph rendering issue when textures created otherwise)
-		textRenderer.LoadASCIICharacters("../Fonts/arial.ttf", bodySystem.celestialBody.GetName());
+		textRenderer.LoadFTGlyphs(bodySystem.celestialBody.GetName());
 	}
+
 	// Free FT resources once we don't have any more letters to load
 	textRenderer.FreeFTResources();
 }

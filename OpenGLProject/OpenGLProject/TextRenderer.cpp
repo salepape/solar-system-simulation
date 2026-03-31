@@ -18,7 +18,8 @@ TextRenderer::TextRenderer()
 {
 	AllocateBufferObjects();
 
-	if (FT_Init_FreeType(&FreeTypeLibrary))
+	FT_Error FTInitFreeTypeError = FT_Init_FreeType(&FreeTypeLibrary);
+	if (FTInitFreeTypeError != 0)
 	{
 		std::cout << "ERROR::FREETYPE - Failed to initialise FreeType Library" << std::endl;
 		assert(false);
@@ -38,10 +39,8 @@ void TextRenderer::AllocateBufferObjects()
 	vbo->Unbind();
 }
 
-void TextRenderer::LoadASCIICharacters(const std::string& fontPath, const std::string& text)
+void TextRenderer::LoadFTGlyphs(const std::string& text)
 {
-	SetFont(fontPath);
-
 	for (const char& character : text)
 	{
 		// Avoid loading a character previously loaded
@@ -50,7 +49,8 @@ void TextRenderer::LoadASCIICharacters(const std::string& fontPath, const std::s
 			continue;
 		}
 
-		if (FT_Load_Char(face, character, FT_LOAD_RENDER))
+		FT_Error FTLoaderCharError = FT_Load_Char(face, character, FT_LOAD_RENDER);
+		if (FTLoaderCharError != 0)
 		{
 			std::cout << "ERROR::FREETYTPE - Failed to load the face object glyph for character " << character << "!" << std::endl;
 			assert(false);
@@ -84,10 +84,11 @@ void TextRenderer::LoadASCIICharacters(const std::string& fontPath, const std::s
 	}
 }
 
-void TextRenderer::SetFont(const std::string& fontPath)
+void TextRenderer::SetFTFont(const std::string& fontPath)
 {
 	// Load font as face object
-	if (FT_New_Face(FreeTypeLibrary, fontPath.c_str(), 0, &face))
+	FT_Error FTNewFaceError = FT_New_Face(FreeTypeLibrary, fontPath.c_str(), 0, &face);
+	if (FTNewFaceError != 0)
 	{
 		std::cout << "ERROR::FREETYPE - Failed to load the font located at " << fontPath << "!" << std::endl;
 		assert(false);
