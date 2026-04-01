@@ -5,11 +5,10 @@
 #include <vector>
 
 #include "Shader.h"
-#include "UniformBuffer.h"
 
 
 
-// Util static class giving a global access point to all Shaders/UBOs applied on Scene Entity/Objects of the simulation
+// Util static class giving a global access point to all Shaders applied on Scene Entity/Objects of the simulation
 class ShaderLoader
 {
 public:
@@ -17,11 +16,9 @@ public:
 	static void BuildShaders();
 
 	static Shader& GetShader(const ShaderLookUpID::Enum inShaderName);
-	static UniformBuffer& GetUBO(const std::string& inUniformName);
 
 private:
 	static std::vector<Shader> shaders;
-	static std::vector<UniformBuffer> ubos;
 };
 
 

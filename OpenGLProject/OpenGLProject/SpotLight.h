@@ -4,8 +4,7 @@
 #include <glm/vec3.hpp>
 
 #include "LightSource.h"
-
-class UniformBuffer;
+#include "UniformBuffer.h"
 
 
 
@@ -15,14 +14,27 @@ struct SpotParams
 	float outerCutoff{ 0.0f };
 };
 
+// Warning: make sure this struct always contain the same data as the mirrored one in GLSL
+struct GLSLSpotLightParams
+{
+	glm::vec3 position;
+	glm::vec3 direction;
+
+	ReflectionParams reflectionParams;
+	AttenuationParams attenuationParams;
+	SpotParams spotParams;
+
+	bool isBlinn;
+};
+
 class SpotLight : public LightSource
 {
 public:
 	SpotLight() = delete;
 	SpotLight(const glm::vec3& inPosition, const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const SpotParams& inSpotParams, const bool inIsBlinn = false);
 
-	void SetPosition(const glm::vec3& inPosition) { position = inPosition; }
-	void SetDirection(const glm::vec3& inDirection) { direction = inDirection; }
+	void SetPosition(const glm::vec3& inPosition) { GLSLParams.position = inPosition; }
+	void SetDirection(const glm::vec3& inDirection) { GLSLParams.direction = inDirection; }
 	void SetActivationState(const bool isActive) { isCameraFlashLight = isActive; }
 
 	void SetFUniforms() override;
@@ -31,13 +43,10 @@ public:
 	void SetIsCameraFlashLightFUniform(const bool isActive);
 
 private:
-	glm::vec3 position{ 0.0f };
-	glm::vec3 direction{ 0.0f };
-	AttenuationParams attenuationParams;
-	SpotParams spotParams;
-	bool isCameraFlashLight{ false };
+	GLSLSpotLightParams GLSLParams;
+	UniformBuffer fubo;
 
-	UniformBuffer& ubo;
+	bool isCameraFlashLight{ false };
 };
 
 

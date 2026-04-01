@@ -2,32 +2,86 @@
 
 #include <glad/glad.h>
 
-uint32_t UniformBuffer::blockBindingPoint = 0;
+#include "ShaderLoader.h"
+
+uint32_t UniformBuffer::globalBlockBindingPoint = 0;
+
+std::unordered_map<UniformShaderGroup, std::vector<ShaderLookUpID::Enum>> UniformBuffer::shaderGroups
+{
+	{
+		UniformShaderGroup::PROJECTION_VIEW,
+		{
+			ShaderLookUpID::Enum::CELESTIAL_BODY,
+			ShaderLookUpID::Enum::SUN,
+			ShaderLookUpID::Enum::BILLBOARD,
+			ShaderLookUpID::Enum::BELT,
+			ShaderLookUpID::Enum::MILKY_WAY,
+			ShaderLookUpID::Enum::ORBIT,
+			ShaderLookUpID::Enum::VISIBLE_BODY_RINGS,
+			ShaderLookUpID::Enum::INFRARED_BODY_RINGS
+		}
+	},
+	{
+		UniformShaderGroup::LINE_OF_SIGHT,
+		{
+			ShaderLookUpID::Enum::CELESTIAL_BODY,
+			ShaderLookUpID::Enum::BELT,
+			ShaderLookUpID::Enum::ORBIT,
+			ShaderLookUpID::Enum::VISIBLE_BODY_RINGS,
+			ShaderLookUpID::Enum::INFRARED_BODY_RINGS
+		}
+	}
+};
 
 
 
-UniformBuffer::UniformBuffer(const std::vector<uint32_t>& shaderIDs, const std::string& inUniformName, const std::size_t sizeInBytes)
+UniformBuffer::UniformBuffer(const std::string& inGLSLUniformName, const UniformShaderGroup inShaderGroup)
 {
 	target = GL_UNIFORM_BUFFER;
-	uniformName = inUniformName;
 
-	for (const uint32_t shaderID : shaderIDs)
+	blockBindingPoint = globalBlockBindingPoint++;
+
+	for (const ShaderLookUpID::Enum shaderLookUpID : shaderGroups[inShaderGroup])
 	{
-		const uint32_t uniformBlockIndex = glGetUniformBlockIndex(shaderID, uniformName.c_str());
+		const uint32_t shaderID = ShaderLoader::GetShader(shaderLookUpID).GetRendererID();
+
+		// @todo - uniformBlockIndex = 6 for BELT Fragment Shader whereas it equals 7 for all other ones in LINE_OF_SIGHT group for camera position Uniform!
+		const uint32_t uniformBlockIndex = glGetUniformBlockIndex(shaderID, inGLSLUniformName.c_str());
 		glUniformBlockBinding(shaderID, uniformBlockIndex, blockBindingPoint);
 	}
 
 	// Reserve an ID available to be used by the UBO as a binding point
 	glGenBuffers(1, &rendererID);
+}
 
-	// Bind the UBO ID to a target, which specifies our intent to store vertices in it
-	glBindBuffer(target, rendererID);
-
-	// @todo - Move GL functions below in each class to avoid having to provide the byte size as parameter when instantiating UBOs in ShaderLoader?
+void UniformBuffer::SetData(const void* data, const std::size_t sizeInBytes)
+{
+	Bind();
 
 	// Allocate memory space (in bytes) to the UBO and store data in it
 	glBufferData(target, sizeInBytes, nullptr, GL_STATIC_DRAW);
 
-	// Define the range of the buffer that links to a uniform binding point
-	glBindBufferRange(target, blockBindingPoint++, rendererID, 0, sizeInBytes);
+	// Define the range of the buffer that is linked to the specified uniform binding point
+	glBindBufferRange(target, blockBindingPoint, rendererID, 0, sizeInBytes);
+
+	SetSubData(data, sizeInBytes);
+
+	Unbind();
+}
+
+void UniformBuffer::SetData(const UniformGLSLStruct& inStruct)
+{
+	Bind();
+
+	const std::size_t structSizeInBytes = inStruct.GetSizeInBytes();
+
+	// Allocate memory space (in bytes) to the UBO and store data in it
+	glBufferData(target, structSizeInBytes, nullptr, GL_STATIC_DRAW);
+
+	// Define the range of the buffer that is linked to the specified uniform binding point
+	glBindBufferRange(target, blockBindingPoint, rendererID, 0, structSizeInBytes);
+
+	SetSubData(inStruct.GetUniformFields());
+
+	Unbind();
 }

@@ -4,16 +4,20 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Constants.h"
-#include "ShaderLoader.h"
-#include "UniformBuffer.h"
 
 
 
 Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane) :
 	initialPosition(inPosition), initialRotation(inRotation), position(inPosition), roll(inRotation.x), pitch(inRotation.y), yaw(inRotation.z), fovY(inFovY), farPlane(inFarPlane),
-	projectionViewUBO(ShaderLoader::GetUBO("ubo_ProjectionView")), positionUBO(ShaderLoader::GetUBO("ubo_CameraPosition"))
+	vuboProjectionView("vubo_ProjectionView", UniformShaderGroup::PROJECTION_VIEW), fuboCameraPosition("fubo_CameraPosition", UniformShaderGroup::LINE_OF_SIGHT)
 {
+	// Stored in a GLSL struct (containing a single Uniform field) with in Fragment Shader
+	UniformGLSLStruct vuboProjectionViewStruct;
+	vuboProjectionViewStruct.AddUniformField(static_cast<const void*>(glm::value_ptr(glm::mat4(0.0f))), GLSLConstants::mat4v4SizeInBytes);
+	vuboProjectionView.SetData(vuboProjectionViewStruct);
 
+	// Not stored in a GLSL struct in Fragment Shader
+	fuboCameraPosition.SetData(static_cast<const void*>(glm::value_ptr(glm::vec4(0.0f))), GLSLConstants::vec4SizeInBytes);
 }
 
 void Camera::SetTransform(const glm::vec3& inPosition, const glm::vec3& inRotation)
@@ -37,20 +41,23 @@ glm::mat4 Camera::ComputeInfiniteView() const
 	return glm::mat4(glm::mat3(ComputeView()));
 }
 
+// Called each frame when Headlight is turned on
 void Camera::SetProjectionViewVUniform(const float windowAspectRatio) const
 {
 	const glm::mat4& projectionView = ComputeProjection(windowAspectRatio) * ComputeView();
-	projectionViewUBO.SetSubData(static_cast<const void*>(glm::value_ptr(projectionView)), GLSLConstants::mat4v4SizeInBytes);
+	vuboProjectionView.SetSubData(static_cast<const void*>(glm::value_ptr(projectionView)), GLSLConstants::mat4v4SizeInBytes);
 }
 
+// Called each frame when Headlight is turned on
 void Camera::SetInfiniteProjectionViewVUniform(const float windowAspectRatio) const
 {
 	const glm::mat4& infiniteProjectionView = ComputeProjection(windowAspectRatio) * ComputeInfiniteView();
-	projectionViewUBO.SetSubData(static_cast<const void*>(glm::value_ptr(infiniteProjectionView)), GLSLConstants::mat4v4SizeInBytes);
+	vuboProjectionView.SetSubData(static_cast<const void*>(glm::value_ptr(infiniteProjectionView)), GLSLConstants::mat4v4SizeInBytes);
 }
 
+// Called each frame when Headlight is turned on
 void Camera::SetPositionFUniform() const
 {
 	const glm::vec4& position = glm::vec4(GetPosition(), 0.0f);
-	positionUBO.SetSubData(static_cast<const void*>(glm::value_ptr(position)), GLSLConstants::vec4SizeInBytes);
+	fuboCameraPosition.SetSubData(static_cast<const void*>(glm::value_ptr(position)), GLSLConstants::vec4SizeInBytes);
 }

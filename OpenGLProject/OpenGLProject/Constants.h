@@ -5,9 +5,8 @@
 #include <glm/ext/scalar_constants.hpp>
 #include <glm/vec3.hpp>
 
-
-
-// Compute the data size (in bytes) of each GLSL uniform variable, and their respective offset following the std140 layout base alignement rules  
+// Store the size (in bytes) of usual GLSL variable types
+// glm::vec3 have to be converted to GLSL vec4 according std140 layout base alignement rules (offset). Also glm:vec4 does not support glm::value_ptr
 namespace GLSLConstants
 {
 	// Correspond to 1 * Int size

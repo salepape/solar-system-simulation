@@ -4,10 +4,19 @@
 #include <glm/vec3.hpp>
 
 #include "LightSource.h"
+#include "UniformBuffer.h"
 
-class UniformBuffer;
 
 
+// Warning: make sure this struct always contain the same data as the mirrored one in GLSL
+struct GLSLDirectionalLightParams
+{
+	glm::vec3 direction;
+
+	ReflectionParams reflectionParams;
+
+	bool isBlinn;
+};
 
 class DirectionalLight : public LightSource
 {
@@ -18,10 +27,8 @@ public:
 	void SetLightDirectionFUniform(const glm::vec3& inDirection) const;
 
 private:
-	glm::vec3 direction{ 0.0f };
-
-	UniformBuffer& ubo;
-
+	GLSLDirectionalLightParams GLSLParams;
+	UniformBuffer fubo;
 
 	void SetFUniforms() override;
 };

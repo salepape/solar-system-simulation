@@ -17,8 +17,8 @@ struct Material
 };
 uniform Material material;
 
-// See C++ class DirectionalLight
-layout (std140) uniform ubo_DirectionalLight
+// See C++ struct GLSLDirectionalLightParams
+layout (std140) uniform fubo_DirectionalLight
 {
     vec4 fu_Direction;
 
@@ -29,8 +29,8 @@ layout (std140) uniform ubo_DirectionalLight
     bool fu_IsBlinn;
 } directionalLight;
 
-// See C++ class PointLight
-layout (std140) uniform ubo_PointLight
+// See C++ struct GLSLPointLightParams
+layout (std140) uniform fubo_PointLight
 {
     vec4 fu_Position;
 
@@ -45,8 +45,8 @@ layout (std140) uniform ubo_PointLight
     bool fu_IsBlinn;
 } pointLight;
 
-// See C++  class SpotLight
-layout (std140) uniform ubo_SpotLight
+// See C++ struct GLSLSpotLightParams
+layout (std140) uniform fubo_SpotLight
 {
     vec4 fu_Position;
     vec4 fu_Direction;
@@ -67,7 +67,7 @@ layout (std140) uniform ubo_SpotLight
 } spotLight;
 uniform bool fu_IsCameraFlashLight;
 
-layout (std140) uniform vec4 ubo_CameraPosition;
+layout (std140) uniform vec4 fubo_CameraPosition;
 
 vec3 ComputeDirectionalLightPhongIllumination()
 {
@@ -84,7 +84,7 @@ vec3 ComputeDirectionalLightPhongIllumination()
     vec3 diffuseIntensity = directionalLight.fu_DiffuseReflectCoef.xyz * diffuseImpact * diffuseTex;
         
     // Specular component
-    vec3 viewDir = normalize(ubo_CameraPosition.xyz - vo_Position);
+    vec3 viewDir = normalize(fubo_CameraPosition.xyz - vo_Position);
     float specularHighlight = 0.0;
     if(directionalLight.fu_IsBlinn)
     {
@@ -116,7 +116,7 @@ vec3 ComputePointLightPhongIllumination()
     vec3 diffuseIntensity = pointLight.fu_DiffuseReflectCoef.xyz * diffuseImpact * diffuseTex;
         
     // Specular component
-    vec3 viewDir = normalize(ubo_CameraPosition.xyz - vo_Position);
+    vec3 viewDir = normalize(fubo_CameraPosition.xyz - vo_Position);
     float specularHighlight = 0.0;
     if(pointLight.fu_IsBlinn)
     {
@@ -152,7 +152,7 @@ vec3 ComputeSpotLightPhongIllumination()
     vec3 diffuseIntensity = spotLight.fu_DiffuseReflectCoef.xyz * diffuseImpact * diffuseTex;
         
     // Specular component
-    vec3 viewDir = normalize(ubo_CameraPosition.xyz - vo_Position);
+    vec3 viewDir = normalize(fubo_CameraPosition.xyz - vo_Position);
     float specularHighlight = 0.0;
     if(spotLight.fu_IsBlinn)
     {

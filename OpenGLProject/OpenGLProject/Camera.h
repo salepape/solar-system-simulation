@@ -5,7 +5,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
-class UniformBuffer;
+#include "UniformBuffer.h"
 
 
 
@@ -60,8 +60,8 @@ protected:
 	glm::vec3 right{ 0.0f, 1.0f, 0.0f };
 	glm::vec3 forward{ 0.0f, 0.0f, -1.0f };
 
-	UniformBuffer& projectionViewUBO;
-	UniformBuffer& positionUBO;
+	UniformBuffer vuboProjectionView;
+	UniformBuffer fuboCameraPosition;
 
 	// Compute new Forward, Right and Up vectors from new Euler Angles
 	virtual void UpdateCameraVectors() = 0;

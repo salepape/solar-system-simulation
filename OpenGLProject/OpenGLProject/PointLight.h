@@ -4,27 +4,35 @@
 #include <glm/vec3.hpp>
 
 #include "LightSource.h"
+#include "UniformBuffer.h"
 
-class UniformBuffer;
 
 
+// Warning: make sure this struct always contain the same data as the mirrored one in GLSL
+struct GLSLPointLightParams
+{
+	glm::vec3 position;
+
+	ReflectionParams reflectionParams;
+	AttenuationParams attenuationParams;
+
+	bool isBlinn;
+};
 
 class PointLight : public LightSource
 {
 public:
 	PointLight() = delete;
 	PointLight(const glm::vec3& inPosition, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const bool inIsBlinn = false);
-	
-	void SetPosition(const glm::vec3& inPosition) { position = inPosition; }
+
+	void SetPosition(const glm::vec3& inPosition) { GLSLParams.position = inPosition; }
 
 	void SetFUniforms() override;
 	void SetLightPositionFUniform(const glm::vec3& inPosition) const;
 
 private:
-	glm::vec3 position{ 0.0f };
-	AttenuationParams attenuationParams;
-
-	UniformBuffer& ubo;
+	GLSLPointLightParams GLSLParams;
+	UniformBuffer fubo;
 };
 
 

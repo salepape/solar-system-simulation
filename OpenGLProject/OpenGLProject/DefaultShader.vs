@@ -8,7 +8,7 @@ out vec3 vo_Position;
 out vec3 vo_Normal;
 out vec2 vo_TexCoords;
 
-layout (std140) uniform ubo_ProjectionView
+layout (std140) uniform vubo_ProjectionView
 {
     mat4 vu_ProjectionView;
 };

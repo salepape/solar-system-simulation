@@ -4,7 +4,7 @@ layout (location = 0) in vec3 va_Position;
 
 out vec3 vo_TexDir;
 
-layout (std140) uniform ubo_ProjectionView
+layout (std140) uniform vubo_ProjectionView
 {
     mat4 vu_ProjectionView;
 };

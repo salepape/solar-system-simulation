@@ -3,49 +3,48 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Constants.h"
-#include "ShaderLoader.h"
-#include "UniformBuffer.h"
 
 
 
 SpotLight::SpotLight(const glm::vec3& inPosition, const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const SpotParams& inSpotParams, const bool inIsBlinn) : LightSource(inReflectionParams),
-position(inPosition), direction(inDirection), attenuationParams(inAttenuationParams), spotParams(inSpotParams), ubo(ShaderLoader::GetUBO("ubo_SpotLight"))
+GLSLParams({ inPosition, inDirection, inReflectionParams, inAttenuationParams, inSpotParams, inIsBlinn }), fubo("fubo_SpotLight", UniformShaderGroup::LINE_OF_SIGHT)
 {
 	SetFUniforms();
 }
 
 void SpotLight::SetFUniforms()
 {
-	ubo.SetSubData({
-		{ static_cast<const void*>(glm::value_ptr(position)), GLSLConstants::vec4SizeInBytes },
-		{ static_cast<const void*>(glm::value_ptr(direction)), GLSLConstants::vec4SizeInBytes },
-		{ static_cast<const void*>(glm::value_ptr(reflectionParams.ambient)), GLSLConstants::vec4SizeInBytes },
-		{ static_cast<const void*>(glm::value_ptr(reflectionParams.diffuse)), GLSLConstants::vec4SizeInBytes },
-		{ static_cast<const void*>(glm::value_ptr(reflectionParams.specular)), GLSLConstants::vec4SizeInBytes },
-		{ static_cast<const void*>(&attenuationParams.constant), GLSLConstants::scalarSizeInBytes },
-		{ static_cast<const void*>(&attenuationParams.linear), GLSLConstants::scalarSizeInBytes },
-		{ static_cast<const void*>(&attenuationParams.quadratic), GLSLConstants::scalarSizeInBytes },
-		{ static_cast<const void*>(&spotParams.cutoff), GLSLConstants::scalarSizeInBytes },
-		{ static_cast<const void*>(&spotParams.outerCutoff), GLSLConstants::scalarSizeInBytes },
-		{ static_cast<const void*>(&isBlinn), GLSLConstants::scalarSizeInBytes },
-		{ static_cast<const void*>(&isCameraFlashLight), GLSLConstants::scalarSizeInBytes }
-		});
+	// Stored in a GLSL struct with in Fragment Shader
+	UniformGLSLStruct uboStruct;
+	uboStruct.AddUniformField(static_cast<const void*>(glm::value_ptr(GLSLParams.position)), GLSLConstants::vec4SizeInBytes);
+	uboStruct.AddUniformField(static_cast<const void*>(glm::value_ptr(GLSLParams.direction)), GLSLConstants::vec4SizeInBytes);
+	uboStruct.AddUniformField(static_cast<const void*>(glm::value_ptr(GLSLParams.reflectionParams.ambient)), GLSLConstants::vec4SizeInBytes);
+	uboStruct.AddUniformField(static_cast<const void*>(glm::value_ptr(GLSLParams.reflectionParams.diffuse)), GLSLConstants::vec4SizeInBytes);
+	uboStruct.AddUniformField(static_cast<const void*>(glm::value_ptr(GLSLParams.reflectionParams.specular)), GLSLConstants::vec4SizeInBytes);
+	uboStruct.AddUniformField(static_cast<const void*>(&GLSLParams.attenuationParams.constant), GLSLConstants::scalarSizeInBytes);
+	uboStruct.AddUniformField(static_cast<const void*>(&GLSLParams.attenuationParams.linear), GLSLConstants::scalarSizeInBytes);
+	uboStruct.AddUniformField(static_cast<const void*>(&GLSLParams.attenuationParams.quadratic), GLSLConstants::scalarSizeInBytes);
+	uboStruct.AddUniformField(static_cast<const void*>(&GLSLParams.spotParams.cutoff), GLSLConstants::scalarSizeInBytes);
+	uboStruct.AddUniformField(static_cast<const void*>(&GLSLParams.spotParams.outerCutoff), GLSLConstants::scalarSizeInBytes);
+	uboStruct.AddUniformField(static_cast<const void*>(&isBlinn), GLSLConstants::scalarSizeInBytes);
+	uboStruct.AddUniformField(static_cast<const void*>(&isCameraFlashLight), GLSLConstants::scalarSizeInBytes);
+	fubo.SetData(uboStruct);
 }
 
 void SpotLight::SetLightPositionFUniform(const glm::vec3& inPosition)
 {
 	SetPosition(inPosition);
-	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inPosition)), GLSLConstants::vec4SizeInBytes);
+	fubo.SetSubData(static_cast<const void*>(glm::value_ptr(inPosition)), GLSLConstants::vec4SizeInBytes);
 }
 
 void SpotLight::SetLightDirectionFUniform(const glm::vec3& inDirection)
 {
 	SetDirection(inDirection);
-	ubo.SetSubData(static_cast<const void*>(glm::value_ptr(inDirection)), GLSLConstants::vec4SizeInBytes, GLSLConstants::vec4SizeInBytes);
+	fubo.SetSubData(static_cast<const void*>(glm::value_ptr(inDirection)), GLSLConstants::vec4SizeInBytes, GLSLConstants::vec4SizeInBytes);
 }
 
 void SpotLight::SetIsCameraFlashLightFUniform(const bool isActive)
 {
 	SetActivationState(isActive);
-	ubo.SetSubData(static_cast<const void*>(&isActive), GLSLConstants::scalarSizeInBytes, 5 * GLSLConstants::vec4SizeInBytes + 6 * GLSLConstants::scalarSizeInBytes);
+	fubo.SetSubData(static_cast<const void*>(&isActive), GLSLConstants::scalarSizeInBytes, 5 * GLSLConstants::vec4SizeInBytes + 6 * GLSLConstants::scalarSizeInBytes);
 }
