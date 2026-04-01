@@ -9,3 +9,8 @@ Spacecraft::Spacecraft(const glm::vec3& inPosition, const glm::vec3& inRotation,
 {
 	Application::GetInstance().GetWindow().cameraController = &cameraController;
 }
+
+void Spacecraft::SetInitialTransform(const glm::vec3& inPosition, const glm::vec3& inRotation)
+{
+	cameraController.GetCamera().SetInitialTransform(inPosition, inRotation);
+}

@@ -20,6 +20,14 @@ Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const f
 	fuboCameraPosition.SetData(static_cast<const void*>(glm::value_ptr(glm::vec4(0.0f))), GLSLConstants::vec4SizeInBytes);
 }
 
+void Camera::SetInitialTransform(const glm::vec3& inPosition, const glm::vec3& inRotation)
+{
+	SetTransform(inPosition, inRotation);
+
+	initialPosition = inPosition;
+	initialRotation = inRotation;
+}
+
 void Camera::SetTransform(const glm::vec3& inPosition, const glm::vec3& inRotation)
 {
 	position = inPosition;

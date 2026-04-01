@@ -41,8 +41,6 @@ private:
 	void BuildBodySystemsLegend();
 	void BuildBodyRings();
 	void BuildBelts();
-
-	void SetSpacecraftTransform(const glm::vec3& inPosition, const glm::vec3& inRotation);
 };
 
 

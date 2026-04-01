@@ -19,6 +19,7 @@ public:
 	const glm::vec3& GetUp() const { return up; }
 	const glm::vec3& GetForward() const { return forward; }
 
+	void SetInitialTransform(const glm::vec3& inPosition, const glm::vec3& inRotation);
 	void SetTransform(const glm::vec3& inPosition, const glm::vec3& inRotation);
 	void ResetTransform();
 

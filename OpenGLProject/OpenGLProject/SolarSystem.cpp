@@ -29,7 +29,7 @@ SolarSystem::SolarSystem() :
 	BuildBodySystems();
 	BuildBelts();
 
-	SetSpacecraftTransform(
+	spacecraft.SetInitialTransform(
 		glm::vec3(0.0f, GetBodySystem("Sun").celestialBody.bodyData.radius * 1.75f, -25.0f),
 		glm::vec3(0.0f, -25.0f, 90.0f));
 }
@@ -230,11 +230,6 @@ void SolarSystem::BuildBelts()
 			InstanceParams{ modelPath, instanceCount, sizeRangeLowerBound, sizeRangeSpan },
 			TorusParams{ majorRadius, minorRadius, flatnessFactor });
 	}
-}
-
-void SolarSystem::SetSpacecraftTransform(const glm::vec3& inPosition, const glm::vec3& inRotation)
-{
-	spacecraft.cameraController.GetCamera().SetTransform(inPosition, inRotation);
 }
 
 BodySystem& SolarSystem::GetBodySystem(const std::string& inBodyName)

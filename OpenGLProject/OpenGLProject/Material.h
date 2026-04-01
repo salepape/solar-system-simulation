@@ -36,7 +36,7 @@ public:
 	Material(const Material& inMaterial) = delete;
 	Material& operator = (const Material& inMaterial) = delete;
 
-	// Needed when moving the Material instance to the SceneEntity member attribute from the Child initialisation list
+	// Needed when moving the Material instance to the SceneEntity member attribute from the Child initialisation-list
 	Material(Material&& inMaterial);
 	Material& operator = (Material&& inMaterial) = delete;
 
