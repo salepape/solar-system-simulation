@@ -9,9 +9,10 @@
 
 
 
-// Ensure look_up ID is always correct when instantiating or looking for a Shader
+// To be used to refer to any Shader instead of relying on raw strings (layer of security over the existence of LookUpIDs when instantiating or look-up functions)
 namespace ShaderLookUpID
 {
+	// Enum elements do not correspond to GLSL Shader names but on which Scene Entity/Object Mesh they are applied to
 	enum Enum
 	{
 		CELESTIAL_BODY = 0,
@@ -29,14 +30,14 @@ namespace ShaderLookUpID
 	static const Enum Get(const int index) { return All[index]; }
 };
 
-// Used to check validity of all shaders, and the program they are attached to
+// Used to check validity of GLSL Shaders at all stages of their building process, and the GLSL Program they are attached to
 enum class ShaderProcessStage
 {
 	COMPILATION,
 	LINKING,
 };
 
-// Class dealing with vertex and fragment GLSL shaders
+// Wrapper of a combination of GLSL Vertex/Fragment Shaders associated with a Scene Entity/Object, that handles its creation, compilation, modification, and deletion
 class Shader
 {
 public:

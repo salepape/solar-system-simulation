@@ -9,10 +9,11 @@
 
 
 
+// Util static class giving a global access point to all Shaders/UBOs applied on Scene Entity/Objects of the simulation
 class ShaderLoader
 {
 public:
-	// Build/compile shaders, their corresponding programs, and register all needed Uniform Buffer variables (common across several shaders)
+	// Instantiate Shaders for all Scene Entity/Objects of the simulation based on GLSL Vertex/Fragment Shaders, and common Uniform variables
 	static void BuildShaders();
 
 	static Shader& GetShader(const ShaderLookUpID::Enum inShaderName);

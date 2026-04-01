@@ -30,6 +30,7 @@ struct VertexAttributeLayout
 	uint8_t normalised{ 0 };
 };
 
+// Allow to define a set of GLSL Attributes (via 'layout' keyword) acording to specified input positions of a GLSL Vertex Shader
 class VertexBufferLayout
 {
 public:
