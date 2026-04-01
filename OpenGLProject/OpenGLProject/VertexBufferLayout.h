@@ -6,7 +6,7 @@
 
 
 
-// List of locations of attributes defined as layouts in a vertex shader (we assume this convention for all shader files)
+// Index at which a GLSL Vertex Shader attribute will be set (we assume this convention for all shader files)
 enum VertexAttributeLocation
 {
 	Position = 0,
@@ -21,6 +21,7 @@ enum VertexAttributeLocation
 	InstancedMatrixCol4 = 8,
 };
 
+// Define a GLSL Vertex Shader attribute (via the 'layout' keyword) at a specific index as well as information on the nature of the variable itself
 struct VertexAttributeLayout
 {
 	VertexAttributeLocation location;
@@ -30,7 +31,7 @@ struct VertexAttributeLayout
 	uint8_t normalised{ 0 };
 };
 
-// Allow to define a set of GLSL Attributes (via 'layout' keyword) acording to specified input positions of a GLSL Vertex Shader
+// Allow to define a set of GLSL attributes according to their corresponding input positions in the GLSL Vertex Shader (set by convention)
 class VertexBufferLayout
 {
 public:

@@ -10,7 +10,7 @@
 
 
 
-// Optimise access to a Uniform GLSL variable when used across several GLSL Vertex/Fragment Shader implementations
+// Store the reference to a GLSL Uniform that is shared across several GLSL Vertex/Fragment Shaders, to allow for a single call to update its value in all of them
 class UniformBuffer : public DataBuffer
 {
 public:
