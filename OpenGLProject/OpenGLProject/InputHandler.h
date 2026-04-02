@@ -3,10 +3,11 @@
 
 
 
-// Singleton class to access input system without being tight to GLFW
+// Singleton class allowing a global access point for a unique InputHandler instance (without being tight to GLFW)
 class InputHandler
 {
 public:
+	// Unique Singleton instance defined in source file
 	static InputHandler& GetInstance();
 
 	static bool IsKeyPressed(const int keyCode);

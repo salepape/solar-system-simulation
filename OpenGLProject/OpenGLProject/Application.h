@@ -3,10 +3,11 @@
 
 #include <memory>
 
-#include "Window.h"
+class Window;
 
 
 
+// Singleton class allowing a global access point for a unique Application instance
 class Application
 {
 public:
@@ -27,7 +28,7 @@ public:
 	// Compute delta time between last frame and current one in order to reduce differences between computer processing powers
 	float deltaTime{ 0.0f };
 
-	static Application& GetInstance() { return *instance; }
+	static Application& GetInstance();
 	Window& GetWindow() const { return *window; }
 
 	// Check if GLFW window has been instructed to close
@@ -47,8 +48,17 @@ public:
 	void UpdateSpeed(const float inSpeedFactor);
 
 private:
+	// Unique Singleton instance defined in source file
 	static Application* instance;
-	std::unique_ptr<Window> window;
+
+	// As Window destructor is called by unique_ptr at some point in Solar Application source file, 
+	// and Window type is incomplete at this point (forward-declared), we have to implement a custom destructor
+	struct WindowDeleter
+	{
+		void operator()(Window* ptr);
+	};
+
+	std::unique_ptr<Window, WindowDeleter> window;
 
 	// Time elapsed since GLFW initialisation [in seconds]
 	float lastFrameElapsedTime{ 0.0f };

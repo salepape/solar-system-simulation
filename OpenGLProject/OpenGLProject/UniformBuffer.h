@@ -4,10 +4,11 @@
 #include <cstddef> // std::size_t
 #include <cstdint>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "DataBuffer.h"
-#include "Shader.h"
+#include "ShaderLoader.h"
 
 
 
@@ -28,9 +29,9 @@ public:
 	void AddUniformField(const void* data, const std::size_t type) { uniformFields.emplace_back(SubData{ data, type }); }
 
 	// Compute total size of the struct (corresponding to the sum of each GLSL variable size in the case of structs)
-	const size_t GetSizeInBytes() const
+	const std::size_t GetSizeInBytes() const
 	{
-		size_t result = 0;
+		std::size_t result = 0;
 		for (const SubData& uniformField : uniformFields)
 		{
 			result += uniformField.sizeInBytes;

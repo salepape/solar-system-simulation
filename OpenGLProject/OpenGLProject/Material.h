@@ -5,9 +5,10 @@
 #include <glm/vec3.hpp>
 #include <vector>
 
-#include "Shader.h"
 #include "ShaderLoader.h"
 #include "Texture.h"
+
+class Shader;
 
 
 

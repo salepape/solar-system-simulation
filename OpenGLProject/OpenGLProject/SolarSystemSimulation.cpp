@@ -1,6 +1,12 @@
 #include "SolarSystemSimulation.h"
 
 #include "ShaderLoader.h"
+#include "SolarSystem.h"
+
+void SolarSystemSimulation::SolarSystemDeleter::operator()(SolarSystem* ptr)
+{
+	delete ptr;
+}
 
 
 
@@ -8,7 +14,7 @@ void SolarSystemSimulation::SetUp()
 {
 	ShaderLoader::BuildShaders();
 
-	solarSystemScene = std::make_unique<SolarSystem>();
+	solarSystemScene = std::unique_ptr<SolarSystem, SolarSystemDeleter>(new SolarSystem());
 }
 
 void SolarSystemSimulation::Refresh()

@@ -4,7 +4,8 @@
 #include <memory>
 
 #include "Application.h"
-#include "SolarSystem.h"
+
+class SolarSystem;
 
 
 
@@ -16,7 +17,14 @@ public:
 	void Refresh() override;
 
 private:
-	std::unique_ptr<SolarSystem> solarSystemScene;
+	// As Solar System destructor is called by unique_ptr at some point in Solar System Simulation source file, 
+	// and Solar System type is incomplete at this point (forward-declared), we have to implement a custom destructor
+	struct SolarSystemDeleter
+	{
+		void operator()(SolarSystem* ptr);
+	};
+
+	std::unique_ptr<SolarSystem, SolarSystemDeleter> solarSystemScene;
 };
 
 

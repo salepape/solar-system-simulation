@@ -11,10 +11,10 @@
 #include <string>
 
 #include "Texture.h"
-#include "VertexArray.h"
-#include "VertexBuffer.h"
 
 class Renderer;
+class VertexArray;
+class VertexBuffer;
 
 
 
@@ -33,7 +33,7 @@ struct GlyphParams
 	FT_Pos advance;
 };
 
-// Build a Texture instance for each needed ASCII character, and using them to render celestial body names
+// Singleton class allowing a global access point for a single Application class.
 class TextRenderer
 {
 public:
@@ -50,8 +50,6 @@ public:
 	void Render(const Renderer& renderer, const uint32_t textureUnit, const std::string& text, float x, const float y, const float scale);
 
 private:
-	static TextRenderer* instance;
-
 	FT_Library FreeTypeLibrary;
 	FT_Face face;
 

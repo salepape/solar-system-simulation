@@ -10,6 +10,8 @@
 #include "Quad.h"
 #include "Renderer.h"
 #include "ShaderLoader.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 
 

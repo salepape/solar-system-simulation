@@ -5,6 +5,8 @@
 #include <string>
 #include <utility>
 
+#include "BodyRings.h"
+#include "LightSource.h"
 #include "PerspectiveCamera.h"
 #include "PointLight.h"
 #include "Renderer.h"

@@ -4,6 +4,8 @@
 #include <string>
 #include <utility>
 
+#include "Shader.h"
+
 
 
 Material::Material(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties, const SpecularProperties& inSpecularProperties, const float inTransparency) :

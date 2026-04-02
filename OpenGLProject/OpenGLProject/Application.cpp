@@ -5,13 +5,31 @@
 #include <glad.h>
 #include <glfw3.h>
 
+#include "Window.h"
+
 Application* Application::instance = nullptr;
 
+void Application::WindowDeleter::operator()(Window* ptr)
+{
+	delete ptr;
+}
 
+
+
+Application& Application::GetInstance()
+{
+	if (instance == nullptr)
+	{
+		std::cout << "ERROR::APPLICATION - A class attempts to get a reference to the Application singleton while it has not been initialised!" << std::endl;
+		assert(false);
+	}
+
+	return *instance;
+}
 
 Application::Application()
 {
-	window = std::make_unique<Window>(1000, 1000, "Solar System Simulation");
+	window = std::unique_ptr<Window, WindowDeleter>(new Window(1000, 1000, "Solar System Simulation"));
 
 	// Load all OpenGL function pointers locations using GLAD
 	if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
