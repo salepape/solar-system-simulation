@@ -52,17 +52,17 @@ glm::mat4 Camera::ComputeInfiniteView() const
 void Camera::SetProjectionViewVUniform(const float windowAspectRatio) const
 {
 	const glm::mat4& projectionView = ComputeProjection(windowAspectRatio) * ComputeView();
-	vuboProjectionView.SetSubData(static_cast<const void*>(glm::value_ptr(projectionView)), GLSLConstants::mat4v4SizeInBytes);
+	vuboProjectionView.SetSubData(static_cast<const void*>(glm::value_ptr(projectionView)), GLSLConstants::mat4v4SizeInBytes, 0);
 }
 
 void Camera::SetInfiniteProjectionViewVUniform(const float windowAspectRatio) const
 {
 	const glm::mat4& infiniteProjectionView = ComputeProjection(windowAspectRatio) * ComputeInfiniteView();
-	vuboProjectionView.SetSubData(static_cast<const void*>(glm::value_ptr(infiniteProjectionView)), GLSLConstants::mat4v4SizeInBytes);
+	vuboProjectionView.SetSubData(static_cast<const void*>(glm::value_ptr(infiniteProjectionView)), GLSLConstants::mat4v4SizeInBytes, 0);
 }
 
 void Camera::SetPositionFUniform() const
 {
 	const glm::vec4& position = glm::vec4(GetPosition(), 0.0f);
-	fuboCameraPosition.SetSubData(static_cast<const void*>(glm::value_ptr(position)), GLSLConstants::vec4SizeInBytes);
+	fuboCameraPosition.SetSubData(static_cast<const void*>(glm::value_ptr(position)), GLSLConstants::vec4SizeInBytes, 0);
 }

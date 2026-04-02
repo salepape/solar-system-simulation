@@ -215,7 +215,6 @@
     <ClCompile Include="Headlamp.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputHandler.cpp" />
-    <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="MilkyWay.cpp" />
     <ClCompile Include="Orbit.cpp" />
     <ClCompile Include="PointLight.cpp" />

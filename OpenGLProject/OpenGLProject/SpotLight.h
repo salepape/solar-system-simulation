@@ -25,6 +25,7 @@ struct GLSLSpotLightParams
 	SpotParams spotParams;
 
 	bool isBlinn;
+	bool isCameraFlashLight;
 };
 
 class SpotLight : public LightSource
@@ -35,7 +36,7 @@ public:
 
 	void SetPosition(const glm::vec3& inPosition) { GLSLParams.position = inPosition; }
 	void SetDirection(const glm::vec3& inDirection) { GLSLParams.direction = inDirection; }
-	void SetActivationState(const bool isActive) { isCameraFlashLight = isActive; }
+	void SetActivationState(const bool isActive) { GLSLParams.isCameraFlashLight = isActive; }
 
 	void SetFUniforms() override;
 	void SetLightPositionFUniform(const glm::vec3& inPosition);
@@ -45,8 +46,6 @@ public:
 private:
 	GLSLSpotLightParams GLSLParams;
 	UniformBuffer fubo;
-
-	bool isCameraFlashLight{ false };
 };
 
 

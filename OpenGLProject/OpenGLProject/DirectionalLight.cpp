@@ -6,8 +6,8 @@
 
 
 
-DirectionalLight::DirectionalLight(const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn) : LightSource(inReflectionParams, inIsBlinn),
-GLSLParams({ inDirection, inReflectionParams, inIsBlinn }), fubo("fubo_DirectionalLight", UniformShaderGroup::PROJECTION_VIEW)
+DirectionalLight::DirectionalLight(const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn) :
+	GLSLParams({ inDirection, inReflectionParams, inIsBlinn }), fubo("fubo_DirectionalLight", UniformShaderGroup::PROJECTION_VIEW)
 {
 	SetFUniforms();
 }
@@ -26,5 +26,5 @@ void DirectionalLight::SetFUniforms()
 
 void DirectionalLight::SetLightDirectionFUniform(const glm::vec3& inDirection) const
 {
-	fubo.SetSubData(static_cast<const void*>(glm::value_ptr(inDirection)), GLSLConstants::vec4SizeInBytes);
+	fubo.SetSubData(static_cast<const void*>(glm::value_ptr(inDirection)), GLSLConstants::vec4SizeInBytes, 0);
 }

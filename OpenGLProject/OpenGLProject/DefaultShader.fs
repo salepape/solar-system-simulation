@@ -65,7 +65,6 @@ layout (std140) uniform fubo_SpotLight
     bool fu_IsBlinn;
     bool fu_IsCameraFlashLight;
 } spotLight;
-uniform bool fu_IsCameraFlashLight;
 
 layout (std140) uniform vec4 fubo_CameraPosition;
 

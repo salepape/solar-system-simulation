@@ -6,8 +6,8 @@
 
 
 
-PointLight::PointLight(const glm::vec3& inPosition, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const bool inIsBlinn) : LightSource(inReflectionParams, inIsBlinn),
-GLSLParams({ inPosition, inReflectionParams, inAttenuationParams, inIsBlinn }), fubo("fubo_PointLight", UniformShaderGroup::LINE_OF_SIGHT)
+PointLight::PointLight(const glm::vec3& inPosition, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const bool inIsBlinn) :
+	GLSLParams({ inPosition, inReflectionParams, inAttenuationParams, inIsBlinn }), fubo("fubo_PointLight", UniformShaderGroup::LINE_OF_SIGHT)
 {
 	SetFUniforms();
 }
@@ -29,5 +29,5 @@ void PointLight::SetFUniforms()
 
 void PointLight::SetLightPositionFUniform(const glm::vec3& inPosition) const
 {
-	fubo.SetSubData(static_cast<const void*>(glm::value_ptr(inPosition)), GLSLConstants::vec4SizeInBytes);
+	fubo.SetSubData(static_cast<const void*>(glm::value_ptr(inPosition)), GLSLConstants::vec4SizeInBytes, 0);
 }

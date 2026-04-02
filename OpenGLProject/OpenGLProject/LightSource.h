@@ -25,13 +25,7 @@ struct AttenuationParams
 class LightSource
 {
 public:
-	LightSource(const ReflectionParams& inReflectionParams, const bool isBlinn = false);
-
 	virtual void SetFUniforms() = 0;
-
-protected:
-	ReflectionParams reflectionParams;
-	bool isBlinn{ false };
 };
 
 

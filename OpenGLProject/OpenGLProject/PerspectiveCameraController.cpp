@@ -197,9 +197,10 @@ void PerspectiveCameraController::Callback_DetectKeyboardInput()
 			return Application::GetInstance().GetTime() - pressTime > cameraController->timeBeforeReleaseRegistered;
 		};
 
+		PerspectiveCameraController* const cameraController = GetCameraController();
+
 		if (key == GLFW_KEY_SPACE)
 		{
-			PerspectiveCameraController* const cameraController = GetCameraController();
 			if (action == GLFW_PRESS && cameraController->pauseStartTime == 0.0)
 			{
 				Application::GetInstance().Pause(true);
@@ -214,7 +215,6 @@ void PerspectiveCameraController::Callback_DetectKeyboardInput()
 		}
 		else if (key == GLFW_KEY_TAB)
 		{
-			PerspectiveCameraController* const cameraController = GetCameraController();
 			if (action == GLFW_PRESS && cameraController->cursorModeStartTime == 0.0)
 			{
 				window->SetCursorMode(GLFW_CURSOR_NORMAL);
@@ -229,7 +229,6 @@ void PerspectiveCameraController::Callback_DetectKeyboardInput()
 		}
 		else if (key == GLFW_KEY_L)
 		{
-			PerspectiveCameraController* const cameraController = GetCameraController();
 			if (action == GLFW_PRESS && cameraController->displayLegendStartTime == 0.0)
 			{
 				Application::GetInstance().DisplayLegend(true);
@@ -244,7 +243,6 @@ void PerspectiveCameraController::Callback_DetectKeyboardInput()
 		}
 		else if (key == GLFW_KEY_H)
 		{
-			PerspectiveCameraController* const cameraController = GetCameraController();
 			cameraController->GetHeadlamp().UpdateHeadlightState(cameraController->timeBeforeReleaseRegistered, action);
 		}
 	});
