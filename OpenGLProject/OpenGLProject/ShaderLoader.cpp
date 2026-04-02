@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <iostream>
 
+#include "Shader.h"
+
 
 
 std::vector<Shader> ShaderLoader::shaders;

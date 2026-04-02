@@ -7,28 +7,8 @@
 #include <string>
 #include <unordered_map>
 
+#include "ShaderLoader.h"
 
-
-// To be used to refer to any Shader instead of relying on raw strings (layer of security over the existence of LookUpIDs when instantiating or look-up functions)
-namespace ShaderLookUpID
-{
-	// Enum elements do not correspond to GLSL Shader names but on which Scene Entity/Object Mesh they are applied to
-	enum Enum
-	{
-		CELESTIAL_BODY = 0,
-		SUN,
-		BILLBOARD,
-		BELT,
-		MILKY_WAY,
-		ORBIT,
-		VISIBLE_BODY_RINGS,
-		INFRARED_BODY_RINGS,
-	};
-
-	static const std::vector<Enum> All = { CELESTIAL_BODY, SUN, BILLBOARD, BELT, MILKY_WAY, ORBIT, VISIBLE_BODY_RINGS, INFRARED_BODY_RINGS, };
-
-	static const Enum Get(const int index) { return All[index]; }
-};
 
 // Used to check validity of GLSL Shaders at all stages of their building process, and the GLSL Program they are attached to
 enum class ShaderProcessStage
