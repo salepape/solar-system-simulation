@@ -27,7 +27,6 @@ void PointLight::SetFUniforms()
 	fubo.SetData(uboStruct);
 }
 
-// Called each frame when Headlight is turned on
 void PointLight::SetLightPositionFUniform(const glm::vec3& inPosition) const
 {
 	fubo.SetSubData(static_cast<const void*>(glm::value_ptr(inPosition)), GLSLConstants::vec4SizeInBytes);
