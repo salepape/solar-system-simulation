@@ -30,7 +30,7 @@ private:
 	GLSLDirectionalLightParams GLSLParams;
 	UniformBuffer fubo;
 
-	void SetFUniforms() override;
+	void SetFUniforms();
 };
 
 

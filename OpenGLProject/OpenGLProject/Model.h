@@ -23,7 +23,7 @@ class Model
 {
 public:
 	Model(const std::filesystem::path& inPath, const bool inGammaCorrection = false);
-	
+
 	void StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const std::size_t sizeInBytes) const;
 
 	void Render(const Renderer& renderer) const;
@@ -35,7 +35,7 @@ private:
 	std::vector<Mesh> meshes;
 	std::vector<Texture> textures;
 
-	bool gammaCorrection{ false };
+	[[maybe_unused]] bool gammaCorrection{ false };
 
 	// Load a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector
 	void LoadModel(const std::filesystem::path& path);

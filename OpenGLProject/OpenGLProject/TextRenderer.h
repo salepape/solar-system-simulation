@@ -9,6 +9,7 @@
 #include <memory>
 #include <unordered_map>
 #include <string>
+#include <vector>
 
 #include "Texture.h"
 
@@ -21,7 +22,8 @@ class VertexBuffer;
 // Hold all texture/metrics information relevant to a loaded ASCII character glyph (using FreeType)
 struct GlyphParams
 {
-	Texture texture;
+	// Using a vector mainly for struct construction convenience
+	std::vector<Texture> textures;
 
 	unsigned int width{ 0 };
 	unsigned int height{ 0 };

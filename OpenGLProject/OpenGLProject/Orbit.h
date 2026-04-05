@@ -18,7 +18,7 @@ class Renderer;
 class Orbit : public SceneEntity
 {
 public:
-	Orbit(BodyData&& inBodyData);
+	Orbit(const BodyData& inBodyData);
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
 	void Render(const Renderer& renderer, const glm::vec3& parentPosition, const float elapsedTime = 0.0f);

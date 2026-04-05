@@ -12,7 +12,9 @@ class Application
 {
 public:
 	Application();
-	~Application() = default;
+
+	// Virtual destructor (needed to handle any custom polymorphic deletion in child classes)
+	virtual ~Application() = default;
 
 	virtual void SetUp() = 0;
 	virtual void Run();

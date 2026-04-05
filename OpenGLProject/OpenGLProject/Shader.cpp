@@ -61,7 +61,7 @@ int32_t Shader::GetUniformLocation(const std::string& name)
 {
 	if (uniformLocationCache.find(name) == uniformLocationCache.end())
 	{
-		std::cout << "ERROR::SHADER - Attempting to set Uniform " << name << " for Shader " << ShaderLookUpID::Get(lookUpID) << ", but Uniform has not been cached beforehand./nCheck if you can do it at initialisation time.\n" << std::endl;
+		std::cout << "ERROR::SHADER - Attempting to set Uniform " << name << " for Shader " << ShaderLookUpID::Get(lookUpID) << ", but Uniform has not been cached beforehand.\nCheck if you can do it at initialisation time.\n" << std::endl;
 		assert(false);
 	}
 

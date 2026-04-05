@@ -16,19 +16,19 @@
 
 
 CelestialBody::CelestialBody(BodyData&& inBodyData) : SceneEntity(inBodyData.name, InitialiseParent(inBodyData.texturePath, inBodyData.name)),
-bodyData(inBodyData),
-sphere({ inBodyData.radius })
+bodyData(std::move(inBodyData)),
+sphere(bodyData.radius)
 {
-	isMoon = inBodyData.parentName.length() != 0 ? true : false;
+	isMoon = bodyData.parentName.length() != 0 ? true : false;
 
-	orbitAngularFreq = inBodyData.orbitalPeriod == 0.0f ? 0.0f : GLMConstants::doublePi * 1.0f / inBodyData.orbitalPeriod;
-	spinAngularFreq = inBodyData.spinPeriod == 0.0f ? 0.0f : GLMConstants::doublePi * 1.0f / inBodyData.spinPeriod;
+	orbitAngularFreq = bodyData.orbitalPeriod == 0.0f ? 0.0f : GLMConstants::doublePi * 1.0f / bodyData.orbitalPeriod;
+	spinAngularFreq = bodyData.spinPeriod == 0.0f ? 0.0f : GLMConstants::doublePi * 1.0f / bodyData.spinPeriod;
 
-	obliquityInRad = glm::radians(inBodyData.obliquity);
+	obliquityInRad = glm::radians(bodyData.obliquity);
 
-	const float orbitalInclinationInRad = glm::radians(inBodyData.orbitalInclination);
-	distCosOrbInclination = inBodyData.distanceToParent * glm::cos(orbitalInclinationInRad);
-	distSinOrbInclination = inBodyData.distanceToParent * glm::sin(orbitalInclinationInRad);
+	const float orbitalInclinationInRad = glm::radians(bodyData.orbitalInclination);
+	distCosOrbInclination = bodyData.distanceToParent * glm::cos(orbitalInclinationInRad);
+	distSinOrbInclination = bodyData.distanceToParent * glm::sin(orbitalInclinationInRad);
 }
 
 Material CelestialBody::InitialiseParent(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName)

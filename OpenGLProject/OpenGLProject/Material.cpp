@@ -29,10 +29,10 @@ void Material::SetFUniforms() const
 	shader.Enable();
 
 	int diffuseTexFUTextureUnit = 0;
-	const std::string& diffuseTexFU = "material.fu_DiffuseTex_" + diffuseTexFUTextureUnit;
+	const std::string& diffuseTexFU = "material.fu_DiffuseTex_" + std::to_string(diffuseTexFUTextureUnit);
 	if (shader.IsUniformRequired(diffuseTexFU.c_str()))
 	{
-		shader.setUniformInt("material.fu_DiffuseTex", diffuseTexFUTextureUnit);
+		shader.setUniformInt(diffuseTexFU, diffuseTexFUTextureUnit);
 	}
 	IncrementTextureUnitCount(diffuseTexFUTextureUnit);
 

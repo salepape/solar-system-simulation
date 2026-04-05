@@ -11,12 +11,17 @@
 #include "ShaderLoader.h"
 #include "TextRenderer.h"
 
-
-
-Billboard::Billboard(BodyData&& inBodyData) : SceneEntity(inBodyData.name + "Billboard", InitialiseParent())
+namespace
 {
-	legend = inBodyData.name;
+	// Only a unique Texture2D Unit needed for all ASCII Glyphs from TextRenderer called by this class
+	constexpr uint32_t textureUnit{ 0 };
+}
 
+
+
+Billboard::Billboard(const BodyData& inBodyData) : SceneEntity(inBodyData.name + "Billboard", InitialiseParent()),
+legend(inBodyData.name)
+{
 	float textHeightFactor = 1.5f;
 	float textScaleFactor = 0.01f;
 	// If the current celestial body is a satellite (i.e. has a parent)

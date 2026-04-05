@@ -55,6 +55,8 @@ public:
 	const std::vector<CSVLine>& GetParsedCSV() const { return csvParsed; }
 	const CSVLine& GetParsedCSVLine(const std::string& name);
 
+	std::size_t GetCSVLinesCount() const { return csvParsed.size(); }
+
 private:
 	std::vector<CSVLine> csvParsed;
 };

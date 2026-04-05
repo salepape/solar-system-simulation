@@ -7,7 +7,7 @@
 
 
 
-Texture::Texture(const std::filesystem::path& inImagePath, const uint32_t inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType::Enum& inTextureType) :
+Texture::Texture(const std::filesystem::path& inImagePath, const uint32_t inTarget, WrapOptions&& wrapOptions, FilterOptions&& filterOptions, const TextureType::Enum inTextureType) :
 	imagePath(inImagePath), target(inTarget), textureType(inTextureType)
 {
 	SetWraps(wrapOptions);

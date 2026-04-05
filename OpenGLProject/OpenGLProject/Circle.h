@@ -16,12 +16,11 @@ public:
 
 	void Render(const Renderer& renderer) const override;
 
-protected:
-	void ComputeVertices() override;
-
 private:
 	float radius{ 0.0f };
 	uint32_t meridianStripsCount{ 500 };
+
+	void ComputeVertices();
 };
 
 

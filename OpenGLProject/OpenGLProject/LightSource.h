@@ -25,7 +25,8 @@ struct AttenuationParams
 class LightSource
 {
 public:
-	virtual void SetFUniforms() = 0;
+	// Virtual destructor (needed, as class is not final)
+	virtual ~LightSource() = default;
 };
 
 

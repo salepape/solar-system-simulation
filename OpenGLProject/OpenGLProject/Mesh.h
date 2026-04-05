@@ -35,11 +35,22 @@ struct Vertex
 class Mesh
 {
 public:
-	// Default constructor needed when computing mesh coordinates in code
+	// Default constructor (used when creating Mesh data from child classes, as vertices/indices can only be computed with child class params)
 	Mesh() = default;
-	// User-defined constructor used when parsing a pre-made 3D model (i.e. a mesh with textures applied on it) 
-	Mesh(const std::vector<Vertex>& inVertices, const std::vector<uint32_t>& inIndices);
-	~Mesh() = default;
+
+	// User-defined constructor (used when parsing a pre-made 3D model, i.e. a mesh with textures applied on it, and transferring Mesh info to this class) 
+	Mesh(const std::vector<Vertex>& inVertices, const std::vector<uint32_t>& inIndices = {});
+
+	// Copy constructor (needed when defining a Sphere in CelestialBody when object passed as const ref to instantiate Orbit/Billboard in BodySystem)
+	Mesh(const Mesh& inMesh) = default;
+	const Mesh& operator = (const Mesh& inMesh) = delete;
+
+	// Move constructor (used when reading data from model file)
+	Mesh(Mesh&& inMesh) = default;
+	Mesh&& operator = (Mesh&& inMesh) = delete;
+
+	// Virtual destructor (needed, as class is not final)
+	virtual ~Mesh() = default;
 
 	void StoreInstanceModelMatrices(const VertexBuffer& vbo) const;
 
@@ -53,11 +64,8 @@ protected:
 	std::shared_ptr<VertexArray> vao;
 	std::shared_ptr<IndexBuffer> ibo;
 
-	// Compute each vertex of the mesh mathematically in code
-	virtual void ComputeVertices() {};
-
 	// Set vertex buffers and its attribute pointers once we have all required data
-	virtual void StoreVertices();
+	void StoreVertices();
 };
 
 

@@ -73,9 +73,9 @@ void TextRenderer::LoadFTGlyphs(const std::string& text)
 		// so we just need to store the colour result in the first vector component, equivalent to red for RGBA
 		glyphTexture.LoadFTBitmap(glyph->bitmap, GL_RED);
 
-		// Use direct-list-initialisation to avoid having to add constrcutors in the plain-old data struct
+		// Use direct-list-initialisation to avoid having to add constructors in the plain-old data struct
 		GlyphParams glyphParams{
-			std::move(glyphTexture),
+			{ std::move(glyphTexture) },
 			glyph->bitmap.width,
 			glyph->bitmap.rows,
 			glm::ivec2(glyph->bitmap_left, glyph->bitmap_top),
@@ -124,7 +124,12 @@ void TextRenderer::Render(const Renderer& renderer, const uint32_t textureUnit, 
 
 	for (const char& character : text)
 	{
-		const GlyphParams& glyphParams = ASCIICharacterCache[character];
+		const GlyphParams& glyphParams = ASCIICharacterCache[static_cast<int8_t>(character)];
+		if (glyphParams.textures.size() <= 0)
+		{
+			std::cout << "ERROR::TEXT_RENDERER - Reference to Glyph Texture2D for character " << character << " has been lost!" << std::endl;
+			assert(false);
+		}
 
 		// Position of the quad on the billboard
 		const float xPosition = x + glyphParams.bearing.x * scale;
@@ -138,9 +143,9 @@ void TextRenderer::Render(const Renderer& renderer, const uint32_t textureUnit, 
 		quad.StoreVertices(*vbo);
 
 		// @todo - Enabling/Disabling operations should be brought outside the for-loop for optimisation num of permutations
-		glyphParams.texture.Enable(textureUnit);
+		glyphParams.textures[0].Enable(textureUnit);
 		quad.Render(renderer, *vao);
-		glyphParams.texture.Disable();
+		glyphParams.textures[0].Disable();
 
 		x += GetGlyphAdvance(glyphParams, scale);
 	}

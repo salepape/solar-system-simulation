@@ -3,8 +3,10 @@
 
 #include <glm/vec3.hpp>
 #include <memory>
+#include <utility>
 
 #include "Billboard.h"
+#include "BodyRings.h"
 #include "CelestialBody.h"
 #include "Orbit.h"
 
@@ -20,29 +22,40 @@ class TextRenderer;
 class BodySystem
 {
 public:
+	// Default constructor (not needed)
 	BodySystem() = delete;
+
+	// User-defined constructor (to be used when building a BodySystem instance in-place)
 	BodySystem(BodyData&& inBodyData);
 
+	// Copy constructor (needed when we call GetBodySystem(), as it gets a shallow copy of an instance of this class)
 	BodySystem(const BodySystem& inBodySystem) = default;
-	BodySystem& operator = (const BodySystem& inBodySystem) = delete;
+	const BodySystem& operator = (const BodySystem& inBodySystem) = delete;
 
+	// Move constructor (needed when building a BodySystem in-place)
 	BodySystem(BodySystem&& inBodySystem) = default;
-	BodySystem& operator = (BodySystem&& inBodySystem) = delete;
+	BodySystem&& operator = (BodySystem&& inBodySystem) = delete;
 
-	virtual ~BodySystem() = default;
+	// Destructor (not virtual needed, until child classes of Texture exist)
+	~BodySystem() = default;
 
+	CelestialBody& GetCelestialBody() { return celestialBody; }
+	const CelestialBody& GetCelestialBody() const { return celestialBody; }
+
+	void SetBodyRings(RingsData&& inRingsData) { celestialBodyRings = std::make_shared<BodyRings>(std::move(inRingsData)); }
+
+	void Render(const Renderer& renderer, const bool isBillboard, TextRenderer& textRenderer, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float elapsedTime);
+
+private:
 	CelestialBody celestialBody;
 	Orbit orbit;
 	Billboard billboard;
 
 	// Will be filled once the Rings have been parsed from the CSV file, hence not in the constructor of this class
-	std::unique_ptr<BodyRings> celestialBodyRings;
+	std::shared_ptr<BodyRings> celestialBodyRings;
 
-	void Render(const Renderer& renderer, const bool isBillboard, TextRenderer& textRenderer, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float elapsedTime);
-
-private:
 	// @todo - Would be an idea to move this to a proper Sun class: Planets do not glow on visible spectrum (tiny bit for Earth)
-	std::unique_ptr<LightSource> lightSource;
+	std::shared_ptr<LightSource> lightSource;
 };
 
 

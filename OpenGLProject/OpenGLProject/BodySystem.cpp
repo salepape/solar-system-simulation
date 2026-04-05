@@ -3,9 +3,7 @@
 #include <cstdint>
 #include <glm/geometric.hpp>
 #include <string>
-#include <utility>
 
-#include "BodyRings.h"
 #include "LightSource.h"
 #include "PerspectiveCamera.h"
 #include "PointLight.h"
@@ -16,10 +14,10 @@
 
 BodySystem::BodySystem(BodyData&& inBodyData) :
 	celestialBody(std::move(inBodyData)),
-	orbit(std::move(inBodyData)),
-	billboard(std::move(inBodyData))
+	orbit(celestialBody.GetBodyData()),
+	billboard(celestialBody.GetBodyData())
 {
-	if (inBodyData.name == "Sun")
+	if (celestialBody.GetBodyData().name == "Sun")
 	{
 		// Set up the lighting for all scene entities according to Sun position/light emission parameters
 		lightSource = std::make_unique<PointLight>(celestialBody.GetPosition(),

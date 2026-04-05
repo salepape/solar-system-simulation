@@ -28,7 +28,7 @@ void Sphere::ComputeVertices()
 	{
 		const float iInvParallelStripsCount = i * invParallelStripsCount;
 
-		// Angle between two squares of one parallel strip (in radians)
+		// Angle between two squares (i.e. area formed by the intersection between one meridian strip and one parallel strip) of one parallel strip (in radians)
 		const float theta = GLMConstants::unitPi * (0.5f - iInvParallelStripsCount);
 		const float rCosTheta = radius * glm::cos(theta);
 		const float zCoor = radius * glm::sin(theta);
@@ -68,7 +68,7 @@ void Sphere::ComputeIndices()
 
 		for (uint32_t j = 0; j < meridianStripsCount; ++j, ++parallelStripIndice, ++nextParallelStripIndice)
 		{
-			// 2 triangles per square except for those formed by first (top) and last (bottom) parallel strips
+			// 2 triangles per square (i.e. area formed by the intersection between one meridian strip and one parallel strip) except for those formed by first (top) and last (bottom) parallel strips
 			if (i != 0)
 			{
 				// k1---k2---k1+1

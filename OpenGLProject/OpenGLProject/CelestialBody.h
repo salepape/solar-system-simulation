@@ -32,17 +32,24 @@ struct BodyData
 class CelestialBody : public SceneEntity
 {
 public:
+	// Default constructor (not needed)
+	CelestialBody() = delete;
+
+	// User-defined constructor (to be used when building a CelestialBody in-place from initialisation-list)
 	CelestialBody(BodyData&& inBodyData);
+
+	// Copy constructor (needed when we call GetCelestialBody() from BodySystem, as it gets a shallow copy of an instance of this class)
+	CelestialBody(const CelestialBody& inCelestialBody) = default;
+	CelestialBody& operator = (const CelestialBody& inCelestialBody) = delete;
+
+	// Move constructor (needed when building a CelestialBody in-place from initialisation-list)
 	CelestialBody(CelestialBody&& inCelestialBody) = default;
 	CelestialBody& operator = (CelestialBody&& inCelestialBody) = delete;
 
-	CelestialBody() = delete;
-	CelestialBody(const CelestialBody& inCelestialBody) = delete;
-	CelestialBody& operator = (const CelestialBody& inCelestialBody) = delete;
-
+	// Destructor (not virtual needed, until child classes of Texture exist)
 	~CelestialBody() = default;
 
-	BodyData bodyData;
+	const BodyData& GetBodyData() const { return bodyData; }
 
 	// Compute body position in Cartesian coordinates from Spherical ones
 	void ComputeCartesianPosition(const float elapsedTime, const CelestialBody* satelliteParentBody = nullptr);
@@ -51,6 +58,7 @@ public:
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 
 private:
+	BodyData bodyData;
 	Sphere sphere;
 
 	bool isMoon{ false };

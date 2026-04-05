@@ -26,12 +26,11 @@ class BodyRings : public SceneEntity
 public:
 	BodyRings(RingsData&& inRingsData);
 
-	RingsData ringsData;
-
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
 	void Render(const Renderer& renderer, const glm::mat4& modelMatrix, const float elapsedTime = 0.0f);
 
 private:
+	RingsData ringsData;
 	Model model;
 
 	std::string bodyName;

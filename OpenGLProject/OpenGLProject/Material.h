@@ -31,17 +31,22 @@ struct SpecularProperties
 class Material
 {
 public:
+	// Default constructor (not needed)
 	Material() = delete;
+
+	// User-defined constructor (that should be the only one needed at instantiation time)
 	Material(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties = { glm::vec3(0.0f) }, const SpecularProperties& inSpecularProperties = { glm::vec3(0.0f), 64.0f }, const float inTransparency = 1.0f);
 
-	Material(const Material& inMaterial) = delete;
+	// Copy constructor (needed as member variable of type Material is present in SceneEntity class)
+	Material(const Material& inMaterial) = default;
 	Material& operator = (const Material& inMaterial) = delete;
 
-	// Needed when moving the Material instance to the SceneEntity member attribute from the Child initialisation-list
+	// Move constructor (needed when moving a Material instance to the SceneEntity member attribute from the Child initialisation-list)
 	Material(Material&& inMaterial);
 	Material& operator = (Material&& inMaterial) = delete;
 
-	virtual ~Material() = default;
+	// Destructor (not virtual needed, until child classes of Texture exist)
+	~Material() = default;
 
 	void EnableTextures() const;
 	void DisableTextures() const;

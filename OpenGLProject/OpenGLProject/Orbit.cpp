@@ -15,8 +15,8 @@
 
 
 
-Orbit::Orbit(BodyData&& inBodyData) : SceneEntity(inBodyData.name + "Orbit", InitialiseParent(inBodyData.texturePath)),
-circle({ inBodyData.distanceToParent })
+Orbit::Orbit(const BodyData& inBodyData) : SceneEntity(inBodyData.name + "Orbit", InitialiseParent(inBodyData.texturePath)),
+circle(inBodyData.distanceToParent)
 {
 	isMoon = (inBodyData.parentName.length() != 0);
 

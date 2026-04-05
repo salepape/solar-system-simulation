@@ -13,8 +13,8 @@
 
 
 PerspectiveCameraController::PerspectiveCameraController(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inZoomMaxLevel, const float inFarPlane) :
-	camera({ inPosition, inRotation, inZoomMaxLevel, inFarPlane }),
-	headlamp({ inPosition }),
+	camera(inPosition, inRotation, inZoomMaxLevel, inFarPlane),
+	headlamp(inPosition),
 	zoomMaxLevel(inZoomMaxLevel)
 {
 	zoomLeft = inZoomMaxLevel;
@@ -173,7 +173,7 @@ void PerspectiveCameraController::Callback_DetectKeyboardInput()
 	{
 		Window* const window = GLFWUtils::GetGLFWCallbackData(GLFWWindow);
 
-		const auto& GetCameraController = [&GLFWWindow, &window]() -> PerspectiveCameraController*
+		const auto& GetCameraController = [&window]() -> PerspectiveCameraController*
 		{
 			if (window == nullptr)
 			{

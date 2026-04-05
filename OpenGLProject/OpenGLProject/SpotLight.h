@@ -38,7 +38,7 @@ public:
 	void SetDirection(const glm::vec3& inDirection) { GLSLParams.direction = inDirection; }
 	void SetActivationState(const bool isActive) { GLSLParams.isCameraFlashLight = isActive; }
 
-	void SetFUniforms() override;
+	void SetFUniforms();
 	void SetLightPositionFUniform(const glm::vec3& inPosition);
 	void SetLightDirectionFUniform(const glm::vec3& inDirection);
 	void SetIsCameraFlashLightFUniform(const bool isActive);

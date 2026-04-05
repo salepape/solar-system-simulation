@@ -11,7 +11,7 @@
 
 
 BodyRings::BodyRings(RingsData&& inRingsData) : SceneEntity(inRingsData.bodyName + "Rings", InitialiseParent(inRingsData.opacity)),
-model({ inRingsData.modelPath }), ringsData(inRingsData)
+ringsData(inRingsData), model(inRingsData.modelPath)
 {
 	material.SetTextures(model.GetTextures());
 

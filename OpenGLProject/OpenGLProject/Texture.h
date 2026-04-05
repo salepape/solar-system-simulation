@@ -49,9 +49,22 @@ struct FilterOptions
 class Texture
 {
 public:
-	// Default constructor needed for GlyphParams struct declaration
-	Texture() = default;
-	Texture(const std::filesystem::path& inImagePath, const uint32_t inTarget, const WrapOptions& wrapOptions, const FilterOptions& filterOptions, const TextureType::Enum& inTextureType);
+	// Default constructor (not needed)
+	Texture() = delete;
+
+	// User-defined constructor (to be used when instantiating a Texture instance in usual circumstances)
+	Texture(const std::filesystem::path& inImagePath, const uint32_t inTarget, WrapOptions&& wrapOptions, FilterOptions&& filterOptions, const TextureType::Enum inTextureType);
+
+	// Copy constructor (needed when copying the whole Texture vector)
+	Texture(const Texture& inTexture) = default;
+	Texture& operator = (const Texture& inTexture) = default;
+
+	// Move constructor (needed when moving Texture in Glyph struct after being defined)
+	Texture(Texture&& inTexture) = default;
+	Texture&& operator = (Texture&& inTexture) = delete;
+
+	// Destructor (not virtual needed, until child classes of Texture exist)
+	~Texture() = default;
 
 	void LoadFTBitmap(const FT_Bitmap& bitmap, const uint32_t format);
 	void LoadDDS();
@@ -83,7 +96,7 @@ private:
 	uint32_t target{ 0 };
 	uint32_t rendererID{ 0 };
 
-	TextureType::Enum textureType;
+	[[maybe_unused]] TextureType::Enum textureType{ TextureType::Enum::NONE };
 };
 
 

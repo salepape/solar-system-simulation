@@ -15,7 +15,22 @@ class Renderer;
 class SceneEntity
 {
 public:
+	// Default constructor (not needed)
+	SceneEntity() = delete;
+
+	// User-defined constructor (needed to be defined explictly in the constructor of each child class)
 	SceneEntity(std::string inName, Material inMaterial);
+
+	// Copy constructor (needed when a copy constructor of any child class is called)
+	SceneEntity(const SceneEntity& inSceneEntity) = default;
+	SceneEntity& operator = (const SceneEntity& inSceneEntity) = delete;
+
+	// Move constructor (needed when a move constructor of any child class is called)
+	SceneEntity(SceneEntity&& inSceneEntity) = default;
+	SceneEntity&& operator = (SceneEntity&& inSceneEntity) = delete;
+
+	// Virtual destructor (needed, as class is not final)
+	virtual ~SceneEntity() = default;
 
 	int32_t GetID() const { return ID; }
 	const std::string& GetName() const { return name; }
