@@ -13,8 +13,7 @@ std::vector<Shader> ShaderLoader::shaders;
 
 void ShaderLoader::BuildShaders()
 {
-	constexpr int numOfShaders = 8;
-	shaders.reserve(numOfShaders);
+	shaders.reserve(ShaderLookUpID::Num);
 
 	shaders.emplace_back(ShaderLookUpID::Enum::CELESTIAL_BODY, "DefaultShader.vs", "DefaultShader.fs");
 	shaders.emplace_back(ShaderLookUpID::Enum::SUN, "DefaultShader.vs", "SunShader.fs");
@@ -25,9 +24,9 @@ void ShaderLoader::BuildShaders()
 	shaders.emplace_back(ShaderLookUpID::Enum::VISIBLE_BODY_RINGS, "DefaultShader.vs", "DefaultShader.fs");
 	shaders.emplace_back(ShaderLookUpID::Enum::INFRARED_BODY_RINGS, "DefaultShader.vs", "DefaultShader.fs");
 
-	if (shaders.size() != numOfShaders)
+	if (shaders.size() != ShaderLookUpID::Num)
 	{
-		std::cout << "ERROR::SHADER_LOADER - Shader vector count is different than the reserved one: preemptive count is " << numOfShaders << " while actual count is " << static_cast<int>(shaders.size()) << std::endl;
+		std::cout << "ERROR::SHADER_LOADER - Shader vector count is different than the reserved one: preemptive count is " << ShaderLookUpID::Num << " while actual count is " << static_cast<int>(shaders.size()) << std::endl;
 		assert(false);
 	}
 }

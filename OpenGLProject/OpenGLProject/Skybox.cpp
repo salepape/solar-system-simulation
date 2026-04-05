@@ -1,9 +1,10 @@
 #include "Skybox.h"
 
+#include <array>
 #include <glad.h>
 #include <glm/vec3.hpp>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "Constants.h"
 #include "Renderer.h"
@@ -18,7 +19,7 @@ Skybox::Skybox()
 
 void Skybox::ComputeVertices()
 {
-	std::vector<float> vertexCoor =
+	std::array<float, 3 * VERTICES_COUNT> vertexCoor =
 	{
 		-1.0f,  1.0f, -1.0f,
 		-1.0f, -1.0f, -1.0f,

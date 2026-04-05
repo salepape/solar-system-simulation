@@ -36,47 +36,48 @@ void Model::LoadModel(const std::filesystem::path& path)
 		assert(false);
 	}
 
-	// Process ASSIMP root node recursively
-	ProcessNode(*scene->mRootNode, *scene);
+	ProcessMeshNode(*scene->mRootNode, *scene);
 }
 
-void Model::ProcessNode(const aiNode& node, const aiScene& scene)
+void Model::ProcessMeshNode(const aiNode& node, const aiScene& scene)
 {
-	// Process each mesh located at the current node
+	// Best we can do is to assume we have a single Texture per Mesh, and reserve memory as such
 	meshes.reserve(node.mNumMeshes);
+	textures.reserve(node.mNumMeshes);
+
 	for (uint32_t i = 0; i < node.mNumMeshes; ++i)
 	{
-		// Get mesh from the scene (that contains data), node object only indexes scene objects
-		const aiMesh* const mesh = scene.mMeshes[node.mMeshes[i]];
-		if (mesh == nullptr)
+		// Get mesh from the scene (node object's purpose is to index scene objects)
+		const aiMesh* const meshPtr = scene.mMeshes[node.mMeshes[i]];
+		if (meshPtr == nullptr)
 		{
 			std::cout << "ERROR::ASSIMP - No mesh found in array mMeshes index " << node.mMeshes[i] << std::endl;
 			assert(false);
 		}
 
-		meshes.emplace_back(ProcessMesh(*mesh, scene));
+		// A single Mesh instance and 1+ Texture instances will be created once both methods below have been called
+		const aiMesh& mesh = *meshPtr;
+		ProcessMesh(mesh);
+		ProcessTextures(mesh, scene);
 	}
 
 	// Process ASSIMP children nodes recursively
 	for (uint32_t i = 0; i < node.mNumChildren; ++i)
 	{
-		ProcessNode(*node.mChildren[i], scene);
+		ProcessMeshNode(*node.mChildren[i], scene);
 	}
 }
 
-Mesh Model::ProcessMesh(const aiMesh& mesh, const aiScene& scene)
+void Model::ProcessMesh(const aiMesh& mesh)
 {
-	const std::vector<Vertex>& vertices = GetMeshVertices(mesh);
-	const std::vector<uint32_t>& indices = GetMeshIndices(mesh);
-	GetMeshTextures(mesh, scene);
-
-	return Mesh(vertices, indices);
+	meshes.emplace_back(Mesh(ProcessMeshVertices(mesh), ProcessMeshIndices(mesh)));
 }
 
-std::vector<Vertex> Model::GetMeshVertices(const aiMesh& mesh)
+std::vector<Vertex> Model::ProcessMeshVertices(const aiMesh& mesh)
 {
 	std::vector<Vertex> vertices;
 	vertices.reserve(mesh.mNumVertices);
+
 	for (uint32_t i = 0; i < mesh.mNumVertices; ++i)
 	{
 		Vertex vertex;
@@ -103,9 +104,11 @@ std::vector<Vertex> Model::GetMeshVertices(const aiMesh& mesh)
 	return vertices;
 }
 
-std::vector<uint32_t> Model::GetMeshIndices(const aiMesh& mesh)
+std::vector<uint32_t> Model::ProcessMeshIndices(const aiMesh& mesh)
 {
 	std::vector<uint32_t> indices;
+	indices.reserve(mesh.mNumFaces);
+
 	for (uint32_t i = 0; i < mesh.mNumFaces; ++i)
 	{
 		const aiFace& facet = mesh.mFaces[i];
@@ -119,7 +122,7 @@ std::vector<uint32_t> Model::GetMeshIndices(const aiMesh& mesh)
 	return indices;
 }
 
-void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
+void Model::ProcessTextures(const aiMesh& mesh, const aiScene& scene)
 {
 	const aiMaterial* const material = scene.mMaterials[mesh.mMaterialIndex];
 	if (material == nullptr)
@@ -128,12 +131,14 @@ void Model::GetMeshTextures(const aiMesh& mesh, const aiScene& scene)
 		assert(false);
 	}
 
+	// @todo - Create Materials out of aiMaterials instead of Textures?
+
 	for (const TextureType::Enum& textureType : TextureType::All)
 	{
 		const aiTextureType& assimpTextureType = static_cast<aiTextureType>(textureType);
 
 		const uint32_t textureCount = material->GetTextureCount(assimpTextureType);
-		textures.reserve(textureCount);
+
 		for (uint32_t i = 0; i < textureCount; ++i)
 		{
 			// Get texture path

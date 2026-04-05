@@ -40,18 +40,19 @@ private:
 	// Load a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector
 	void LoadModel(const std::filesystem::path& path);
 
-	// Process an ASSIMP node recursively
-	void ProcessNode(const aiNode& node, const aiScene& scene);
-	Mesh ProcessMesh(const aiMesh& mesh, const aiScene& scene);
+	// Process an ASSIMP mesh node recursively by transferring mesh data to Vertex-compatible vector
+	void ProcessMeshNode(const aiNode& node, const aiScene& scene);
 
-	// Store all vertices in a proper vector of Vertex instances (note ASSIMP does not use glm::vec3)
-	std::vector<Vertex> GetMeshVertices(const aiMesh& mesh);
+	void ProcessMesh(const aiMesh& mesh);
 
-	// Store the indices of each mesh facet in a proper vector
-	std::vector<uint32_t> GetMeshIndices(const aiMesh& mesh);
+	// Retrieve ASSIMP vertex data and build a C++-compatible vector of Vertex instances out of it
+	std::vector<Vertex> ProcessMeshVertices(const aiMesh& mesh);
 
-	// Create a Texture instance from each ASSIMP texture referenced in the model and store it in a proper vector
-	void GetMeshTextures(const aiMesh& mesh, const aiScene& scene);
+	// Retrieve ASSIMP facet data and build a C++-compatible vector of ints out of it
+	std::vector<uint32_t> ProcessMeshIndices(const aiMesh& mesh);
+
+	// Retrieve ASSIMP texture data and build a C++-compatible vector of Texture instances out of it
+	void ProcessTextures(const aiMesh& mesh, const aiScene& scene);
 };
 
 

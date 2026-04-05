@@ -145,7 +145,7 @@ void Shader::CheckValidity(const uint32_t ID, const ShaderProcessStage processSt
 				assert(false);
 			}
 
-			// We can't stack-allocate a char* and std::string is const, but we can use std::vector instead of heap-allocate
+			// We cannot stack-allocate a char*, and std::array cannot be used anyway since logLength is not constexpr, so we heap-allocate via std::vector, but reserving needed memory at creation time
 			std::vector<char> errorMessage(logLength);
 			glGetShaderInfoLog(ID, logLength, &logLength, errorMessage.data());
 			if (errorMessage.data() == nullptr)
@@ -171,7 +171,7 @@ void Shader::CheckValidity(const uint32_t ID, const ShaderProcessStage processSt
 				assert(false);
 			}
 
-			// We can't stack-allocate a char* and std::string is const, but we can use std::vector instead of heap-allocate
+			// We cannot stack-allocate a char*, and std::array cannot be used anyway since logLength is not constexpr, so we heap-allocate via std::vector, but reserving needed memory at creation time
 			std::vector<char> errorMessage(logLength);
 			glGetProgramInfoLog(ID, logLength, &logLength, errorMessage.data());
 			if (errorMessage.data() == nullptr)

@@ -4,10 +4,10 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include <array>
 #include <assimp/material.h>
 #include <cstdint>
 #include <filesystem>
-#include <vector>
 
 
 
@@ -23,7 +23,7 @@ namespace TextureType
 		EMISSIVE = aiTextureType_EMISSIVE,
 	};
 
-	static const std::vector<Enum> All = { NONE, DIFFUSE, SPECULAR, AMBIENT, EMISSIVE };
+	static const std::array<Enum, 5> All = { NONE, DIFFUSE, SPECULAR, AMBIENT, EMISSIVE };
 };
 
 struct WrapOptions
