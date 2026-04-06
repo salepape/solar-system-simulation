@@ -144,7 +144,7 @@ void Model::ProcessTextures(const aiMesh& mesh, const aiScene& scene)
 			// Get texture path
 			aiString textureImagePath;
 			material->GetTexture(assimpTextureType, i, &textureImagePath);
-			const std::string& textureImageStringPath = std::string(textureImagePath.C_Str(), textureImagePath.length);
+			const std::string textureImageStringPath(std::string(textureImagePath.C_Str(), textureImagePath.length));
 
 			// Skip texture creation if already done
 			const auto& loadedTextureIt = find_if(textures.begin(), textures.end(), [&textureImageStringPath](const Texture& loadedTexture)

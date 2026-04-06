@@ -13,8 +13,8 @@
 Shader::Shader(const ShaderLookUpID::Enum inLookUpID, const std::string& vsPath, const std::string& fsPath) :
 	lookUpID(inLookUpID)
 {
-	const std::string& vsContent = FileUtils::ReadFile(vsPath);
-	const std::string& fsContent = FileUtils::ReadFile(fsPath);
+	const std::string vsContent(FileUtils::ReadFile(vsPath));
+	const std::string fsContent(FileUtils::ReadFile(fsPath));
 
 	const uint32_t vsID = CreateShader(GL_VERTEX_SHADER, vsContent);
 	const uint32_t fsID = CreateShader(GL_FRAGMENT_SHADER, fsContent);

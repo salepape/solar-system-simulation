@@ -29,32 +29,32 @@ void Material::SetFUniforms() const
 	shader.Enable();
 
 	int diffuseTexFUTextureUnit = 0;
-	const std::string& diffuseTexFU = "material.fu_DiffuseTex_" + std::to_string(diffuseTexFUTextureUnit);
+	const std::string diffuseTexFU("material.fu_DiffuseTex_" + std::to_string(diffuseTexFUTextureUnit));
 	if (shader.IsUniformRequired(diffuseTexFU.c_str()))
 	{
 		shader.setUniformInt(diffuseTexFU, diffuseTexFUTextureUnit);
 	}
 	IncrementTextureUnitCount(diffuseTexFUTextureUnit);
 
-	const std::string& diffuseColourFU = "material.fu_DiffuseColour";
+	const std::string diffuseColourFU("material.fu_DiffuseColour");
 	if (shader.IsUniformRequired(diffuseColourFU.c_str()))
 	{
 		shader.setUniformVec3(diffuseColourFU, diffuseProperties.emissiveColour);
 	}
 
-	const std::string& specularColourFU = "material.fu_SpecularColour";
+	const std::string specularColourFU("material.fu_SpecularColour");
 	if (shader.IsUniformRequired(specularColourFU.c_str()))
 	{
 		shader.setUniformVec3(specularColourFU, specularProperties.specularColour);
 	}
 
-	const std::string& shininessFU = "material.fu_Shininess";
+	const std::string shininessFU("material.fu_Shininess");
 	if (shader.IsUniformRequired(shininessFU.c_str()))
 	{
 		shader.setUniformFloat(shininessFU, specularProperties.shininess);
 	}
 
-	const std::string& transparencyFU = "material.fu_Transparency";
+	const std::string transparencyFU("material.fu_Transparency");
 	if (shader.IsUniformRequired(transparencyFU.c_str()))
 	{
 		shader.setUniformFloat(transparencyFU, transparency);

@@ -37,9 +37,9 @@ void FileUtils::ListPaths(const std::filesystem::path& inMap, std::unordered_map
 {
 	for (const auto& directory : std::filesystem::recursive_directory_iterator(inMap))
 	{
-		const std::filesystem::path& directoryPath = directory.path();
-		const std::string& modelName = GetNameFromPath(directoryPath);
-		if (modelName == "")
+		const std::filesystem::path directoryPath(directory.path());
+		const std::string modelName(GetNameFromPath(directoryPath));
+		if (modelName.empty())
 		{
 			continue;
 		}
@@ -50,7 +50,7 @@ void FileUtils::ListPaths(const std::filesystem::path& inMap, std::unordered_map
 
 std::string FileUtils::GetNameFromPath(const std::filesystem::path& inPath)
 {
-	const std::string& fileName = inPath.filename().string();
+	const std::string fileName(inPath.filename().string());
 
 	std::size_t firstTrimSymbol = fileName.find_first_of("_");
 	if (firstTrimSymbol == std::string::npos)
@@ -58,19 +58,19 @@ std::string FileUtils::GetNameFromPath(const std::filesystem::path& inPath)
 		firstTrimSymbol = fileName.find_first_of(".");
 		if (firstTrimSymbol == std::string::npos)
 		{
-			return "";
 		}
 	}
-	const std::string& fileNameWithSizeTrimmed = (firstTrimSymbol == fileName.find_first_of("_")) ?
+	const std::string fileNameWithSizeTrimmed(
+		firstTrimSymbol == fileName.find_first_of("_") ?
 		fileName.substr(firstTrimSymbol + 1, fileName.length() - firstTrimSymbol - 1) :
-		fileName.substr(0, firstTrimSymbol);
+		fileName.substr(0, firstTrimSymbol));
 
 	std::size_t lastTrimSymbol = fileNameWithSizeTrimmed.find_first_of("_");
 	if (lastTrimSymbol == std::string::npos)
 	{
 		lastTrimSymbol = fileNameWithSizeTrimmed.find_first_of(".");
 	}
-	std::string modelName = fileNameWithSizeTrimmed.substr(0, lastTrimSymbol);
+	std::string modelName(fileNameWithSizeTrimmed.substr(0, lastTrimSymbol));
 	modelName[0] = std::toupper(modelName[0]);
 
 	return modelName;
@@ -135,7 +135,7 @@ ResourceCSVParser::ResourceCSVParser(const std::filesystem::path& inDataPath)
 
 void ResourceCSVParser::ReadCSV(const std::filesystem::path& inDataPath)
 {
-	const std::string& csvFile = FileUtils::ReadFile(inDataPath.string());
+	const std::string csvFile(FileUtils::ReadFile(inDataPath.string()));
 	std::string csvLine;
 	std::stringstream csvLineStream(csvFile);
 

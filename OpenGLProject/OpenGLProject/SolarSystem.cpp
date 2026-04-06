@@ -54,7 +54,7 @@ void SolarSystem::Update()
 	std::map<float, BodySystem&> bodiesSortedByDistance;
 	for (BodySystem& bodySystem : bodySystems)
 	{
-		const CelestialBody* parentBody = bodySystem.GetCelestialBody().GetBodyData().parentName != "" ? &GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody() : nullptr;
+		const CelestialBody* parentBody = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? &GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody() : nullptr;
 		bodySystem.GetCelestialBody().ComputeCartesianPosition(app.elapsedTime * app.speedFactor, parentBody);
 
 		bodiesSortedByDistance.insert({
@@ -67,7 +67,7 @@ void SolarSystem::Update()
 	{
 		// Draw celestial bodies, and animate them accordingly over time
 		BodySystem& bodySystem = bodyIt->second;
-		const glm::vec3& parentPosition = bodySystem.GetCelestialBody().GetBodyData().parentName != "" ? GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody().GetPosition() : glm::vec3(0.0f);
+		const glm::vec3& parentPosition = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody().GetPosition() : glm::vec3(0.0f);
 		bodySystem.Render(renderer, app.IsLegendDisplayed(), textRenderer, camera, parentPosition, app.elapsedTime * app.speedFactor);
 	}
 
@@ -86,7 +86,7 @@ void SolarSystem::BuildBodySystems()
 {
 	// Required to scale distance of current celestial body according to the previous one 
 	// (diverging from proper simulation here, for travel end-user convenience)
-	std::string celestialBodyNameCache = "";
+	std::string celestialBodyNameCache("");
 
 	std::unordered_map<std::string, std::filesystem::path> bodyPaths;
 	FileUtils::ListPaths("../Textures/CelestialBodies/", bodyPaths);
@@ -102,9 +102,9 @@ void SolarSystem::BuildBodySystems()
 	// Process each CSV line and create a Body instance out of it
 	for (const std::vector<std::string>& celestialBodyParams : bodyCSVParser.GetParsedCSV())
 	{
-		const std::string& celestialBodyName = celestialBodyParams[0];
-		const std::string& celestialBodyType = celestialBodyParams[1];
-		const std::string& celestialBodyParentName = (celestialBodyType == "Moon") ? celestialBodyParams[8] : "";
+		const std::string celestialBodyName(celestialBodyParams[0]);
+		const std::string celestialBodyType(celestialBodyParams[1]);
+		const std::string celestialBodyParentName(celestialBodyType == "Moon" ? celestialBodyParams[8] : "");
 
 		const float distanceToParent = std::stof(celestialBodyParams[3]);
 		float scaledDistanceToParent = 0.0f;
@@ -177,8 +177,8 @@ void SolarSystem::BuildBodyRings()
 	// Process each CSV line and create a Rings instance out of it
 	for (const std::vector<std::string>& ringParams : ringCSVParser.GetParsedCSV())
 	{
-		const std::string& bodyName = ringParams[0];
-		const std::filesystem::path& modelPath = ringPaths[ringParams[1]];
+		const std::string bodyName(ringParams[0]);
+		const std::filesystem::path modelPath(ringPaths[ringParams[1]]);
 		const float radius = std::stof(ringParams[2]);
 		const float opacity = std::stof(ringParams[3]);
 
@@ -199,8 +199,8 @@ void SolarSystem::BuildBelts()
 	// Process each CSV line and create a Belt instance out of it
 	for (const std::vector<std::string>& beltParams : beltCSVParser.GetParsedCSV())
 	{
-		const std::string& beltName = beltParams[0];
-		const std::filesystem::path& modelPath = beltPaths[beltParams[1]];
+		const std::string beltName(beltParams[0]);
+		const std::filesystem::path modelPath(beltPaths[beltParams[1]]);
 		const uint32_t instanceCount = std::stoi(beltParams[2]);
 		const float sizeRangeLowerBound = std::stof(beltParams[3]);
 		const uint32_t sizeRangeSpan = std::stoi(beltParams[4]);
