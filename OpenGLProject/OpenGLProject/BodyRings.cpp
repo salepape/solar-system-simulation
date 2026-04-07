@@ -18,15 +18,15 @@ ringsData(inRingsData), model(inRingsData.modelPath)
 	bodyName = ringsData.bodyName;
 }
 
-Material BodyRings::InitialiseParent(const float inRingsOpacity)
+BlinnPhongMaterial BodyRings::InitialiseParent(const float inRingsOpacity)
 {
 	if (inRingsOpacity < 0.5f)
 	{
-		return Material(ShaderLookUpID::Enum::INFRARED_BODY_RINGS, { /* texturesLoadedFromTheModel */ }, { glm::vec3(0.0f) }, { glm::vec3(0.0f), 64.0f }, inRingsOpacity);
+		return BlinnPhongMaterial(ShaderLookUpID::Enum::INFRARED_BODY_RINGS, { /* texturesLoadedFromTheModel */ }, { glm::vec3(0.0f) }, { glm::vec3(0.0f), 64.0f }, inRingsOpacity);
 	}
 	else
 	{
-		return Material(ShaderLookUpID::Enum::VISIBLE_BODY_RINGS, { /* texturesLoadedFromTheModel */ }, { glm::vec3(0.0f) }, { glm::vec3(0.0f), 64.0f }, inRingsOpacity);
+		return BlinnPhongMaterial(ShaderLookUpID::Enum::VISIBLE_BODY_RINGS, { /* texturesLoadedFromTheModel */ }, { glm::vec3(0.0f) }, { glm::vec3(0.0f), 64.0f }, inRingsOpacity);
 	}
 }
 

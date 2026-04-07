@@ -1,15 +1,15 @@
-# Material definition name
+# Blinn-Phong Material definition name
 newmtl SaturnRingsMaterial
 
-# Material parameters
-Ka 1.000000 1.000000 1.000000		# Ambiant colour
-Kd 0.640000 0.640000 0.640000		# Diffuse colour
-Ks 0.500000 0.500000 0.500000		# Specular colour
-Ns 92.156863				# Specular exponent
-Ke 0.000000 0.000000 0.000000		# Emissive colour
-Ni 1.000000				# Refraction index
-d 1.000000				# Dissolve
-illum 2					# Illumination model -> 2 : highlight on
+# Blinn-Phong Material parameters
+Ka 1.000000 1.000000 1.000000			# Ambient colour
+Kd 0.640000 0.640000 0.640000			# Diffuse colour
+Ks 0.500000 0.500000 0.500000			# Specular colour
+Ns 92.156863					# Specular exponent
+Ke 0.000000 0.000000 0.000000			# Emissive colour
+Ni 1.000000					# Refraction index
+d 1.000000					# Dissolve
+illum 2						# Illumination model -> 2 : highlight on
 
 # DDS Texture path
-map_Kd ../Textures/Rings/saturn_rings.DDS
+map_Kd ../Textures/Rings/saturn_rings.DDS	# Diffuse Texture path

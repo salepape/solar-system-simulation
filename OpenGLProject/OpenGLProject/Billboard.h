@@ -28,7 +28,7 @@ private:
 	float textHeight{ 0.0f };
 	float textScale{ 0.0f };
 
-	static Material InitialiseParent();
+	static BlinnPhongMaterial InitialiseParent();
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);

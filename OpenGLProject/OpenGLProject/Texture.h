@@ -17,13 +17,22 @@ namespace TextureType
 	enum Enum
 	{
 		NONE = aiTextureType_NONE,
+
+		// Texture types used to define Materials using the Blinn-Phong lighting model
 		DIFFUSE = aiTextureType_DIFFUSE,
 		SPECULAR = aiTextureType_SPECULAR,
 		AMBIENT = aiTextureType_AMBIENT,
 		EMISSIVE = aiTextureType_EMISSIVE,
+
+		//// Texture types used to define Materials using the PBR lighting model
+		//ALBEDO = aiTextureType_BASE_COLOR,
+		//EMISSIVE = aiTextureType_EMISSION_COLOR,
+		//METALNESS = aiTextureType_METALNESS,
+		//ROUGHNESS = aiTextureType_DIFFUSE_ROUGHNESS,
+		//AO = aiTextureType_AMBIENT_OCCLUSION,
 	};
 
-	static const std::array<Enum, 5> All = { NONE, DIFFUSE, SPECULAR, AMBIENT, EMISSIVE };
+	static const std::array<Enum, 5> All = { NONE, DIFFUSE, SPECULAR, AMBIENT, EMISSIVE, };
 };
 
 struct WrapOptions
@@ -63,7 +72,7 @@ public:
 	Texture(Texture&& inTexture) = default;
 	Texture&& operator = (Texture&& inTexture) = delete;
 
-	// Destructor (not virtual needed, until child classes of Texture exist)
+	// Destructor (not virtual needed, until child classes exist)
 	~Texture() = default;
 
 	void LoadFTBitmap(const FT_Bitmap& bitmap, const uint32_t format);

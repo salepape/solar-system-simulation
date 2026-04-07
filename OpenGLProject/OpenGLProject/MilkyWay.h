@@ -21,7 +21,7 @@ public:
 private:
 	Skybox skybox;
 
-	static Material InitialiseParent(const std::filesystem::path& inTexturePath);
+	static BlinnPhongMaterial InitialiseParent(const std::filesystem::path& inTexturePath);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 };

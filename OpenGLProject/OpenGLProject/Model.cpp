@@ -15,6 +15,7 @@
 #include <utility>
 
 #include "Renderer.h"
+#include "Utils.h"
 #include "VertexBuffer.h"
 
 
@@ -141,15 +142,16 @@ void Model::ProcessTextures(const aiMesh& mesh, const aiScene& scene)
 
 		for (uint32_t i = 0; i < textureCount; ++i)
 		{
-			// Get texture path
-			aiString textureImagePath;
-			material->GetTexture(assimpTextureType, i, &textureImagePath);
-			const std::string& textureImageStringPath = std::string(textureImagePath.C_Str(), textureImagePath.length);
+			// Get texture path (remove any comments at its right)
+			aiString texturePathMtlLine;
+			material->GetTexture(assimpTextureType, i, &texturePathMtlLine);
+			const std::string texturePathMtlString(texturePathMtlLine.C_Str());
+			const std::string textureImagePath(FileUtils::GetTexturePathFromMtlLine(texturePathMtlString));
 
 			// Skip texture creation if already done
-			const auto& loadedTextureIt = find_if(textures.begin(), textures.end(), [&textureImageStringPath](const Texture& loadedTexture)
+			const auto& loadedTextureIt = find_if(textures.begin(), textures.end(), [&textureImagePath](const Texture& loadedTexture)
 			{
-				return textureImageStringPath == loadedTexture.GetImagePath();
+				return textureImagePath == loadedTexture.GetImagePath();
 			});
 
 			if (loadedTextureIt != textures.end())
@@ -158,7 +160,7 @@ void Model::ProcessTextures(const aiMesh& mesh, const aiScene& scene)
 			}
 
 			// Create a DDS texture from the ASSIMP one
-			Texture texture(textureImageStringPath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, textureType);
+			Texture texture(textureImagePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, textureType);
 			texture.LoadDDS();
 			textures.push_back(std::move(texture));
 		}

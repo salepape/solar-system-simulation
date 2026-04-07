@@ -35,7 +35,7 @@ private:
 
 	std::string bodyName;
 
-	static Material InitialiseParent(const float inRingsOpacity);
+	static BlinnPhongMaterial InitialiseParent(const float inRingsOpacity);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeModelMatrixVUniform(const glm::mat4& modelMatrix, const float elapsedTime = 0.0f);

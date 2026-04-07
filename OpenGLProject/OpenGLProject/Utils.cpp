@@ -76,6 +76,22 @@ std::string FileUtils::GetNameFromPath(const std::filesystem::path& inPath)
 	return modelName;
 }
 
+std::string FileUtils::GetTexturePathFromMtlLine(const std::string& mtlLine)
+{
+	// Detect any tabulation or space
+	std::size_t trimSymbol = mtlLine.find_first_of("\t");
+	if (trimSymbol == std::string::npos)
+	{
+		trimSymbol = mtlLine.find_first_of(" ");
+		if (trimSymbol == std::string::npos)
+		{
+			return mtlLine;
+		}
+	}
+
+	return mtlLine.substr(0, trimSymbol);
+}
+
 std::string FileUtils::ReadFile(const std::string& path)
 {
 	std::ifstream fileStream(path, std::ios::in | std::ios::binary);

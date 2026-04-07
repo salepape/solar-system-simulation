@@ -46,7 +46,7 @@ public:
 	CelestialBody(CelestialBody&& inCelestialBody) = default;
 	CelestialBody& operator = (CelestialBody&& inCelestialBody) = delete;
 
-	// Destructor (not virtual needed, until child classes of Texture exist)
+	// Destructor (not virtual needed, until child classes exist)
 	~CelestialBody() = default;
 
 	const BodyData& GetBodyData() const { return bodyData; }
@@ -80,7 +80,7 @@ private:
 	float distCosOrbInclination{ 0.0f };
 	float distSinOrbInclination{ 0.0f };
 
-	static Material InitialiseParent(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName);
+	static BlinnPhongMaterial InitialiseParent(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 1.0f) override;
 };

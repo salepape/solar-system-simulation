@@ -31,18 +31,18 @@ sphere(bodyData.radius)
 	distSinOrbInclination = bodyData.distanceToParent * glm::sin(orbitalInclinationInRad);
 }
 
-Material CelestialBody::InitialiseParent(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName)
+BlinnPhongMaterial CelestialBody::InitialiseParent(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName)
 {
 	Texture texture(inBodyTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadDDS();
 
 	if (inBodyName == "Sun")
 	{
-		return Material(ShaderLookUpID::Enum::SUN, { std::move(texture) }, { glm::vec3(1.5f) });
+		return BlinnPhongMaterial(ShaderLookUpID::Enum::SUN, { std::move(texture) }, { glm::vec3(1.5f) });
 	}
 	else
 	{
-		return Material(ShaderLookUpID::Enum::CELESTIAL_BODY, { std::move(texture) });
+		return BlinnPhongMaterial(ShaderLookUpID::Enum::CELESTIAL_BODY, { std::move(texture) });
 	}
 }
 

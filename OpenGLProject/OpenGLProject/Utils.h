@@ -36,6 +36,9 @@ public:
 	// Get model name from path (e.g. by convention, texture name stored in folders follows: [num]k_[bodyName]_[bodyNameOptionalPrecisions])
 	static std::string GetNameFromPath(const std::filesystem::path& inPath);
 
+	// Retrieve the path from a line in a .mtl Model file, which can also contains a comment 
+	static std::string GetTexturePathFromMtlLine(const std::string& mtlLine);
+
 private:
 	static std::string GetErrorStateFlagMessage(const std::ifstream& fileStream);
 };

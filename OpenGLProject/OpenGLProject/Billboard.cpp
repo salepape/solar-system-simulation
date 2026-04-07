@@ -35,10 +35,10 @@ legend(inBodyData.name)
 	textScale = inBodyData.radius * textScaleFactor;
 }
 
-Material Billboard::InitialiseParent()
+BlinnPhongMaterial Billboard::InitialiseParent()
 {
 	// All Textures2D used by the Billboard are Glyph Textures2D managed in the Text Renderer directly, so not linked in this Material
-	return Material(ShaderLookUpID::Enum::BILLBOARD, { /* texturesLoadedFromTheTextRenderer */ }, { GLMConstants::whiteColour });
+	return BlinnPhongMaterial(ShaderLookUpID::Enum::BILLBOARD, { /* texturesLoadedFromTheTextRenderer */ }, { GLMConstants::whiteColour });
 }
 
 void Billboard::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& forward, const glm::vec3& right)

@@ -19,7 +19,7 @@ public:
 	SceneEntity() = delete;
 
 	// User-defined constructor (needed to be defined explictly in the constructor of each child class)
-	SceneEntity(std::string inName, Material inMaterial);
+	SceneEntity(std::string inName, BlinnPhongMaterial inMaterial);
 
 	// Copy constructor (needed when a copy constructor of any child class is called)
 	SceneEntity(const SceneEntity& inSceneEntity) = default;
@@ -35,7 +35,7 @@ public:
 	int32_t GetID() const { return ID; }
 	const std::string& GetName() const { return name; }
 
-	const Material& GetMaterial() const { return material; }
+	const BlinnPhongMaterial& GetMaterial() const { return material; }
 	const glm::mat4& GetModelMatrix() const { return modelMatrix; }
 
 	virtual void Render(const Renderer& renderer, const float elapsedTime = 0.0f) = 0;
@@ -44,7 +44,7 @@ protected:
 	int32_t ID{ -1 };
 	std::string name;
 
-	Material material;
+	BlinnPhongMaterial material;
 	glm::mat4 modelMatrix{ 1.0f };
 
 	virtual void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) = 0;

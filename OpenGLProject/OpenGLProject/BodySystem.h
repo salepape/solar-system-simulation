@@ -36,7 +36,7 @@ public:
 	BodySystem(BodySystem&& inBodySystem) = default;
 	BodySystem&& operator = (BodySystem&& inBodySystem) = delete;
 
-	// Destructor (not virtual needed, until child classes of Texture exist)
+	// Destructor (not virtual needed, until child classes exist)
 	~BodySystem() = default;
 
 	CelestialBody& GetCelestialBody() { return celestialBody; }

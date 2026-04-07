@@ -33,7 +33,7 @@ private:
 	// Orbital Inclination converted [in radians]
 	float orbInclinationInRad{ 0.0f };
 
-	static Material InitialiseParent(const std::filesystem::path& inTexturePath);
+	static BlinnPhongMaterial InitialiseParent(const std::filesystem::path& inTexturePath);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const float elapsedTime = 0.0f);

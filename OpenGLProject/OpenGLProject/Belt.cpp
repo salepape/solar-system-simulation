@@ -23,10 +23,10 @@ instanceParams(inInstanceParams), torusParams(inTorusParams), model({ inInstance
 	StoreInstanceModelMatrices();
 }
 
-Material Belt::InitialiseParent(const std::filesystem::path& inTexturePath)
+BlinnPhongMaterial Belt::InitialiseParent(const std::filesystem::path& inTexturePath)
 {
 	// All Textures2D added from the ones read in the Belt Model
-	return Material(ShaderLookUpID::Enum::BELT, { /* texturesLoadedFromTheModel */ });
+	return BlinnPhongMaterial(ShaderLookUpID::Enum::BELT, { /* texturesLoadedFromTheModel */ });
 }
 
 void Belt::ComputeInstanceModelMatrices()

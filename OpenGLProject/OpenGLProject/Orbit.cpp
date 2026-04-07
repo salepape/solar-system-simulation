@@ -25,12 +25,12 @@ circle(inBodyData.distanceToParent)
 	ComputeModelMatrixVUniform(glm::vec3(0.0f));
 }
 
-Material Orbit::InitialiseParent(const std::filesystem::path& inTexturePath)
+BlinnPhongMaterial Orbit::InitialiseParent(const std::filesystem::path& inTexturePath)
 {
 	Texture texture(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadDDS();
 
-	return Material(ShaderLookUpID::Enum::ORBIT, { std::move(texture) });
+	return BlinnPhongMaterial(ShaderLookUpID::Enum::ORBIT, { std::move(texture) });
 }
 
 void Orbit::ComputeModelMatrixVUniform(const glm::vec3& parentPosition, const float /*elapsedTime*/)

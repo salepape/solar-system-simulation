@@ -8,7 +8,7 @@ uint32_t SceneEntity::entityIDCounter = 0;
 
 
 
-SceneEntity::SceneEntity(std::string inName, Material inMaterial) :
+SceneEntity::SceneEntity(std::string inName, BlinnPhongMaterial inMaterial) :
 	name(inName), material(std::move(inMaterial))
 {
 	ID = entityIDCounter++;
