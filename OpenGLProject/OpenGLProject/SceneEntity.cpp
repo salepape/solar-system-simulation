@@ -21,10 +21,10 @@ void SceneEntity::SetVUniforms() const
 	Shader& shader = material.GetShader();
 	shader.Enable();
 
-	const std::string& modelVU = "vu_Model";
+	const std::string modelVU("vu_Model");
 	if (shader.IsUniformRequired(modelVU.c_str()))
 	{
-		shader.setUniformMat4("vu_Model", glm::mat4(0.0f));
+		shader.setUniformMat4(modelVU, glm::mat4(0.0f));
 	}
 
 	shader.Disable();
