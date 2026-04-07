@@ -5,7 +5,7 @@
 #include <glm/vec3.hpp>
 #include <string>
 
-#include "Material.h"
+#include "BlinnPhongMaterial.h"
 #include "SceneEntity.h"
 
 struct BodyData;
@@ -28,7 +28,7 @@ private:
 	float textHeight{ 0.0f };
 	float textScale{ 0.0f };
 
-	static BlinnPhongMaterial InitialiseParent();
+	BlinnPhongMaterial InitialiseParent();
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);

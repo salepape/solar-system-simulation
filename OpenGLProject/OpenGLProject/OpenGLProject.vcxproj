@@ -211,6 +211,8 @@
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexBufferLayout.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="BlinnPhongMaterial.h" />
+    <ClCompile Include="PBRMaterial.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -256,6 +258,8 @@
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexBufferLayout.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="BlinnPhongMaterial.cpp" />
+    <ClCompile Include="PBRMaterial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DefaultShader.fs" />

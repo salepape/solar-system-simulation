@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "Material.h"
+#include "BlinnPhongMaterial.h"
 #include "Model.h"
 #include "SceneEntity.h"
 
@@ -55,7 +55,7 @@ private:
 	// Model used for a belt body
 	Model model;
 
-	static BlinnPhongMaterial InitialiseParent(const std::filesystem::path& inTexturePath);
+	BlinnPhongMaterial InitialiseParent(const std::filesystem::path& inTexturePath);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeInstanceModelMatrices();

@@ -6,8 +6,8 @@
 #include <glm/vec3.hpp>
 #include <string>
 
+#include "BlinnPhongMaterial.h"
 #include "Circle.h"
-#include "Material.h"
 #include "SceneEntity.h"
 
 struct BodyData;
@@ -33,7 +33,7 @@ private:
 	// Orbital Inclination converted [in radians]
 	float orbInclinationInRad{ 0.0f };
 
-	static BlinnPhongMaterial InitialiseParent(const std::filesystem::path& inTexturePath);
+	BlinnPhongMaterial InitialiseParent(const std::filesystem::path& inTexturePath);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const float elapsedTime = 0.0f);

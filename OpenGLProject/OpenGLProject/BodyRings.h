@@ -5,7 +5,7 @@
 #include <glm/mat4x4.hpp>
 #include <string>
 
-#include "Material.h"
+#include "BlinnPhongMaterial.h"
 #include "Model.h"
 #include "SceneEntity.h"
 
@@ -35,7 +35,7 @@ private:
 
 	std::string bodyName;
 
-	static BlinnPhongMaterial InitialiseParent(const float inRingsOpacity);
+	BlinnPhongMaterial InitialiseParent(const float inRingsOpacity);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeModelMatrixVUniform(const glm::mat4& modelMatrix, const float elapsedTime = 0.0f);

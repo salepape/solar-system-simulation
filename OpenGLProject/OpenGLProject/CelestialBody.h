@@ -5,7 +5,7 @@
 #include <glm/vec3.hpp>
 #include <string>
 
-#include "Material.h"
+#include "BlinnPhongMaterial.h"
 #include "SceneEntity.h"
 #include "Sphere.h"
 
@@ -80,7 +80,7 @@ private:
 	float distCosOrbInclination{ 0.0f };
 	float distSinOrbInclination{ 0.0f };
 
-	static BlinnPhongMaterial InitialiseParent(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName);
+	BlinnPhongMaterial InitialiseParent(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 1.0f) override;
 };

@@ -3,7 +3,7 @@
 
 #include <filesystem>
 
-#include "Material.h"
+#include "BlinnPhongMaterial.h"
 #include "SceneEntity.h"
 #include "Skybox.h"
 
@@ -21,7 +21,7 @@ public:
 private:
 	Skybox skybox;
 
-	static BlinnPhongMaterial InitialiseParent(const std::filesystem::path& inTexturePath);
+	BlinnPhongMaterial InitialiseParent(const std::filesystem::path& inTexturePath);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 };

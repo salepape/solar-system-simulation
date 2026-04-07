@@ -5,7 +5,7 @@
 #include <glm/mat4x4.hpp>
 #include <string>
 
-#include "Material.h"
+#include "BlinnPhongMaterial.h"
 
 class Renderer;
 
