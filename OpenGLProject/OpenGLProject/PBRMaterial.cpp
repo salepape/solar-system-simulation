@@ -2,6 +2,8 @@
 
 #include <utility>
 
+#include "Shader.h"
+
 
 
 PBRMaterial::PBRMaterial(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const float inTransparency) :
@@ -21,7 +23,12 @@ PBRMaterial::PBRMaterial(PBRMaterial&& inMaterial) :
 
 void PBRMaterial::SetFUniforms() const
 {
+	Shader& shader = GetShader();
+	shader.Enable();
+
 	// @todo - PBR uniforms
 
 	Material::SetFUniforms();
+
+	shader.Disable();
 }

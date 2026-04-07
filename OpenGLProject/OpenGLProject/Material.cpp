@@ -25,8 +25,6 @@ void Material::SetFUniforms() const
 	{
 		shader.setUniformFloat(transparencyFU, transparency);
 	}
-
-	shader.Disable();
 }
 
 void Material::IncrementTextureUnitCount(int& textureUnit) const
