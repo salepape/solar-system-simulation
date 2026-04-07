@@ -28,6 +28,7 @@ Model::Model(const std::filesystem::path& inPath, const bool inGammaCorrection) 
 
 void Model::LoadModel(const std::filesystem::path& path)
 {
+	// Open-source model importer library allowing to convert various 3D Model formats (.obj with .mtl companion for us, .gltf, etc.) into a uniform one
 	Assimp::Importer importer;
 
 	const aiScene* const scene = importer.ReadFile(path.string().c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);

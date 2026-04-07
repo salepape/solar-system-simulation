@@ -11,7 +11,7 @@ class Renderer;
 
 
 
-// Class that represents a 'Game Object'
+// Represent a 'Game Object', i.e. a name, a Transform, and a Material instance mainly
 class SceneEntity
 {
 public:
@@ -38,15 +38,20 @@ public:
 	const BlinnPhongMaterial& GetMaterial() const { return material; }
 	const glm::mat4& GetModelMatrix() const { return modelMatrix; }
 
+	// @todo - Empty body in several child classes, and implementation with different params
 	virtual void Render(const Renderer& renderer, const float elapsedTime = 0.0f) = 0;
 
 protected:
 	int32_t ID{ -1 };
 	std::string name;
 
+	// @todo - Not sure instantiating a Material here is the best place, as Model Material instancing is different
+	// We assume only a single Material instance can be linked to a Scene Entity, which implies only a single Mesh exists for it
 	BlinnPhongMaterial material;
+
 	glm::mat4 modelMatrix{ 1.0f };
 
+	// @todo - Empty body in several child classes, and implementation with different params
 	virtual void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) = 0;
 
 	// Called on a per-frame basis to update the camera view.
