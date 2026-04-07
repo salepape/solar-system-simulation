@@ -17,7 +17,9 @@ namespace ShaderLookUpID
 	// Enum elements do not correspond to GLSL Shader names but on which Scene Entity/Object Mesh they are applied to
 	enum Enum
 	{
-		CELESTIAL_BODY = 0,
+		UNDEFINED = 0,
+
+		CELESTIAL_BODY,
 		SUN,
 		BILLBOARD,
 		BELT,

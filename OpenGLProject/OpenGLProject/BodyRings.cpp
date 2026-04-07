@@ -11,22 +11,21 @@
 
 
 BodyRings::BodyRings(RingsData&& inRingsData) : SceneEntity(inRingsData.bodyName + "Rings", InitialiseParent(inRingsData.opacity)),
-ringsData(inRingsData), model(inRingsData.modelPath)
+ringsData(inRingsData), model(inRingsData.modelPath), bodyName(ringsData.bodyName)
 {
-	material.SetTextures(model.GetTextures());
-
-	bodyName = ringsData.bodyName;
+	// @todo - Find a way not to have to initialise a Material instance as part of the SceneEntity construction
+	// Done as part of the Model construction, apart from ShaderLookUpID reference
 }
 
 BlinnPhongMaterial BodyRings::InitialiseParent(const float inRingsOpacity)
 {
 	if (inRingsOpacity < 0.5f)
 	{
-		return BlinnPhongMaterial(ShaderLookUpID::Enum::INFRARED_BODY_RINGS, { /* texturesLoadedFromTheModel */ }, { glm::vec3(0.0f) }, { glm::vec3(0.0f), 64.0f }, inRingsOpacity);
+		return BlinnPhongMaterial(ShaderLookUpID::Enum::INFRARED_BODY_RINGS, { /* texturesLoadedFromTheModel */ });
 	}
 	else
 	{
-		return BlinnPhongMaterial(ShaderLookUpID::Enum::VISIBLE_BODY_RINGS, { /* texturesLoadedFromTheModel */ }, { glm::vec3(0.0f) }, { glm::vec3(0.0f), 64.0f }, inRingsOpacity);
+		return BlinnPhongMaterial(ShaderLookUpID::Enum::VISIBLE_BODY_RINGS, { /* texturesLoadedFromTheModel */ });
 	}
 }
 

@@ -1,6 +1,7 @@
 #include "Model.h"
 
 #include <algorithm>
+#include <assimp/defs.h>
 #include <assimp/Importer.hpp>
 #include <assimp/material.h>
 #include <assimp/mesh.h>
@@ -14,7 +15,9 @@
 #include <iostream>
 #include <utility>
 
+#include "BlinnPhongMaterial.h"
 #include "Renderer.h"
+#include "ShaderLoader.h"
 #include "Utils.h"
 #include "VertexBuffer.h"
 
@@ -43,9 +46,8 @@ void Model::LoadModel(const std::filesystem::path& path)
 
 void Model::ProcessMeshNode(const aiNode& node, const aiScene& scene)
 {
-	// Best we can do is to assume we have a single Texture per Mesh, and reserve memory as such
 	meshes.reserve(node.mNumMeshes);
-	textures.reserve(node.mNumMeshes);
+	materials.reserve(node.mNumMeshes);
 
 	for (uint32_t i = 0; i < node.mNumMeshes; ++i)
 	{
@@ -57,10 +59,10 @@ void Model::ProcessMeshNode(const aiNode& node, const aiScene& scene)
 			assert(false);
 		}
 
-		// A single Mesh instance and 1+ Texture instances will be created once both methods below have been called
+		// A single Mesh instance and a single Material instance will be created once both methods below have been called
 		const aiMesh& mesh = *meshPtr;
 		ProcessMesh(mesh);
-		ProcessTextures(mesh, scene);
+		ProcessMaterial(mesh, scene);
 	}
 
 	// Process ASSIMP children nodes recursively
@@ -124,7 +126,7 @@ std::vector<uint32_t> Model::ProcessMeshIndices(const aiMesh& mesh)
 	return indices;
 }
 
-void Model::ProcessTextures(const aiMesh& mesh, const aiScene& scene)
+void Model::ProcessMaterial(const aiMesh& mesh, const aiScene& scene)
 {
 	const aiMaterial* const material = scene.mMaterials[mesh.mMaterialIndex];
 	if (material == nullptr)
@@ -133,29 +135,76 @@ void Model::ProcessTextures(const aiMesh& mesh, const aiScene& scene)
 		assert(false);
 	}
 
-	// @todo - Create Materials out of aiMaterials instead of Textures?
+	// Material .mtl file has not been provided with the Model, so it needs to be created from code using GLSL Vertex/Fragment Shaders
+	if (material->mNumProperties == 0)
+	{
+		materials.emplace_back(ShaderLookUpID::Enum::UNDEFINED, ProcessTextures(*material));
+	}
+	// Material Model is using is provided in a .mtl file, so just process data out of it
+	else
+	{
+		// newmtl UranusRingsMaterial?
 
+		// Read 'Kd' factor in .mtl file
+		aiColor3D diffuseColour;
+		material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColour);
+
+		const DiffuseProperties& diffuseProperties = { glm::vec3(diffuseColour.r, diffuseColour.g, diffuseColour.b) };
+
+		// Read 'Ks' factor in .mtl file
+		aiColor3D specularColour;
+		material->Get(AI_MATKEY_COLOR_SPECULAR, specularColour);
+
+		// Read 'Ns' factor in .mtl file
+		ai_real shininess;
+		material->Get(AI_MATKEY_SHININESS, shininess);
+
+		const SpecularProperties& specularProperties = { glm::vec3(specularColour.r, specularColour.g, specularColour.b), shininess };
+
+		// Read 'd' factor in .mtl file
+		ai_real transparency;
+		material->Get(AI_MATKEY_COLOR_TRANSPARENT, transparency);
+
+		// Is Blinn material->Get("illum", )?
+
+		materials.emplace_back(ShaderLookUpID::Enum::UNDEFINED, ProcessTextures(*material), diffuseProperties, specularProperties, transparency);
+	}
+}
+
+std::vector<Texture> Model::ProcessTextures(const aiMaterial& material)
+{
+	// Best we can do is to assume we have a single Texture per Mesh, and reserve memory as such
+	std::vector<Texture> textures;
+
+	// Needed due to how ASSIMP implemented GetTextureCount() below
 	for (const TextureType::Enum& textureType : TextureType::All)
 	{
 		const aiTextureType& assimpTextureType = static_cast<aiTextureType>(textureType);
 
-		const uint32_t textureCount = material->GetTextureCount(assimpTextureType);
-
+		const uint32_t textureCount = material.GetTextureCount(assimpTextureType);
 		for (uint32_t i = 0; i < textureCount; ++i)
 		{
-			// Get texture path (remove any comments at its right)
+			// Get texture path from Material .mtl file (remove any comments at its right)
 			aiString texturePathMtlLine;
-			material->GetTexture(assimpTextureType, i, &texturePathMtlLine);
+			material.GetTexture(assimpTextureType, i, &texturePathMtlLine);
 			const std::string texturePathMtlString(texturePathMtlLine.C_Str());
 			const std::string textureImagePath(FileUtils::GetTexturePathFromMtlLine(texturePathMtlString));
 
 			// Skip texture creation if already done
-			const auto& loadedTextureIt = find_if(textures.begin(), textures.end(), [&textureImagePath](const Texture& loadedTexture)
+			const auto& loadedTextureIt = find_if(materials.begin(), materials.end(), [&textureImagePath](const Material& inLoadedMaterial)
 			{
-				return textureImagePath == loadedTexture.GetImagePath();
+				for (const auto& texture : inLoadedMaterial.GetTextures())
+				{
+					if (texture.GetImagePath() == textureImagePath)
+					{
+						return true;
+					}
+				}
+
+				return false;
 			});
 
-			if (loadedTextureIt != textures.end())
+			if (loadedTextureIt != materials.end())
 			{
 				continue;
 			}
@@ -166,6 +215,8 @@ void Model::ProcessTextures(const aiMesh& mesh, const aiScene& scene)
 			textures.push_back(std::move(texture));
 		}
 	}
+
+	return textures;
 }
 
 void Model::StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const std::size_t sizeInBytes) const

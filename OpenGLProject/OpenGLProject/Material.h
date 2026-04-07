@@ -15,7 +15,7 @@ struct EmissiveProperties
 	// No Material Emissive properties for now
 };
 
-// Class handling the application of a Shader on a single Mesh (built from scratch, or retrieved from Material .mtl file)
+// Class handling the application of a Shader on a single Mesh (built from scratch, or retrieved from a .mtl Material file for Models)
 // Warning: Model is supposed to be simple enough, i.e. only contains 1 Mesh for 1 Material definition containing 1 Texture
 class Material
 {
@@ -42,8 +42,6 @@ public:
 
 	Shader& GetShader() const { return ShaderLoader::GetShader(shaderLookUpID); }
 
-	// Needed for Models since we are loading textures from .mtl files using ASSIMP, which is performed post SceneEntity creation in the initialisation-list
-	void SetTextures(const std::vector<Texture>& inTextures);
 	const std::vector<Texture>& GetTextures() const { return textures; }
 
 protected:

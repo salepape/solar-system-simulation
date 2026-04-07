@@ -12,7 +12,10 @@ PBRMaterial::PBRMaterial(const ShaderLookUpID::Enum inShaderLookUpID, const std:
 	// Need as many Texture Units as Samplers2D (i.e. Textures2D) for the GLSL Shader used by this Material
 	numOfTextureUnits = static_cast<int>(textures.size());
 
-	SetFUniforms();
+	if (inShaderLookUpID != ShaderLookUpID::UNDEFINED)
+	{
+		SetFUniforms();
+	}
 }
 
 PBRMaterial::PBRMaterial(PBRMaterial&& inMaterial) :

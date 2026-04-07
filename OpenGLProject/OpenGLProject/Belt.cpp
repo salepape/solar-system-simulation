@@ -17,7 +17,9 @@
 Belt::Belt(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams) : SceneEntity(inName, InitialiseParent("")),
 instanceParams(inInstanceParams), torusParams(inTorusParams), model({ inInstanceParams.modelPath })
 {
-	material.SetTextures(model.GetTextures());
+	// @todo - Find a way not to have to initialise a Material instance as part of the SceneEntity construction
+	// Done as part of the Model construction, apart from ShaderLookUpID reference
+
 
 	ComputeInstanceModelMatrices();
 	StoreInstanceModelMatrices();

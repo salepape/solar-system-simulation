@@ -56,8 +56,3 @@ void Material::DisableTextures() const
 		texture.Disable();
 	}
 }
-
-void Material::SetTextures(const std::vector<Texture>& inTextures)
-{
-	textures = inTextures;
-}

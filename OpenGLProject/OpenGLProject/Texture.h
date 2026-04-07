@@ -66,7 +66,7 @@ public:
 
 	// Copy constructor (needed when copying the whole Texture vector)
 	Texture(const Texture& inTexture) = default;
-	Texture& operator = (const Texture& inTexture) = default;
+	Texture& operator = (const Texture& inTexture) = delete;
 
 	// Move constructor (needed when moving Texture in Glyph struct after being defined)
 	Texture(Texture&& inTexture) = default;
