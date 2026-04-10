@@ -14,8 +14,7 @@
 BodyRings::BodyRings(RingsData&& inRingsData) : SceneEntity(inRingsData.bodyName + "Rings"),
 ringsData(inRingsData), model(ringsData.modelPath, ringsData.opacity < 0.5f ? ShaderLookUpID::Enum::INFRARED_BODY_RINGS : ShaderLookUpID::Enum::VISIBLE_BODY_RINGS), bodyName(ringsData.bodyName)
 {
-	// @todo - Find a way not to have to initialise a Material instance as part of the SceneEntity construction
-	// Done as part of the Model construction, apart from ShaderLookUpID reference
+
 }
 
 void BodyRings::ComputeModelMatrixVUniform(const glm::mat4& inModelMatrix, const float /*elapsedTime*/)

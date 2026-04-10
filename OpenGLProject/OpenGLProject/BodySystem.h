@@ -53,7 +53,6 @@ private:
 	// Will be filled once the Rings have been parsed from the CSV file, hence not in the constructor of this class
 	std::shared_ptr<BodyRings> celestialBodyRings;
 
-	// @todo - Would be an idea to move this to a proper Sun class: Planets do not glow on visible spectrum (tiny bit for Earth)
 	std::shared_ptr<LightSource> lightSource;
 };
 
