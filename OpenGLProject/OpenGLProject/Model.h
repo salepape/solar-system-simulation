@@ -7,14 +7,15 @@
 #include <glm/mat4x4.hpp>
 #include <vector>
 
+#include "BlinnPhongMaterial.h"
 #include "Mesh.h"
+#include "ShaderLoader.h"
 #include "Texture.h"
 
 struct aiMaterial;
 struct aiMesh;
 struct aiNode;
 struct aiScene;
-class BlinnPhongMaterial;
 class Renderer;
 struct Vertex;
 
@@ -24,12 +25,15 @@ struct Vertex;
 class Model
 {
 public:
-	Model(const std::filesystem::path& inPath, const bool inGammaCorrection = false);
+	Model(const std::filesystem::path& inPath, const ShaderLookUpID::Enum inShaderLookUpID, const bool inGammaCorrection = false);
 
 	void StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const std::size_t sizeInBytes) const;
 
 	void Render(const Renderer& renderer) const;
 	void RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const;
+
+	const std::vector<Mesh>& GetMeshes() const { return meshes; }
+	const std::vector<BlinnPhongMaterial>& GetMaterials() const { return materials; }
 
 private:
 	// List of Sub-Meshes that represents the Model
@@ -37,8 +41,10 @@ private:
 	std::vector<Mesh> meshes;
 
 	// List of Materials that applies to each Sub-Mesh of the Model (1 Sub-Mesh, 1 Material - as per ASSIMP import convention)
+	// Owned by Model class since it's directly retrieved from .mtl file, not created from Scene Entity
 	// Warning: Model is supposed to be simple enough, i.e. only contains 1 Mesh, 1 Material definition, 1 Texture
 	std::vector<BlinnPhongMaterial> materials;
+	ShaderLookUpID::Enum shaderLookUpID;
 
 	[[maybe_unused]] bool gammaCorrection{ false };
 

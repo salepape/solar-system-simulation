@@ -3,6 +3,7 @@
 #include <glad.h>
 
 #include "IndexBuffer.h"
+#include "Shader.h"
 #include "VertexArray.h"
 
 
@@ -53,6 +54,11 @@ void Renderer::SetDepthFctToLess() const
 	glDepthFunc(GL_LESS);
 }
 
+void Renderer::SetModelMatrixVUniform(const Shader& shader, const glm::mat4& modelMatrix) const
+{
+	shader.setUniformMat4("vu_Model", modelMatrix);
+}
+
 void Renderer::Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count) const
 {
 	vao.Bind();
@@ -67,7 +73,7 @@ void Renderer::Draw(const VertexArray& vao, const IndexBuffer& ibo) const
 	vao.Bind();
 	ibo.Bind();
 
-	glDrawElements(GL_TRIANGLES, ibo.GetCount(), GL_UNSIGNED_INT, nullptr);	
+	glDrawElements(GL_TRIANGLES, ibo.GetCount(), GL_UNSIGNED_INT, nullptr);
 
 	// Do NOT unbind IBO before VAO since the latter contains references to IBO BindBuffer
 	vao.Unbind();

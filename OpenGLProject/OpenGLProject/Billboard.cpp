@@ -3,6 +3,7 @@
 #include <glm/geometric.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
+#include <vector>
 
 #include "CelestialBody.h"
 #include "Constants.h"
@@ -19,8 +20,8 @@ namespace
 
 
 
-Billboard::Billboard(const BodyData& inBodyData) : SceneEntity(inBodyData.name + "Billboard", InitialiseParent()),
-legend(inBodyData.name)
+Billboard::Billboard(const BodyData& inBodyData) : SceneEntity(inBodyData.name + "Billboard"),
+material(InitialiseMaterial()), legend(inBodyData.name)
 {
 	float textHeightFactor = 1.5f;
 	float textScaleFactor = 0.01f;
@@ -35,10 +36,10 @@ legend(inBodyData.name)
 	textScale = inBodyData.radius * textScaleFactor;
 }
 
-BlinnPhongMaterial Billboard::InitialiseParent()
+BlinnPhongMaterial Billboard::InitialiseMaterial()
 {
 	// All Textures2D used by the Billboard are Glyph Textures2D managed in the Text Renderer directly, so not linked in this Material
-	return BlinnPhongMaterial(ShaderLookUpID::Enum::BILLBOARD, { /* texturesLoadedFromTheTextRenderer */ }, { GLMConstants::whiteColour });
+	return BlinnPhongMaterial(ShaderLookUpID::Enum::BILLBOARD, std::vector<Texture>{ /* texturesLoadedFromTheTextRenderer */ }, DiffuseProperties{ GLMConstants::whiteColour });
 }
 
 void Billboard::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& forward, const glm::vec3& right)
@@ -56,10 +57,10 @@ void Billboard::Render(const Renderer& renderer, TextRenderer& textRenderer, con
 {
 	ComputeModelMatrixVUniform(bodyPosition, cameraForward, cameraRight);
 
-	Shader& shader = material.GetShader();
+	const Shader& shader = material.GetShader();
 	shader.Enable();
 
-	SetModelMatrixVUniform();
+	renderer.SetModelMatrixVUniform(shader, modelMatrix);
 
 	textRenderer.Render(renderer, textureUnit, legend, 0.0f, textHeight, textScale);
 

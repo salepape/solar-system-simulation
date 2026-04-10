@@ -7,6 +7,7 @@
 
 
 
+// Not considered a SceneEntity, since it doesn't need a Mesh or a Material attached to it (doesn't have any visual representation yet)
 class Spacecraft
 {
 public:

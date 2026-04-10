@@ -5,7 +5,6 @@
 #include <glm/mat4x4.hpp>
 #include <string>
 
-#include "BlinnPhongMaterial.h"
 #include "Model.h"
 #include "SceneEntity.h"
 
@@ -31,11 +30,11 @@ public:
 
 private:
 	RingsData ringsData;
+
+	// Model used for the Celestial Body "Ring" (contains the Mesh + the Material definition, as opposed to traditional SceneEntities)
 	Model model;
 
 	std::string bodyName;
-
-	BlinnPhongMaterial InitialiseParent(const float inRingsOpacity);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeModelMatrixVUniform(const glm::mat4& modelMatrix, const float elapsedTime = 0.0f);

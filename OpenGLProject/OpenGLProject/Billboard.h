@@ -23,12 +23,15 @@ public:
 	void Render(const Renderer& renderer, TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
 
 private:
+	// No Mesh instance here: directly managed by the Text Renderer
+	BlinnPhongMaterial material;
+
 	std::string legend;
 
 	float textHeight{ 0.0f };
 	float textScale{ 0.0f };
 
-	BlinnPhongMaterial InitialiseParent();
+	BlinnPhongMaterial InitialiseMaterial();
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);

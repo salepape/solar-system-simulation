@@ -3,10 +3,8 @@
 
 #include <glm/vec3.hpp>
 #include <memory>
-#include <utility>
 
 #include "Billboard.h"
-#include "BodyRings.h"
 #include "CelestialBody.h"
 #include "Orbit.h"
 
@@ -14,6 +12,7 @@ class BodyRings;
 class LightSource;
 class PerspectiveCamera;
 class Renderer;
+struct RingsData;
 class TextRenderer;
 
 
@@ -42,7 +41,7 @@ public:
 	CelestialBody& GetCelestialBody() { return celestialBody; }
 	const CelestialBody& GetCelestialBody() const { return celestialBody; }
 
-	void SetBodyRings(RingsData&& inRingsData) { celestialBodyRings = std::make_shared<BodyRings>(std::move(inRingsData)); }
+	void SetBodyRings(RingsData&& inRingsData);
 
 	void Render(const Renderer& renderer, const bool isBillboard, TextRenderer& textRenderer, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float elapsedTime);
 

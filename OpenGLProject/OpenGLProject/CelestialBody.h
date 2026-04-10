@@ -59,7 +59,9 @@ public:
 
 private:
 	BodyData bodyData;
+
 	Sphere sphere;
+	BlinnPhongMaterial material;
 
 	bool isMoon{ false };
 
@@ -80,7 +82,7 @@ private:
 	float distCosOrbInclination{ 0.0f };
 	float distSinOrbInclination{ 0.0f };
 
-	BlinnPhongMaterial InitialiseParent(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName);
+	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 1.0f) override;
 };

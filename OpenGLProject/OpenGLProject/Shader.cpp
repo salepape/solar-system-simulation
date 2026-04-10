@@ -57,7 +57,7 @@ void Shader::CreateProgram(const uint32_t vertexShaderID, const uint32_t fragmen
 	glDeleteShader(fragmentShaderID);
 }
 
-int32_t Shader::GetUniformLocation(const std::string& name)
+int32_t Shader::GetUniformLocation(const std::string& name) const
 {
 	if (uniformLocationCache.find(name) == uniformLocationCache.end())
 	{
@@ -65,7 +65,7 @@ int32_t Shader::GetUniformLocation(const std::string& name)
 		assert(false);
 	}
 
-	return uniformLocationCache[name];
+	return uniformLocationCache.at(name);
 }
 
 bool Shader::IsUniformRequired(const std::string& name)
@@ -97,32 +97,32 @@ void Shader::Disable() const
 	glUseProgram(0);
 }
 
-void Shader::setUniformBool(const std::string& name, const bool value)
+void Shader::setUniformBool(const std::string& name, const bool value) const
 {
 	glUniform1i(GetUniformLocation(name), static_cast<int32_t>(value));
 }
 
-void Shader::setUniformInt(const std::string& name, const int32_t value)
+void Shader::setUniformInt(const std::string& name, const int32_t value) const
 {
 	glUniform1i(GetUniformLocation(name), value);
 }
 
-void Shader::setUniformFloat(const std::string& name, const float value)
+void Shader::setUniformFloat(const std::string& name, const float value) const
 {
 	glUniform1f(GetUniformLocation(name), value);
 }
 
-void Shader::setUniformVec3(const std::string& name, const glm::vec3& value)
+void Shader::setUniformVec3(const std::string& name, const glm::vec3& value) const
 {
 	glUniform3fv(GetUniformLocation(name), 1, glm::value_ptr(value));
 }
 
-void Shader::setUniformVec3(const std::string& name, const float x, const float y, const float z)
+void Shader::setUniformVec3(const std::string& name, const float x, const float y, const float z) const
 {
 	glUniform3f(GetUniformLocation(name), x, y, z);
 }
 
-void Shader::setUniformMat4(const std::string& name, const glm::mat4& mat)
+void Shader::setUniformMat4(const std::string& name, const glm::mat4& mat) const
 {
 	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(mat));
 }

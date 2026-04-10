@@ -14,21 +14,11 @@
 
 
 
-Belt::Belt(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams) : SceneEntity(inName, InitialiseParent("")),
-instanceParams(inInstanceParams), torusParams(inTorusParams), model({ inInstanceParams.modelPath })
+Belt::Belt(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams) : SceneEntity(inName),
+instanceParams(inInstanceParams), torusParams(inTorusParams), model(inInstanceParams.modelPath, ShaderLookUpID::Enum::BELT)
 {
-	// @todo - Find a way not to have to initialise a Material instance as part of the SceneEntity construction
-	// Done as part of the Model construction, apart from ShaderLookUpID reference
-
-
 	ComputeInstanceModelMatrices();
 	StoreInstanceModelMatrices();
-}
-
-BlinnPhongMaterial Belt::InitialiseParent(const std::filesystem::path& inTexturePath)
-{
-	// All Textures2D added from the ones read in the Belt Model
-	return BlinnPhongMaterial(ShaderLookUpID::Enum::BELT, { /* texturesLoadedFromTheModel */ });
 }
 
 void Belt::ComputeInstanceModelMatrices()
@@ -83,12 +73,13 @@ void Belt::StoreInstanceModelMatrices() const
 
 void Belt::Render(const Renderer& renderer, const float /*elapsedTime*/)
 {
-	Shader& shader = material.GetShader();
+	const Material& modelMaterial = model.GetMaterials()[0];
+	const Shader& shader = modelMaterial.GetShader();
 	shader.Enable();
 
-	material.EnableTextures();
+	modelMaterial.EnableTextures();
 	model.RenderInstances(renderer, instanceParams.count);
-	material.DisableTextures();
+	modelMaterial.DisableTextures();
 
 	shader.Disable();
 }

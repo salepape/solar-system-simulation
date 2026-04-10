@@ -3,6 +3,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/vec3.hpp>
 
+#include "BlinnPhongMaterial.h"
 #include "Constants.h"
 #include "Renderer.h"
 #include "Shader.h"
@@ -10,23 +11,11 @@
 
 
 
-BodyRings::BodyRings(RingsData&& inRingsData) : SceneEntity(inRingsData.bodyName + "Rings", InitialiseParent(inRingsData.opacity)),
-ringsData(inRingsData), model(inRingsData.modelPath), bodyName(ringsData.bodyName)
+BodyRings::BodyRings(RingsData&& inRingsData) : SceneEntity(inRingsData.bodyName + "Rings"),
+ringsData(inRingsData), model(ringsData.modelPath, ringsData.opacity < 0.5f ? ShaderLookUpID::Enum::INFRARED_BODY_RINGS : ShaderLookUpID::Enum::VISIBLE_BODY_RINGS), bodyName(ringsData.bodyName)
 {
 	// @todo - Find a way not to have to initialise a Material instance as part of the SceneEntity construction
 	// Done as part of the Model construction, apart from ShaderLookUpID reference
-}
-
-BlinnPhongMaterial BodyRings::InitialiseParent(const float inRingsOpacity)
-{
-	if (inRingsOpacity < 0.5f)
-	{
-		return BlinnPhongMaterial(ShaderLookUpID::Enum::INFRARED_BODY_RINGS, { /* texturesLoadedFromTheModel */ });
-	}
-	else
-	{
-		return BlinnPhongMaterial(ShaderLookUpID::Enum::VISIBLE_BODY_RINGS, { /* texturesLoadedFromTheModel */ });
-	}
 }
 
 void BodyRings::ComputeModelMatrixVUniform(const glm::mat4& inModelMatrix, const float /*elapsedTime*/)
@@ -44,14 +33,15 @@ void BodyRings::Render(const Renderer& renderer, const glm::mat4& inModelMatrix,
 {
 	ComputeModelMatrixVUniform(inModelMatrix);
 
-	Shader& shader = material.GetShader();
+	const BlinnPhongMaterial& modelMaterial = model.GetMaterials()[0];
+	const Shader& shader = modelMaterial.GetShader();
 	shader.Enable();
 
-	SetModelMatrixVUniform();
+	renderer.SetModelMatrixVUniform(shader, modelMatrix);
 
-	material.EnableTextures();
+	modelMaterial.EnableTextures();
 	model.Render(renderer);
-	material.DisableTextures();
+	modelMaterial.DisableTextures();
 
 	shader.Disable();
 }

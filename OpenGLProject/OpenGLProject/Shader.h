@@ -29,12 +29,12 @@ public:
 	void Disable() const;
 
 	// Utility uniform setters
-	void setUniformBool(const std::string& name, const bool value);
-	void setUniformInt(const std::string& name, const int32_t value);
-	void setUniformFloat(const std::string& name, const float value);
-	void setUniformVec3(const std::string& name, const glm::vec3& value);
-	void setUniformVec3(const std::string& name, const float x, const float y, const float z);
-	void setUniformMat4(const std::string& name, const glm::mat4& mat);
+	void setUniformBool(const std::string& name, const bool value) const;
+	void setUniformInt(const std::string& name, const int32_t value) const;
+	void setUniformFloat(const std::string& name, const float value) const;
+	void setUniformVec3(const std::string& name, const glm::vec3& value) const;
+	void setUniformVec3(const std::string& name, const float x, const float y, const float z) const;
+	void setUniformMat4(const std::string& name, const glm::mat4& mat) const;
 
 	// Return whether the Uniform is required for the Shader and perform caching of its location if so. Should always be called prior to attempt setting a Uniform 
 	bool IsUniformRequired(const std::string& name);
@@ -59,7 +59,7 @@ private:
 	void CheckValidity(const uint32_t ID, const ShaderProcessStage shaderProcessStage) const;
 
 	// Should only be called internally, and always after a IsUniformRequired() call so the local Uniform cache is set up appropriately
-	int32_t GetUniformLocation(const std::string& name);
+	int32_t GetUniformLocation(const std::string& name) const;
 };
 
 

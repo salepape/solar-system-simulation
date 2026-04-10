@@ -5,6 +5,7 @@
 #include <glm/mat4x4.hpp>
 #include <glm/trigonometric.hpp>
 #include <utility>
+#include <vector>
 
 #include "CelestialBody.h"
 #include "Constants.h"
@@ -15,8 +16,8 @@
 
 
 
-Orbit::Orbit(const BodyData& inBodyData) : SceneEntity(inBodyData.name + "Orbit", InitialiseParent(inBodyData.texturePath)),
-circle(inBodyData.distanceToParent)
+Orbit::Orbit(const BodyData& inBodyData) : SceneEntity(inBodyData.name + "Orbit"),
+circle(inBodyData.distanceToParent), material(InitialiseMaterial(inBodyData.texturePath))
 {
 	isMoon = (inBodyData.parentName.length() != 0);
 
@@ -25,12 +26,12 @@ circle(inBodyData.distanceToParent)
 	ComputeModelMatrixVUniform(glm::vec3(0.0f));
 }
 
-BlinnPhongMaterial Orbit::InitialiseParent(const std::filesystem::path& inTexturePath)
+BlinnPhongMaterial Orbit::InitialiseMaterial(const std::filesystem::path& inTexturePath)
 {
 	Texture texture(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadDDS();
 
-	return BlinnPhongMaterial(ShaderLookUpID::Enum::ORBIT, { std::move(texture) });
+	return BlinnPhongMaterial(ShaderLookUpID::Enum::ORBIT, std::vector<Texture>{ std::move(texture) });
 }
 
 void Orbit::ComputeModelMatrixVUniform(const glm::vec3& parentPosition, const float /*elapsedTime*/)
@@ -56,10 +57,10 @@ void Orbit::Render(const Renderer& renderer, const glm::vec3& parentPosition, co
 		ComputeModelMatrixVUniform(parentPosition);
 	}
 
-	Shader& shader = material.GetShader();
+	const Shader& shader = material.GetShader();
 	shader.Enable();
 
-	SetModelMatrixVUniform();
+	renderer.SetModelMatrixVUniform(shader, modelMatrix);
 
 	material.EnableTextures();
 	circle.Render(renderer);

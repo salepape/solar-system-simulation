@@ -1,6 +1,9 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include <glm/mat4x4.hpp>
+
+class Shader;
 class IndexBuffer;
 class VertexArray;
 
@@ -31,13 +34,17 @@ public:
 	void SetDepthFctToEqual() const;
 	void SetDepthFctToLess() const;
 
+	// Called on a per-frame basis to update the Transform.
+	// Shader should already be enabled in each Scene Entity child Render() method prior to call this one. Uniform to be updated in child classes
+	void SetModelMatrixVUniform(const Shader& shader, const glm::mat4& modelMatrix) const;
+
 	// Draw arrays (e.g. for Orbit, Skybox and Text instances)
 	void Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count) const;
 
 	// Draw elements using an IBO (e.g. for Mesh instances)
 	void Draw(const VertexArray& vao, const IndexBuffer& ibo) const;
 
-	// Draw elements (e.g. for Belt instances)
+	// Draw elements (e.g. for Belt instances 'Rock' Model instancing)
 	void DrawInstances(const VertexArray& vao, const unsigned int iboCount, const unsigned int instanceCount) const;
 };
 

@@ -5,6 +5,7 @@
 #include <glm/trigonometric.hpp>
 #include <glm/mat4x4.hpp>
 #include <utility>
+#include <vector>
 
 #include "BodySystem.h"
 #include "Constants.h"
@@ -15,9 +16,10 @@
 
 
 
-CelestialBody::CelestialBody(BodyData&& inBodyData) : SceneEntity(inBodyData.name, InitialiseParent(inBodyData.texturePath, inBodyData.name)),
+CelestialBody::CelestialBody(BodyData&& inBodyData) : SceneEntity(inBodyData.name),
 bodyData(std::move(inBodyData)),
-sphere(bodyData.radius)
+sphere(bodyData.radius),
+material(InitialiseMaterial(bodyData.texturePath, bodyData.name))
 {
 	isMoon = bodyData.parentName.length() != 0 ? true : false;
 
@@ -31,18 +33,20 @@ sphere(bodyData.radius)
 	distSinOrbInclination = bodyData.distanceToParent * glm::sin(orbitalInclinationInRad);
 }
 
-BlinnPhongMaterial CelestialBody::InitialiseParent(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName)
+BlinnPhongMaterial CelestialBody::InitialiseMaterial(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName)
 {
 	Texture texture(inBodyTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadDDS();
 
 	if (inBodyName == "Sun")
 	{
-		return BlinnPhongMaterial(ShaderLookUpID::Enum::SUN, { std::move(texture) }, { glm::vec3(1.5f) });
+		// Allow the Sun texture to be rendered with higher intensity than a simple white light - give volcanic visual effect)
+		constexpr float oversaturatingFactor = 1.5f;
+		return BlinnPhongMaterial(ShaderLookUpID::Enum::SUN, std::vector<Texture>{ std::move(texture) }, DiffuseProperties{ GLMConstants::whiteColour * oversaturatingFactor });
 	}
 	else
 	{
-		return BlinnPhongMaterial(ShaderLookUpID::Enum::CELESTIAL_BODY, { std::move(texture) });
+		return BlinnPhongMaterial(ShaderLookUpID::Enum::CELESTIAL_BODY, std::vector<Texture>{ std::move(texture) });
 	}
 }
 
@@ -100,10 +104,10 @@ void CelestialBody::Render(const Renderer& renderer, const float elapsedTime)
 {
 	ComputeModelMatrixVUniform(elapsedTime);
 
-	Shader& shader = material.GetShader();
+	const Shader& shader = material.GetShader();
 	shader.Enable();
 
-	SetModelMatrixVUniform();
+	renderer.SetModelMatrixVUniform(shader, modelMatrix);
 
 	material.EnableTextures();
 	sphere.Render(renderer);

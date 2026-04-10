@@ -18,7 +18,14 @@ Material::Material(const ShaderLookUpID::Enum inShaderLookUpID, const std::vecto
 
 void Material::SetFUniforms() const
 {
+	// Shader should already be enabled/disabled in child classes prior to this method call
 	Shader& shader = GetShader();
+
+	const std::string modelVU("vu_Model");
+	if (shader.IsUniformRequired(modelVU.c_str()))
+	{
+		shader.setUniformMat4(modelVU, glm::mat4(0.0f));
+	}
 
 	const std::string transparencyFU("material.fu_Transparency");
 	if (shader.IsUniformRequired(transparencyFU.c_str()))

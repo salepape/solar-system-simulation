@@ -17,13 +17,13 @@ struct AmbientProperties
 
 struct DiffuseProperties
 {
-	// Used for a uniform light intensity like the Sun
+	// Colour of a uniformly-intensed light like the Sun (each coordinate should be comprised in [0.0f, 1.0f])
 	glm::vec3 colour{ 0.0f };
 };
 
 struct SpecularProperties
 {
-	// Colour of the specular highlight on the surface (instead of using a Texture2D)
+	// Colour of the specular highlight on the surface (each coordinate should be comprised in [0.0f, 1.0f])
 	glm::vec3 colour{ 0.0f };
 
 	// Coefficient altering the radius of the specular highlight

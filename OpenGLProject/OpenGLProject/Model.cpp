@@ -15,16 +15,14 @@
 #include <iostream>
 #include <utility>
 
-#include "BlinnPhongMaterial.h"
 #include "Renderer.h"
-#include "ShaderLoader.h"
 #include "Utils.h"
 #include "VertexBuffer.h"
 
 
 
-Model::Model(const std::filesystem::path& inPath, const bool inGammaCorrection) :
-	gammaCorrection(inGammaCorrection)
+Model::Model(const std::filesystem::path& inPath, const ShaderLookUpID::Enum inShaderLookUpID, const bool inGammaCorrection) :
+	shaderLookUpID(inShaderLookUpID), gammaCorrection(inGammaCorrection)
 {
 	LoadModel(inPath);
 }
@@ -143,8 +141,6 @@ void Model::ProcessMaterial(const aiMesh& mesh, const aiScene& scene)
 	// Material Model is using is provided in a .mtl file, so just process data out of it
 	else
 	{
-		// newmtl UranusRingsMaterial?
-
 		// Read 'Kd' factor in .mtl file
 		aiColor3D diffuseColour;
 		material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColour);
@@ -165,9 +161,9 @@ void Model::ProcessMaterial(const aiMesh& mesh, const aiScene& scene)
 		ai_real transparency;
 		material->Get(AI_MATKEY_COLOR_TRANSPARENT, transparency);
 
-		// Is Blinn material->Get("illum", )?
+		// @todo - Read 'illum' factor in .mtl file, corresponding to 'IsBlinn' parameter?
 
-		materials.emplace_back(ShaderLookUpID::Enum::UNDEFINED, ProcessTextures(*material), diffuseProperties, specularProperties, transparency);
+		materials.emplace_back(shaderLookUpID, ProcessTextures(*material), diffuseProperties, specularProperties, transparency);
 	}
 }
 
@@ -193,7 +189,7 @@ std::vector<Texture> Model::ProcessTextures(const aiMaterial& material)
 			// Skip texture creation if already done
 			const auto& loadedTextureIt = find_if(materials.begin(), materials.end(), [&textureImagePath](const Material& inLoadedMaterial)
 			{
-				for (const auto& texture : inLoadedMaterial.GetTextures())
+				for (const Texture& texture : inLoadedMaterial.GetTextures())
 				{
 					if (texture.GetImagePath() == textureImagePath)
 					{

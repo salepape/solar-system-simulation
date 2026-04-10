@@ -19,12 +19,15 @@ namespace ShaderLookUpID
 	{
 		UNDEFINED = 0,
 
+		// Mesh info built from code
 		CELESTIAL_BODY,
 		SUN,
 		BILLBOARD,
-		BELT,
 		MILKY_WAY,
 		ORBIT,
+
+		// Mesh info retrieve from .obj/.mat files
+		BELT,
 		VISIBLE_BODY_RINGS,
 		INFRARED_BODY_RINGS,
 	};

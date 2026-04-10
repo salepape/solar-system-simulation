@@ -3,7 +3,9 @@
 #include <cstdint>
 #include <glm/geometric.hpp>
 #include <string>
+#include <utility>
 
+#include "BodyRings.h"
 #include "LightSource.h"
 #include "PerspectiveCamera.h"
 #include "PointLight.h"
@@ -24,6 +26,11 @@ BodySystem::BodySystem(BodyData&& inBodyData) :
 			ReflectionParams{ glm::vec3(0.25f), glm::vec3(0.95f), glm::vec3(1.0f) },
 			AttenuationParams{ 1.0f, 0.00045f, 0.00000075f });
 	}
+}
+
+void BodySystem::SetBodyRings(RingsData&& inRingsData)
+{
+	celestialBodyRings = std::make_shared<BodyRings, RingsData&&>(std::move(inRingsData));
 }
 
 void BodySystem::Render(const Renderer& renderer, const bool isBillboard, TextRenderer& textRenderer, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float elapsedTime)

@@ -52,10 +52,8 @@ private:
 	TorusParams torusParams;
 	std::vector<glm::mat4> modelMatrices;
 
-	// Model used for a belt body
+	// Model used to represent a Belt "Rock" for instancing (contains the Mesh + the Material definition, as opposed to traditional SceneEntities)
 	Model model;
-
-	BlinnPhongMaterial InitialiseParent(const std::filesystem::path& inTexturePath);
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeInstanceModelMatrices();
