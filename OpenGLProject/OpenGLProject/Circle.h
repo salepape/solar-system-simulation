@@ -9,7 +9,7 @@ class Renderer;
 
 
 
-class Circle : public Mesh
+class Circle : public MeshComponent
 {
 public:
 	Circle(const float inRadius);

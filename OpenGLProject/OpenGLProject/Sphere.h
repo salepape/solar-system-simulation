@@ -7,7 +7,7 @@
 
 
 
-class Sphere : public Mesh
+class Sphere : public MeshComponent
 {
 public:
 	Sphere(const float inRadius, const uint32_t inMeridianStripsCount = 100, const uint32_t inParallelStripsCount = 100);

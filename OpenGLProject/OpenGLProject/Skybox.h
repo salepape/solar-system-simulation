@@ -9,7 +9,7 @@ class Renderer;
 
 
 
-class Skybox : public Mesh
+class Skybox : public MeshComponent
 {
 public:
 	Skybox();

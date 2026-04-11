@@ -72,7 +72,7 @@ void Model::ProcessMeshNode(const aiNode& node, const aiScene& scene)
 
 void Model::ProcessMesh(const aiMesh& mesh)
 {
-	meshes.emplace_back(Mesh(ProcessMeshVertices(mesh), ProcessMeshIndices(mesh)));
+	meshes.emplace_back(MeshComponent(ProcessMeshVertices(mesh), ProcessMeshIndices(mesh)));
 }
 
 std::vector<Vertex> Model::ProcessMeshVertices(const aiMesh& mesh)
@@ -221,7 +221,7 @@ void Model::StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatric
 	VertexBuffer vbo(static_cast<const void*>(modelMatrices.data()), sizeInBytes);
 
 	// Set transformation matrices as an instance vertex attribute for each mesh VAO already created
-	for (const Mesh& mesh : meshes)
+	for (const MeshComponent& mesh : meshes)
 	{
 		mesh.StoreInstanceModelMatrices(vbo);
 	}
@@ -231,7 +231,7 @@ void Model::StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatric
 
 void Model::Render(const Renderer& renderer) const
 {
-	for (const Mesh& mesh : meshes)
+	for (const MeshComponent& mesh : meshes)
 	{
 		mesh.Render(renderer);
 	}
@@ -239,7 +239,7 @@ void Model::Render(const Renderer& renderer) const
 
 void Model::RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const
 {
-	for (const Mesh& mesh : meshes)
+	for (const MeshComponent& mesh : meshes)
 	{
 		mesh.RenderInstances(renderer, instanceCount);
 	}

@@ -6,6 +6,8 @@
 #include <glm/vec2.hpp>
 #include <vector>
 
+#include "Mesh.h"
+
 class Renderer;
 class VertexArray;
 class VertexBuffer;
@@ -21,7 +23,7 @@ struct QuadVertex
 };
 
 // A 2D quad used to render a texture (e.g. a character glyph). Not inheriting from Mesh class since we do not want the same vertex elements/VAO management.
-class Quad
+class Quad : public MeshComponent
 {
 public:
 	Quad(const float inXPosition, const float inYPosition, const float inWidth, const float inHeight);

@@ -13,13 +13,13 @@
 
 
 
-Mesh::Mesh(const std::vector<Vertex>& inVertices, const std::vector<uint32_t>& inIndices) :
+MeshComponent::MeshComponent(const std::vector<Vertex>& inVertices, const std::vector<uint32_t>& inIndices) :
 	vertices(inVertices), indices(inIndices)
 {
 	StoreVertices();
 }
 
-void Mesh::StoreVertices()
+void MeshComponent::StoreVertices()
 {
 	if (vertices.empty())
 	{
@@ -52,7 +52,7 @@ void Mesh::StoreVertices()
 	}
 }
 
-void Mesh::StoreInstanceModelMatrices(const VertexBuffer& vbo) const
+void MeshComponent::StoreInstanceModelMatrices(const VertexBuffer& vbo) const
 {
 	VertexBufferLayout vbl;
 	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, Vertex::INSTANCE_MATRIX_ELMTS_COUNT);
@@ -62,7 +62,7 @@ void Mesh::StoreInstanceModelMatrices(const VertexBuffer& vbo) const
 	vao->AddInstancedBuffer(std::move(vbl));
 }
 
-void Mesh::Render(const Renderer& renderer) const
+void MeshComponent::Render(const Renderer& renderer) const
 {
 	if (indices.empty())
 	{
@@ -73,7 +73,7 @@ void Mesh::Render(const Renderer& renderer) const
 	renderer.Draw(*vao, *ibo);
 }
 
-void Mesh::RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const
+void MeshComponent::RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const
 {
 	renderer.DrawInstances(*vao, ibo->GetCount(), instanceCount);
 }
