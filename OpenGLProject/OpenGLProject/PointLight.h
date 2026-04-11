@@ -19,11 +19,11 @@ struct GLSLPointLightParams
 	bool isBlinn;
 };
 
-class PointLight : public LightSourceComponent
+class PointLightComponent : public LightSourceComponent
 {
 public:
-	PointLight() = delete;
-	PointLight(const glm::vec3& inPosition, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const bool inIsBlinn = false);
+	PointLightComponent() = delete;
+	PointLightComponent(const glm::vec3& inPosition, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const bool inIsBlinn = false);
 
 	void SetPosition(const glm::vec3& inPosition) { GLSLParams.position = inPosition; }
 

@@ -18,11 +18,11 @@ struct GLSLDirectionalLightParams
 	bool isBlinn;
 };
 
-class DirectionalLight : public LightSourceComponent
+class DirectionalLightComponent : public LightSourceComponent
 {
 public:
-	DirectionalLight() = delete;
-	DirectionalLight(const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn = false);
+	DirectionalLightComponent() = delete;
+	DirectionalLightComponent(const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn = false);
 
 	void SetLightDirectionFUniform(const glm::vec3& inDirection) const;
 

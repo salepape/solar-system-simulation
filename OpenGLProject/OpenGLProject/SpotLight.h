@@ -28,11 +28,11 @@ struct GLSLSpotLightParams
 	bool isCameraFlashLight;
 };
 
-class SpotLight : public LightSourceComponent
+class SpotLightComponent : public LightSourceComponent
 {
 public:
-	SpotLight() = delete;
-	SpotLight(const glm::vec3& inPosition, const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const SpotParams& inSpotParams, const bool inIsBlinn = false);
+	SpotLightComponent() = delete;
+	SpotLightComponent(const glm::vec3& inPosition, const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const SpotParams& inSpotParams, const bool inIsBlinn = false);
 
 	void SetPosition(const glm::vec3& inPosition) { GLSLParams.position = inPosition; }
 	void SetDirection(const glm::vec3& inDirection) { GLSLParams.direction = inDirection; }

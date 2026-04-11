@@ -6,13 +6,13 @@
 
 
 
-DirectionalLight::DirectionalLight(const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn) :
+DirectionalLightComponent::DirectionalLightComponent(const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn) :
 	GLSLParams({ inDirection, inReflectionParams, inIsBlinn }), fubo("fubo_DirectionalLight", UniformShaderGroup::PROJECTION_VIEW)
 {
 	SetFUniforms();
 }
 
-void DirectionalLight::SetFUniforms()
+void DirectionalLightComponent::SetFUniforms()
 {
 	// Stored in a GLSL struct with in Fragment Shader
 	UniformGLSLStruct uboStruct;
@@ -24,7 +24,7 @@ void DirectionalLight::SetFUniforms()
 	fubo.SetData(uboStruct);
 }
 
-void DirectionalLight::SetLightDirectionFUniform(const glm::vec3& inDirection) const
+void DirectionalLightComponent::SetLightDirectionFUniform(const glm::vec3& inDirection) const
 {
 	fubo.SetSubData(static_cast<const void*>(glm::value_ptr(inDirection)), GLSLConstants::vec4SizeInBytes, 0);
 }

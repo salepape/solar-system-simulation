@@ -22,7 +22,7 @@ public:
 	void UpdateHeadlightState(double timeBeforeReleaseRegistered, int32_t action);
 
 private:
-	SpotLight headlight;
+	SpotLightComponent headlight;
 
 	double headlightStartTime{ 0.0 };
 
