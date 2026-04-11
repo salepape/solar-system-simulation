@@ -1,4 +1,4 @@
-#include "Quad.h"
+#include "QuadMeshComponent.h"
 
 #include <glad/glad.h>
 

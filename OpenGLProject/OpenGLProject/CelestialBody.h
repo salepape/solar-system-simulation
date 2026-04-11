@@ -7,7 +7,7 @@
 
 #include "BlinnPhongMaterial.h"
 #include "SceneEntity.h"
-#include "Sphere.h"
+#include "SphereMeshComponent.h"
 
 class Renderer;
 

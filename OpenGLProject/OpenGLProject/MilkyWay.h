@@ -5,7 +5,7 @@
 
 #include "BlinnPhongMaterial.h"
 #include "SceneEntity.h"
-#include "Skybox.h"
+#include "SkyboxMeshComponent.h"
 
 class Renderer;
 

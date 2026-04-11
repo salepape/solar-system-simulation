@@ -1,4 +1,4 @@
-#include "Circle.h"
+#include "CircleMeshComponent.h"
 
 #include <glad.h>
 #include <glm/trigonometric.hpp>

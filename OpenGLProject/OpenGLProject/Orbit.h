@@ -7,7 +7,7 @@
 #include <string>
 
 #include "BlinnPhongMaterial.h"
-#include "Circle.h"
+#include "CircleMeshComponent.h"
 #include "SceneEntity.h"
 
 struct BodyData;
