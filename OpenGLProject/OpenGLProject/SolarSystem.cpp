@@ -10,9 +10,9 @@
 #include <unordered_map>
 
 #include "Application.h"
-#include "Billboard.h"
-#include "BodyRings.h"
-#include "CelestialBody.h"
+#include "BillboardEntity.h"
+#include "BodyRingsEntity.h"
+#include "CelestialBodyEntity.h"
 #include "PerspectiveCamera.h"
 #include "PerspectiveCameraController.h"
 #include "Renderer.h"

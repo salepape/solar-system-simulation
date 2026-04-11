@@ -120,10 +120,10 @@
     <ClInclude Include="InputHandler.h">
       <Filter>Header Files\Interactions</Filter>
     </ClInclude>
-    <ClInclude Include="Belt.h">
+    <ClInclude Include="BeltEntity.h">
       <Filter>Header Files\Solar System</Filter>
     </ClInclude>
-    <ClInclude Include="CelestialBody.h">
+    <ClInclude Include="CelestialBodyEntity.h">
       <Filter>Header Files\Solar System</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
@@ -132,16 +132,16 @@
     <ClInclude Include="Window.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="BodyRings.h">
+    <ClInclude Include="BodyRingsEntity.h">
       <Filter>Header Files\Solar System</Filter>
     </ClInclude>
-    <ClInclude Include="MilkyWay.h">
+    <ClInclude Include="MilkyWayEntity.h">
       <Filter>Header Files\Solar System</Filter>
     </ClInclude>
-    <ClInclude Include="Orbit.h">
+    <ClInclude Include="OrbitEntity.h">
       <Filter>Header Files\Solar System</Filter>
     </ClInclude>
-    <ClInclude Include="Billboard.h">
+    <ClInclude Include="BillboardEntity.h">
       <Filter>Header Files\Solar System</Filter>
     </ClInclude>
     <ClInclude Include="SolarSystemSimulation.h">
@@ -162,7 +162,7 @@
     <ClInclude Include="Texture.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="Spacecraft.h">
+    <ClInclude Include="SpacecraftEntity.h">
       <Filter>Header Files\Solar System</Filter>
     </ClInclude>
     <ClInclude Include="Headlamp.h">
@@ -260,10 +260,10 @@
     <ClCompile Include="InputHandler.cpp">
       <Filter>Source Files\Interactions</Filter>
     </ClCompile>
-    <ClCompile Include="Belt.cpp">
+    <ClCompile Include="BeltEntity.cpp">
       <Filter>Source Files\Solar System</Filter>
     </ClCompile>
-    <ClCompile Include="CelestialBody.cpp">
+    <ClCompile Include="CelestialBodyEntity.cpp">
       <Filter>Source Files\Solar System</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
@@ -272,16 +272,16 @@
     <ClCompile Include="Window.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="BodyRings.cpp">
+    <ClCompile Include="BodyRingsEntity.cpp">
       <Filter>Source Files\Solar System</Filter>
     </ClCompile>
-    <ClCompile Include="MilkyWay.cpp">
+    <ClCompile Include="MilkyWayEntity.cpp">
       <Filter>Source Files\Solar System</Filter>
     </ClCompile>
-    <ClCompile Include="Orbit.cpp">
+    <ClCompile Include="OrbitEntity.cpp">
       <Filter>Source Files\Solar System</Filter>
     </ClCompile>
-    <ClCompile Include="Billboard.cpp">
+    <ClCompile Include="BillboardEntity.cpp">
       <Filter>Source Files\Solar System</Filter>
     </ClCompile>
     <ClCompile Include="SolarSystemSimulation.cpp">
@@ -305,7 +305,7 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Spacecraft.cpp">
+    <ClCompile Include="SpacecraftEntity.cpp">
       <Filter>Source Files\Solar System</Filter>
     </ClCompile>
     <ClCompile Include="Headlamp.cpp">

@@ -169,17 +169,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="Belt.h" />
-    <ClInclude Include="Billboard.h" />
+    <ClInclude Include="BeltEntity.h" />
+    <ClInclude Include="BillboardEntity.h" />
     <ClInclude Include="BodySystem.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="PerspectiveCamera.h" />
-    <ClInclude Include="CelestialBody.h" />
+    <ClInclude Include="CelestialBodyEntity.h" />
     <ClInclude Include="PerspectiveCameraController.h" />
     <ClInclude Include="Headlamp.h" />
-    <ClInclude Include="MilkyWay.h" />
-    <ClInclude Include="Orbit.h" />
+    <ClInclude Include="MilkyWayEntity.h" />
+    <ClInclude Include="OrbitEntity.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="DataBuffer.h" />
     <ClInclude Include="Lights/DirectionalLightComponent.h" />
@@ -193,14 +193,14 @@
     <ClInclude Include="Meshes/CircleMeshComponent.h" />
     <ClInclude Include="Meshes/QuadMeshComponent.h" />
     <ClInclude Include="Renderer.h" />
-    <ClInclude Include="BodyRings.h" />
+    <ClInclude Include="BodyRingsEntity.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEntity.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Meshes/SkyboxMeshComponent.h" />
     <ClInclude Include="SolarSystem.h" />
     <ClInclude Include="SolarSystemSimulation.h" />
-    <ClInclude Include="Spacecraft.h" />
+    <ClInclude Include="SpacecraftEntity.h" />
     <ClInclude Include="Meshes/SphereMeshComponent.h" />
     <ClInclude Include="Lights/SpotLightComponent.h" />
     <ClInclude Include="TextRenderer.h" />
@@ -216,12 +216,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Belt.cpp" />
-    <ClCompile Include="Billboard.cpp" />
+    <ClCompile Include="BeltEntity.cpp" />
+    <ClCompile Include="BillboardEntity.cpp" />
     <ClCompile Include="BodySystem.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="PerspectiveCamera.cpp" />
-    <ClCompile Include="CelestialBody.cpp" />
+    <ClCompile Include="CelestialBodyEntity.cpp" />
     <ClCompile Include="PerspectiveCameraController.cpp" />
     <ClCompile Include="DataBuffer.cpp" />
     <ClCompile Include="Lights/DirectionalLightComponent.cpp" />
@@ -229,8 +229,8 @@
     <ClCompile Include="Headlamp.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputHandler.cpp" />
-    <ClCompile Include="MilkyWay.cpp" />
-    <ClCompile Include="Orbit.cpp" />
+    <ClCompile Include="MilkyWayEntity.cpp" />
+    <ClCompile Include="OrbitEntity.cpp" />
     <ClCompile Include="Lights/PointLightComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -240,14 +240,14 @@
     <ClCompile Include="Meshes/QuadMeshComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
-    <ClCompile Include="BodyRings.cpp" />
+    <ClCompile Include="BodyRingsEntity.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneEntity.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Meshes/SkyboxMeshComponent.cpp" />
     <ClCompile Include="SolarSystem.cpp" />
     <ClCompile Include="SolarSystemSimulation.cpp" />
-    <ClCompile Include="Spacecraft.cpp" />
+    <ClCompile Include="SpacecraftEntity.cpp" />
     <ClCompile Include="Meshes/SphereMeshComponent.cpp" />
     <ClCompile Include="Lights/SpotLightComponent.cpp" />
     <ClCompile Include="TextRenderer.cpp" />

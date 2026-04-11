@@ -5,7 +5,7 @@
 #include <string>
 #include <utility>
 
-#include "BodyRings.h"
+#include "BodyRingsEntity.h"
 #include "PerspectiveCamera.h"
 #include "Renderer.h"
 #include "ShaderLoader.h"

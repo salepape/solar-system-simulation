@@ -1,4 +1,4 @@
-#include "CelestialBody.h"
+#include "CelestialBodyEntity.h"
 
 #include <glad/glad.h>
 #include <glm/ext/matrix_transform.hpp>

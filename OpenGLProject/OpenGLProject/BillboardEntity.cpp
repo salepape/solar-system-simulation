@@ -1,11 +1,11 @@
-#include "Billboard.h"
+#include "BillboardEntity.h"
 
 #include <glm/geometric.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
 #include <vector>
 
-#include "CelestialBody.h"
+#include "CelestialBodyEntity.h"
 #include "Constants.h"
 #include "Renderer.h"
 #include "Shader.h"

@@ -6,11 +6,11 @@
 #include <string>
 #include <vector>
 
-#include "Belt.h"
+#include "BeltEntity.h"
 #include "BodySystem.h"
-#include "MilkyWay.h"
+#include "MilkyWayEntity.h"
 #include "Scene.h"
-#include "Spacecraft.h"
+#include "SpacecraftEntity.h"
 
 
 

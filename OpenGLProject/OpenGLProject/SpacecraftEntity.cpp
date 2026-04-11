@@ -1,4 +1,4 @@
-#include "Spacecraft.h"
+#include "SpacecraftEntity.h"
 
 #include "Application.h"
 #include "Window.h"

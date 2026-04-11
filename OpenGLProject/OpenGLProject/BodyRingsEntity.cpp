@@ -1,4 +1,4 @@
-#include "BodyRings.h"
+#include "BodyRingsEntity.h"
 
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/vec3.hpp>
