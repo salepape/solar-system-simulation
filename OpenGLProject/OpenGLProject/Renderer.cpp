@@ -2,9 +2,9 @@
 
 #include <glad.h>
 
-#include "IndexBuffer.h"
+#include "OpenGLProject/Buffers/IndexBuffer.h"
+#include "OpenGLProject/Buffers/VertexArray.h"
 #include "Shader.h"
-#include "VertexArray.h"
 
 
 

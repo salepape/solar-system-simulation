@@ -19,10 +19,10 @@
     <Filter Include="Source Files\Extern Files">
       <UniqueIdentifier>{332f4d4c-63df-42a3-88a4-2cab99135963}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Buffer Objects">
+    <Filter Include="Header Files\Buffers">
       <UniqueIdentifier>{9ede1af1-4a03-4d46-967a-3426cb7cccd4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Buffer Objects">
+    <Filter Include="Source Files\Buffers">
       <UniqueIdentifier>{55d82c87-b11a-4535-9b1f-3ed3500fc199}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Meshes">
@@ -90,23 +90,23 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="VertexBufferLayout.h">
-      <Filter>Header Files\Buffer Objects</Filter>
+    <ClInclude Include="Buffers/VertexBufferLayout.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="VertexBuffer.h">
-      <Filter>Header Files\Buffer Objects</Filter>
+    <ClInclude Include="Buffers/VertexBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="VertexArray.h">
-      <Filter>Header Files\Buffer Objects</Filter>
+    <ClInclude Include="Buffers/VertexArray.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="UniformBuffer.h">
-      <Filter>Header Files\Buffer Objects</Filter>
+    <ClInclude Include="Buffers/UniformBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="IndexBuffer.h">
-      <Filter>Header Files\Buffer Objects</Filter>
+    <ClInclude Include="Buffers/IndexBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="DataBuffer.h">
-      <Filter>Header Files\Buffer Objects</Filter>
+    <ClInclude Include="Buffers/DataBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Header Files\Shaders</Filter>
@@ -233,23 +233,23 @@
     <ClCompile Include="glad.c">
       <Filter>Source Files\Extern Files</Filter>
     </ClCompile>
-    <ClCompile Include="DataBuffer.cpp">
-      <Filter>Source Files\Buffer Objects</Filter>
+    <ClCompile Include="Buffers/DataBuffer.cpp">
+      <Filter>Source Files\Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="IndexBuffer.cpp">
-      <Filter>Source Files\Buffer Objects</Filter>
+    <ClCompile Include="Buffers/IndexBuffer.cpp">
+      <Filter>Source Files\Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="VertexBufferLayout.cpp">
-      <Filter>Source Files\Buffer Objects</Filter>
+    <ClCompile Include="Buffers/VertexBufferLayout.cpp">
+      <Filter>Source Files\Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="VertexBuffer.cpp">
-      <Filter>Source Files\Buffer Objects</Filter>
+    <ClCompile Include="Buffers/VertexBuffer.cpp">
+      <Filter>Source Files\Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="VertexArray.cpp">
-      <Filter>Source Files\Buffer Objects</Filter>
+    <ClCompile Include="Buffers/VertexArray.cpp">
+      <Filter>Source Files\Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="UniformBuffer.cpp">
-      <Filter>Source Files\Buffer Objects</Filter>
+    <ClCompile Include="Buffers/UniformBuffer.cpp">
+      <Filter>Source Files\Buffers</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files\Shaders</Filter>
