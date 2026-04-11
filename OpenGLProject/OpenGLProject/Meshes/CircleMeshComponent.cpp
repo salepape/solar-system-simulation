@@ -5,8 +5,8 @@
 #include <glm/vec3.hpp>
 #include <utility>
 
-#include "Constants.h"
-#include "Renderer.h"
+#include "OpenGLProject/Constants.h"
+#include "OpenGLProject/Renderer.h"
 
 
 

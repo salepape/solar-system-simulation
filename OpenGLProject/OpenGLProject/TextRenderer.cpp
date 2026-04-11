@@ -7,7 +7,7 @@
 #include <utility>
 
 #include "BodySystem.h"
-#include "QuadMeshComponent.h"
+#include "Meshes/QuadMeshComponent.h"
 #include "Renderer.h"
 #include "ShaderLoader.h"
 #include "VertexArray.h"

@@ -6,9 +6,9 @@
 #include <utility>
 
 #include "BodyRings.h"
-#include "LightSourceComponent.h"
+#include "Lights/LightSourceComponent.h"
+#include "Lights/PointLightComponent.h"
 #include "PerspectiveCamera.h"
-#include "PointLightComponent.h"
 #include "Renderer.h"
 #include "ShaderLoader.h"
 

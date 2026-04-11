@@ -5,11 +5,11 @@
 #include <iostream>
 #include <utility>
 
-#include "IndexBuffer.h"
-#include "Renderer.h"
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "VertexBufferLayout.h"
+#include "OpenGLProject/IndexBuffer.h"
+#include "OpenGLProject/Renderer.h"
+#include "OpenGLProject/VertexArray.h"
+#include "OpenGLProject/VertexBuffer.h"
+#include "OpenGLProject/VertexBufferLayout.h"
 
 
 

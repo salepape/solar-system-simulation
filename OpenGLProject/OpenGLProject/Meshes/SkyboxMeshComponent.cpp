@@ -6,8 +6,8 @@
 #include <utility>
 #include <vector>
 
-#include "Constants.h"
-#include "Renderer.h"
+#include "OpenGLProject/Constants.h"
+#include "OpenGLProject/Renderer.h"
 
 
 

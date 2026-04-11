@@ -102,15 +102,6 @@
     <ClInclude Include="DataBuffer.h">
       <Filter>Header Files\Buffer Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Sphere.h">
-      <Filter>Header Files\Meshes</Filter>
-    </ClInclude>
-    <ClInclude Include="Skybox.h">
-      <Filter>Header Files\Meshes</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Header Files\Meshes</Filter>
-    </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
@@ -120,23 +111,11 @@
     <ClInclude Include="Utils.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Quad.h">
-      <Filter>Header Files\Meshes</Filter>
-    </ClInclude>
     <ClInclude Include="TextRenderer.h">
       <Filter>Header Files\Renderers</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Header Files\Renderers</Filter>
-    </ClInclude>
-    <ClInclude Include="PointLight.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="LightSource.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectionalLight.h">
-      <Filter>Header Files\Lights</Filter>
     </ClInclude>
     <ClInclude Include="InputHandler.h">
       <Filter>Header Files\Interactions</Filter>
@@ -158,9 +137,6 @@
     </ClInclude>
     <ClInclude Include="MilkyWay.h">
       <Filter>Header Files\Solar System</Filter>
-    </ClInclude>
-    <ClInclude Include="Circle.h">
-      <Filter>Header Files\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Orbit.h">
       <Filter>Header Files\Solar System</Filter>
@@ -185,9 +161,6 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Header Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="SpotLight.h">
-      <Filter>Header Files\Lights</Filter>
     </ClInclude>
     <ClInclude Include="Spacecraft.h">
       <Filter>Header Files\Solar System</Filter>
@@ -219,6 +192,33 @@
     <ClCompile Include="PBRMaterial.h">
       <Filter>Header Files\Shaders</Filter>
     </ClCompile>
+    <ClInclude Include="Lights/SpotLightComponent.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="Lights/PointLightComponent.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="Lights/LightSourceComponent.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="Lights/DirectionalLightComponent.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes/CircleMeshComponent.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes/MeshComponent.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes/QuadMeshComponent.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes/SkyboxMeshComponent.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes/SphereMeshComponent.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -248,19 +248,7 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="Sphere.cpp">
-      <Filter>Source Files\Meshes</Filter>
-    </ClCompile>
-    <ClCompile Include="Skybox.cpp">
-      <Filter>Source Files\Meshes</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Meshes</Filter>
-    </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>Source Files\Meshes</Filter>
-    </ClCompile>
-    <ClCompile Include="Quad.cpp">
       <Filter>Source Files\Meshes</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
@@ -268,12 +256,6 @@
     </ClCompile>
     <ClCompile Include="TextRenderer.cpp">
       <Filter>Source Files\Renderers</Filter>
-    </ClCompile>
-    <ClCompile Include="PointLight.cpp">
-      <Filter>Source Files\Lights</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectionalLight.cpp">
-      <Filter>Source Files\Lights</Filter>
     </ClCompile>
     <ClCompile Include="InputHandler.cpp">
       <Filter>Source Files\Interactions</Filter>
@@ -295,9 +277,6 @@
     </ClCompile>
     <ClCompile Include="MilkyWay.cpp">
       <Filter>Source Files\Solar System</Filter>
-    </ClCompile>
-    <ClCompile Include="Circle.cpp">
-      <Filter>Source Files\Meshes</Filter>
     </ClCompile>
     <ClCompile Include="Orbit.cpp">
       <Filter>Source Files\Solar System</Filter>
@@ -322,9 +301,6 @@
     </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="SpotLight.cpp">
-      <Filter>Source Files\Lights</Filter>
     </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files\Utils</Filter>
@@ -355,6 +331,30 @@
     </ClCompile>
     <ClCompile Include="PBRMaterial.cpp">
       <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Lights/DirectionalLightComponent.cpp">
+      <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="Lights/PointLightComponent.cpp">
+      <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="Lights/SpotLightComponent.cpp">
+      <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes/CircleMeshComponent.cpp">
+      <Filter>Source Files\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes/MeshComponent.cpp">
+      <Filter>Source Files\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes/QuadMeshComponent.cpp">
+      <Filter>Source Files\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes/SkyboxMeshComponent.cpp">
+      <Filter>Source Files\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes/SphereMeshComponent.cpp">
+      <Filter>Source Files\Meshes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

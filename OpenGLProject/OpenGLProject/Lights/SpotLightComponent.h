@@ -4,7 +4,7 @@
 #include <glm/vec3.hpp>
 
 #include "LightSourceComponent.h"
-#include "UniformBuffer.h"
+#include "OpenGLProject/UniformBuffer.h"
 
 
 
