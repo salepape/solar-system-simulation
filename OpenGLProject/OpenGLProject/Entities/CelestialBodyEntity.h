@@ -7,7 +7,7 @@
 #include <string>
 
 #include "OpenGLProject/BlinnPhongMaterial.h"
-#include "OpenGLProject/Meshes/SphereMeshComponent.h"
+#include "OpenGLProject/Components/Meshes/SphereMeshComponent.h"
 #include "SceneEntity.h"
 
 class LightSourceComponent;

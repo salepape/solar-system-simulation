@@ -9,8 +9,8 @@
 
 #include "OpenGLProject/BodySystem.h"
 #include "OpenGLProject/Constants.h"
-#include "OpenGLProject/Lights/LightSourceComponent.h"
-#include "OpenGLProject/Lights/PointLightComponent.h"
+#include "OpenGLProject/Components/Lights/LightSourceComponent.h"
+#include "OpenGLProject/Components/Lights/PointLightComponent.h"
 #include "OpenGLProject/Renderer.h"
 #include "OpenGLProject/Shader.h"
 #include "OpenGLProject/ShaderLoader.h"

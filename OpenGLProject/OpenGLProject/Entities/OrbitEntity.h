@@ -7,7 +7,7 @@
 #include <string>
 
 #include "OpenGLProject/BlinnPhongMaterial.h"
-#include "OpenGLProject/Meshes/CircleMeshComponent.h"
+#include "OpenGLProject/Components/Meshes/CircleMeshComponent.h"
 #include "SceneEntity.h"
 
 struct BodyData;

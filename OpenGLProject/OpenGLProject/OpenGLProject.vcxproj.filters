@@ -25,13 +25,13 @@
     <Filter Include="Source Files\Buffers">
       <UniqueIdentifier>{55d82c87-b11a-4535-9b1f-3ed3500fc199}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Meshes">
+    <Filter Include="Header Files\Components\Meshes">
       <UniqueIdentifier>{88e9a964-90be-4947-9a65-13476ca1f241}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Shaders">
       <UniqueIdentifier>{5cf6b12a-b5db-465b-aefe-50689ac9e11c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Meshes">
+    <Filter Include="Source Files\Components\Meshes">
       <UniqueIdentifier>{6dd714ea-40d0-4db2-bca5-6fceb12f6e08}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Renderers">
@@ -40,10 +40,10 @@
     <Filter Include="Header Files\Renderers">
       <UniqueIdentifier>{4a0b7d24-e387-4497-8234-0345c9a2e1e9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Lights">
+    <Filter Include="Source Files\Components\Lights">
       <UniqueIdentifier>{246b1f4c-a3ed-4e72-9207-5e11f89b6004}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Lights">
+    <Filter Include="Header Files\Components\Lights">
       <UniqueIdentifier>{54f17ea8-391c-46fb-9dc3-f82b0bd0d860}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Interactions">
@@ -112,7 +112,7 @@
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
-      <Filter>Header Files\Meshes</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Header Files\Utils</Filter>
@@ -174,32 +174,32 @@
     <ClCompile Include="PBRMaterial.h">
       <Filter>Header Files\Shaders</Filter>
     </ClCompile>
-    <ClInclude Include="Lights/SpotLightComponent.h">
-      <Filter>Header Files\Lights</Filter>
+    <ClInclude Include="Components/Lights/SpotLightComponent.h">
+      <Filter>Header Files\Components\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="Lights/PointLightComponent.h">
-      <Filter>Header Files\Lights</Filter>
+    <ClInclude Include="Components/Lights/PointLightComponent.h">
+      <Filter>Header Files\Components\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="Lights/LightSourceComponent.h">
-      <Filter>Header Files\Lights</Filter>
+    <ClInclude Include="Components/Lights/LightSourceComponent.h">
+      <Filter>Header Files\Components\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="Lights/DirectionalLightComponent.h">
-      <Filter>Header Files\Lights</Filter>
+    <ClInclude Include="Components/Lights/DirectionalLightComponent.h">
+      <Filter>Header Files\Components\Lights</Filter>
     </ClInclude>
     <ClInclude Include="Meshes/CircleMeshComponent.h">
-      <Filter>Header Files\Meshes</Filter>
+      <Filter>Header Files\Components\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Meshes/MeshComponent.h">
-      <Filter>Header Files\Meshes</Filter>
+      <Filter>Header Files\Components\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Meshes/QuadMeshComponent.h">
-      <Filter>Header Files\Meshes</Filter>
+      <Filter>Header Files\Components\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Meshes/SkyboxMeshComponent.h">
-      <Filter>Header Files\Meshes</Filter>
+      <Filter>Header Files\Components\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Meshes/SphereMeshComponent.h">
-      <Filter>Header Files\Meshes</Filter>
+      <Filter>Header Files\Components\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Entities/SpacecraftEntity.h">
       <Filter>Header Files\Entities</Filter>
@@ -255,7 +255,7 @@
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>Source Files\Meshes</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files\Renderers</Filter>
@@ -314,29 +314,29 @@
     <ClCompile Include="PBRMaterial.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="Lights/DirectionalLightComponent.cpp">
-      <Filter>Source Files\Lights</Filter>
+    <ClCompile Include="Components/Lights/DirectionalLightComponent.cpp">
+      <Filter>Source Files\Components\Lights</Filter>
     </ClCompile>
-    <ClCompile Include="Lights/PointLightComponent.cpp">
-      <Filter>Source Files\Lights</Filter>
+    <ClCompile Include="Components/Lights/PointLightComponent.cpp">
+      <Filter>Source Files\Components\Lights</Filter>
     </ClCompile>
-    <ClCompile Include="Lights/SpotLightComponent.cpp">
-      <Filter>Source Files\Lights</Filter>
+    <ClCompile Include="Components/Lights/SpotLightComponent.cpp">
+      <Filter>Source Files\Components\Lights</Filter>
     </ClCompile>
-    <ClCompile Include="Meshes/CircleMeshComponent.cpp">
-      <Filter>Source Files\Meshes</Filter>
+    <ClCompile Include="Components/Meshes/CircleMeshComponent.cpp">
+      <Filter>Source Files\Components\Meshes</Filter>
     </ClCompile>
-    <ClCompile Include="Meshes/MeshComponent.cpp">
-      <Filter>Source Files\Meshes</Filter>
+    <ClCompile Include="Components/Meshes/MeshComponent.cpp">
+      <Filter>Source Files\Components\Meshes</Filter>
     </ClCompile>
-    <ClCompile Include="Meshes/QuadMeshComponent.cpp">
-      <Filter>Source Files\Meshes</Filter>
+    <ClCompile Include="Components/Meshes/QuadMeshComponent.cpp">
+      <Filter>Source Files\Components\Meshes</Filter>
     </ClCompile>
-    <ClCompile Include="Meshes/SkyboxMeshComponent.cpp">
-      <Filter>Source Files\Meshes</Filter>
+    <ClCompile Include="Components/Meshes/SkyboxMeshComponent.cpp">
+      <Filter>Source Files\Components\Meshes</Filter>
     </ClCompile>
-    <ClCompile Include="Meshes/SphereMeshComponent.cpp">
-      <Filter>Source Files\Meshes</Filter>
+    <ClCompile Include="Components/Meshes/SphereMeshComponent.cpp">
+      <Filter>Source Files\Components\Meshes</Filter>
     </ClCompile>
     <ClCompile Include="Entities/SpacecraftEntity.cpp">
       <Filter>Source Files\Entities</Filter>

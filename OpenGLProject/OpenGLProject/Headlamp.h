@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <glm/vec3.hpp>
 
-#include "Lights/SpotLightComponent.h"
+#include "Components/Lights/SpotLightComponent.h"
 
 class Camera;
 
