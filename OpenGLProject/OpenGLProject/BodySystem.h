@@ -9,7 +9,7 @@
 #include "Orbit.h"
 
 class BodyRings;
-class LightSource;
+class LightSourceComponent;
 class PerspectiveCamera;
 class Renderer;
 struct RingsData;
@@ -53,7 +53,7 @@ private:
 	// Will be filled once the Rings have been parsed from the CSV file, hence not in the constructor of this class
 	std::shared_ptr<BodyRings> celestialBodyRings;
 
-	std::shared_ptr<LightSource> lightSource;
+	std::shared_ptr<LightSourceComponent> lightSource;
 };
 
 

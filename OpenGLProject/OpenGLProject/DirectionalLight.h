@@ -18,7 +18,7 @@ struct GLSLDirectionalLightParams
 	bool isBlinn;
 };
 
-class DirectionalLight : public LightSource
+class DirectionalLight : public LightSourceComponent
 {
 public:
 	DirectionalLight() = delete;

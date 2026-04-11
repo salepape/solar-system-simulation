@@ -19,7 +19,7 @@ struct GLSLPointLightParams
 	bool isBlinn;
 };
 
-class PointLight : public LightSource
+class PointLight : public LightSourceComponent
 {
 public:
 	PointLight() = delete;

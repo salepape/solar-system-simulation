@@ -22,11 +22,11 @@ struct AttenuationParams
 };
 
 // Source casting rays of lights according to Phong Illumination model
-class LightSource
+class LightSourceComponent
 {
 public:
 	// Virtual destructor (needed, as class is not final)
-	virtual ~LightSource() = default;
+	virtual ~LightSourceComponent() = default;
 };
 
 

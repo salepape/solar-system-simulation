@@ -28,7 +28,7 @@ struct GLSLSpotLightParams
 	bool isCameraFlashLight;
 };
 
-class SpotLight : public LightSource
+class SpotLight : public LightSourceComponent
 {
 public:
 	SpotLight() = delete;
