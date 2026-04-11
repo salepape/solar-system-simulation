@@ -23,10 +23,10 @@ struct QuadVertex
 };
 
 // A 2D quad used to render a texture (e.g. a character glyph). Not inheriting from Mesh class since we do not want the same vertex elements/VAO management.
-class Quad : public MeshComponent
+class QuadMeshComponent : public MeshComponent
 {
 public:
-	Quad(const float inXPosition, const float inYPosition, const float inWidth, const float inHeight);
+	QuadMeshComponent(const float inXPosition, const float inYPosition, const float inWidth, const float inHeight);
 
 	// Update content of VBO memory with quad data
 	void StoreVertices(VertexBuffer& vbo) const;
@@ -36,7 +36,7 @@ public:
 	void Render(const Renderer& renderer, const VertexArray& vao) const;
 
 	static constexpr int32_t VERTICES_COUNT = 6;
-	static constexpr std::size_t GetSize() { return static_cast<std::size_t>(Quad::VERTICES_COUNT) * sizeof(QuadVertex); }
+	static constexpr std::size_t GetSize() { return static_cast<std::size_t>(QuadMeshComponent::VERTICES_COUNT) * sizeof(QuadVertex); }
 
 private:
 	float xPosition{ 0.0f };

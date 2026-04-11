@@ -9,7 +9,7 @@
 
 
 
-Sphere::Sphere(const float inRadius, const uint32_t inMeridianStripsCount, const uint32_t inParallelStripsCount) :
+SphereMeshComponent::SphereMeshComponent(const float inRadius, const uint32_t inMeridianStripsCount, const uint32_t inParallelStripsCount) :
 	radius(inRadius), meridianStripsCount(inMeridianStripsCount), parallelStripsCount(inParallelStripsCount)
 {
 	ComputeVertices();
@@ -17,7 +17,7 @@ Sphere::Sphere(const float inRadius, const uint32_t inMeridianStripsCount, const
 	StoreVertices();
 }
 
-void Sphere::ComputeVertices()
+void SphereMeshComponent::ComputeVertices()
 {
 	const float invMeridianStripsCount = 1.0f / meridianStripsCount;
 	const float invParallelStripsCount = 1.0f / parallelStripsCount;
@@ -52,7 +52,7 @@ void Sphere::ComputeVertices()
 	}
 }
 
-void Sphere::ComputeIndices()
+void SphereMeshComponent::ComputeIndices()
 {
 	// Indices matrix shape
 	// k1--k1+1

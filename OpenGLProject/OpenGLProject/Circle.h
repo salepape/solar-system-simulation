@@ -9,10 +9,10 @@ class Renderer;
 
 
 
-class Circle : public MeshComponent
+class CircleMeshComponent : public MeshComponent
 {
 public:
-	Circle(const float inRadius);
+	CircleMeshComponent(const float inRadius);
 
 	void Render(const Renderer& renderer) const override;
 

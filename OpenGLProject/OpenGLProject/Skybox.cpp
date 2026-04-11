@@ -11,13 +11,13 @@
 
 
 
-Skybox::Skybox()
+SkyboxMeshComponent::SkyboxMeshComponent()
 {
 	ComputeVertices();
 	StoreVertices();
 };
 
-void Skybox::ComputeVertices()
+void SkyboxMeshComponent::ComputeVertices()
 {
 	std::array<float, 3 * VERTICES_COUNT> vertexCoor =
 	{
@@ -80,7 +80,7 @@ void Skybox::ComputeVertices()
 	}
 }
 
-void Skybox::Render(const Renderer& renderer) const
+void SkyboxMeshComponent::Render(const Renderer& renderer) const
 {
 	renderer.Draw(*vao, GL_TRIANGLES, VERTICES_COUNT);
 }

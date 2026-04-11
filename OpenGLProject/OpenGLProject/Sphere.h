@@ -7,10 +7,10 @@
 
 
 
-class Sphere : public MeshComponent
+class SphereMeshComponent : public MeshComponent
 {
 public:
-	Sphere(const float inRadius, const uint32_t inMeridianStripsCount = 100, const uint32_t inParallelStripsCount = 100);
+	SphereMeshComponent(const float inRadius, const uint32_t inMeridianStripsCount = 100, const uint32_t inParallelStripsCount = 100);
 
 	// Implicit copy constructor will be called when GetBodySystem() is called, as we get a shallow copy of it every time
 

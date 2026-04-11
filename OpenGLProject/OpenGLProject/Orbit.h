@@ -25,7 +25,7 @@ public:
 
 private:
 	// @todo - Implement ellipse for a more realistic simulation (circular orbits with eccentricities close to 0 for now)
-	Circle circle;
+	CircleMeshComponent circle;
 	BlinnPhongMaterial material;
 
 	std::string bodyName;

@@ -9,10 +9,10 @@ class Renderer;
 
 
 
-class Skybox : public MeshComponent
+class SkyboxMeshComponent : public MeshComponent
 {
 public:
-	Skybox();
+	SkyboxMeshComponent();
 
 	void Render(const Renderer& renderer) const override;
 

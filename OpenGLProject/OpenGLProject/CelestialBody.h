@@ -60,7 +60,7 @@ public:
 private:
 	BodyData bodyData;
 
-	Sphere sphere;
+	SphereMeshComponent sphere;
 	BlinnPhongMaterial material;
 
 	bool isMoon{ false };

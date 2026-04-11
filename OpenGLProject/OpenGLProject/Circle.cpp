@@ -10,14 +10,14 @@
 
 
 
-Circle::Circle(const float inRadius) :
+CircleMeshComponent::CircleMeshComponent(const float inRadius) :
 	radius(inRadius)
 {
 	ComputeVertices();
 	StoreVertices();
 }
 
-void Circle::ComputeVertices()
+void CircleMeshComponent::ComputeVertices()
 {
 	const float thetaAngle = GLMConstants::doublePi * 1.0f / meridianStripsCount;
 
@@ -38,7 +38,7 @@ void Circle::ComputeVertices()
 	}
 }
 
-void Circle::Render(const Renderer& renderer) const
+void CircleMeshComponent::Render(const Renderer& renderer) const
 {
 	renderer.Draw(*vao, GL_LINE_LOOP, meridianStripsCount);
 }

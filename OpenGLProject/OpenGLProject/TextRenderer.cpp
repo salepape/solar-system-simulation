@@ -31,7 +31,7 @@ TextRenderer::TextRenderer()
 void TextRenderer::AllocateBufferObjects()
 {
 	vao = std::make_shared<VertexArray>();
-	vbo = std::make_shared<VertexBuffer>(nullptr, Quad::GetSize(), GL_DYNAMIC_DRAW);
+	vbo = std::make_shared<VertexBuffer>(nullptr, QuadMeshComponent::GetSize(), GL_DYNAMIC_DRAW);
 
 	VertexBufferLayout vbl;
 	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, QuadVertex::ELMTS_COUNT);
@@ -139,7 +139,7 @@ void TextRenderer::Render(const Renderer& renderer, const uint32_t textureUnit, 
 		const float width = glyphParams.width * scale;
 		const float height = glyphParams.height * scale;
 
-		Quad quad(xPosition, yPosition, width, height);
+		QuadMeshComponent quad(xPosition, yPosition, width, height);
 		quad.StoreVertices(*vbo);
 
 		// @todo - Enabling/Disabling operations should be brought outside the for-loop for optimisation num of permutations
@@ -167,5 +167,5 @@ float TextRenderer::GetBillboardSize(const std::string& text, const float scale)
 float TextRenderer::GetGlyphAdvance(const GlyphParams& glyphParams, const float scale) const
 {
 	// Bitshift by VERTICES_COUNT to get value in pixels (2^VERTICES_COUNT = 64, so we divide 1/64th pixels by 64 to get the amount of pixels)
-	return (glyphParams.advance >> Quad::VERTICES_COUNT) * scale;
+	return (glyphParams.advance >> QuadMeshComponent::VERTICES_COUNT) * scale;
 }

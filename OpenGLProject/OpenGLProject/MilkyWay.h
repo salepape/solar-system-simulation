@@ -19,7 +19,7 @@ public:
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 
 private:
-	Skybox skybox;
+	SkyboxMeshComponent skybox;
 	BlinnPhongMaterial material;
 
 	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& inTexturePath);

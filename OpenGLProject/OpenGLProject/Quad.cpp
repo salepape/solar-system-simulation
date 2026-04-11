@@ -7,15 +7,15 @@
 
 
 
-Quad::Quad(const float inXPosition, const float inYPosition, const float inWidth, const float inHeight) :
+QuadMeshComponent::QuadMeshComponent(const float inXPosition, const float inYPosition, const float inWidth, const float inHeight) :
 	xPosition(inXPosition), yPosition(inYPosition), width(inWidth), height(inHeight)
 {
 	ComputeVertices();
 }
 
-void Quad::ComputeVertices()
+void QuadMeshComponent::ComputeVertices()
 {
-	vertexCoor.reserve(Quad::VERTICES_COUNT);
+	vertexCoor.reserve(QuadMeshComponent::VERTICES_COUNT);
 
 	vertexCoor.insert(vertexCoor.end(), {
 		{ { xPosition,			yPosition + height }, { 0.0f, 0.0f } },
@@ -28,12 +28,12 @@ void Quad::ComputeVertices()
 		});
 }
 
-void Quad::StoreVertices(VertexBuffer& vbo) const
+void QuadMeshComponent::StoreVertices(VertexBuffer& vbo) const
 {
-	vbo.SetSubData(static_cast<const void*>(vertexCoor.data()), Quad::GetSize());
+	vbo.SetSubData(static_cast<const void*>(vertexCoor.data()), QuadMeshComponent::GetSize());
 }
 
-void Quad::Render(const Renderer& renderer, const VertexArray& vao) const
+void QuadMeshComponent::Render(const Renderer& renderer, const VertexArray& vao) const
 {
-	renderer.Draw(vao, GL_TRIANGLES, Quad::VERTICES_COUNT);
+	renderer.Draw(vao, GL_TRIANGLES, QuadMeshComponent::VERTICES_COUNT);
 }
