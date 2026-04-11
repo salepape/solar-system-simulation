@@ -4,9 +4,9 @@
 #include <glm/vec3.hpp>
 #include <memory>
 
-#include "BillboardEntity.h"
-#include "CelestialBodyEntity.h"
-#include "OrbitEntity.h"
+#include "Entities/BillboardEntity.h"
+#include "Entities/CelestialBodyEntity.h"
+#include "Entities/OrbitEntity.h"
 
 class BodyRingsEntity;
 class PerspectiveCamera;

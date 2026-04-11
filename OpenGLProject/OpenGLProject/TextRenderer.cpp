@@ -6,10 +6,8 @@
 #include <iostream>
 #include <utility>
 
-#include "BodySystem.h"
-#include "Meshes/QuadMeshComponent.h"
+#include "OpenGLProject/Meshes/QuadMeshComponent.h"
 #include "Renderer.h"
-#include "ShaderLoader.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"

@@ -10,9 +10,9 @@
 #include <unordered_map>
 
 #include "Application.h"
-#include "BillboardEntity.h"
-#include "BodyRingsEntity.h"
-#include "CelestialBodyEntity.h"
+#include "OpenGLProject/Entities/BillboardEntity.h"
+#include "OpenGLProject/Entities/BodyRingsEntity.h"
+#include "OpenGLProject/Entities/CelestialBodyEntity.h"
 #include "PerspectiveCamera.h"
 #include "PerspectiveCameraController.h"
 #include "Renderer.h"
