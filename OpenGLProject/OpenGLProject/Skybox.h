@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-#include "Mesh.h"
+#include "MeshComponent.h"
 
 class Renderer;
 

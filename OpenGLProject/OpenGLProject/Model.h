@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "BlinnPhongMaterial.h"
-#include "Mesh.h"
+#include "MeshComponent.h"
 #include "ShaderLoader.h"
 #include "Texture.h"
 

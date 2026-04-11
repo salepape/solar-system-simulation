@@ -188,7 +188,7 @@
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Material.h" />
-    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Quad.h" />
@@ -234,7 +234,7 @@
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Material.cpp" />
-    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Quad.cpp" />
