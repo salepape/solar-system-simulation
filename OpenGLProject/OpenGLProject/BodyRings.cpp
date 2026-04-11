@@ -11,13 +11,13 @@
 
 
 
-BodyRings::BodyRings(RingsData&& inRingsData) : SceneEntity(inRingsData.bodyName + "Rings"),
+BodyRingsEntity::BodyRingsEntity(RingsData&& inRingsData) : SceneEntity(inRingsData.bodyName + "Rings"),
 ringsData(inRingsData), model(ringsData.modelPath, ringsData.opacity < 0.5f ? ShaderLookUpID::Enum::INFRARED_BODY_RINGS : ShaderLookUpID::Enum::VISIBLE_BODY_RINGS), bodyName(ringsData.bodyName)
 {
 
 }
 
-void BodyRings::ComputeModelMatrixVUniform(const glm::mat4& inModelMatrix, const float /*elapsedTime*/)
+void BodyRingsEntity::ComputeModelMatrixVUniform(const glm::mat4& inModelMatrix, const float /*elapsedTime*/)
 {
 	modelMatrix = inModelMatrix;
 
@@ -28,7 +28,7 @@ void BodyRings::ComputeModelMatrixVUniform(const glm::mat4& inModelMatrix, const
 	modelMatrix = glm::rotate(modelMatrix, -GLMConstants::halfPi, GLMConstants::rightVector);
 }
 
-void BodyRings::Render(const Renderer& renderer, const glm::mat4& inModelMatrix, const float /*elapsedTime*/)
+void BodyRingsEntity::Render(const Renderer& renderer, const glm::mat4& inModelMatrix, const float /*elapsedTime*/)
 {
 	ComputeModelMatrixVUniform(inModelMatrix);
 

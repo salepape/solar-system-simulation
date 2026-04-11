@@ -6,8 +6,6 @@
 #include <utility>
 
 #include "BodyRings.h"
-#include "Lights/LightSourceComponent.h"
-#include "Lights/PointLightComponent.h"
 #include "PerspectiveCamera.h"
 #include "Renderer.h"
 #include "ShaderLoader.h"
@@ -19,18 +17,12 @@ BodySystem::BodySystem(BodyData&& inBodyData) :
 	orbit(celestialBody.GetBodyData()),
 	billboard(celestialBody.GetBodyData())
 {
-	if (celestialBody.GetBodyData().name == "Sun")
-	{
-		// Set up the lighting for all scene entities according to Sun position/light emission parameters
-		lightSource = std::make_unique<PointLightComponent>(celestialBody.GetPosition(),
-			ReflectionParams{ glm::vec3(0.25f), glm::vec3(0.95f), glm::vec3(1.0f) },
-			AttenuationParams{ 1.0f, 0.00045f, 0.00000075f });
-	}
+
 }
 
 void BodySystem::SetBodyRings(RingsData&& inRingsData)
 {
-	celestialBodyRings = std::make_shared<BodyRings, RingsData&&>(std::move(inRingsData));
+	celestialBodyRings = std::make_shared<BodyRingsEntity, RingsData&&>(std::move(inRingsData));
 }
 
 void BodySystem::Render(const Renderer& renderer, const bool isBillboard, TextRenderer& textRenderer, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float elapsedTime)

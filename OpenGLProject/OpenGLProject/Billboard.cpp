@@ -20,7 +20,7 @@ namespace
 
 
 
-Billboard::Billboard(const BodyData& inBodyData) : SceneEntity(inBodyData.name + "Billboard"),
+BillboardEntity::BillboardEntity(const BodyData& inBodyData) : SceneEntity(inBodyData.name + "Billboard"),
 material(InitialiseMaterial()), legend(inBodyData.name)
 {
 	float textHeightFactor = 1.5f;
@@ -36,13 +36,13 @@ material(InitialiseMaterial()), legend(inBodyData.name)
 	textScale = inBodyData.radius * textScaleFactor;
 }
 
-BlinnPhongMaterial Billboard::InitialiseMaterial()
+BlinnPhongMaterial BillboardEntity::InitialiseMaterial()
 {
 	// All Textures2D used by the Billboard are Glyph Textures2D managed in the Text Renderer directly, so not linked in this Material
 	return BlinnPhongMaterial(ShaderLookUpID::Enum::BILLBOARD, std::vector<Texture>{ /* texturesLoadedFromTheTextRenderer */ }, DiffuseProperties{ GLMConstants::whiteColour });
 }
 
-void Billboard::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& forward, const glm::vec3& right)
+void BillboardEntity::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& forward, const glm::vec3& right)
 {
 	modelMatrix = glm::mat4(1.0f);
 
@@ -53,7 +53,7 @@ void Billboard::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const 
 	modelMatrix[3] = glm::vec4(bodyPosition, 1.0f);
 }
 
-void Billboard::Render(const Renderer& renderer, TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)
+void BillboardEntity::Render(const Renderer& renderer, TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)
 {
 	ComputeModelMatrixVUniform(bodyPosition, cameraForward, cameraRight);
 

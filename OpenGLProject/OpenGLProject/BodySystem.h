@@ -8,8 +8,7 @@
 #include "CelestialBody.h"
 #include "Orbit.h"
 
-class BodyRings;
-class LightSourceComponent;
+class BodyRingsEntity;
 class PerspectiveCamera;
 class Renderer;
 struct RingsData;
@@ -38,22 +37,20 @@ public:
 	// Destructor (not virtual needed, until child classes exist)
 	~BodySystem() = default;
 
-	CelestialBody& GetCelestialBody() { return celestialBody; }
-	const CelestialBody& GetCelestialBody() const { return celestialBody; }
+	CelestialBodyEntity& GetCelestialBody() { return celestialBody; }
+	const CelestialBodyEntity& GetCelestialBody() const { return celestialBody; }
 
 	void SetBodyRings(RingsData&& inRingsData);
 
 	void Render(const Renderer& renderer, const bool isBillboard, TextRenderer& textRenderer, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float elapsedTime);
 
 private:
-	CelestialBody celestialBody;
-	Orbit orbit;
-	Billboard billboard;
+	CelestialBodyEntity celestialBody;
+	OrbitEntity orbit;
+	BillboardEntity billboard;
 
 	// Will be filled once the Rings have been parsed from the CSV file, hence not in the constructor of this class
-	std::shared_ptr<BodyRings> celestialBodyRings;
-
-	std::shared_ptr<LightSourceComponent> lightSource;
+	std::shared_ptr<BodyRingsEntity> celestialBodyRings;
 };
 
 

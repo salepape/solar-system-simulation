@@ -11,10 +11,10 @@ class Renderer;
 
 
 
-class MilkyWay : public SceneEntity
+class MilkyWayEntity : public SceneEntity
 {
 public:
-	MilkyWay(const std::filesystem::path& inTexturePath);
+	MilkyWayEntity(const std::filesystem::path& inTexturePath);
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 

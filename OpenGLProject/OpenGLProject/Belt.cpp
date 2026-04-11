@@ -14,14 +14,14 @@
 
 
 
-Belt::Belt(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams) : SceneEntity(inName),
+BeltEntity::BeltEntity(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams) : SceneEntity(inName),
 instanceParams(inInstanceParams), torusParams(inTorusParams), model(inInstanceParams.modelPath, ShaderLookUpID::Enum::BELT)
 {
 	ComputeInstanceModelMatrices();
 	StoreInstanceModelMatrices();
 }
 
-void Belt::ComputeInstanceModelMatrices()
+void BeltEntity::ComputeInstanceModelMatrices()
 {
 	const float angleValue = 1.0f / instanceParams.count * 360.0f;
 
@@ -66,12 +66,12 @@ void Belt::ComputeInstanceModelMatrices()
 	}
 }
 
-void Belt::StoreInstanceModelMatrices() const
+void BeltEntity::StoreInstanceModelMatrices() const
 {
 	model.StoreInstanceModelMatrices(modelMatrices, static_cast<std::size_t>(instanceParams.count) * sizeof(glm::mat4));
 }
 
-void Belt::Render(const Renderer& renderer, const float /*elapsedTime*/)
+void BeltEntity::Render(const Renderer& renderer, const float /*elapsedTime*/)
 {
 	const Material& modelMaterial = model.GetMaterials()[0];
 	const Shader& shader = modelMaterial.GetShader();

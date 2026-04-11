@@ -22,17 +22,17 @@ public:
 	void Update() override;
 
 	const std::vector<BodySystem>& GetBodySystems() const { return bodySystems; }
-	const std::vector<Belt>& GetBelts() const { return belts; }
+	const std::vector<BeltEntity>& GetBelts() const { return belts; }
 
 	BodySystem& GetBodySystem(const std::string& inBodyName);
 
 private:
 	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun -> farthest celestial body'
-	MilkyWay milkyWay;
-	Spacecraft spacecraft;
+	MilkyWayEntity milkyWay;
+	SpacecraftEntity spacecraft;
 
 	std::vector<BodySystem> bodySystems;
-	std::vector<Belt> belts;
+	std::vector<BeltEntity> belts;
 
 	// @todo - Think about using a Builder Design Pattern to construct such class instances out of CSV files
 	// Instantiate "spherical" celestial bodies/ring systems/belt systems, after loading data from .csv files,

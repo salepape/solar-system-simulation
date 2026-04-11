@@ -16,7 +16,7 @@
 
 
 
-Orbit::Orbit(const BodyData& inBodyData) : SceneEntity(inBodyData.name + "Orbit"),
+OrbitEntity::OrbitEntity(const BodyData& inBodyData) : SceneEntity(inBodyData.name + "Orbit"),
 circle(inBodyData.distanceToParent), material(InitialiseMaterial(inBodyData.texturePath))
 {
 	isMoon = (inBodyData.parentName.length() != 0);
@@ -26,7 +26,7 @@ circle(inBodyData.distanceToParent), material(InitialiseMaterial(inBodyData.text
 	ComputeModelMatrixVUniform(glm::vec3(0.0f));
 }
 
-BlinnPhongMaterial Orbit::InitialiseMaterial(const std::filesystem::path& inTexturePath)
+BlinnPhongMaterial OrbitEntity::InitialiseMaterial(const std::filesystem::path& inTexturePath)
 {
 	Texture texture(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadDDS();
@@ -34,7 +34,7 @@ BlinnPhongMaterial Orbit::InitialiseMaterial(const std::filesystem::path& inText
 	return BlinnPhongMaterial(ShaderLookUpID::Enum::ORBIT, std::vector<Texture>{ std::move(texture) });
 }
 
-void Orbit::ComputeModelMatrixVUniform(const glm::vec3& parentPosition, const float /*elapsedTime*/)
+void OrbitEntity::ComputeModelMatrixVUniform(const glm::vec3& parentPosition, const float /*elapsedTime*/)
 {
 	modelMatrix = glm::mat4(1.0f);
 
@@ -49,7 +49,7 @@ void Orbit::ComputeModelMatrixVUniform(const glm::vec3& parentPosition, const fl
 	modelMatrix = glm::rotate(modelMatrix, orbInclinationInRad, GLMConstants::forwardVector);
 }
 
-void Orbit::Render(const Renderer& renderer, const glm::vec3& parentPosition, const float /*elapsedTime*/)
+void OrbitEntity::Render(const Renderer& renderer, const glm::vec3& parentPosition, const float /*elapsedTime*/)
 {
 	// Only moons have their parent position (= Planet) moving, whereas planets have their parent position (= Sun) constant
 	if (isMoon)

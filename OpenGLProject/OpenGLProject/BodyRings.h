@@ -20,10 +20,10 @@ struct RingsData
 	float opacity{ 0.5f };
 };
 
-class BodyRings : public SceneEntity
+class BodyRingsEntity : public SceneEntity
 {
 public:
-	BodyRings(RingsData&& inRingsData);
+	BodyRingsEntity(RingsData&& inRingsData);
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
 	void Render(const Renderer& renderer, const glm::mat4& modelMatrix, const float elapsedTime = 0.0f);

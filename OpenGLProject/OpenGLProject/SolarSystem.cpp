@@ -56,7 +56,7 @@ void SolarSystem::Update()
 	std::map<float, BodySystem&> bodiesSortedByDistance;
 	for (BodySystem& bodySystem : bodySystems)
 	{
-		const CelestialBody* parentBody = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? &GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody() : nullptr;
+		const CelestialBodyEntity* parentBody = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? &GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody() : nullptr;
 		bodySystem.GetCelestialBody().ComputeCartesianPosition(app.elapsedTime * app.speedFactor, parentBody);
 
 		bodiesSortedByDistance.insert({
@@ -74,7 +74,7 @@ void SolarSystem::Update()
 	}
 
 	// Draw the 2 main belts of the Solar System
-	for (Belt& belt : belts)
+	for (BeltEntity& belt : belts)
 	{
 		belt.Render(renderer);
 	}

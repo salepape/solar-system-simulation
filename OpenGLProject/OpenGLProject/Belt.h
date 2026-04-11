@@ -40,10 +40,10 @@ struct TorusParams
 	float flatnessFactor{ 0.0f };
 };
 
-class Belt : public SceneEntity
+class BeltEntity : public SceneEntity
 {
 public:
-	Belt(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams);
+	BeltEntity(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams);
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
 

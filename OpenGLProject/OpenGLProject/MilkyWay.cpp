@@ -11,13 +11,13 @@
 
 
 
-MilkyWay::MilkyWay(const std::filesystem::path& inTexturePath) : SceneEntity("MilkyWay"),
+MilkyWayEntity::MilkyWayEntity(const std::filesystem::path& inTexturePath) : SceneEntity("MilkyWay"),
 material(InitialiseMaterial(inTexturePath))
 {
 
 }
 
-BlinnPhongMaterial MilkyWay::InitialiseMaterial(const std::filesystem::path& inTexturePath)
+BlinnPhongMaterial MilkyWayEntity::InitialiseMaterial(const std::filesystem::path& inTexturePath)
 {
 	Texture texture(inTexturePath, GL_TEXTURE_CUBE_MAP, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadCubemapDDS();
@@ -25,7 +25,7 @@ BlinnPhongMaterial MilkyWay::InitialiseMaterial(const std::filesystem::path& inT
 	return BlinnPhongMaterial(ShaderLookUpID::Enum::MILKY_WAY, std::vector<Texture>{ std::move(texture) });
 }
 
-void MilkyWay::Render(const Renderer& renderer, const float /*elapsedTime*/)
+void MilkyWayEntity::Render(const Renderer& renderer, const float /*elapsedTime*/)
 {
 	Shader& shader = material.GetShader();
 	shader.Enable();

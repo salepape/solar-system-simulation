@@ -9,6 +9,8 @@
 
 #include "BodySystem.h"
 #include "Constants.h"
+#include "Lights/LightSourceComponent.h"
+#include "Lights/PointLightComponent.h"
 #include "Renderer.h"
 #include "Shader.h"
 #include "ShaderLoader.h"
@@ -16,11 +18,19 @@
 
 
 
-CelestialBody::CelestialBody(BodyData&& inBodyData) : SceneEntity(inBodyData.name),
+CelestialBodyEntity::CelestialBodyEntity(BodyData&& inBodyData) : SceneEntity(inBodyData.name),
 bodyData(std::move(inBodyData)),
 sphere(bodyData.radius),
 material(InitialiseMaterial(bodyData.texturePath, bodyData.name))
 {
+	if (bodyData.name == "Sun")
+	{
+		// Set up the lighting for all Scene Entities according to Sun position/light emission parameters
+		lightSource = std::make_unique<PointLightComponent>(GetPosition(),
+			ReflectionParams{ glm::vec3(0.25f), glm::vec3(0.95f), glm::vec3(1.0f) },
+			AttenuationParams{ 1.0f, 0.00045f, 0.00000075f });
+	}
+
 	isMoon = bodyData.parentName.length() != 0 ? true : false;
 
 	orbitAngularFreq = bodyData.orbitalPeriod == 0.0f ? 0.0f : GLMConstants::doublePi * 1.0f / bodyData.orbitalPeriod;
@@ -33,7 +43,7 @@ material(InitialiseMaterial(bodyData.texturePath, bodyData.name))
 	distSinOrbInclination = bodyData.distanceToParent * glm::sin(orbitalInclinationInRad);
 }
 
-BlinnPhongMaterial CelestialBody::InitialiseMaterial(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName)
+BlinnPhongMaterial CelestialBodyEntity::InitialiseMaterial(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName)
 {
 	Texture texture(inBodyTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadDDS();
@@ -50,7 +60,7 @@ BlinnPhongMaterial CelestialBody::InitialiseMaterial(const std::filesystem::path
 	}
 }
 
-void CelestialBody::ComputeModelMatrixVUniform(const float elapsedTime)
+void CelestialBodyEntity::ComputeModelMatrixVUniform(const float elapsedTime)
 {
 	modelMatrix = glm::mat4(1.0f);
 
@@ -70,7 +80,7 @@ void CelestialBody::ComputeModelMatrixVUniform(const float elapsedTime)
 	modelMatrix = glm::rotate(modelMatrix, GLMConstants::halfPi, GLMConstants::rightVector);
 }
 
-void CelestialBody::ComputeCartesianPosition(const float elapsedTime, const CelestialBody* satelliteParentBody)
+void CelestialBodyEntity::ComputeCartesianPosition(const float elapsedTime, const CelestialBodyEntity* satelliteParentBody)
 {
 	position = glm::vec3(0.0f);
 
@@ -100,7 +110,7 @@ void CelestialBody::ComputeCartesianPosition(const float elapsedTime, const Cele
 		bodyData.distanceToParent * glm::cos(travelledOrbitAngle));
 }
 
-void CelestialBody::Render(const Renderer& renderer, const float elapsedTime)
+void CelestialBodyEntity::Render(const Renderer& renderer, const float elapsedTime)
 {
 	ComputeModelMatrixVUniform(elapsedTime);
 

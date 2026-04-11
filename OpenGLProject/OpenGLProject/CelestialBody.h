@@ -3,12 +3,14 @@
 
 #include <filesystem>
 #include <glm/vec3.hpp>
+#include <memory>
 #include <string>
 
 #include "BlinnPhongMaterial.h"
 #include "Meshes/SphereMeshComponent.h"
 #include "SceneEntity.h"
 
+class LightSourceComponent;
 class Renderer;
 
 
@@ -29,30 +31,30 @@ struct BodyData
 };
 
 // Represent a spherical mesh body, e.g. a planet, a dwarf planet or a moon
-class CelestialBody : public SceneEntity
+class CelestialBodyEntity : public SceneEntity
 {
 public:
 	// Default constructor (not needed)
-	CelestialBody() = delete;
+	CelestialBodyEntity() = delete;
 
 	// User-defined constructor (to be used when building a CelestialBody in-place from initialisation-list)
-	CelestialBody(BodyData&& inBodyData);
+	CelestialBodyEntity(BodyData&& inBodyData);
 
 	// Copy constructor (needed when we call GetCelestialBody() from BodySystem, as it gets a shallow copy of an instance of this class)
-	CelestialBody(const CelestialBody& inCelestialBody) = default;
-	CelestialBody& operator = (const CelestialBody& inCelestialBody) = delete;
+	CelestialBodyEntity(const CelestialBodyEntity& inCelestialBody) = default;
+	CelestialBodyEntity& operator = (const CelestialBodyEntity& inCelestialBody) = delete;
 
 	// Move constructor (needed when building a CelestialBody in-place from initialisation-list)
-	CelestialBody(CelestialBody&& inCelestialBody) = default;
-	CelestialBody& operator = (CelestialBody&& inCelestialBody) = delete;
+	CelestialBodyEntity(CelestialBodyEntity&& inCelestialBody) = default;
+	CelestialBodyEntity& operator = (CelestialBodyEntity&& inCelestialBody) = delete;
 
 	// Destructor (not virtual needed, until child classes exist)
-	~CelestialBody() = default;
+	~CelestialBodyEntity() = default;
 
 	const BodyData& GetBodyData() const { return bodyData; }
 
 	// Compute body position in Cartesian coordinates from Spherical ones
-	void ComputeCartesianPosition(const float elapsedTime, const CelestialBody* satelliteParentBody = nullptr);
+	void ComputeCartesianPosition(const float elapsedTime, const CelestialBodyEntity* satelliteParentBody = nullptr);
 	const glm::vec3& GetPosition() const { return position; }
 
 	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
@@ -62,6 +64,8 @@ private:
 
 	SphereMeshComponent sphere;
 	BlinnPhongMaterial material;
+
+	std::shared_ptr<LightSourceComponent> lightSource;
 
 	bool isMoon{ false };
 
