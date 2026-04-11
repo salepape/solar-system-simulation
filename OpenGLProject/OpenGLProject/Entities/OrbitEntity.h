@@ -6,8 +6,8 @@
 #include <glm/vec3.hpp>
 #include <string>
 
-#include "BlinnPhongMaterial.h"
-#include "Meshes/CircleMeshComponent.h"
+#include "OpenGLProject/BlinnPhongMaterial.h"
+#include "OpenGLProject/Meshes/CircleMeshComponent.h"
 #include "SceneEntity.h"
 
 struct BodyData;

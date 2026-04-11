@@ -4,9 +4,9 @@
 #include <utility>
 #include <vector>
 
-#include "Renderer.h"
-#include "Shader.h"
-#include "ShaderLoader.h"
+#include "OpenGLProject/Renderer.h"
+#include "OpenGLProject/Shader.h"
+#include "OpenGLProject/ShaderLoader.h"
 #include "Texture.h"
 
 

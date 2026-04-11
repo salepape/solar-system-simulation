@@ -8,10 +8,10 @@
 #include <vector>
 
 #include "CelestialBodyEntity.h"
-#include "Constants.h"
-#include "Renderer.h"
-#include "Shader.h"
-#include "ShaderLoader.h"
+#include "OpenGLProject/Constants.h"
+#include "OpenGLProject/Renderer.h"
+#include "OpenGLProject/Shader.h"
+#include "OpenGLProject/ShaderLoader.h"
 #include "Texture.h"
 
 

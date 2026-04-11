@@ -7,10 +7,10 @@
 #include <glm/vec3.hpp>
 #include <utility>
 
-#include "Application.h"
-#include "Renderer.h"
-#include "Shader.h"
-#include "ShaderLoader.h"
+#include "OpenGLProject/Application.h"
+#include "OpenGLProject/Renderer.h"
+#include "OpenGLProject/Shader.h"
+#include "OpenGLProject/ShaderLoader.h"
 
 
 

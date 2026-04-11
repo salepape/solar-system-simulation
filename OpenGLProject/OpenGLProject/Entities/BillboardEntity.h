@@ -5,7 +5,7 @@
 #include <glm/vec3.hpp>
 #include <string>
 
-#include "BlinnPhongMaterial.h"
+#include "OpenGLProject/BlinnPhongMaterial.h"
 #include "SceneEntity.h"
 
 struct BodyData;

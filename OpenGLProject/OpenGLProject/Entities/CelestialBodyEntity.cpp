@@ -7,14 +7,14 @@
 #include <utility>
 #include <vector>
 
-#include "BodySystem.h"
-#include "Constants.h"
-#include "Lights/LightSourceComponent.h"
-#include "Lights/PointLightComponent.h"
-#include "Renderer.h"
-#include "Shader.h"
-#include "ShaderLoader.h"
-#include "Texture.h"
+#include "OpenGLProject/BodySystem.h"
+#include "OpenGLProject/Constants.h"
+#include "OpenGLProject/Lights/LightSourceComponent.h"
+#include "OpenGLProject/Lights/PointLightComponent.h"
+#include "OpenGLProject/Renderer.h"
+#include "OpenGLProject/Shader.h"
+#include "OpenGLProject/ShaderLoader.h"
+#include "OpenGLProject/Texture.h"
 
 
 

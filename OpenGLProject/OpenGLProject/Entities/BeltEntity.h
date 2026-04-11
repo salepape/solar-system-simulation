@@ -7,8 +7,8 @@
 #include <string>
 #include <vector>
 
-#include "BlinnPhongMaterial.h"
-#include "Model.h"
+#include "OpenGLProject/BlinnPhongMaterial.h"
+#include "OpenGLProject/Model.h"
 #include "SceneEntity.h"
 
 class Renderer;

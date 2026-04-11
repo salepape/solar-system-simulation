@@ -3,8 +3,8 @@
 
 #include <filesystem>
 
-#include "BlinnPhongMaterial.h"
-#include "Meshes/SkyboxMeshComponent.h"
+#include "OpenGLProject/BlinnPhongMaterial.h"
+#include "OpenGLProject/Meshes/SkyboxMeshComponent.h"
 #include "SceneEntity.h"
 
 class Renderer;

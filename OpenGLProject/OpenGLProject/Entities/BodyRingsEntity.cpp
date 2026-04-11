@@ -3,11 +3,11 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/vec3.hpp>
 
-#include "BlinnPhongMaterial.h"
-#include "Constants.h"
-#include "Renderer.h"
-#include "Shader.h"
-#include "ShaderLoader.h"
+#include "OpenGLProject/BlinnPhongMaterial.h"
+#include "OpenGLProject/Constants.h"
+#include "OpenGLProject/Renderer.h"
+#include "OpenGLProject/Shader.h"
+#include "OpenGLProject/ShaderLoader.h"
 
 
 

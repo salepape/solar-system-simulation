@@ -6,8 +6,8 @@
 #include <memory>
 #include <string>
 
-#include "BlinnPhongMaterial.h"
-#include "Meshes/SphereMeshComponent.h"
+#include "OpenGLProject/BlinnPhongMaterial.h"
+#include "OpenGLProject/Meshes/SphereMeshComponent.h"
 #include "SceneEntity.h"
 
 class LightSourceComponent;

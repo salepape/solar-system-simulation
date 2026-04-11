@@ -3,7 +3,7 @@
 
 #include <glm/vec3.hpp>
 
-#include "PerspectiveCameraController.h"
+#include "OpenGLProject/PerspectiveCameraController.h"
 #include "SceneEntity.h"
 
 class Renderer;
