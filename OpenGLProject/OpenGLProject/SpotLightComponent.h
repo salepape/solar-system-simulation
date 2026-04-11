@@ -3,7 +3,7 @@
 
 #include <glm/vec3.hpp>
 
-#include "LightSource.h"
+#include "LightSourceComponent.h"
 #include "UniformBuffer.h"
 
 

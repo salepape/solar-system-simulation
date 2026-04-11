@@ -1,4 +1,4 @@
-#include "PointLight.h"
+#include "PointLightComponent.h"
 
 #include <glm/gtc/type_ptr.hpp>
 

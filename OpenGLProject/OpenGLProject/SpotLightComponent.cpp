@@ -1,4 +1,4 @@
-#include "SpotLight.h"
+#include "SpotLightComponent.h"
 
 #include <glm/gtc/type_ptr.hpp>
 

@@ -1,4 +1,4 @@
-#include "DirectionalLight.h"
+#include "DirectionalLightComponent.h"
 
 #include <glm/gtc/type_ptr.hpp>
 
