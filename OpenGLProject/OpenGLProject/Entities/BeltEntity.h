@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "OpenGLProject/Model.h"
+#include "OpenGLProject/Models/Model.h"
 #include "OpenGLProject/Rendering/BlinnPhongMaterial.h"
 #include "SceneEntity.h"
 

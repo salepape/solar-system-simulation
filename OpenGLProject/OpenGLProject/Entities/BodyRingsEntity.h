@@ -5,7 +5,7 @@
 #include <glm/mat4x4.hpp>
 #include <string>
 
-#include "OpenGLProject/Model.h"
+#include "OpenGLProject/Models/Model.h"
 #include "SceneEntity.h"
 
 class Renderer;

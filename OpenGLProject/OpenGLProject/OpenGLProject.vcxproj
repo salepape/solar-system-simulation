@@ -189,7 +189,7 @@
     <ClInclude Include="Components/Lights/PointLightComponent.h" />
     <ClInclude Include="Rendering/Material.h" />
     <ClInclude Include="Components/Meshes/MeshComponent.h" />
-    <ClInclude Include="Model.h" />
+    <ClInclude Include="Models/Model.h" />
     <ClInclude Include="Components/Meshes/CircleMeshComponent.h" />
     <ClInclude Include="Components/Meshes/QuadMeshComponent.h" />
     <ClInclude Include="Rendering/Renderer.h" />
@@ -235,7 +235,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Rendering/Material.cpp" />
     <ClCompile Include="Components/Meshes/MeshComponent.cpp" />
-    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Models/Model.cpp" />
     <ClCompile Include="Components/Meshes/CircleMeshComponent.cpp" />
     <ClCompile Include="Components/Meshes/QuadMeshComponent.cpp" />
     <ClCompile Include="Rendering/Renderer.cpp" />

@@ -100,6 +100,12 @@
     <Filter Include="Header Files\Cameras">
       <UniqueIdentifier>{b9b6ec2f-917b-49bd-a70c-cef5174cc507}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Models">
+      <UniqueIdentifier>{50f205ca-a506-47ee-9c10-ba67eaeccf75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{b0f7259c-cc09-4e98-a527-1a5e60fc5ccb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffers/VertexBufferLayout.h">
@@ -119,9 +125,6 @@
     </ClInclude>
     <ClInclude Include="Buffers/DataBuffer.h">
       <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils/Utils.h">
       <Filter>Header Files\Utils</Filter>
@@ -234,6 +237,9 @@
     <ClInclude Include="Cameras/PerspectiveCamera.h">
       <Filter>Header Files\Cameras</Filter>
     </ClInclude>
+    <ClInclude Include="Models/Model.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -259,9 +265,6 @@
     </ClCompile>
     <ClCompile Include="Buffers/UniformBuffer.cpp">
       <Filter>Source Files\Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Interactions/InputHandler.cpp">
       <Filter>Source Files\Interactions</Filter>
@@ -373,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="Cameras/PerspectiveCamera.cpp">
       <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="Models/Model.cpp">
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
