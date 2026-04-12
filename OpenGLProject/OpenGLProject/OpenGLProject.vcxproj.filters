@@ -88,6 +88,12 @@
     <Filter Include="Source Files\Components\Lights">
       <UniqueIdentifier>{d5a11c74-b9a0-493a-a5b3-fb1ac0a46874}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entities\Groups">
+      <UniqueIdentifier>{43daa992-089b-42be-a2bc-3e6389e37cf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Groups">
+      <UniqueIdentifier>{555914cf-a0de-41d0-8cf3-e4830b6de545}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffers/VertexBufferLayout.h">
@@ -143,9 +149,6 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="BodySystem.h">
-      <Filter>Header Files\Solar System</Filter>
     </ClInclude>
     <ClInclude Include="Utils/Constants.h">
       <Filter>Header Files\Utils</Filter>
@@ -222,6 +225,9 @@
     <ClInclude Include="Rendering/Texture.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Entities/Groups/BodySystem.h">
+      <Filter>Header Files\Entities\Groups</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -283,9 +289,6 @@
     </ClCompile>
     <ClCompile Include="Interactions/PerspectiveCameraController.cpp">
       <Filter>Source Files\Interactions</Filter>
-    </ClCompile>
-    <ClCompile Include="BodySystem.cpp">
-      <Filter>Source Files\Solar System</Filter>
     </ClCompile>
     <ClCompile Include="Components/Lights/DirectionalLightComponent.cpp">
       <Filter>Source Files\Components\Lights</Filter>
@@ -361,6 +364,9 @@
     </ClCompile>
     <ClCompile Include="Rendering/Texture.cpp">
       <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities/Groups/BodySystem.cpp">
+      <Filter>Source Files\Entities\Groups</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

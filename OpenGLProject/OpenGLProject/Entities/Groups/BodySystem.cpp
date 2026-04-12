@@ -5,10 +5,10 @@
 #include <string>
 #include <utility>
 
-#include "Entities/BodyRingsEntity.h"
+#include "OpenGLProject/Entities/BodyRingsEntity.h"
+#include "OpenGLProject/PerspectiveCamera.h"
 #include "OpenGLProject/Rendering/Renderer.h"
 #include "OpenGLProject/Rendering/ShaderLoader.h"
-#include "PerspectiveCamera.h"
 
 
 

@@ -7,9 +7,9 @@
 #include <utility>
 #include <vector>
 
-#include "OpenGLProject/BodySystem.h"
 #include "OpenGLProject/Components/Lights/LightSourceComponent.h"
 #include "OpenGLProject/Components/Lights/PointLightComponent.h"
+#include "OpenGLProject/Entities/Groups/BodySystem.h"
 #include "OpenGLProject/Rendering/Renderer.h"
 #include "OpenGLProject/Rendering/Shader.h"
 #include "OpenGLProject/Rendering/ShaderLoader.h"

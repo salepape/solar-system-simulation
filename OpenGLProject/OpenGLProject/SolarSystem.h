@@ -6,11 +6,10 @@
 #include <string>
 #include <vector>
 
-
-#include "BodySystem.h"
 #include "OpenGLProject/Entities/BeltEntity.h"
 #include "OpenGLProject/Entities/MilkyWayEntity.h"
 #include "OpenGLProject/Entities/SpacecraftEntity.h"
+#include "OpenGLProject/Entities/Groups/BodySystem.h"
 #include "Scene.h"
 
 
