@@ -191,7 +191,7 @@
     <ClInclude Include="Components/Meshes/MeshComponent.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Components/Meshes/CircleMeshComponent.h" />
-    <ClInclude Include="Components//QuadMeshComponent.h" />
+    <ClInclude Include="Components/Meshes/QuadMeshComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Entities/BodyRingsEntity.h" />
     <ClInclude Include="Scene.h" />
