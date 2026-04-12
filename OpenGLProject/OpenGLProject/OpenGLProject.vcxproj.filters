@@ -114,7 +114,7 @@
     <ClInclude Include="Utils/Utils.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="InputHandler.h">
+    <ClInclude Include="Interactions/InputHandler.h">
       <Filter>Header Files\Interactions</Filter>
     </ClInclude>
     <ClInclude Include="UI/Application.h">
@@ -132,13 +132,13 @@
     <ClInclude Include="Scene.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Headlamp.h">
+    <ClInclude Include="Interactions/Headlamp.h">
       <Filter>Header Files\Interactions</Filter>
     </ClInclude>
     <ClInclude Include="PerspectiveCamera.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="PerspectiveCameraController.h">
+    <ClInclude Include="Interactions/PerspectiveCameraController.h">
       <Filter>Header Files\Interactions</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
@@ -251,7 +251,7 @@
     <ClCompile Include="Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InputHandler.cpp">
+    <ClCompile Include="Interactions/InputHandler.cpp">
       <Filter>Source Files\Interactions</Filter>
     </ClCompile>
 	<ClCompile Include="UI/Application.cpp">
@@ -272,7 +272,7 @@
     <ClCompile Include="Utils/Utils.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Headlamp.cpp">
+    <ClCompile Include="Interactions/Headlamp.cpp">
       <Filter>Source Files\Interactions</Filter>
     </ClCompile>
     <ClCompile Include="PerspectiveCamera.cpp">
@@ -281,7 +281,7 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="PerspectiveCameraController.cpp">
+    <ClCompile Include="Interactions/PerspectiveCameraController.cpp">
       <Filter>Source Files\Interactions</Filter>
     </ClCompile>
     <ClCompile Include="BodySystem.cpp">
