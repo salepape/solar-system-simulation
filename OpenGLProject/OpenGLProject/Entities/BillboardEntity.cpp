@@ -6,11 +6,11 @@
 #include <vector>
 
 #include "CelestialBodyEntity.h"
-#include "OpenGLProject/Constants.h"
 #include "OpenGLProject/Rendering/Renderer.h"
 #include "OpenGLProject/Rendering/Shader.h"
 #include "OpenGLProject/Rendering/ShaderLoader.h"
 #include "OpenGLProject/Rendering/TextRenderer.h"
+#include "OpenGLProject/Utils/Constants.h"
 
 namespace
 {

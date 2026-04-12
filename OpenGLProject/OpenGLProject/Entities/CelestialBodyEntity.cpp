@@ -8,13 +8,13 @@
 #include <vector>
 
 #include "OpenGLProject/BodySystem.h"
-#include "OpenGLProject/Constants.h"
 #include "OpenGLProject/Components/Lights/LightSourceComponent.h"
 #include "OpenGLProject/Components/Lights/PointLightComponent.h"
 #include "OpenGLProject/Rendering/Renderer.h"
 #include "OpenGLProject/Rendering/Shader.h"
 #include "OpenGLProject/Rendering/ShaderLoader.h"
 #include "OpenGLProject/Rendering/Texture.h"
+#include "OpenGLProject/Utils/Constants.h"
 
 
 

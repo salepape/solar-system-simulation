@@ -52,7 +52,7 @@
     <Filter Include="Source Files\Solar System">
       <UniqueIdentifier>{2aaa3db1-ae35-4d7c-85ae-10d5eb31091e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Constants">
+    <Filter Include="Header Files\Utils">
       <UniqueIdentifier>{f0e2ec4c-fbb6-4918-ba23-8e778a04a005}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utils">
@@ -111,7 +111,7 @@
     <ClInclude Include="Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utils.h">
+    <ClInclude Include="Utils/Utils.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="InputHandler.h">
@@ -147,8 +147,8 @@
     <ClInclude Include="BodySystem.h">
       <Filter>Header Files\Solar System</Filter>
     </ClInclude>
-    <ClInclude Include="Constants.h">
-      <Filter>Header Files\Constants</Filter>
+    <ClInclude Include="Utils/Constants.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Components/Lights/SpotLightComponent.h">
       <Filter>Header Files\Components\Lights</Filter>
@@ -269,7 +269,7 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Utils.cpp">
+    <ClCompile Include="Utils/Utils.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Headlamp.cpp">

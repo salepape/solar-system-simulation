@@ -16,9 +16,9 @@
 #include "OpenGLProject/Rendering/Renderer.h"
 #include "OpenGLProject/Rendering/ShaderLoader.h"
 #include "OpenGLProject/Rendering/TextRenderer.h"
+#include "OpenGLProject/Utils/Utils.h"
 #include "PerspectiveCamera.h"
 #include "PerspectiveCameraController.h"
-#include "Utils.h"
 #include "Window.h"
 
 

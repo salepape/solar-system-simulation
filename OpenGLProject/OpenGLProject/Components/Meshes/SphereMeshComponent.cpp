@@ -5,7 +5,7 @@
 #include <glm/vec3.hpp>
 #include <utility>
 
-#include "OpenGLProject/Constants.h"
+#include "OpenGLProject/Utils/Constants.h"
 
 
 
