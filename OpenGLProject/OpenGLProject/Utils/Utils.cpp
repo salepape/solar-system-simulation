@@ -1,11 +1,12 @@
 #include "Utils.h"
 
+#include <glfw/glfw3.h>
+
 #include <algorithm>
 #include <cassert>
 #include <cctype>  // std::toupper()
 #include <cstddef> // std::size_t
 #include <cstdint>
-#include <glfw3.h>
 #include <ios>
 #include <iostream>
 #include <sstream>

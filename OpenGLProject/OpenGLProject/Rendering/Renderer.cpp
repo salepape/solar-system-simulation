@@ -1,6 +1,6 @@
 #include "Renderer.h"
 
-#include <glad.h>
+#include <glad/glad.h>
 
 #include "OpenGLProject/Buffers/IndexBuffer.h"
 #include "OpenGLProject/Buffers/VertexArray.h"

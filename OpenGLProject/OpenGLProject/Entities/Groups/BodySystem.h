@@ -2,6 +2,7 @@
 #define BODY_SYSTEM_H
 
 #include <glm/vec3.hpp>
+
 #include <memory>
 
 #include "OpenGLProject/Entities/BillboardEntity.h"

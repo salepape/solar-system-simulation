@@ -1,7 +1,8 @@
 #include "BodySystem.h"
 
-#include <cstdint>
 #include <glm/geometric.hpp>
+
+#include <cstdint>
 #include <string>
 #include <utility>
 

@@ -1,7 +1,8 @@
 #include "MeshComponent.h"
 
+#include <glad/glad.h>
+
 #include <cassert>
-#include <glad.h>
 #include <iostream>
 #include <utility>
 

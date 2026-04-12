@@ -1,8 +1,9 @@
 #ifndef HEADLAMP_H
 #define HEADLAMP_H
 
-#include <cstdint>
 #include <glm/vec3.hpp>
+
+#include <cstdint>
 
 #include "OpenGLProject/Components/Lights/SpotLightComponent.h"
 

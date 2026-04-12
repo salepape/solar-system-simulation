@@ -1,8 +1,9 @@
 #include "CircleMeshComponent.h"
 
-#include <glad.h>
+#include <glad/glad.h>
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
+
 #include <utility>
 
 #include "OpenGLProject/Rendering/Renderer.h"

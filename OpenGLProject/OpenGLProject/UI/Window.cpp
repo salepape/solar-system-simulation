@@ -1,8 +1,9 @@
 #include "Window.h"
 
-#include <cassert>
 #include <glad/glad.h>
-#include <glfw3.h>
+#include <glfw/glfw3.h>
+
+#include <cassert>
 #include <iostream>
 
 #include "OpenGLProject/Utils/Utils.h"

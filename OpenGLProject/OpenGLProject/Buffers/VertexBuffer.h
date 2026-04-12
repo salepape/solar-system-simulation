@@ -1,8 +1,9 @@
 #ifndef VERTEX_BUFFER_H
 #define VERTEX_BUFFER_H
 
+#include <glad/glad.h>
+
 #include <cstddef> // std::size_t
-#include <glad.h>
 
 #include "DataBuffer.h"
 

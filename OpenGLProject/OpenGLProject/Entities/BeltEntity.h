@@ -1,9 +1,10 @@
 #ifndef BELT_H
 #define BELT_H
 
+#include <glm/mat4x4.hpp>
+
 #include <cstdint>
 #include <filesystem>
-#include <glm/mat4x4.hpp>
 #include <string>
 #include <vector>
 

@@ -1,9 +1,10 @@
 #ifndef QUAD_H
 #define QUAD_H
 
+#include <glm/vec2.hpp>
+
 #include <cstddef> // std::size_t
 #include <cstdint>
-#include <glm/vec2.hpp>
 #include <vector>
 
 #include "MeshComponent.h"

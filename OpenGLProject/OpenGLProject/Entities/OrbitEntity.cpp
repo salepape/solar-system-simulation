@@ -1,9 +1,10 @@
 #include "OrbitEntity.h"
 
-#include <glad.h>
+#include <glad/glad.h>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/trigonometric.hpp>
+
 #include <utility>
 #include <vector>
 

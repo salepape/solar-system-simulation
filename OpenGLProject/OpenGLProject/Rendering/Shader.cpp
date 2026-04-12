@@ -1,9 +1,10 @@
 #include "Shader.h"
 
+#include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <cassert>
 #include <iostream>
-#include <glad.h>
-#include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
 #include "OpenGLProject/Utils/Utils.h"

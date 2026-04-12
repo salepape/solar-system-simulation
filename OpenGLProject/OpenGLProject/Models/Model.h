@@ -1,16 +1,17 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include <glm/mat4x4.hpp>
+
 #include <cstddef> // std::size_t
 #include <cstdint>
 #include <filesystem>
-#include <glm/mat4x4.hpp>
 #include <vector>
 
 #include "OpenGLProject/Components/Meshes/MeshComponent.h"
 #include "OpenGLProject/Rendering/BlinnPhongMaterial.h"
 #include "OpenGLProject/Rendering/ShaderLoader.h"
-#include "Texture.h"
+#include "OpenGLProject/Rendering/Texture.h"
 
 struct aiMaterial;
 struct aiMesh;

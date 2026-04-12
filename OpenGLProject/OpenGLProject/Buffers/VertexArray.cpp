@@ -1,9 +1,10 @@
 #include "VertexArray.h"
 
-#include <cstddef> // std::size_t
 #include <glad/glad.h>
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
+
+#include <cstddef> // std::size_t
 
 #include "VertexBufferLayout.h"
 

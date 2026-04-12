@@ -1,8 +1,9 @@
 #include "PerspectiveCameraController.h"
 
-#include <cassert>
-#include <glfw3.h>
+#include <glfw/glfw3.h>
 #include <glm/common.hpp>
+
+#include <cassert>
 #include <iostream>
 
 #include "InputHandler.h"

@@ -1,8 +1,9 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <cstdint>
 #include <glm/vec2.hpp>
+
+#include <cstdint>
 #include <string>
 
 class PerspectiveCameraController;

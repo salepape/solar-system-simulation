@@ -1,9 +1,10 @@
 #include "Texture.h"
 
+#include <glad/glad.h>
+#include <soil2/SOIL2.h>
+
 #include <cassert>
-#include <glad.h>
 #include <iostream>
-#include <SOIL2.h>
 
 
 

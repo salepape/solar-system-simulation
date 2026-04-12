@@ -1,9 +1,10 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#include <cstddef> // std::size_t
 #include <glm/ext/scalar_constants.hpp>
 #include <glm/vec3.hpp>
+
+#include <cstddef> // std::size_t
 
 // Store the size (in bytes) of usual GLSL variable types
 // glm::vec3 have to be converted to GLSL vec4 according std140 layout base alignement rules (offset). Also glm:vec4 does not support glm::value_ptr

@@ -2,6 +2,7 @@
 #define SOLAR_SYSTEM_H
 
 #include <glm/vec3.hpp>
+
 #include <memory>
 #include <string>
 #include <vector>

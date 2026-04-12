@@ -1,10 +1,11 @@
 #include "BeltEntity.h"
 
-#include <cstdlib> // std::srand() and std::rand()
-#include <cstddef> // std::size_t
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
+
+#include <cstdlib> // std::srand() and std::rand()
+#include <cstddef> // std::size_t
 #include <utility>
 
 #include "OpenGLProject/Rendering/Renderer.h"

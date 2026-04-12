@@ -1,8 +1,9 @@
 #ifndef BILLBOARD_H
 #define BILLBOARD_H
 
-#include <cstdint>
 #include <glm/vec3.hpp>
+
+#include <cstdint>
 #include <string>
 
 #include "OpenGLProject/Rendering/BlinnPhongMaterial.h"

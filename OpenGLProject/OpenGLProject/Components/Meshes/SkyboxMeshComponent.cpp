@@ -1,8 +1,9 @@
 #include "SkyboxMeshComponent.h"
 
-#include <array>
-#include <glad.h>
+#include <glad/glad.h>
 #include <glm/vec3.hpp>
+
+#include <array>
 #include <utility>
 #include <vector>
 

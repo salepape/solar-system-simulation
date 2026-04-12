@@ -1,9 +1,10 @@
 #ifndef DATABUFFER_H
 #define DATABUFFER_H
 
+#include <glad/glad.h>
+
 #include <cstdint>
 #include <cstddef> // std::size_t
-#include <glad.h>
 #include <vector>
 
 

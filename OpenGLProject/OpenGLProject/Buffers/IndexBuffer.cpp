@@ -1,7 +1,8 @@
 #include "IndexBuffer.h"
 
-#include <cstddef> // std::size_t
 #include <glad/glad.h>
+
+#include <cstddef> // std::size_t
 
 
 

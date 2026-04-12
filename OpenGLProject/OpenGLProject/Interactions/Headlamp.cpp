@@ -1,6 +1,6 @@
 #include "Headlamp.h"
 
-#include <glfw3.h>
+#include <glfw/glfw3.h>
 #include <glm/trigonometric.hpp>
 
 #include "OpenGLProject/Cameras/Camera.h"

@@ -1,8 +1,9 @@
 #ifndef BODY_RINGS_H
 #define BODY_RINGS_H
 
-#include <filesystem>
 #include <glm/mat4x4.hpp>
+
+#include <filesystem>
 #include <string>
 
 #include "OpenGLProject/Models/Model.h"

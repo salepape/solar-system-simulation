@@ -1,10 +1,11 @@
 #include "SolarSystem.h"
 
+#include <glm/geometric.hpp>
+#include <glm/vec3.hpp>
+
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
-#include <glm/geometric.hpp>
-#include <glm/vec3.hpp>
 #include <iostream>
 #include <map>
 #include <unordered_map>

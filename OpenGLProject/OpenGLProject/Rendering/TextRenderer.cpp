@@ -1,8 +1,8 @@
 #include "TextRenderer.h"
 
+#include <glad/glad.h>
+
 #include <cassert>
-#include <freetype/freetype.h>
-#include <glad.h>
 #include <iostream>
 #include <utility>
 

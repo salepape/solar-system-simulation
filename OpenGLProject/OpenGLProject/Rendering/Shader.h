@@ -1,9 +1,10 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <cstdint>
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
+
+#include <cstdint>
 #include <string>
 #include <unordered_map>
 

@@ -3,9 +3,9 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include <assimp/material.h>
 
 #include <array>
-#include <assimp/material.h>
 #include <cstdint>
 #include <filesystem>
 

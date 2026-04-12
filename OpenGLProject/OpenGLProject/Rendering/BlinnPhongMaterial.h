@@ -2,6 +2,7 @@
 #define BLINN_PHONG_MATERIAL_H
 
 #include <glm/vec3.hpp>
+
 #include <vector>
 
 #include "Material.h"

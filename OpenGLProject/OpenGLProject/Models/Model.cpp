@@ -1,6 +1,5 @@
 #include "Model.h"
 
-#include <algorithm>
 #include <assimp/defs.h>
 #include <assimp/Importer.hpp>
 #include <assimp/material.h>
@@ -8,10 +7,12 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <assimp/types.h>
-#include <cassert>
-#include <glad.h>
+#include <glad/glad.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
+
+#include <algorithm>
+#include <cassert>
 #include <iostream>
 #include <utility>
 

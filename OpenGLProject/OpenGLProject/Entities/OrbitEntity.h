@@ -1,9 +1,10 @@
 #ifndef ORBIT_H
 #define ORBIT_H
 
+#include <glm/vec3.hpp>
+
 #include <cstdint>
 #include <filesystem>
-#include <glm/vec3.hpp>
 #include <string>
 
 #include "OpenGLProject/Rendering/BlinnPhongMaterial.h"

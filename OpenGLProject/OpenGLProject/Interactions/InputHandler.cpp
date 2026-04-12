@@ -1,6 +1,6 @@
 #include "InputHandler.h"
 
-#include <glfw3.h>
+#include <glfw/glfw3.h>
 
 #include "OpenGLProject/UI/Application.h"
 #include "OpenGLProject/UI/Window.h"

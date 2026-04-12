@@ -1,8 +1,9 @@
 #ifndef CELESTIAL_BODY_H
 #define CELESTIAL_BODY_H
 
-#include <filesystem>
 #include <glm/vec3.hpp>
+
+#include <filesystem>
 #include <memory>
 #include <string>
 

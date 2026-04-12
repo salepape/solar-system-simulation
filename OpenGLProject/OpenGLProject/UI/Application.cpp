@@ -1,9 +1,10 @@
 #include "Application.h"
 
+#include <glad/glad.h>
+#include <glfw/glfw3.h>
+
 #include <cassert>
 #include <iostream>
-#include <glad.h>
-#include <glfw3.h>
 
 #include "Window.h"
 

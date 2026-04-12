@@ -1,8 +1,9 @@
 #ifndef SCENE_ENTITY_H
 #define SCENE_ENTITY_H
 
-#include <cstdint>
 #include <glm/mat4x4.hpp>
+
+#include <cstdint>
 #include <string>
 
 class Renderer;
