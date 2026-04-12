@@ -25,26 +25,14 @@
     <Filter Include="Source Files\Buffers">
       <UniqueIdentifier>{55d82c87-b11a-4535-9b1f-3ed3500fc199}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Components\Meshes">
-      <UniqueIdentifier>{88e9a964-90be-4947-9a65-13476ca1f241}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Shaders">
       <UniqueIdentifier>{5cf6b12a-b5db-465b-aefe-50689ac9e11c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Components\Meshes">
-      <UniqueIdentifier>{6dd714ea-40d0-4db2-bca5-6fceb12f6e08}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Renderers">
       <UniqueIdentifier>{9f214c6c-6cff-4f73-bea9-73a4f3b01572}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Renderers">
       <UniqueIdentifier>{4a0b7d24-e387-4497-8234-0345c9a2e1e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Components\Lights">
-      <UniqueIdentifier>{246b1f4c-a3ed-4e72-9207-5e11f89b6004}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Components\Lights">
-      <UniqueIdentifier>{54f17ea8-391c-46fb-9dc3-f82b0bd0d860}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Interactions">
       <UniqueIdentifier>{57825855-20d3-41f8-a979-8e90f1d2742b}</UniqueIdentifier>
@@ -87,6 +75,24 @@
     </Filter>
     <Filter Include="Source Files\Entities">
       <UniqueIdentifier>{5c670c94-8ee1-4eef-8b95-30fc846919c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{16ef210d-8281-4ffe-b882-0b3b2642297f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{c3ba0ca2-4f19-4de6-8b61-99468d6d3507}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Meshes">
+      <UniqueIdentifier>{05bc9c57-231f-447a-b7cf-b515b1453556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Lights">
+      <UniqueIdentifier>{859a2776-6403-4590-beb0-98cd74f3395e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Meshes">
+      <UniqueIdentifier>{d26b534e-c968-430d-b76c-679582cf7c61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Lights">
+      <UniqueIdentifier>{d5a11c74-b9a0-493a-a5b3-fb1ac0a46874}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -186,19 +192,19 @@
     <ClInclude Include="Components/Lights/DirectionalLightComponent.h">
       <Filter>Header Files\Components\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="Meshes/CircleMeshComponent.h">
+    <ClInclude Include="Components/Meshes/CircleMeshComponent.h">
       <Filter>Header Files\Components\Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="Meshes/MeshComponent.h">
+    <ClInclude Include="Components/Meshes/MeshComponent.h">
       <Filter>Header Files\Components\Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="Meshes/QuadMeshComponent.h">
+    <ClInclude Include="Components/Meshes/QuadMeshComponent.h">
       <Filter>Header Files\Components\Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="Meshes/SkyboxMeshComponent.h">
+    <ClInclude Include="Components/Meshes/SkyboxMeshComponent.h">
       <Filter>Header Files\Components\Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="Meshes/SphereMeshComponent.h">
+    <ClInclude Include="Components/Meshes/SphereMeshComponent.h">
       <Filter>Header Files\Components\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Entities/SpacecraftEntity.h">
