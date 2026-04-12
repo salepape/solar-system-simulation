@@ -34,10 +34,10 @@
     <Filter Include="Header Files\Interactions">
       <UniqueIdentifier>{1b71018e-a757-47a6-aa94-b0ef7aafbe0e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Application">
+    <Filter Include="Header Files\UI">
       <UniqueIdentifier>{369e21a9-7846-4fa4-b168-7b9fb6320f1f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Application">
+    <Filter Include="Source Files\UI">
       <UniqueIdentifier>{c79210e4-b536-4342-9eeb-5afc26fa249a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Scene">
@@ -117,11 +117,11 @@
     <ClInclude Include="InputHandler.h">
       <Filter>Header Files\Interactions</Filter>
     </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Header Files\Application</Filter>
+    <ClInclude Include="UI/Application.h">
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Header Files\Application</Filter>
+    <ClInclude Include="UI/Window.h">
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="SolarSystemSimulation.h">
       <Filter>Header Files\Solar System</Filter>
@@ -254,11 +254,11 @@
     <ClCompile Include="InputHandler.cpp">
       <Filter>Source Files\Interactions</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Source Files\Application</Filter>
+	<ClCompile Include="UI/Application.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files\Application</Filter>
+    <ClCompile Include="UI/Window.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="SolarSystemSimulation.cpp">
       <Filter>Source Files\Solar System</Filter>

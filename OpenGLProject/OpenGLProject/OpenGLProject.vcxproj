@@ -168,7 +168,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
+    <ClInclude Include="UI/Application.h" />
     <ClInclude Include="Entities/BeltEntity.h" />
     <ClInclude Include="Entities/BillboardEntity.h" />
     <ClInclude Include="BodySystem.h" />
@@ -210,12 +210,12 @@
     <ClInclude Include="Buffers/VertexArray.h" />
     <ClInclude Include="Buffers/VertexBuffer.h" />
     <ClInclude Include="Buffers/VertexBufferLayout.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="UI/Window.h" />
     <ClInclude Include="Rendering/BlinnPhongMaterial.h" />
     <ClCompile Include="Rendering/PBRMaterial.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="UI/Application.cpp" />
     <ClCompile Include="Entities/BeltEntity.cpp" />
     <ClCompile Include="Entities/BillboardEntity.cpp" />
     <ClCompile Include="BodySystem.cpp" />
@@ -257,7 +257,7 @@
     <ClCompile Include="Buffers/VertexArray.cpp" />
     <ClCompile Include="Buffers/VertexBuffer.cpp" />
     <ClCompile Include="Buffers/VertexBufferLayout.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="UI/Window.cpp" />
     <ClCompile Include="Rendering/BlinnPhongMaterial.cpp" />
     <ClCompile Include="Rendering/PBRMaterial.cpp" />
   </ItemGroup>

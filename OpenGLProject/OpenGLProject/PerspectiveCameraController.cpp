@@ -5,10 +5,10 @@
 #include <glm/common.hpp>
 #include <iostream>
 
-#include "Application.h"
 #include "InputHandler.h"
+#include "OpenGLProject/UI/Application.h"
+#include "OpenGLProject/UI/Window.h"
 #include "OpenGLProject/Utils/Utils.h"
-#include "Window.h"
 
 
 

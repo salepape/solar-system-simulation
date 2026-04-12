@@ -1,7 +1,7 @@
 #include "SpacecraftEntity.h"
 
-#include "OpenGLProject/Application.h"
-#include "OpenGLProject/Window.h"
+#include "OpenGLProject/UI/Application.h"
+#include "OpenGLProject/UI/Window.h"
 
 
 

@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "Application.h"
+#include "OpenGLProject/UI/Application.h"
 
 class SolarSystem;
 

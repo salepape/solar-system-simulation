@@ -10,7 +10,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "OpenGLProject/Window.h"
+#include "OpenGLProject/UI/Window.h"
 
 
 
