@@ -94,6 +94,12 @@
     <Filter Include="Source Files\Entities\Groups">
       <UniqueIdentifier>{555914cf-a0de-41d0-8cf3-e4830b6de545}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Simulation">
+      <UniqueIdentifier>{05551b14-b8fd-4459-8d83-e772381679fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Simulation">
+      <UniqueIdentifier>{be3853eb-3e39-495e-8b8d-b04560fc651d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffers/VertexBufferLayout.h">
@@ -128,12 +134,6 @@
     </ClInclude>
     <ClInclude Include="UI/Window.h">
       <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="SolarSystemSimulation.h">
-      <Filter>Header Files\Solar System</Filter>
-    </ClInclude>
-    <ClInclude Include="SolarSystem.h">
-      <Filter>Header Files\Solar System</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Header Files\Scene</Filter>
@@ -228,6 +228,12 @@
     <ClInclude Include="Entities/Groups/BodySystem.h">
       <Filter>Header Files\Entities\Groups</Filter>
     </ClInclude>
+    <ClInclude Include="Simulation/SolarSystemSimulation.h">
+      <Filter>Header Files\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation/SolarSystem.h">
+      <Filter>Header Files\Simulation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -260,17 +266,11 @@
     <ClCompile Include="Interactions/InputHandler.cpp">
       <Filter>Source Files\Interactions</Filter>
     </ClCompile>
-	<ClCompile Include="UI/Application.cpp">
+    <ClCompile Include="UI/Application.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="UI/Window.cpp">
       <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="SolarSystemSimulation.cpp">
-      <Filter>Source Files\Solar System</Filter>
-    </ClCompile>
-    <ClCompile Include="SolarSystem.cpp">
-      <Filter>Source Files\Solar System</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files\Scene</Filter>
@@ -367,6 +367,12 @@
     </ClCompile>
     <ClCompile Include="Entities/Groups/BodySystem.cpp">
       <Filter>Source Files\Entities\Groups</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation/SolarSystem.cpp">
+      <Filter>Source Files\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation/SolarSystemSimulation.cpp">
+      <Filter>Source Files\Simulation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
