@@ -10,7 +10,7 @@
 #include "OpenGLProject/Entities/MilkyWayEntity.h"
 #include "OpenGLProject/Entities/SpacecraftEntity.h"
 #include "OpenGLProject/Entities/Groups/BodySystem.h"
-#include "OpenGLProject/Scene.h"
+#include "OpenGLProject/Scene/Scene.h"
 
 
 

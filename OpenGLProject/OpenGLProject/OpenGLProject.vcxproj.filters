@@ -135,7 +135,7 @@
     <ClInclude Include="UI/Window.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
+    <ClInclude Include="Scene/Scene.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Interactions/Headlamp.h">
@@ -272,7 +272,7 @@
     <ClCompile Include="UI/Window.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp">
+    <ClCompile Include="Scene/Scene.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Utils/Utils.cpp">

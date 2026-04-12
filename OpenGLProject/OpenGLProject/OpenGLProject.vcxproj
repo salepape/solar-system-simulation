@@ -194,7 +194,7 @@
     <ClInclude Include="Components/Meshes/QuadMeshComponent.h" />
     <ClInclude Include="Rendering/Renderer.h" />
     <ClInclude Include="Entities/BodyRingsEntity.h" />
-    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Scene/Scene.h" />
     <ClInclude Include="Entities/SceneEntity.h" />
     <ClInclude Include="Rendering/Shader.h" />
     <ClInclude Include="Components/Meshes/SkyboxMeshComponent.h" />
@@ -241,7 +241,7 @@
     <ClCompile Include="Rendering/Renderer.cpp" />
     <ClCompile Include="Rendering/ShaderLoader.cpp" />
     <ClCompile Include="Entities/BodyRingsEntity.cpp" />
-    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Scene/Scene.cpp" />
     <ClCompile Include="Entities/SceneEntity.cpp" />
     <ClCompile Include="Rendering/Shader.cpp" />
     <ClCompile Include="Components/Meshes/SkyboxMeshComponent.cpp" />
