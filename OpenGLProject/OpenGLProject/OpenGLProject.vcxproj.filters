@@ -46,12 +46,6 @@
     <Filter Include="Header Files\Scene">
       <UniqueIdentifier>{cf7c7bfe-f05a-4718-9c7f-5626b69cc0aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Solar System">
-      <UniqueIdentifier>{9bc341b3-ef9f-48b8-ad23-d18abdbebb5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Solar System">
-      <UniqueIdentifier>{2aaa3db1-ae35-4d7c-85ae-10d5eb31091e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Utils">
       <UniqueIdentifier>{f0e2ec4c-fbb6-4918-ba23-8e778a04a005}</UniqueIdentifier>
     </Filter>
