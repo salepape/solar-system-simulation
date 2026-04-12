@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "OpenGLProject/Constants.h"
-#include "OpenGLProject/Renderer.h"
+#include "OpenGLProject/Rendering/Renderer.h"
 
 
 

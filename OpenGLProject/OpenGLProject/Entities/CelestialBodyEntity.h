@@ -6,7 +6,7 @@
 #include <memory>
 #include <string>
 
-#include "OpenGLProject/BlinnPhongMaterial.h"
+#include "OpenGLProject/Rendering/BlinnPhongMaterial.h"
 #include "OpenGLProject/Components/Meshes/SphereMeshComponent.h"
 #include "SceneEntity.h"
 

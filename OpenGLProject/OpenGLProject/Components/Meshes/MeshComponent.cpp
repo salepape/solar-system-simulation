@@ -9,7 +9,7 @@
 #include "OpenGLProject/Buffers/VertexArray.h"
 #include "OpenGLProject/Buffers/VertexBuffer.h"
 #include "OpenGLProject/Buffers/VertexBufferLayout.h"
-#include "OpenGLProject/Renderer.h"
+#include "OpenGLProject/Rendering/Renderer.h"
 
 
 

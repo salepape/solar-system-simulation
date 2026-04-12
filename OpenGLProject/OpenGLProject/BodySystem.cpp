@@ -6,9 +6,9 @@
 #include <utility>
 
 #include "Entities/BodyRingsEntity.h"
+#include "OpenGLProject/Rendering/Renderer.h"
+#include "OpenGLProject/Rendering/ShaderLoader.h"
 #include "PerspectiveCamera.h"
-#include "Renderer.h"
-#include "ShaderLoader.h"
 
 
 

@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 
 #include "OpenGLProject/Buffers/VertexBuffer.h"
-#include "OpenGLProject/Renderer.h"
+#include "OpenGLProject/Rendering/Renderer.h"
 
 
 

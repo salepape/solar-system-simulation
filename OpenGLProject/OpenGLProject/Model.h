@@ -7,9 +7,9 @@
 #include <glm/mat4x4.hpp>
 #include <vector>
 
-#include "BlinnPhongMaterial.h"
 #include "OpenGLProject/Components/Meshes/MeshComponent.h"
-#include "ShaderLoader.h"
+#include "OpenGLProject/Rendering/BlinnPhongMaterial.h"
+#include "OpenGLProject/Rendering/ShaderLoader.h"
 #include "Texture.h"
 
 struct aiMaterial;

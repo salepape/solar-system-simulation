@@ -8,9 +8,9 @@
 #include <utility>
 
 #include "OpenGLProject/Application.h"
-#include "OpenGLProject/Renderer.h"
-#include "OpenGLProject/Shader.h"
-#include "OpenGLProject/ShaderLoader.h"
+#include "OpenGLProject/Rendering/Renderer.h"
+#include "OpenGLProject/Rendering/Shader.h"
+#include "OpenGLProject/Rendering/ShaderLoader.h"
 
 
 

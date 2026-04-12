@@ -1,8 +1,8 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "Renderer.h"
-#include "TextRenderer.h"
+#include "OpenGLProject/Rendering/Renderer.h"
+#include "OpenGLProject/Rendering/TextRenderer.h"
 
 class Application;
 class Window;

@@ -1,6 +1,6 @@
 #include "SolarSystemSimulation.h"
 
-#include "ShaderLoader.h"
+#include "OpenGLProject/Rendering/ShaderLoader.h"
 #include "SolarSystem.h"
 
 void SolarSystemSimulation::SolarSystemDeleter::operator()(SolarSystem* ptr)

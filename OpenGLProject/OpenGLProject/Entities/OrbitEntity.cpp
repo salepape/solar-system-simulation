@@ -9,10 +9,10 @@
 
 #include "CelestialBodyEntity.h"
 #include "OpenGLProject/Constants.h"
-#include "OpenGLProject/Renderer.h"
-#include "OpenGLProject/Shader.h"
-#include "OpenGLProject/ShaderLoader.h"
-#include "Texture.h"
+#include "OpenGLProject/Rendering/Renderer.h"
+#include "OpenGLProject/Rendering/Shader.h"
+#include "OpenGLProject/Rendering/ShaderLoader.h"
+#include "OpenGLProject/Rendering/Texture.h"
 
 
 

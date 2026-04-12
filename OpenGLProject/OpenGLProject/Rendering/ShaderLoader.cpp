@@ -15,14 +15,14 @@ void ShaderLoader::BuildShaders()
 {
 	shaders.reserve(ShaderLookUpID::Num);
 
-	shaders.emplace_back(ShaderLookUpID::Enum::CELESTIAL_BODY, "DefaultShader.vs", "DefaultShader.fs");
-	shaders.emplace_back(ShaderLookUpID::Enum::SUN, "DefaultShader.vs", "SunShader.fs");
-	shaders.emplace_back(ShaderLookUpID::Enum::BILLBOARD, "BillboardShader.vs", "BillboardShader.fs");
-	shaders.emplace_back(ShaderLookUpID::Enum::BELT, "InstancedModelShader.vs", "DefaultShader.fs");
-	shaders.emplace_back(ShaderLookUpID::Enum::MILKY_WAY, "SkyboxShader.vs", "SkyboxShader.fs");
-	shaders.emplace_back(ShaderLookUpID::Enum::ORBIT, "DefaultShader.vs", "DefaultShader.fs");
-	shaders.emplace_back(ShaderLookUpID::Enum::VISIBLE_BODY_RINGS, "DefaultShader.vs", "DefaultShader.fs");
-	shaders.emplace_back(ShaderLookUpID::Enum::INFRARED_BODY_RINGS, "DefaultShader.vs", "DefaultShader.fs");
+	shaders.emplace_back(ShaderLookUpID::Enum::CELESTIAL_BODY, "Rendering/GLSL/DefaultShader.vs", "Rendering/GLSL/DefaultShader.fs");
+	shaders.emplace_back(ShaderLookUpID::Enum::SUN, "Rendering/GLSL/DefaultShader.vs", "Rendering/GLSL/SunShader.fs");
+	shaders.emplace_back(ShaderLookUpID::Enum::BILLBOARD, "Rendering/GLSL/BillboardShader.vs", "Rendering/GLSL/BillboardShader.fs");
+	shaders.emplace_back(ShaderLookUpID::Enum::BELT, "Rendering/GLSL/InstancedModelShader.vs", "Rendering/GLSL/DefaultShader.fs");
+	shaders.emplace_back(ShaderLookUpID::Enum::MILKY_WAY, "Rendering/GLSL/SkyboxShader.vs", "Rendering/GLSL/SkyboxShader.fs");
+	shaders.emplace_back(ShaderLookUpID::Enum::ORBIT, "Rendering/GLSL/DefaultShader.vs", "Rendering/GLSL/DefaultShader.fs");
+	shaders.emplace_back(ShaderLookUpID::Enum::VISIBLE_BODY_RINGS, "Rendering/GLSL/DefaultShader.vs", "Rendering/GLSL/DefaultShader.fs");
+	shaders.emplace_back(ShaderLookUpID::Enum::INFRARED_BODY_RINGS, "Rendering/GLSL/DefaultShader.vs", "Rendering/GLSL/DefaultShader.fs");
 
 	if (shaders.size() != ShaderLookUpID::Num)
 	{

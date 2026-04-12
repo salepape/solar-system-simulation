@@ -11,10 +11,10 @@
 #include "OpenGLProject/Constants.h"
 #include "OpenGLProject/Components/Lights/LightSourceComponent.h"
 #include "OpenGLProject/Components/Lights/PointLightComponent.h"
-#include "OpenGLProject/Renderer.h"
-#include "OpenGLProject/Shader.h"
-#include "OpenGLProject/ShaderLoader.h"
-#include "OpenGLProject/Texture.h"
+#include "OpenGLProject/Rendering/Renderer.h"
+#include "OpenGLProject/Rendering/Shader.h"
+#include "OpenGLProject/Rendering/ShaderLoader.h"
+#include "OpenGLProject/Rendering/Texture.h"
 
 
 
