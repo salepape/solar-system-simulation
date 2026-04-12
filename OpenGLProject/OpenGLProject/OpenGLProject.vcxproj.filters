@@ -94,6 +94,12 @@
     <Filter Include="Source Files\Simulation">
       <UniqueIdentifier>{be3853eb-3e39-495e-8b8d-b04560fc651d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Cameras">
+      <UniqueIdentifier>{35571489-2991-42a3-ae2c-6fe7e48686af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cameras">
+      <UniqueIdentifier>{b9b6ec2f-917b-49bd-a70c-cef5174cc507}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffers/VertexBufferLayout.h">
@@ -135,14 +141,8 @@
     <ClInclude Include="Interactions/Headlamp.h">
       <Filter>Header Files\Interactions</Filter>
     </ClInclude>
-    <ClInclude Include="PerspectiveCamera.h">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Interactions/PerspectiveCameraController.h">
       <Filter>Header Files\Interactions</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Utils/Constants.h">
       <Filter>Header Files\Utils</Filter>
@@ -228,6 +228,12 @@
     <ClInclude Include="Simulation/SolarSystem.h">
       <Filter>Header Files\Simulation</Filter>
     </ClInclude>
+    <ClInclude Include="Cameras/Camera.h">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Cameras/PerspectiveCamera.h">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -274,12 +280,6 @@
     </ClCompile>
     <ClCompile Include="Interactions/Headlamp.cpp">
       <Filter>Source Files\Interactions</Filter>
-    </ClCompile>
-    <ClCompile Include="PerspectiveCamera.cpp">
-      <Filter>Source Files\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Interactions/PerspectiveCameraController.cpp">
       <Filter>Source Files\Interactions</Filter>
@@ -367,6 +367,12 @@
     </ClCompile>
     <ClCompile Include="Simulation/SolarSystemSimulation.cpp">
       <Filter>Source Files\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="Cameras/Camera.cpp">
+      <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="Cameras/PerspectiveCamera.cpp">
+      <Filter>Source Files\Cameras</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

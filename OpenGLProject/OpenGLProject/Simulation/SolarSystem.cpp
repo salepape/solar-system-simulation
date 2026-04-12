@@ -9,11 +9,11 @@
 #include <map>
 #include <unordered_map>
 
+#include "OpenGLProject/Cameras/PerspectiveCamera.h"
 #include "OpenGLProject/Entities/BillboardEntity.h"
 #include "OpenGLProject/Entities/BodyRingsEntity.h"
 #include "OpenGLProject/Entities/CelestialBodyEntity.h"
 #include "OpenGLProject/Interactions/PerspectiveCameraController.h"
-#include "OpenGLProject/PerspectiveCamera.h"
 #include "OpenGLProject/Rendering/Renderer.h"
 #include "OpenGLProject/Rendering/ShaderLoader.h"
 #include "OpenGLProject/Rendering/TextRenderer.h"

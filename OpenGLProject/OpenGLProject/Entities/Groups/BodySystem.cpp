@@ -5,8 +5,8 @@
 #include <string>
 #include <utility>
 
+#include "OpenGLProject/Cameras/PerspectiveCamera.h"
 #include "OpenGLProject/Entities/BodyRingsEntity.h"
-#include "OpenGLProject/PerspectiveCamera.h"
 #include "OpenGLProject/Rendering/Renderer.h"
 #include "OpenGLProject/Rendering/ShaderLoader.h"
 
