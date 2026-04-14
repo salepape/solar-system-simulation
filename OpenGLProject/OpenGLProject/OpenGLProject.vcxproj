@@ -211,9 +211,11 @@
     <ClInclude Include="Interactions/Headlamp.h" />
     <ClInclude Include="Interactions/InputHandler.h" />
     <ClInclude Include="Interactions/PerspectiveCameraController.h" />
+    <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="Models/Model.h" />
     <ClInclude Include="Rendering/BlinnPhongMaterial.h" />
     <ClInclude Include="Rendering/Material.h" />
+    <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="Rendering/PBRMaterial.h" />
     <ClInclude Include="Rendering/Renderer.h" />
     <ClInclude Include="Rendering/Shader.h" />
