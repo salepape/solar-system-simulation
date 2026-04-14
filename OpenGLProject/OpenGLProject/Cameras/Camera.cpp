@@ -3,7 +3,7 @@
 #include <glm/mat3x3.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "OpenGLProject/Utils/Constants.h"
+#include "Utils/Constants.h"
 
 
 

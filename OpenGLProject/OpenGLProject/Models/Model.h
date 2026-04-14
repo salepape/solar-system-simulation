@@ -8,10 +8,10 @@
 #include <filesystem>
 #include <vector>
 
-#include "OpenGLProject/Components/Meshes/MeshComponent.h"
-#include "OpenGLProject/Rendering/BlinnPhongMaterial.h"
-#include "OpenGLProject/Rendering/ShaderLoader.h"
-#include "OpenGLProject/Rendering/Texture.h"
+#include "Components/Meshes/MeshComponent.h"
+#include "Rendering/BlinnPhongMaterial.h"
+#include "Rendering/ShaderLoader.h"
+#include "Rendering/Texture.h"
 
 struct aiMaterial;
 struct aiMesh;

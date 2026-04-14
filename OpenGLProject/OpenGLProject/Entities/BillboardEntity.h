@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <string>
 
-#include "OpenGLProject/Rendering/BlinnPhongMaterial.h"
+#include "Rendering/BlinnPhongMaterial.h"
 #include "SceneEntity.h"
 
 struct BodyData;

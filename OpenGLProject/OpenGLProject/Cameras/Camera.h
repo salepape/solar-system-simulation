@@ -5,7 +5,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
-#include "OpenGLProject/Buffers/UniformBuffer.h"
+#include "Buffers/UniformBuffer.h"
 
 
 

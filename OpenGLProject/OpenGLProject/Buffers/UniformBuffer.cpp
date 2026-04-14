@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-#include "OpenGLProject/Rendering/Shader.h"
+#include "Rendering/Shader.h"
 
 uint32_t UniformBuffer::globalBlockBindingPoint = 0;
 

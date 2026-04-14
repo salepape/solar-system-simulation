@@ -3,8 +3,8 @@
 
 #include <glm/vec3.hpp>
 
+#include "Buffers/UniformBuffer.h"
 #include "LightSourceComponent.h"
-#include "OpenGLProject/Buffers/UniformBuffer.h"
 
 
 

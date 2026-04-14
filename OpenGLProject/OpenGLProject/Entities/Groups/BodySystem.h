@@ -5,9 +5,9 @@
 
 #include <memory>
 
-#include "OpenGLProject/Entities/BillboardEntity.h"
-#include "OpenGLProject/Entities/CelestialBodyEntity.h"
-#include "OpenGLProject/Entities/OrbitEntity.h"
+#include "Entities/BillboardEntity.h"
+#include "Entities/CelestialBodyEntity.h"
+#include "Entities/OrbitEntity.h"
 
 class BodyRingsEntity;
 class PerspectiveCamera;

@@ -6,7 +6,7 @@
 #include <iostream>
 
 #include "Shader.h"
-#include "OpenGLProject/Utils/Utils.h"
+#include "Utils/Utils.h"
 
 
 

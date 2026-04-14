@@ -2,8 +2,8 @@
 
 #include <glad/glad.h>
 
-#include "OpenGLProject/Buffers/VertexBuffer.h"
-#include "OpenGLProject/Rendering/Renderer.h"
+#include "Buffers/VertexBuffer.h"
+#include "Rendering/Renderer.h"
 
 
 

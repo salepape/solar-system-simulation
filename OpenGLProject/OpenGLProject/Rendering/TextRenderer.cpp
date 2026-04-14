@@ -6,10 +6,10 @@
 #include <iostream>
 #include <utility>
 
-#include "OpenGLProject/Buffers/VertexArray.h"
-#include "OpenGLProject/Buffers/VertexBuffer.h"
-#include "OpenGLProject/Buffers/VertexBufferLayout.h"
-#include "OpenGLProject/Components/Meshes/QuadMeshComponent.h"
+#include "Buffers/VertexArray.h"
+#include "Buffers/VertexBuffer.h"
+#include "Buffers/VertexBufferLayout.h"
+#include "Components/Meshes/QuadMeshComponent.h"
 #include "Renderer.h"
 
 

@@ -10,17 +10,17 @@
 #include <map>
 #include <unordered_map>
 
-#include "OpenGLProject/Application/Application.h"
-#include "OpenGLProject/Application/Window.h"
-#include "OpenGLProject/Cameras/PerspectiveCamera.h"
-#include "OpenGLProject/Entities/BillboardEntity.h"
-#include "OpenGLProject/Entities/BodyRingsEntity.h"
-#include "OpenGLProject/Entities/CelestialBodyEntity.h"
-#include "OpenGLProject/Interactions/PerspectiveCameraController.h"
-#include "OpenGLProject/Rendering/Renderer.h"
-#include "OpenGLProject/Rendering/ShaderLoader.h"
-#include "OpenGLProject/Rendering/TextRenderer.h"
-#include "OpenGLProject/Utils/Utils.h"
+#include "Application/Application.h"
+#include "Application/Window.h"
+#include "Cameras/PerspectiveCamera.h"
+#include "Entities/BillboardEntity.h"
+#include "Entities/BodyRingsEntity.h"
+#include "Entities/CelestialBodyEntity.h"
+#include "Interactions/PerspectiveCameraController.h"
+#include "Rendering/Renderer.h"
+#include "Rendering/ShaderLoader.h"
+#include "Rendering/TextRenderer.h"
+#include "Utils/Utils.h"
 
 
 

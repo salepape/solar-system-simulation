@@ -8,10 +8,10 @@
 #include <cstddef> // std::size_t
 #include <utility>
 
-#include "OpenGLProject/Application/Application.h"
-#include "OpenGLProject/Rendering/Renderer.h"
-#include "OpenGLProject/Rendering/Shader.h"
-#include "OpenGLProject/Rendering/ShaderLoader.h"
+#include "Application/Application.h"
+#include "Rendering/Renderer.h"
+#include "Rendering/Shader.h"
+#include "Rendering/ShaderLoader.h"
 
 
 

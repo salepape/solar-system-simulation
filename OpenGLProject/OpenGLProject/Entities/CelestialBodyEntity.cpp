@@ -8,14 +8,14 @@
 #include <utility>
 #include <vector>
 
-#include "OpenGLProject/Components/Lights/LightSourceComponent.h"
-#include "OpenGLProject/Components/Lights/PointLightComponent.h"
-#include "OpenGLProject/Entities/Groups/BodySystem.h"
-#include "OpenGLProject/Rendering/Renderer.h"
-#include "OpenGLProject/Rendering/Shader.h"
-#include "OpenGLProject/Rendering/ShaderLoader.h"
-#include "OpenGLProject/Rendering/Texture.h"
-#include "OpenGLProject/Utils/Constants.h"
+#include "Components/Lights/LightSourceComponent.h"
+#include "Components/Lights/PointLightComponent.h"
+#include "Entities/Groups/BodySystem.h"
+#include "Rendering/Renderer.h"
+#include "Rendering/Shader.h"
+#include "Rendering/ShaderLoader.h"
+#include "Rendering/Texture.h"
+#include "Utils/Constants.h"
 
 
 

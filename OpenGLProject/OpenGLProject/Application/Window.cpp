@@ -6,7 +6,7 @@
 #include <cassert>
 #include <iostream>
 
-#include "OpenGLProject/Utils/Utils.h"
+#include "Utils/Utils.h"
 
 
 

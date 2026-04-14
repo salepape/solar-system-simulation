@@ -16,9 +16,9 @@
 #include <iostream>
 #include <utility>
 
-#include "OpenGLProject/Buffers/VertexBuffer.h"
-#include "OpenGLProject/Rendering/Renderer.h"
-#include "OpenGLProject/Utils/Utils.h"
+#include "Buffers/VertexBuffer.h"
+#include "Rendering/Renderer.h"
+#include "Utils/Utils.h"
 
 
 

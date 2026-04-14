@@ -6,7 +6,7 @@
 #include <filesystem>
 #include <string>
 
-#include "OpenGLProject/Models/Model.h"
+#include "Models/Model.h"
 #include "SceneEntity.h"
 
 class Renderer;

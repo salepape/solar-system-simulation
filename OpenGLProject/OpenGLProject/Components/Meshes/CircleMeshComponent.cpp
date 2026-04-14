@@ -6,8 +6,8 @@
 
 #include <utility>
 
-#include "OpenGLProject/Rendering/Renderer.h"
-#include "OpenGLProject/Utils/Constants.h"
+#include "Rendering/Renderer.h"
+#include "Utils/Constants.h"
 
 
 

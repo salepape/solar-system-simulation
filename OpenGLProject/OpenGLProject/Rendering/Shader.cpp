@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 
-#include "OpenGLProject/Utils/Utils.h"
+#include "Utils/Utils.h"
 
 
 

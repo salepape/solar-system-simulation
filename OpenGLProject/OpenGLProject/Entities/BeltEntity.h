@@ -8,8 +8,8 @@
 #include <string>
 #include <vector>
 
-#include "OpenGLProject/Models/Model.h"
-#include "OpenGLProject/Rendering/BlinnPhongMaterial.h"
+#include "Models/Model.h"
+#include "Rendering/BlinnPhongMaterial.h"
 #include "SceneEntity.h"
 
 class Renderer;

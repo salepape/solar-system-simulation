@@ -5,7 +5,7 @@
 
 #include <cstdint>
 
-#include "OpenGLProject/Components/Lights/SpotLightComponent.h"
+#include "Components/Lights/SpotLightComponent.h"
 
 class Camera;
 

@@ -7,11 +7,11 @@
 #include <string>
 #include <vector>
 
-#include "OpenGLProject/Entities/BeltEntity.h"
-#include "OpenGLProject/Entities/MilkyWayEntity.h"
-#include "OpenGLProject/Entities/SpacecraftEntity.h"
-#include "OpenGLProject/Entities/Groups/BodySystem.h"
-#include "OpenGLProject/Scene/Scene.h"
+#include "Entities/BeltEntity.h"
+#include "Entities/MilkyWayEntity.h"
+#include "Entities/SpacecraftEntity.h"
+#include "Entities/Groups/BodySystem.h"
+#include "Scene/Scene.h"
 
 
 

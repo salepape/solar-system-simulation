@@ -2,7 +2,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include "OpenGLProject/Utils/Constants.h"
+#include "Utils/Constants.h"
 
 
 

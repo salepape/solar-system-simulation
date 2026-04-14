@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "DataBuffer.h"
-#include "OpenGLProject/Rendering/ShaderLoader.h"
+#include "Rendering/ShaderLoader.h"
 
 
 

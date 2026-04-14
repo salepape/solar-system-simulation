@@ -1,7 +1,7 @@
 #include "Scene.h"
 
-#include "OpenGLProject/Application/Application.h"
-#include "OpenGLProject/Application/Window.h"
+#include "Application/Application.h"
+#include "Application/Window.h"
 
 
 
