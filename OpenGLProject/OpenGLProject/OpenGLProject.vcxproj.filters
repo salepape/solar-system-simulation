@@ -13,14 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Rendering">
-      <UniqueIdentifier>{574995b3-bc66-470e-afec-d22c4b69de49}</UniqueIdentifier>
+    <Filter Include="Header Files\Application">
+      <UniqueIdentifier>{369e21a9-7846-4fa4-b168-7b9fb6320f1f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Rendering">
-      <UniqueIdentifier>{5cf6b12a-b5db-465b-aefe-50689ac9e11c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\External Dependencies">
-      <UniqueIdentifier>{a31fb1f6-95d9-4ef0-862d-e11859d2ee76}</UniqueIdentifier>
+    <Filter Include="Source Files\Application">
+      <UniqueIdentifier>{c79210e4-b536-4342-9eeb-5afc26fa249a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Buffers">
       <UniqueIdentifier>{9ede1af1-4a03-4d46-967a-3426cb7cccd4}</UniqueIdentifier>
@@ -28,41 +25,11 @@
     <Filter Include="Source Files\Buffers">
       <UniqueIdentifier>{55d82c87-b11a-4535-9b1f-3ed3500fc199}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Interactions">
-      <UniqueIdentifier>{57825855-20d3-41f8-a979-8e90f1d2742b}</UniqueIdentifier>
+    <Filter Include="Header Files\Cameras">
+      <UniqueIdentifier>{b9b6ec2f-917b-49bd-a70c-cef5174cc507}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Interactions">
-      <UniqueIdentifier>{1b71018e-a757-47a6-aa94-b0ef7aafbe0e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Application">
-      <UniqueIdentifier>{369e21a9-7846-4fa4-b168-7b9fb6320f1f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Application">
-      <UniqueIdentifier>{c79210e4-b536-4342-9eeb-5afc26fa249a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Scene">
-      <UniqueIdentifier>{c44d696d-e7a1-423e-9627-a21bbc29d455}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Scene">
-      <UniqueIdentifier>{cf7c7bfe-f05a-4718-9c7f-5626b69cc0aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Utils">
-      <UniqueIdentifier>{f0e2ec4c-fbb6-4918-ba23-8e778a04a005}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utils">
-      <UniqueIdentifier>{fd18e00d-5086-4e98-98f8-10d71e7a7516}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Utils">
-      <UniqueIdentifier>{b1218cc2-67f3-458e-a34d-4b81430aad57}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Rendering\GLSL">
-      <UniqueIdentifier>{cc1f627f-b8f8-43dc-8003-0083453b9f1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Entities">
-      <UniqueIdentifier>{982857c7-2877-4dfe-beb6-fb32cb2c719d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Entities">
-      <UniqueIdentifier>{5c670c94-8ee1-4eef-8b95-30fc846919c3}</UniqueIdentifier>
+	<Filter Include="Source Files\Cameras">
+      <UniqueIdentifier>{35571489-2991-42a3-ae2c-6fe7e48686af}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Components">
       <UniqueIdentifier>{16ef210d-8281-4ffe-b882-0b3b2642297f}</UniqueIdentifier>
@@ -70,17 +37,26 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{c3ba0ca2-4f19-4de6-8b61-99468d6d3507}</UniqueIdentifier>
     </Filter>
+	<Filter Include="Header Files\Components\Lights">
+      <UniqueIdentifier>{859a2776-6403-4590-beb0-98cd74f3395e}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="Source Files\Components\Lights">
+      <UniqueIdentifier>{d5a11c74-b9a0-493a-a5b3-fb1ac0a46874}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Components\Meshes">
       <UniqueIdentifier>{05bc9c57-231f-447a-b7cf-b515b1453556}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Components\Lights">
-      <UniqueIdentifier>{859a2776-6403-4590-beb0-98cd74f3395e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Components\Meshes">
       <UniqueIdentifier>{d26b534e-c968-430d-b76c-679582cf7c61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Components\Lights">
-      <UniqueIdentifier>{d5a11c74-b9a0-493a-a5b3-fb1ac0a46874}</UniqueIdentifier>
+    <Filter Include="Source Files\External Dependencies">
+      <UniqueIdentifier>{a31fb1f6-95d9-4ef0-862d-e11859d2ee76}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="Header Files\Entities">
+      <UniqueIdentifier>{982857c7-2877-4dfe-beb6-fb32cb2c719d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities">
+      <UniqueIdentifier>{5c670c94-8ee1-4eef-8b95-30fc846919c3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Entities\Groups">
       <UniqueIdentifier>{43daa992-089b-42be-a2bc-3e6389e37cf2}</UniqueIdentifier>
@@ -88,78 +64,87 @@
     <Filter Include="Source Files\Entities\Groups">
       <UniqueIdentifier>{555914cf-a0de-41d0-8cf3-e4830b6de545}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Interactions">
+      <UniqueIdentifier>{1b71018e-a757-47a6-aa94-b0ef7aafbe0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interactions">
+      <UniqueIdentifier>{57825855-20d3-41f8-a979-8e90f1d2742b}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="Header Files\Models">
+      <UniqueIdentifier>{50f205ca-a506-47ee-9c10-ba67eaeccf75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{b0f7259c-cc09-4e98-a527-1a5e60fc5ccb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rendering">
+      <UniqueIdentifier>{5cf6b12a-b5db-465b-aefe-50689ac9e11c}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="Source Files\Rendering">
+      <UniqueIdentifier>{574995b3-bc66-470e-afec-d22c4b69de49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering\GLSL">
+      <UniqueIdentifier>{cc1f627f-b8f8-43dc-8003-0083453b9f1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{cf7c7bfe-f05a-4718-9c7f-5626b69cc0aa}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{c44d696d-e7a1-423e-9627-a21bbc29d455}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Simulation">
       <UniqueIdentifier>{05551b14-b8fd-4459-8d83-e772381679fd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Simulation">
       <UniqueIdentifier>{be3853eb-3e39-495e-8b8d-b04560fc651d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Cameras">
-      <UniqueIdentifier>{35571489-2991-42a3-ae2c-6fe7e48686af}</UniqueIdentifier>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{f0e2ec4c-fbb6-4918-ba23-8e778a04a005}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Cameras">
-      <UniqueIdentifier>{b9b6ec2f-917b-49bd-a70c-cef5174cc507}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Models">
-      <UniqueIdentifier>{50f205ca-a506-47ee-9c10-ba67eaeccf75}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Models">
-      <UniqueIdentifier>{b0f7259c-cc09-4e98-a527-1a5e60fc5ccb}</UniqueIdentifier>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{fd18e00d-5086-4e98-98f8-10d71e7a7516}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Buffers/VertexBufferLayout.h">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="Buffers/VertexBuffer.h">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="Buffers/VertexArray.h">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="Buffers/UniformBuffer.h">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="Buffers/IndexBuffer.h">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="Buffers/DataBuffer.h">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils/Utils.h">
-      <Filter>Header Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Interactions/InputHandler.h">
-      <Filter>Header Files\Interactions</Filter>
-    </ClInclude>
     <ClInclude Include="Application/Application.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="Application/Window.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="Scene/Scene.h">
-      <Filter>Header Files\Scene</Filter>
+    <ClInclude Include="Buffers/DataBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="Interactions/Headlamp.h">
-      <Filter>Header Files\Interactions</Filter>
+	<ClInclude Include="Buffers/IndexBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="Interactions/PerspectiveCameraController.h">
-      <Filter>Header Files\Interactions</Filter>
+	<ClInclude Include="Buffers/UniformBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="Utils/Constants.h">
-      <Filter>Header Files\Utils</Filter>
+    <ClInclude Include="Buffers/VertexArray.h">
+      <Filter>Header Files\Buffers</Filter>
+    </ClInclude>
+	<ClInclude Include="Buffers/VertexBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffers/VertexBufferLayout.h">
+      <Filter>Header Files\Buffers</Filter>
+    </ClInclude>
+	<ClInclude Include="Cameras/Camera.h">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Cameras/PerspectiveCamera.h">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+	<ClInclude Include="Components/Lights/DirectionalLightComponent.h">
+      <Filter>Header Files\Components\Lights</Filter>
+    </ClInclude>
+	<ClInclude Include="Components/Lights/LightSourceComponent.h">
+      <Filter>Header Files\Components\Lights</Filter>
+    </ClInclude>
+	<ClInclude Include="Components/Lights/PointLightComponent.h">
+      <Filter>Header Files\Components\Lights</Filter>
     </ClInclude>
     <ClInclude Include="Components/Lights/SpotLightComponent.h">
-      <Filter>Header Files\Components\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="Components/Lights/PointLightComponent.h">
-      <Filter>Header Files\Components\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="Components/Lights/LightSourceComponent.h">
-      <Filter>Header Files\Components\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="Components/Lights/DirectionalLightComponent.h">
       <Filter>Header Files\Components\Lights</Filter>
     </ClInclude>
     <ClInclude Include="Components/Meshes/CircleMeshComponent.h">
@@ -176,9 +161,6 @@
     </ClInclude>
     <ClInclude Include="Components/Meshes/SphereMeshComponent.h">
       <Filter>Header Files\Components\Meshes</Filter>
-    </ClInclude>
-    <ClInclude Include="Entities/SpacecraftEntity.h">
-      <Filter>Header Files\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Entities/BeltEntity.h">
       <Filter>Header Files\Entities</Filter>
@@ -201,6 +183,24 @@
     <ClInclude Include="Entities/SceneEntity.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
+	<ClInclude Include="Entities/SpacecraftEntity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities/Groups/BodySystem.h">
+      <Filter>Header Files\Entities\Groups</Filter>
+    </ClInclude>
+    <ClInclude Include="Interactions/InputHandler.h">
+      <Filter>Header Files\Interactions</Filter>
+    </ClInclude>
+	<ClInclude Include="Interactions/Headlamp.h">
+      <Filter>Header Files\Interactions</Filter>
+    </ClInclude>
+	<ClInclude Include="Interactions/PerspectiveCameraController.h">
+      <Filter>Header Files\Interactions</Filter>
+    </ClInclude>
+    <ClInclude Include="Models/Model.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
     <ClInclude Include="Rendering/BlinnPhongMaterial.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
@@ -222,28 +222,28 @@
     <ClInclude Include="Rendering/Texture.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Entities/Groups/BodySystem.h">
-      <Filter>Header Files\Entities\Groups</Filter>
-    </ClInclude>
-    <ClInclude Include="Simulation/SolarSystemSimulation.h">
-      <Filter>Header Files\Simulation</Filter>
+	<ClInclude Include="Scene/Scene.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Simulation/SolarSystem.h">
       <Filter>Header Files\Simulation</Filter>
     </ClInclude>
-    <ClInclude Include="Cameras/Camera.h">
-      <Filter>Header Files\Cameras</Filter>
+	<ClInclude Include="Simulation/SolarSystemSimulation.h">
+      <Filter>Header Files\Simulation</Filter>
     </ClInclude>
-    <ClInclude Include="Cameras/PerspectiveCamera.h">
-      <Filter>Header Files\Cameras</Filter>
+	<ClInclude Include="Utils/Constants.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Models/Model.h">
-      <Filter>Header Files\Models</Filter>
+    <ClInclude Include="Utils/Utils.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Application/Application.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Application/Window.cpp">
+      <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="Buffers/DataBuffer.cpp">
       <Filter>Source Files\Buffers</Filter>
@@ -251,40 +251,25 @@
     <ClCompile Include="Buffers/IndexBuffer.cpp">
       <Filter>Source Files\Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="Buffers/VertexBufferLayout.cpp">
+	<ClCompile Include="Buffers/UniformBuffer.cpp">
+      <Filter>Source Files\Buffers</Filter>
+    </ClCompile>
+	<ClCompile Include="Buffers/VertexArray.cpp">
       <Filter>Source Files\Buffers</Filter>
     </ClCompile>
     <ClCompile Include="Buffers/VertexBuffer.cpp">
       <Filter>Source Files\Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="Buffers/VertexArray.cpp">
+	<ClCompile Include="Buffers/VertexBufferLayout.cpp">
       <Filter>Source Files\Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="Buffers/UniformBuffer.cpp">
-      <Filter>Source Files\Buffers</Filter>
+	<ClCompile Include="Cameras/Camera.cpp">
+      <Filter>Source Files\Cameras</Filter>
     </ClCompile>
-    <ClCompile Include="Interactions/InputHandler.cpp">
-      <Filter>Source Files\Interactions</Filter>
+    <ClCompile Include="Cameras/PerspectiveCamera.cpp">
+      <Filter>Source Files\Cameras</Filter>
     </ClCompile>
-    <ClCompile Include="Application/Application.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application/Window.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene/Scene.cpp">
-      <Filter>Source Files\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils/Utils.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Interactions/Headlamp.cpp">
-      <Filter>Source Files\Interactions</Filter>
-    </ClCompile>
-    <ClCompile Include="Interactions/PerspectiveCameraController.cpp">
-      <Filter>Source Files\Interactions</Filter>
-    </ClCompile>
-    <ClCompile Include="Components/Lights/DirectionalLightComponent.cpp">
+	<ClCompile Include="Components/Lights/DirectionalLightComponent.cpp">
       <Filter>Source Files\Components\Lights</Filter>
     </ClCompile>
     <ClCompile Include="Components/Lights/PointLightComponent.cpp">
@@ -308,7 +293,16 @@
     <ClCompile Include="Components/Meshes/SphereMeshComponent.cpp">
       <Filter>Source Files\Components\Meshes</Filter>
     </ClCompile>
-    <ClCompile Include="Entities/SpacecraftEntity.cpp">
+	<ClCompile Include="Entities/BeltEntity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+	<ClCompile Include="Entities/BillboardEntity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+	<ClCompile Include="Entities/BodyRingsEntity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+	<ClCompile Include="Entities/CelestialBodyEntity.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
     <ClCompile Include="Entities/MilkyWayEntity.cpp">
@@ -320,19 +314,31 @@
     <ClCompile Include="Entities/SceneEntity.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Entities/CelestialBodyEntity.cpp">
+	<ClCompile Include="Entities/SpacecraftEntity.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Entities/BodyRingsEntity.cpp">
-      <Filter>Source Files\Entities</Filter>
+	<ClCompile Include="Entities/Groups/BodySystem.cpp">
+      <Filter>Source Files\Entities\Groups</Filter>
     </ClCompile>
-    <ClCompile Include="Entities/BillboardEntity.cpp">
-      <Filter>Source Files\Entities</Filter>
+	<ClCompile Include="External Dependencies/glad/glad.c">
+      <Filter>Source Files\External Dependencies</Filter>
     </ClCompile>
-    <ClCompile Include="Entities/BeltEntity.cpp">
-      <Filter>Source Files\Entities</Filter>
+    <ClCompile Include="Interactions/Headlamp.cpp">
+      <Filter>Source Files\Interactions</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering/PBRMaterial.h">
+    <ClCompile Include="Interactions/InputHandler.cpp">
+      <Filter>Source Files\Interactions</Filter>
+    </ClCompile>
+    <ClCompile Include="Interactions/PerspectiveCameraController.cpp">
+      <Filter>Source Files\Interactions</Filter>
+    </ClCompile>
+	<ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+	<ClCompile Include="Models/Model.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+	<ClCompile Include="Rendering/PBRMaterial.h">
       <Filter>Header Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rendering/BlinnPhongMaterial.cpp">
@@ -359,26 +365,17 @@
     <ClCompile Include="Rendering/Texture.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Entities/Groups/BodySystem.cpp">
-      <Filter>Source Files\Entities\Groups</Filter>
+    <ClCompile Include="Scene/Scene.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Simulation/SolarSystem.cpp">
+	<ClCompile Include="Simulation/SolarSystem.cpp">
       <Filter>Source Files\Simulation</Filter>
     </ClCompile>
     <ClCompile Include="Simulation/SolarSystemSimulation.cpp">
       <Filter>Source Files\Simulation</Filter>
     </ClCompile>
-    <ClCompile Include="Cameras/Camera.cpp">
-      <Filter>Source Files\Cameras</Filter>
-    </ClCompile>
-    <ClCompile Include="Cameras/PerspectiveCamera.cpp">
-      <Filter>Source Files\Cameras</Filter>
-    </ClCompile>
-    <ClCompile Include="Models/Model.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="External Dependencies/glad/glad.c">
-      <Filter>Source Files\External Dependencies</Filter>
+    <ClCompile Include="Utils/Utils.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -388,10 +385,10 @@
     <None Include="Rendering/GLSL/BillboardShader.vs">
       <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
-    <None Include="Rendering/GLSL/DefaultShader.vs">
+    <None Include="Rendering/GLSL/DefaultShader.fs">
       <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
-    <None Include="Rendering/GLSL/DefaultShader.fs">
+	<None Include="Rendering/GLSL/DefaultShader.vs">
       <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
     <None Include="Rendering/GLSL/InstancedModelShader.vs">
@@ -400,10 +397,10 @@
     <None Include="Rendering/GLSL/SunShader.fs">
       <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
-    <None Include="Rendering/GLSL/SkyboxShader.vs">
+	<None Include="Rendering/GLSL/SkyboxShader.fs">
       <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
-    <None Include="Rendering/GLSL/SkyboxShader.fs">
+    <None Include="Rendering/GLSL/SkyboxShader.vs">
       <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
   </ItemGroup>
