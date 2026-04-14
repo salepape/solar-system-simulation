@@ -78,6 +78,18 @@ To be able to explore the Solar System, the user should use the following contro
 
 ## Resources
 
-* Scientific data and some models has been retrieved from NASA website mainly (National Space Science Data Center),
-* Textures have been downloaded from https://www.solarsystemscope.com/textures, https://planetpixelemporium.com/planets.html, https://www.jpl.nasa.gov, https://3d-asteroids.space, and websites of passionate people such as https://planet-texture-maps.fandom.com/wiki,
-* Some parts of OpenGL code have been inspired from https://learnopengl.com (from Joey De Vries), https://www.youtube.com/user/TheChernoProject (from Yan Chernikov, aka TheCherno) mainly, and many Reddit threads; http://www.opengl-tutorial.org and https://open.gl to a lesser extent.
+Scientific data and several models has been retrieved from the NASA website (National Space Science Data Center).
+
+Celestial body textures have been downloaded from:
+* https://www.solarsystemscope.com/textures,
+* https://planetpixelemporium.com/planets.html,
+* https://www.jpl.nasa.gov,
+* https://3d-asteroids.space,
+* websites of passionate people such as https://planet-texture-maps.fandom.com/wiki.
+
+My understanding of OpenGL and the world of programming has mainly been based on resources from:
+* https://learnopengl.com (from Joey De Vries),
+* https://www.youtube.com/user/TheChernoProject (from Yan Chernikov, aka TheCherno),
+* http://www.opengl-tutorial.org,
+* https://open.gl to a lesser extent,
+* many Reddit threads!
