@@ -7,8 +7,8 @@
 #include <iostream>
 
 #include "InputHandler.h"
-#include "OpenGLProject/UI/Application.h"
-#include "OpenGLProject/UI/Window.h"
+#include "OpenGLProject/Application/Application.h"
+#include "OpenGLProject/Application/Window.h"
 #include "OpenGLProject/Utils/Utils.h"
 
 

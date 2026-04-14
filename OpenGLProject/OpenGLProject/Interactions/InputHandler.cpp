@@ -2,8 +2,8 @@
 
 #include <glfw/glfw3.h>
 
-#include "OpenGLProject/UI/Application.h"
-#include "OpenGLProject/UI/Window.h"
+#include "OpenGLProject/Application/Application.h"
+#include "OpenGLProject/Application/Window.h"
 
 InputHandler* InputHandler::instance = nullptr;
 

@@ -10,6 +10,8 @@
 #include <map>
 #include <unordered_map>
 
+#include "OpenGLProject/Application/Application.h"
+#include "OpenGLProject/Application/Window.h"
 #include "OpenGLProject/Cameras/PerspectiveCamera.h"
 #include "OpenGLProject/Entities/BillboardEntity.h"
 #include "OpenGLProject/Entities/BodyRingsEntity.h"
@@ -18,8 +20,6 @@
 #include "OpenGLProject/Rendering/Renderer.h"
 #include "OpenGLProject/Rendering/ShaderLoader.h"
 #include "OpenGLProject/Rendering/TextRenderer.h"
-#include "OpenGLProject/UI/Application.h"
-#include "OpenGLProject/UI/Window.h"
 #include "OpenGLProject/Utils/Utils.h"
 
 

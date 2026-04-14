@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-#include "OpenGLProject/UI/Application.h"
+#include "OpenGLProject/Application/Application.h"
 
 class SolarSystem;
 

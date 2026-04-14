@@ -11,8 +11,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "OpenGLProject/UI/Application.h"
-#include "OpenGLProject/UI/Window.h"
+#include "OpenGLProject/Application/Application.h"
+#include "OpenGLProject/Application/Window.h"
 
 
 

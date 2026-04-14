@@ -3,8 +3,8 @@
 #include <glfw/glfw3.h>
 #include <glm/trigonometric.hpp>
 
+#include "OpenGLProject/Application/Application.h"
 #include "OpenGLProject/Cameras/Camera.h"
-#include "OpenGLProject/UI/Application.h"
 
 
 
