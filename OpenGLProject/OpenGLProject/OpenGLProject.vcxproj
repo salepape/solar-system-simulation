@@ -70,16 +70,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)/Tools/Includes;$(SolutionDir)/Tools/Includes/glfw;$(SolutionDir)/Tools/Includes/glad;$(SolutionDir)/Tools/Includes/glm;$(SolutionDir)/Tools/Includes/soil2;$(SolutionDir)/Tools/Includes/assimp;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)/Tools/Libraries/x32;$(SolutionDir)/Tools/Libraries/x32/glfw;$(SolutionDir)/Tools/Libraries/x32/soil2;$(SolutionDir)/Tools/Libraries/x32/assimp;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)External Dependencies\glad;$(ProjectDir)Interactions;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Tools\Libraries\x32;$(SolutionDir)Tools\Libraries\x32\freetype;$(SolutionDir)Tools\Libraries\x32\glfw;$(SolutionDir)Tools\Libraries\x32\soil2;$(SolutionDir)Tools\Libraries\x32\assimp;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)/Tools/Includes;$(SolutionDir)/Tools/Includes/glfw;$(SolutionDir)/Tools/Includes/glad;$(SolutionDir)/Tools/Includes/glm;$(SolutionDir)/Tools/Includes/soil2;$(SolutionDir)/Tools/Includes/assimp;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)/Tools/Libraries/x64;$(SolutionDir)/Tools/Libraries/x64/glfw;$(SolutionDir)/Tools/Libraries/x64/soil2;$(SolutionDir)/Tools/Libraries/x64/assimp;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)External Dependencies\glad;$(ProjectDir)Interactions;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Tools\Libraries\x64;$(SolutionDir)Tools\Libraries\x64\freetype;$(SolutionDir)Tools\Libraries\x64\glfw;$(SolutionDir)Tools\Libraries\x64\soil2;$(SolutionDir)Tools\Libraries\x64\assimp;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -87,15 +87,15 @@
     <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)/Tools/Includes;$(SolutionDir)/Tools/Includes/glfw;$(SolutionDir)/Tools/Includes/glad;$(SolutionDir)/Tools/Includes/glm;$(SolutionDir)/Tools/Includes/soil2;$(SolutionDir)/Tools/Includes/assimp;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)/Tools/Libraries/x32;$(SolutionDir)/Tools/Libraries/x32/glfw;$(SolutionDir)/Tools/Libraries/x32/soil2;$(SolutionDir)/Tools/Libraries/x32/assimp;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)External Dependencies\glad;$(ProjectDir)Interactions;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Tools\Libraries\x32;$(SolutionDir)Tools\Libraries\x32\freetype;$(SolutionDir)Tools\Libraries\x32\glfw;$(SolutionDir)Tools\Libraries\x32\soil2;$(SolutionDir)Tools\Libraries\x32\assimp;$(LibraryPath)</LibraryPath>
     <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
     <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)/Tools/Includes;$(SolutionDir)/Tools/Includes/glfw;$(SolutionDir)/Tools/Includes/glad;$(SolutionDir)/Tools/Includes/glm;$(SolutionDir)/Tools/Includes/soil2;$(SolutionDir)/Tools/Includes/assimp;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)/Tools/Libraries/x64;$(SolutionDir)/Tools/Libraries/x64/glfw;$(SolutionDir)/Tools/Libraries/x64/soil2;$(SolutionDir)/Tools/Libraries/x64/assimp;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)External Dependencies\glad;$(ProjectDir)Interactions;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Tools\Libraries\x64;$(SolutionDir)Tools\Libraries\x64\freetype;$(SolutionDir)Tools\Libraries\x64\glfw;$(SolutionDir)Tools\Libraries\x64\soil2;$(SolutionDir)Tools\Libraries\x64\assimp;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
@@ -116,6 +116,9 @@
       <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc141-mtd.lib;freetyped.lib;soil2-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>call "$(OutDir)..\..\..\Scripts\CopyDLLPostBuild.bat" "$(OutDir)" "$(OutDir)..\..\..\Tools\Libraries\x32\assimp\assimp-vc141-mtd.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -130,6 +133,9 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc143-mt.lib;freetyped.lib;soil2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>call "$(OutDir)..\..\..\Scripts\CopyDLLPostBuild.bat" "$(OutDir)" "$(OutDir)\..\..\..\Tools\Libraries\x64\assimp\assimp-vc143-mt.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -148,6 +154,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc141-mtd.lib;freetyped.lib;soil2-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>call "$(OutDir)..\..\..\Scripts\CopyDLLPostBuild.bat" "$(OutDir)" "$(OutDir)..\..\..\Tools\Libraries\x32\assimp\assimp-vc141-mtd.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -166,110 +175,113 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc143-mt.lib;freetyped.lib;soil2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>call "$(OutDir)..\..\..\Scripts\CopyDLLPostBuild.bat" "$(OutDir)" "$(OutDir)\..\..\..\Tools\Libraries\x64\assimp\assimp-vc143-mt.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="Belt.h" />
-    <ClInclude Include="Billboard.h" />
-    <ClInclude Include="BodySystem.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Constants.h" />
-    <ClInclude Include="PerspectiveCamera.h" />
-    <ClInclude Include="CelestialBody.h" />
-    <ClInclude Include="PerspectiveCameraController.h" />
-    <ClInclude Include="Headlamp.h" />
-    <ClInclude Include="MilkyWay.h" />
-    <ClInclude Include="Orbit.h" />
-    <ClInclude Include="ShaderLoader.h" />
-    <ClInclude Include="DataBuffer.h" />
-    <ClInclude Include="DirectionalLightComponent.h" />
-    <ClInclude Include="IndexBuffer.h" />
-    <ClInclude Include="InputHandler.h" />
-    <ClInclude Include="LightSourceComponent.h" />
-    <ClInclude Include="PointLightComponent.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="MeshComponent.h" />
-    <ClInclude Include="Model.h" />
-    <ClInclude Include="CircleMeshComponent.h" />
-    <ClInclude Include="QuadMeshComponent.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="BodyRings.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneEntity.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="SkyboxMeshComponent.h" />
-    <ClInclude Include="SolarSystem.h" />
-    <ClInclude Include="SolarSystemSimulation.h" />
-    <ClInclude Include="Spacecraft.h" />
-    <ClInclude Include="SphereMeshComponent.h" />
-    <ClInclude Include="SpotLightComponent.h" />
-    <ClInclude Include="TextRenderer.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="UniformBuffer.h" />
-    <ClInclude Include="Utils.h" />
-    <ClInclude Include="VertexArray.h" />
-    <ClInclude Include="VertexBuffer.h" />
-    <ClInclude Include="VertexBufferLayout.h" />
-    <ClInclude Include="Window.h" />
-    <ClInclude Include="BlinnPhongMaterial.h" />
-    <ClCompile Include="PBRMaterial.h" />
+    <ClInclude Include="Application/Application.h" />
+    <ClInclude Include="Application/Window.h" />
+    <ClInclude Include="Buffers/DataBuffer.h" />
+    <ClInclude Include="Buffers/IndexBuffer.h" />
+    <ClInclude Include="Buffers/UniformBuffer.h" />
+    <ClInclude Include="Buffers/VertexArray.h" />
+    <ClInclude Include="Buffers/VertexBuffer.h" />
+    <ClInclude Include="Buffers/VertexBufferLayout.h" />
+    <ClInclude Include="Cameras/Camera.h" />
+    <ClInclude Include="Cameras/PerspectiveCamera.h" />
+    <ClInclude Include="Components/Lights/DirectionalLightComponent.h" />
+    <ClInclude Include="Components/Lights/LightSourceComponent.h" />
+    <ClInclude Include="Components/Lights/PointLightComponent.h" />
+    <ClInclude Include="Components/Lights/SpotLightComponent.h" />
+    <ClInclude Include="Components/Meshes/CircleMeshComponent.h" />
+    <ClInclude Include="Components/Meshes/MeshComponent.h" />
+    <ClInclude Include="Components/Meshes/QuadMeshComponent.h" />
+    <ClInclude Include="Components/Meshes/SkyboxMeshComponent.h" />
+    <ClInclude Include="Components/Meshes/SphereMeshComponent.h" />
+    <ClInclude Include="Entities/BeltEntity.h" />
+    <ClInclude Include="Entities/BillboardEntity.h" />
+    <ClInclude Include="Entities/BodyRingsEntity.h" />
+    <ClInclude Include="Entities/CelestialBodyEntity.h" />
+    <ClInclude Include="Entities/Groups/BodySystem.h" />
+    <ClInclude Include="Entities/MilkyWayEntity.h" />
+    <ClInclude Include="Entities/OrbitEntity.h" />
+    <ClInclude Include="Entities/SceneEntity.h" />
+    <ClInclude Include="Entities/SpacecraftEntity.h" />
+    <ClInclude Include="Interactions/Headlamp.h" />
+    <ClInclude Include="Interactions/InputHandler.h" />
+    <ClInclude Include="Interactions/PerspectiveCameraController.h" />
+    <ClInclude Include="Models/Model.h" />
+    <ClInclude Include="Rendering/BlinnPhongMaterial.h" />
+    <ClInclude Include="Rendering/Material.h" />
+    <ClCompile Include="Rendering/PBRMaterial.h" />
+    <ClInclude Include="Rendering/Renderer.h" />
+    <ClInclude Include="Rendering/Shader.h" />
+    <ClInclude Include="Rendering/ShaderLoader.h" />
+    <ClInclude Include="Rendering/TextRenderer.h" />
+    <ClInclude Include="Rendering/Texture.h" />
+    <ClInclude Include="Scene/Scene.h" />
+    <ClInclude Include="Simulation/SolarSystem.h" />
+    <ClInclude Include="Simulation/SolarSystemSimulation.h" />
+    <ClInclude Include="Utils/Constants.h" />
+    <ClInclude Include="Utils/Helpers.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Belt.cpp" />
-    <ClCompile Include="Billboard.cpp" />
-    <ClCompile Include="BodySystem.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="PerspectiveCamera.cpp" />
-    <ClCompile Include="CelestialBody.cpp" />
-    <ClCompile Include="PerspectiveCameraController.cpp" />
-    <ClCompile Include="DataBuffer.cpp" />
-    <ClCompile Include="DirectionalLightComponent.cpp" />
-    <ClCompile Include="glad.c" />
-    <ClCompile Include="Headlamp.cpp" />
-    <ClCompile Include="IndexBuffer.cpp" />
-    <ClCompile Include="InputHandler.cpp" />
-    <ClCompile Include="MilkyWay.cpp" />
-    <ClCompile Include="Orbit.cpp" />
-    <ClCompile Include="PointLightComponent.cpp" />
+    <ClCompile Include="Application/Application.cpp" />
+    <ClCompile Include="Application/Window.cpp" />
+    <ClCompile Include="Buffers/DataBuffer.cpp" />
+    <ClCompile Include="Buffers/IndexBuffer.cpp" />
+    <ClCompile Include="Buffers/UniformBuffer.cpp" />
+    <ClCompile Include="Buffers/VertexArray.cpp" />
+    <ClCompile Include="Buffers/VertexBuffer.cpp" />
+    <ClCompile Include="Buffers/VertexBufferLayout.cpp" />
+    <ClCompile Include="Cameras/Camera.cpp" />
+    <ClCompile Include="Cameras/PerspectiveCamera.cpp" />
+    <ClCompile Include="Components/Lights/DirectionalLightComponent.cpp" />
+    <ClCompile Include="Components/Lights/PointLightComponent.cpp" />
+    <ClCompile Include="Components/Lights/SpotLightComponent.cpp" />
+    <ClCompile Include="Components/Meshes/CircleMeshComponent.cpp" />
+    <ClCompile Include="Components/Meshes/MeshComponent.cpp" />
+    <ClCompile Include="Components/Meshes/QuadMeshComponent.cpp" />
+    <ClCompile Include="Components/Meshes/SkyboxMeshComponent.cpp" />
+    <ClCompile Include="Components/Meshes/SphereMeshComponent.cpp" />
+    <ClCompile Include="Entities/BeltEntity.cpp" />
+    <ClCompile Include="Entities/BillboardEntity.cpp" />
+    <ClCompile Include="Entities/BodyRingsEntity.cpp" />
+    <ClCompile Include="Entities/CelestialBodyEntity.cpp" />
+    <ClCompile Include="Entities/Groups/BodySystem.cpp" />
+    <ClCompile Include="Entities/MilkyWayEntity.cpp" />
+    <ClCompile Include="Entities/OrbitEntity.cpp" />
+    <ClCompile Include="Entities/SceneEntity.cpp" />
+    <ClCompile Include="Entities/SpacecraftEntity.cpp" />
+    <ClCompile Include="External Dependencies/glad/glad.c" />
+    <ClCompile Include="Interactions/Headlamp.cpp" />
+    <ClCompile Include="Interactions/InputHandler.cpp" />
+    <ClCompile Include="Interactions/PerspectiveCameraController.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Material.cpp" />
-    <ClCompile Include="MeshComponent.cpp" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="CircleMeshComponent.cpp" />
-    <ClCompile Include="QuadMeshComponent.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="ShaderLoader.cpp" />
-    <ClCompile Include="BodyRings.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneEntity.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="SkyboxMeshComponent.cpp" />
-    <ClCompile Include="SolarSystem.cpp" />
-    <ClCompile Include="SolarSystemSimulation.cpp" />
-    <ClCompile Include="Spacecraft.cpp" />
-    <ClCompile Include="SphereMeshComponent.cpp" />
-    <ClCompile Include="SpotLightComponent.cpp" />
-    <ClCompile Include="TextRenderer.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="UniformBuffer.cpp" />
-    <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="VertexArray.cpp" />
-    <ClCompile Include="VertexBuffer.cpp" />
-    <ClCompile Include="VertexBufferLayout.cpp" />
-    <ClCompile Include="Window.cpp" />
-    <ClCompile Include="BlinnPhongMaterial.cpp" />
-    <ClCompile Include="PBRMaterial.cpp" />
+    <ClCompile Include="Models/Model.cpp" />
+    <ClCompile Include="Rendering/BlinnPhongMaterial.cpp" />
+    <ClCompile Include="Rendering/Material.cpp" />
+    <ClCompile Include="Rendering/PBRMaterial.cpp" />
+    <ClCompile Include="Rendering/Renderer.cpp" />
+    <ClCompile Include="Rendering/Shader.cpp" />
+    <ClCompile Include="Rendering/ShaderLoader.cpp" />
+    <ClCompile Include="Rendering/TextRenderer.cpp" />
+    <ClCompile Include="Rendering/Texture.cpp" />
+    <ClCompile Include="Scene/Scene.cpp" />
+    <ClCompile Include="Simulation/SolarSystem.cpp" />
+    <ClCompile Include="Simulation/SolarSystemSimulation.cpp" />
+    <ClCompile Include="Utils/Helpers.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DefaultShader.fs" />
-    <None Include="DefaultShader.vs" />
-    <None Include="InstancedModelShader.vs" />
-    <None Include="SkyboxShader.fs" />
-    <None Include="SkyboxShader.vs" />
-    <None Include="SunShader.fs" />
-    <None Include="BillboardShader.fs" />
-    <None Include="BillboardShader.vs" />
+    <None Include="Rendering/GLSL/BillboardShader.fs" />
+    <None Include="Rendering/GLSL/BillboardShader.vs" />
+    <None Include="Rendering/GLSL/DefaultShader.fs" />
+    <None Include="Rendering/GLSL/DefaultShader.vs" />
+    <None Include="Rendering/GLSL/InstancedModelShader.vs" />
+    <None Include="Rendering/GLSL/SkyboxShader.fs" />
+    <None Include="Rendering/GLSL/SkyboxShader.vs" />
+    <None Include="Rendering/GLSL/SunShader.fs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

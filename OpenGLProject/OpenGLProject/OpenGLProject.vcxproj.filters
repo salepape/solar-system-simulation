@@ -13,374 +13,395 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Shaders">
-      <UniqueIdentifier>{574995b3-bc66-470e-afec-d22c4b69de49}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Extern Files">
-      <UniqueIdentifier>{332f4d4c-63df-42a3-88a4-2cab99135963}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Buffer Objects">
-      <UniqueIdentifier>{9ede1af1-4a03-4d46-967a-3426cb7cccd4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Buffer Objects">
-      <UniqueIdentifier>{55d82c87-b11a-4535-9b1f-3ed3500fc199}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Meshes">
-      <UniqueIdentifier>{88e9a964-90be-4947-9a65-13476ca1f241}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Shaders">
-      <UniqueIdentifier>{5cf6b12a-b5db-465b-aefe-50689ac9e11c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Meshes">
-      <UniqueIdentifier>{6dd714ea-40d0-4db2-bca5-6fceb12f6e08}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Renderers">
-      <UniqueIdentifier>{9f214c6c-6cff-4f73-bea9-73a4f3b01572}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Renderers">
-      <UniqueIdentifier>{4a0b7d24-e387-4497-8234-0345c9a2e1e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Lights">
-      <UniqueIdentifier>{246b1f4c-a3ed-4e72-9207-5e11f89b6004}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Lights">
-      <UniqueIdentifier>{54f17ea8-391c-46fb-9dc3-f82b0bd0d860}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Interactions">
-      <UniqueIdentifier>{57825855-20d3-41f8-a979-8e90f1d2742b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Interactions">
-      <UniqueIdentifier>{1b71018e-a757-47a6-aa94-b0ef7aafbe0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Application">
       <UniqueIdentifier>{369e21a9-7846-4fa4-b168-7b9fb6320f1f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Application">
       <UniqueIdentifier>{c79210e4-b536-4342-9eeb-5afc26fa249a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Scene">
-      <UniqueIdentifier>{c44d696d-e7a1-423e-9627-a21bbc29d455}</UniqueIdentifier>
+    <Filter Include="Header Files\Buffers">
+      <UniqueIdentifier>{9ede1af1-4a03-4d46-967a-3426cb7cccd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Buffers">
+      <UniqueIdentifier>{55d82c87-b11a-4535-9b1f-3ed3500fc199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cameras">
+      <UniqueIdentifier>{b9b6ec2f-917b-49bd-a70c-cef5174cc507}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="Source Files\Cameras">
+      <UniqueIdentifier>{35571489-2991-42a3-ae2c-6fe7e48686af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{16ef210d-8281-4ffe-b882-0b3b2642297f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{c3ba0ca2-4f19-4de6-8b61-99468d6d3507}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="Header Files\Components\Lights">
+      <UniqueIdentifier>{859a2776-6403-4590-beb0-98cd74f3395e}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="Source Files\Components\Lights">
+      <UniqueIdentifier>{d5a11c74-b9a0-493a-a5b3-fb1ac0a46874}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Meshes">
+      <UniqueIdentifier>{05bc9c57-231f-447a-b7cf-b515b1453556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Meshes">
+      <UniqueIdentifier>{d26b534e-c968-430d-b76c-679582cf7c61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\External Dependencies">
+      <UniqueIdentifier>{a31fb1f6-95d9-4ef0-862d-e11859d2ee76}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="Header Files\Entities">
+      <UniqueIdentifier>{982857c7-2877-4dfe-beb6-fb32cb2c719d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities">
+      <UniqueIdentifier>{5c670c94-8ee1-4eef-8b95-30fc846919c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Groups">
+      <UniqueIdentifier>{43daa992-089b-42be-a2bc-3e6389e37cf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Groups">
+      <UniqueIdentifier>{555914cf-a0de-41d0-8cf3-e4830b6de545}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Interactions">
+      <UniqueIdentifier>{1b71018e-a757-47a6-aa94-b0ef7aafbe0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interactions">
+      <UniqueIdentifier>{57825855-20d3-41f8-a979-8e90f1d2742b}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="Header Files\Models">
+      <UniqueIdentifier>{50f205ca-a506-47ee-9c10-ba67eaeccf75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{b0f7259c-cc09-4e98-a527-1a5e60fc5ccb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rendering">
+      <UniqueIdentifier>{5cf6b12a-b5db-465b-aefe-50689ac9e11c}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="Source Files\Rendering">
+      <UniqueIdentifier>{574995b3-bc66-470e-afec-d22c4b69de49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering\GLSL">
+      <UniqueIdentifier>{cc1f627f-b8f8-43dc-8003-0083453b9f1e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Scene">
       <UniqueIdentifier>{cf7c7bfe-f05a-4718-9c7f-5626b69cc0aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Solar System">
-      <UniqueIdentifier>{9bc341b3-ef9f-48b8-ad23-d18abdbebb5b}</UniqueIdentifier>
+	<Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{c44d696d-e7a1-423e-9627-a21bbc29d455}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Solar System">
-      <UniqueIdentifier>{2aaa3db1-ae35-4d7c-85ae-10d5eb31091e}</UniqueIdentifier>
+    <Filter Include="Header Files\Simulation">
+      <UniqueIdentifier>{05551b14-b8fd-4459-8d83-e772381679fd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Constants">
+    <Filter Include="Source Files\Simulation">
+      <UniqueIdentifier>{be3853eb-3e39-495e-8b8d-b04560fc651d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils">
       <UniqueIdentifier>{f0e2ec4c-fbb6-4918-ba23-8e778a04a005}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utils">
       <UniqueIdentifier>{fd18e00d-5086-4e98-98f8-10d71e7a7516}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Utils">
-      <UniqueIdentifier>{b1218cc2-67f3-458e-a34d-4b81430aad57}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shaders\GLSL">
-      <UniqueIdentifier>{cc1f627f-b8f8-43dc-8003-0083453b9f1e}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="VertexBufferLayout.h">
-      <Filter>Header Files\Buffer Objects</Filter>
+    <ClInclude Include="Application/Application.h">
+      <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="VertexBuffer.h">
-      <Filter>Header Files\Buffer Objects</Filter>
+    <ClInclude Include="Application/Window.h">
+      <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="VertexArray.h">
-      <Filter>Header Files\Buffer Objects</Filter>
+    <ClInclude Include="Buffers/DataBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="UniformBuffer.h">
-      <Filter>Header Files\Buffer Objects</Filter>
+	<ClInclude Include="Buffers/IndexBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="IndexBuffer.h">
-      <Filter>Header Files\Buffer Objects</Filter>
+	<ClInclude Include="Buffers/UniformBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="DataBuffer.h">
-      <Filter>Header Files\Buffer Objects</Filter>
+    <ClInclude Include="Buffers/VertexArray.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="Sphere.h">
-      <Filter>Header Files\Meshes</Filter>
+	<ClInclude Include="Buffers/VertexBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="Skybox.h">
-      <Filter>Header Files\Meshes</Filter>
+    <ClInclude Include="Buffers/VertexBufferLayout.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Header Files\Meshes</Filter>
+	<ClInclude Include="Cameras/Camera.h">
+      <Filter>Header Files\Cameras</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files\Shaders</Filter>
+    <ClInclude Include="Cameras/PerspectiveCamera.h">
+      <Filter>Header Files\Cameras</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Header Files\Meshes</Filter>
+	<ClInclude Include="Components/Lights/DirectionalLightComponent.h">
+      <Filter>Header Files\Components\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="Utils.h">
+	<ClInclude Include="Components/Lights/LightSourceComponent.h">
+      <Filter>Header Files\Components\Lights</Filter>
+    </ClInclude>
+	<ClInclude Include="Components/Lights/PointLightComponent.h">
+      <Filter>Header Files\Components\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="Components/Lights/SpotLightComponent.h">
+      <Filter>Header Files\Components\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="Components/Meshes/CircleMeshComponent.h">
+      <Filter>Header Files\Components\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Components/Meshes/MeshComponent.h">
+      <Filter>Header Files\Components\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Components/Meshes/QuadMeshComponent.h">
+      <Filter>Header Files\Components\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Components/Meshes/SkyboxMeshComponent.h">
+      <Filter>Header Files\Components\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Components/Meshes/SphereMeshComponent.h">
+      <Filter>Header Files\Components\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities/BeltEntity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities/BillboardEntity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities/BodyRingsEntity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities/CelestialBodyEntity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities/MilkyWayEntity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities/OrbitEntity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities/SceneEntity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+	<ClInclude Include="Entities/SpacecraftEntity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities/Groups/BodySystem.h">
+      <Filter>Header Files\Entities\Groups</Filter>
+    </ClInclude>
+    <ClInclude Include="Interactions/InputHandler.h">
+      <Filter>Header Files\Interactions</Filter>
+    </ClInclude>
+	<ClInclude Include="Interactions/Headlamp.h">
+      <Filter>Header Files\Interactions</Filter>
+    </ClInclude>
+	<ClInclude Include="Interactions/PerspectiveCameraController.h">
+      <Filter>Header Files\Interactions</Filter>
+    </ClInclude>
+    <ClInclude Include="Models/Model.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering/BlinnPhongMaterial.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering/Material.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering/Renderer.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering/Shader.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering/ShaderLoader.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering/TextRenderer.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering/Texture.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+	<ClInclude Include="Scene/Scene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation/SolarSystem.h">
+      <Filter>Header Files\Simulation</Filter>
+    </ClInclude>
+	<ClInclude Include="Simulation/SolarSystemSimulation.h">
+      <Filter>Header Files\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils/Helpers.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Quad.h">
-      <Filter>Header Files\Meshes</Filter>
+    <ClInclude Include="Utils/Constants.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="TextRenderer.h">
-      <Filter>Header Files\Renderers</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Header Files\Renderers</Filter>
-    </ClInclude>
-    <ClInclude Include="PointLight.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="LightSource.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectionalLight.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="InputHandler.h">
-      <Filter>Header Files\Interactions</Filter>
-    </ClInclude>
-    <ClInclude Include="Belt.h">
-      <Filter>Header Files\Solar System</Filter>
-    </ClInclude>
-    <ClInclude Include="CelestialBody.h">
-      <Filter>Header Files\Solar System</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="BodyRings.h">
-      <Filter>Header Files\Solar System</Filter>
-    </ClInclude>
-    <ClInclude Include="MilkyWay.h">
-      <Filter>Header Files\Solar System</Filter>
-    </ClInclude>
-    <ClInclude Include="Circle.h">
-      <Filter>Header Files\Meshes</Filter>
-    </ClInclude>
-    <ClInclude Include="Orbit.h">
-      <Filter>Header Files\Solar System</Filter>
-    </ClInclude>
-    <ClInclude Include="Billboard.h">
-      <Filter>Header Files\Solar System</Filter>
-    </ClInclude>
-    <ClInclude Include="SolarSystemSimulation.h">
-      <Filter>Header Files\Solar System</Filter>
-    </ClInclude>
-    <ClInclude Include="SolarSystem.h">
-      <Filter>Header Files\Solar System</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneEntity.h">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Header Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="SpotLight.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="Spacecraft.h">
-      <Filter>Header Files\Solar System</Filter>
-    </ClInclude>
-    <ClInclude Include="Headlamp.h">
-      <Filter>Header Files\Interactions</Filter>
-    </ClInclude>
-    <ClInclude Include="PerspectiveCamera.h">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="PerspectiveCameraController.h">
-      <Filter>Header Files\Interactions</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="BodySystem.h">
-      <Filter>Header Files\Solar System</Filter>
-    </ClInclude>
-    <ClInclude Include="Constants.h">
-      <Filter>Header Files\Constants</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderLoader.h">
-      <Filter>Header Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="BlinnPhongMaterial.h">
-      <Filter>Header Files\Shaders</Filter>
-    </ClInclude>
-    <ClCompile Include="PBRMaterial.h">
-      <Filter>Header Files\Shaders</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="Application/Application.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Application/Window.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffers/DataBuffer.cpp">
+      <Filter>Source Files\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffers/IndexBuffer.cpp">
+      <Filter>Source Files\Buffers</Filter>
+    </ClCompile>
+	<ClCompile Include="Buffers/UniformBuffer.cpp">
+      <Filter>Source Files\Buffers</Filter>
+    </ClCompile>
+	<ClCompile Include="Buffers/VertexArray.cpp">
+      <Filter>Source Files\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffers/VertexBuffer.cpp">
+      <Filter>Source Files\Buffers</Filter>
+    </ClCompile>
+	<ClCompile Include="Buffers/VertexBufferLayout.cpp">
+      <Filter>Source Files\Buffers</Filter>
+    </ClCompile>
+	<ClCompile Include="Cameras/Camera.cpp">
+      <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="Cameras/PerspectiveCamera.cpp">
+      <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
+	<ClCompile Include="Components/Lights/DirectionalLightComponent.cpp">
+      <Filter>Source Files\Components\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="Components/Lights/PointLightComponent.cpp">
+      <Filter>Source Files\Components\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="Components/Lights/SpotLightComponent.cpp">
+      <Filter>Source Files\Components\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="Components/Meshes/CircleMeshComponent.cpp">
+      <Filter>Source Files\Components\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Components/Meshes/MeshComponent.cpp">
+      <Filter>Source Files\Components\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Components/Meshes/QuadMeshComponent.cpp">
+      <Filter>Source Files\Components\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Components/Meshes/SkyboxMeshComponent.cpp">
+      <Filter>Source Files\Components\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Components/Meshes/SphereMeshComponent.cpp">
+      <Filter>Source Files\Components\Meshes</Filter>
+    </ClCompile>
+	<ClCompile Include="Entities/BeltEntity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+	<ClCompile Include="Entities/BillboardEntity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+	<ClCompile Include="Entities/BodyRingsEntity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+	<ClCompile Include="Entities/CelestialBodyEntity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities/MilkyWayEntity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities/OrbitEntity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities/SceneEntity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+	<ClCompile Include="Entities/SpacecraftEntity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+	<ClCompile Include="Entities/Groups/BodySystem.cpp">
+      <Filter>Source Files\Entities\Groups</Filter>
+    </ClCompile>
+	<ClCompile Include="External Dependencies/glad/glad.c">
+      <Filter>Source Files\External Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="Interactions/Headlamp.cpp">
+      <Filter>Source Files\Interactions</Filter>
+    </ClCompile>
+    <ClCompile Include="Interactions/InputHandler.cpp">
+      <Filter>Source Files\Interactions</Filter>
+    </ClCompile>
+    <ClCompile Include="Interactions/PerspectiveCameraController.cpp">
+      <Filter>Source Files\Interactions</Filter>
+    </ClCompile>
+	<ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glad.c">
-      <Filter>Source Files\Extern Files</Filter>
+	<ClCompile Include="Models/Model.cpp">
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
-    <ClCompile Include="DataBuffer.cpp">
-      <Filter>Source Files\Buffer Objects</Filter>
+	<ClCompile Include="Rendering/PBRMaterial.h">
+      <Filter>Header Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="IndexBuffer.cpp">
-      <Filter>Source Files\Buffer Objects</Filter>
+    <ClCompile Include="Rendering/BlinnPhongMaterial.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="VertexBufferLayout.cpp">
-      <Filter>Source Files\Buffer Objects</Filter>
+    <ClCompile Include="Rendering/Material.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="VertexBuffer.cpp">
-      <Filter>Source Files\Buffer Objects</Filter>
+    <ClCompile Include="Rendering/PBRMaterial.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="VertexArray.cpp">
-      <Filter>Source Files\Buffer Objects</Filter>
+    <ClCompile Include="Rendering/Renderer.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="UniformBuffer.cpp">
-      <Filter>Source Files\Buffer Objects</Filter>
+    <ClCompile Include="Rendering/Shader.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files\Shaders</Filter>
+    <ClCompile Include="Rendering/ShaderLoader.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Sphere.cpp">
-      <Filter>Source Files\Meshes</Filter>
+    <ClCompile Include="Rendering/TextRenderer.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Skybox.cpp">
-      <Filter>Source Files\Meshes</Filter>
+    <ClCompile Include="Rendering/Texture.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Meshes</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Source Files\Meshes</Filter>
-    </ClCompile>
-    <ClCompile Include="Quad.cpp">
-      <Filter>Source Files\Meshes</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files\Renderers</Filter>
-    </ClCompile>
-    <ClCompile Include="TextRenderer.cpp">
-      <Filter>Source Files\Renderers</Filter>
-    </ClCompile>
-    <ClCompile Include="PointLight.cpp">
-      <Filter>Source Files\Lights</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectionalLight.cpp">
-      <Filter>Source Files\Lights</Filter>
-    </ClCompile>
-    <ClCompile Include="InputHandler.cpp">
-      <Filter>Source Files\Interactions</Filter>
-    </ClCompile>
-    <ClCompile Include="Belt.cpp">
-      <Filter>Source Files\Solar System</Filter>
-    </ClCompile>
-    <ClCompile Include="CelestialBody.cpp">
-      <Filter>Source Files\Solar System</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
-    <ClCompile Include="BodyRings.cpp">
-      <Filter>Source Files\Solar System</Filter>
-    </ClCompile>
-    <ClCompile Include="MilkyWay.cpp">
-      <Filter>Source Files\Solar System</Filter>
-    </ClCompile>
-    <ClCompile Include="Circle.cpp">
-      <Filter>Source Files\Meshes</Filter>
-    </ClCompile>
-    <ClCompile Include="Orbit.cpp">
-      <Filter>Source Files\Solar System</Filter>
-    </ClCompile>
-    <ClCompile Include="Billboard.cpp">
-      <Filter>Source Files\Solar System</Filter>
-    </ClCompile>
-    <ClCompile Include="SolarSystemSimulation.cpp">
-      <Filter>Source Files\Solar System</Filter>
-    </ClCompile>
-    <ClCompile Include="SolarSystem.cpp">
-      <Filter>Source Files\Solar System</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
+    <ClCompile Include="Scene/Scene.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="SceneEntity.cpp">
-      <Filter>Source Files\Scene</Filter>
+	<ClCompile Include="Simulation/SolarSystem.cpp">
+      <Filter>Source Files\Simulation</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\Shaders</Filter>
+    <ClCompile Include="Simulation/SolarSystemSimulation.cpp">
+      <Filter>Source Files\Simulation</Filter>
     </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="SpotLight.cpp">
-      <Filter>Source Files\Lights</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils.cpp">
+    <ClCompile Include="Utils/Helpers.cpp">
       <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Spacecraft.cpp">
-      <Filter>Source Files\Solar System</Filter>
-    </ClCompile>
-    <ClCompile Include="Headlamp.cpp">
-      <Filter>Source Files\Interactions</Filter>
-    </ClCompile>
-    <ClCompile Include="PerspectiveCamera.cpp">
-      <Filter>Source Files\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="PerspectiveCameraController.cpp">
-      <Filter>Source Files\Interactions</Filter>
-    </ClCompile>
-    <ClCompile Include="BodySystem.cpp">
-      <Filter>Source Files\Solar System</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderLoader.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="BlinnPhongMaterial.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="PBRMaterial.cpp">
-      <Filter>Source Files\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BillboardShader.fs">
-      <Filter>Source Files\Shaders\GLSL</Filter>
+    <None Include="Rendering/GLSL/BillboardShader.fs">
+      <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
-    <None Include="BillboardShader.vs">
-      <Filter>Source Files\Shaders\GLSL</Filter>
+    <None Include="Rendering/GLSL/BillboardShader.vs">
+      <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
-    <None Include="DefaultShader.fs">
-      <Filter>Source Files\Shaders\GLSL</Filter>
+    <None Include="Rendering/GLSL/DefaultShader.fs">
+      <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
-    <None Include="DefaultShader.vs">
-      <Filter>Source Files\Shaders\GLSL</Filter>
+	<None Include="Rendering/GLSL/DefaultShader.vs">
+      <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
-    <None Include="InstancedModelShader.vs">
-      <Filter>Source Files\Shaders\GLSL</Filter>
+    <None Include="Rendering/GLSL/InstancedModelShader.vs">
+      <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
-    <None Include="SunShader.fs">
-      <Filter>Source Files\Shaders\GLSL</Filter>
+    <None Include="Rendering/GLSL/SunShader.fs">
+      <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
-    <None Include="SkyboxShader.fs">
-      <Filter>Source Files\Shaders\GLSL</Filter>
+	<None Include="Rendering/GLSL/SkyboxShader.fs">
+      <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
-    <None Include="SkyboxShader.vs">
-      <Filter>Source Files\Shaders\GLSL</Filter>
+    <None Include="Rendering/GLSL/SkyboxShader.vs">
+      <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
   </ItemGroup>
 </Project>
