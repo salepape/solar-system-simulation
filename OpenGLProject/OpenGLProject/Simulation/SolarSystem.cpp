@@ -25,7 +25,7 @@
 
 
 SolarSystem::SolarSystem() :
-	milkyWay("../Textures/MilkyWay/stars.dds")
+	milkyWay(FileUtils::GetSolutionAbsolutePath() + "/Textures/MilkyWay/stars.dds")
 {
 	BuildBodySystems();
 	BuildBelts();
@@ -91,10 +91,12 @@ void SolarSystem::BuildBodySystems()
 	// (diverging from proper simulation here, for travel end-user convenience)
 	std::string celestialBodyNameCache("");
 
-	std::unordered_map<std::string, std::filesystem::path> bodyPaths;
-	FileUtils::ListPaths("../Textures/CelestialBodies/", bodyPaths);
+	const std::string currentSolutionPath(FileUtils::GetSolutionAbsolutePath());
 
-	ResourceCSVParser bodyCSVParser("../Data/CelestialBodyData.csv");
+	std::unordered_map<std::string, std::filesystem::path> bodyPaths;
+	FileUtils::ListPaths(currentSolutionPath + "/Textures/CelestialBodies/", bodyPaths);
+
+	ResourceCSVParser bodyCSVParser(currentSolutionPath + "/Data/CelestialBodyData.csv");
 	bodySystems.reserve(bodyCSVParser.GetCSVLinesCount());
 
 	// Required to scale radius and distance to Sun of each celestial body for end user experience convenience
@@ -139,7 +141,7 @@ void SolarSystem::BuildBodySystems()
 			}
 		}
 
-		const std::filesystem::path& texturePath = bodyPaths[celestialBodyName];
+		const std::filesystem::path& texturePath(bodyPaths[celestialBodyName]);
 		const float scaledRadius = std::stof(celestialBodyParams[2]) / earthRadius * (celestialBodyType == "Star" ? 0.5f : 1.0f);
 		const float obliquity = std::stof(celestialBodyParams[4]);
 		const float scaledOrbitalPeriod = std::stof(celestialBodyParams[5]) * (celestialBodyType == "DwarfPlanet" ? GetBodySystem("Earth").GetCelestialBody().GetBodyData().orbitalPeriod : 1.0f);
@@ -158,7 +160,7 @@ void SolarSystem::BuildBodySystems()
 
 void SolarSystem::BuildBodySystemsLegend()
 {
-	textRenderer.SetFTFont("../Fonts/arial.ttf");
+	textRenderer.SetFTFont(FileUtils::GetSolutionAbsolutePath() + "/Fonts/arial.ttf");
 
 	for (const BodySystem& bodySystem : bodySystems)
 	{
@@ -172,10 +174,12 @@ void SolarSystem::BuildBodySystemsLegend()
 
 void SolarSystem::BuildBodyRings()
 {
-	std::unordered_map<std::string, std::filesystem::path> ringPaths;
-	FileUtils::ListPaths("../Models/Rings/", ringPaths);
+	const std::string currentSolutionPath(FileUtils::GetSolutionAbsolutePath());
 
-	ResourceCSVParser ringCSVParser("../Data/RingData.csv");
+	std::unordered_map<std::string, std::filesystem::path> ringPaths;
+	FileUtils::ListPaths(currentSolutionPath + "/Models/Rings/", ringPaths);
+
+	ResourceCSVParser ringCSVParser(currentSolutionPath + "/Data/RingData.csv");
 
 	// Process each CSV line and create a Rings instance out of it
 	for (const std::vector<std::string>& ringParams : ringCSVParser.GetParsedCSV())
@@ -187,16 +191,18 @@ void SolarSystem::BuildBodyRings()
 
 		// Add the Rings to each parent Body once initialised
 		BodySystem& parentBodySystem = GetBodySystem(bodyName);
-		parentBodySystem.SetBodyRings(RingsData{ modelPath, bodyName, radius, opacity  /*, &parentBodySystem.celestialBody*/ });
+		parentBodySystem.SetBodyRings(RingsData{ modelPath, bodyName, radius, opacity });
 	}
 }
 
 void SolarSystem::BuildBelts()
 {
-	std::unordered_map<std::string, std::filesystem::path> beltPaths;
-	FileUtils::ListPaths("../Models/Belts/", beltPaths);
+	const std::string currentSolutionPath(FileUtils::GetSolutionAbsolutePath());
 
-	ResourceCSVParser beltCSVParser("../Data/BeltData.csv");
+	std::unordered_map<std::string, std::filesystem::path> beltPaths;
+	FileUtils::ListPaths(currentSolutionPath + "/Models/Belts/", beltPaths);
+
+	ResourceCSVParser beltCSVParser(currentSolutionPath + "/Data/BeltData.csv");
 	belts.reserve(beltCSVParser.GetCSVLinesCount());
 
 	// Process each CSV line and create a Belt instance out of it

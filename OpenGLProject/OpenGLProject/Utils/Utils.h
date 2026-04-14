@@ -39,6 +39,9 @@ public:
 	// Retrieve the path a Material .mtl file for which the concerned line is provided as an argument, including a comment we need to remove 
 	static std::string GetTexturePathFromMtlLine(const std::string& mtlLine);
 
+	static std::string GetSolutionAbsolutePath();
+	static std::string GetProjectAbsolutePath();
+
 private:
 	static std::string GetErrorStateFlagMessage(const std::ifstream& fileStream);
 };

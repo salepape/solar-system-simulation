@@ -2,6 +2,7 @@
 #define SOLAR_SYSTEM_SIMULATION_H
 
 #include <memory>
+#include <string>
 
 #include "OpenGLProject/UI/Application.h"
 
@@ -13,6 +14,8 @@ class SolarSystem;
 class SolarSystemSimulation : public Application
 {
 public:
+	SolarSystemSimulation(const std::string& inExecutablePath);
+
 	void SetUp() override;
 	void Refresh() override;
 

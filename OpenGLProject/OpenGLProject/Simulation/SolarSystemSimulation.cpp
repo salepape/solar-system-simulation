@@ -10,6 +10,11 @@ void SolarSystemSimulation::SolarSystemDeleter::operator()(SolarSystem* ptr)
 
 
 
+SolarSystemSimulation::SolarSystemSimulation(const std::string& inExecutablePath) : Application(inExecutablePath)
+{
+
+}
+
 void SolarSystemSimulation::SetUp()
 {
 	ShaderLoader::BuildShaders();

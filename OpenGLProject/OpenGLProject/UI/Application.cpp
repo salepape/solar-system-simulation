@@ -28,7 +28,8 @@ Application& Application::GetInstance()
 	return *instance;
 }
 
-Application::Application()
+Application::Application(const std::string& inExecutablePath) :
+	executablePath(inExecutablePath)
 {
 	window = std::unique_ptr<Window, WindowDeleter>(new Window(1000, 1000, "Solar System Simulation"));
 

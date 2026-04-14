@@ -1,14 +1,14 @@
-:: Batch to ensure a needed DLL is copied over the Visual Studio project folder so the library is correctly read at runtime
+:: Batch to ensure the needed DLL is copied over the folder where the executable is stored, so the library is correctly read at runtime
 :: Called from Visual Studio: Solution Properties > Build Events > Post-Build Event > Command Line: call "pathToBatchFile" "batchParam %1" "batchParam %2"
-:: batchParam %1 - Absolute path to DLL that needs to be copied over
-:: batchParam %2 - Name of Visual Studio project folder
+:: batchParam %1 - Absolute path to executable location that needs a DLL to be copied over
+:: batchParam %2 - Absolute path to DLL
 
-:: Set absolute path to DLL in a variable for more clarity
+:: Path to location needing DLL
+set Destination=%1
+
+:: Path to DLL definition
 set Source=%2
 
-:: Set relative path to Visual Studio project folder (stored in a folder at the same level as 'Scripts')
-set Destination=%~dp0\..\%1%
-
-echo CopyDLLPostBuild.bat - Copying DLL %Source% to VS Project folder %1
+echo CopyDLLPostBuild.bat - Copying DLL %Source% to %Destination%
 
 copy %Source% %Destination%

@@ -185,7 +185,7 @@ std::vector<Texture> Model::ProcessTextures(const aiMaterial& material)
 			aiString texturePathMtlLine;
 			material.GetTexture(assimpTextureType, i, &texturePathMtlLine);
 			const std::string texturePathMtlString(texturePathMtlLine.C_Str());
-			const std::string textureImagePath(FileUtils::GetTexturePathFromMtlLine(texturePathMtlString));
+			const std::string textureImagePath(FileUtils::GetSolutionAbsolutePath() + "/" + FileUtils::GetTexturePathFromMtlLine(texturePathMtlString));
 
 			// Skip texture creation if already done
 			const auto& loadedTextureIt = find_if(materials.begin(), materials.end(), [&textureImagePath](const Material& inLoadedMaterial)

@@ -2,6 +2,7 @@
 #define APPLICATION_H
 
 #include <memory>
+#include <string>
 
 class Window;
 
@@ -11,7 +12,7 @@ class Window;
 class Application
 {
 public:
-	Application();
+	Application(const std::string& inExecutablePath);
 
 	// Virtual destructor (needed to handle any custom polymorphic deletion in child classes)
 	virtual ~Application() = default;
@@ -49,7 +50,11 @@ public:
 	// See what the simulation looks like with celestial body slower/faster movements (does not keep body positions between different speed simulations)
 	void UpdateSpeed(const float inSpeedFactor);
 
+	const std::string& GetExecutablePath() const { return executablePath; }
+
 private:
+	std::string executablePath;
+
 	// Unique Singleton instance defined in source file
 	static Application* instance;
 

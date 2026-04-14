@@ -11,6 +11,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "OpenGLProject/UI/Application.h"
 #include "OpenGLProject/UI/Window.h"
 
 
@@ -36,7 +37,7 @@ Window* GLFWUtils::GetGLFWCallbackData(GLFWwindow* GLFWWindow)
 
 void FileUtils::ListPaths(const std::filesystem::path& inMap, std::unordered_map<std::string, std::filesystem::path>& outPaths)
 {
-	for (const auto& directory : std::filesystem::recursive_directory_iterator(inMap))
+	for (const std::filesystem::directory_entry& directory : std::filesystem::recursive_directory_iterator(inMap))
 	{
 		const std::filesystem::path directoryPath(directory.path());
 		const std::string modelName(GetNameFromPath(directoryPath));
@@ -141,6 +142,22 @@ std::string FileUtils::GetErrorStateFlagMessage(const std::ifstream& fileStream)
 	}
 
 	return result;
+}
+
+std::string FileUtils::GetSolutionAbsolutePath()
+{
+	// Solution absolute path needs to be determined from the executable absolute path, so it both works when running from VS editor and from executable
+	const std::string currentExecutablePath(Application::GetInstance().GetExecutablePath());
+
+	// Cut off the name of the executable from the path
+	const size_t lastDoubleBackslashSymbol = currentExecutablePath.find_last_of("\\");
+
+	return currentExecutablePath.substr(0, lastDoubleBackslashSymbol) + "/../../..";
+}
+
+std::string FileUtils::GetProjectAbsolutePath()
+{
+	return FileUtils::GetSolutionAbsolutePath() + "/OpenGLProject";
 }
 
 
