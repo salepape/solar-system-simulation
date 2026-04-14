@@ -6,7 +6,7 @@
 
 
 
-// @todo - Find a way to keep a lisr of all SceneEntities and other renderable in this class
+// @todo - Find a way to keep a list of all SceneEntities and other renderables in this class instead of its children
 // Contain entities that model the simulation. Be careful: shaders need to be all loaded first!
 class Scene
 {
