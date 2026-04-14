@@ -1,12 +1,8 @@
 #include "Scene.h"
 
-#include "Application/Application.h"
-#include "Application/Window.h"
 
 
-
-Scene::Scene() :
-	runningApp(Application::GetInstance()), openWindow(runningApp.GetWindow())
+Scene::Scene()
 {
 	renderer.EnableDepthTesting();
 	renderer.EnableBlending();

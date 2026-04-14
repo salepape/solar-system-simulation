@@ -4,11 +4,9 @@
 #include "Rendering/Renderer.h"
 #include "Rendering/TextRenderer.h"
 
-class Application;
-class Window;
 
 
-
+// @todo - Find a way to keep a lisr of all SceneEntities and other renderable in this class
 // Contain entities that model the simulation. Be careful: shaders need to be all loaded first!
 class Scene
 {
@@ -18,13 +16,9 @@ public:
 	// Virtual destructor (needed to handle any custom polymorphic deletion in child classes)
 	virtual ~Scene() = default;
 
+protected:
 	virtual void Update() = 0;
 	void Clear() const;
-
-	// @todo - Avoid these references as member variables
-	// Cache Application and Window so we don't need to get their instance each frame in the Render loop
-	Application& runningApp;
-	Window& openWindow;
 
 	Renderer renderer;
 	TextRenderer textRenderer;

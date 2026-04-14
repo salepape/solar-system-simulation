@@ -41,13 +41,14 @@ void SolarSystem::Update()
 {
 	renderer.Clear();
 
-	const Application& app = runningApp;
+	const Application& runningApp = Application::GetInstance();
+	const Window& runningWindow = runningApp.GetWindow();
 
 	PerspectiveCameraController& cameraController = spacecraft.GetCameraController();
 	cameraController.ProcessKeyboardInput(runningApp.deltaTime);
 
 	PerspectiveCamera& camera = cameraController.GetCamera();
-	camera.SetProjectionViewVUniform(openWindow.GetAspectRatio());
+	camera.SetProjectionViewVUniform(runningWindow.GetAspectRatio());
 	camera.SetPositionFUniform();
 
 	const glm::vec3& cameraPosition = camera.GetPosition();
@@ -58,7 +59,7 @@ void SolarSystem::Update()
 	for (BodySystem& bodySystem : bodySystems)
 	{
 		const CelestialBodyEntity* parentBody = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? &GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody() : nullptr;
-		bodySystem.GetCelestialBody().ComputeCartesianPosition(app.elapsedTime * app.speedFactor, parentBody);
+		bodySystem.GetCelestialBody().ComputeCartesianPosition(runningApp.elapsedTime * runningApp.speedFactor, parentBody);
 
 		bodiesSortedByDistance.insert({
 			glm::distance(cameraPosition, bodySystem.GetCelestialBody().GetPosition()),
@@ -71,7 +72,7 @@ void SolarSystem::Update()
 		// Draw celestial bodies, and animate them accordingly over time
 		BodySystem& bodySystem = bodyIt->second;
 		const glm::vec3& parentPosition = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody().GetPosition() : glm::vec3(0.0f);
-		bodySystem.Render(renderer, app.IsLegendDisplayed(), textRenderer, camera, parentPosition, app.elapsedTime * app.speedFactor);
+		bodySystem.Render(renderer, runningApp.IsLegendDisplayed(), textRenderer, camera, parentPosition, runningApp.elapsedTime * runningApp.speedFactor);
 	}
 
 	// Draw the 2 main belts of the Solar System
@@ -81,7 +82,7 @@ void SolarSystem::Update()
 	}
 
 	// Draw Milky Way skybox
-	camera.SetInfiniteProjectionViewVUniform(openWindow.GetAspectRatio());
+	camera.SetInfiniteProjectionViewVUniform(runningWindow.GetAspectRatio());
 	milkyWay.Render(renderer);
 }
 
