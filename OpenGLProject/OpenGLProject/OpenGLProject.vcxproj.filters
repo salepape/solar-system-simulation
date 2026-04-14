@@ -231,10 +231,10 @@
 	<ClInclude Include="Simulation/SolarSystemSimulation.h">
       <Filter>Header Files\Simulation</Filter>
     </ClInclude>
-	<ClInclude Include="Utils/Constants.h">
+    <ClInclude Include="Utils/Helpers.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Utils/Utils.h">
+    <ClInclude Include="Utils/Constants.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
@@ -374,7 +374,7 @@
     <ClCompile Include="Simulation/SolarSystemSimulation.cpp">
       <Filter>Source Files\Simulation</Filter>
     </ClCompile>
-    <ClCompile Include="Utils/Utils.cpp">
+    <ClCompile Include="Utils/Helpers.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>

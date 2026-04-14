@@ -1,5 +1,5 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef HELPERS_H
+#define HELPERS_H
 
 #include <filesystem>
 #include <fstream>
@@ -69,4 +69,4 @@ private:
 
 
 
-#endif // UTILS_H
+#endif // HELPERS_H
