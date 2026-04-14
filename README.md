@@ -54,7 +54,7 @@ You can either clone the Git repository to your computer, or unzip the correspon
 > [!NOTE]
 > In any of these cases, an executable is run, and needs the Assimp DLL to be located in the same folder.
 > * In the first scenario, the batch script <b>CopyDLLPostBuild.bat</b> is automatically run after the project has built,
-> * In the second scenario, the DLL is already provided. For some reason, if no DLL is there, you can ensure you got the latest version of the project, run the batch file yourself, or copy the DLL manually from <i>OpenGLProject/Tools/Libraries/ArchitectureName/Assimp  
+> * In the second scenario, the DLL is already provided. For some reason, if no DLL is there, you can ensure you got the latest version of the project, run the batch file yourself, or copy the DLL manually from <i>OpenGLProject/Tools/Libraries/ArchitectureName/Assimp</i>
 
 The execution of the program should require around 4 seconds in Release mode, and 8 seconds in Debug mode before starting. Enjoy!
 
