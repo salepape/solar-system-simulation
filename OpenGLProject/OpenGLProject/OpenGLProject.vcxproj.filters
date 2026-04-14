@@ -245,9 +245,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="External Dependencies/glad/glad.c">
-      <Filter>Source Files\External Dependencies\glad</Filter>
-    </ClCompile>
     <ClCompile Include="Buffers/DataBuffer.cpp">
       <Filter>Source Files\Buffers</Filter>
     </ClCompile>
@@ -379,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="Models/Model.cpp">
       <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="External Dependencies/glad/glad.c">
+      <Filter>Source Files\External Dependencies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
