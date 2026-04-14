@@ -134,7 +134,7 @@ void PerspectiveCameraController::Callback_DetectMouseInput()
 {
 	glfwSetCursorPosCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, const double xPosition, const double yPosition)
 	{
-		Window* const window = GLFWUtils::GetGLFWCallbackData(GLFWWindow);
+		Window* const window = GLFWHelper::GetGLFWCallbackData(GLFWWindow);
 		PerspectiveCameraController* const cameraController = window->cameraController;
 		if (cameraController == nullptr)
 		{
@@ -155,7 +155,7 @@ void PerspectiveCameraController::Callback_DetectMouseWheelInput()
 {
 	glfwSetScrollCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, double /*xOffset*/, double yOffset)
 	{
-		const Window* const window = GLFWUtils::GetGLFWCallbackData(GLFWWindow);
+		const Window* const window = GLFWHelper::GetGLFWCallbackData(GLFWWindow);
 		PerspectiveCameraController* const cameraController = window->cameraController;
 		if (cameraController == nullptr)
 		{
@@ -172,7 +172,7 @@ void PerspectiveCameraController::Callback_DetectKeyboardInput()
 {
 	glfwSetKeyCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, const int32_t key, const int32_t /*scanCode*/, const int32_t action, const int32_t /*mods*/)
 	{
-		Window* const window = GLFWUtils::GetGLFWCallbackData(GLFWWindow);
+		Window* const window = GLFWHelper::GetGLFWCallbackData(GLFWWindow);
 
 		const auto& GetCameraController = [&window]() -> PerspectiveCameraController*
 		{

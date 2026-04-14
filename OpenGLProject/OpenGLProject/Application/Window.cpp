@@ -24,7 +24,7 @@ Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::strin
 		assert(false);
 	}
 
-	GLFWUtils::SetGLFWCallbackData(GLFWWindow, this);
+	GLFWHelper::SetGLFWCallbackData(GLFWWindow, this);
 
 	MakeContextCurrent();
 
@@ -81,7 +81,7 @@ void Window::Callback_DetectWindowResize() const
 		glViewport(0, 0, width, height);
 
 		// Access contextual data from within GLFWwindow callback
-		Window* const window = GLFWUtils::GetGLFWCallbackData(GLFWWindow);
+		Window* const window = GLFWHelper::GetGLFWCallbackData(GLFWWindow);
 		window->Resize(width, height);
 	});
 }

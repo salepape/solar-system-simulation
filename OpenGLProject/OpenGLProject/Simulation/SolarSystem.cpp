@@ -25,7 +25,7 @@
 
 
 SolarSystem::SolarSystem() :
-	milkyWay(FileUtils::GetSolutionAbsolutePath() + "/Textures/MilkyWay/stars.dds")
+	milkyWay(FileHelper::GetSolutionAbsolutePath() + "/Textures/MilkyWay/stars.dds")
 {
 	BuildBodySystems();
 	BuildBelts();
@@ -91,10 +91,10 @@ void SolarSystem::BuildBodySystems()
 	// (diverging from proper simulation here, for travel end-user convenience)
 	std::string celestialBodyNameCache("");
 
-	const std::string currentSolutionPath(FileUtils::GetSolutionAbsolutePath());
+	const std::string currentSolutionPath(FileHelper::GetSolutionAbsolutePath());
 
 	std::unordered_map<std::string, std::filesystem::path> bodyPaths;
-	FileUtils::ListPaths(currentSolutionPath + "/Textures/CelestialBodies/", bodyPaths);
+	FileHelper::ListPaths(currentSolutionPath + "/Textures/CelestialBodies/", bodyPaths);
 
 	ResourceCSVParser bodyCSVParser(currentSolutionPath + "/Data/CelestialBodyData.csv");
 	bodySystems.reserve(bodyCSVParser.GetCSVLinesCount());
@@ -160,7 +160,7 @@ void SolarSystem::BuildBodySystems()
 
 void SolarSystem::BuildBodySystemsLegend()
 {
-	textRenderer.SetFTFont(FileUtils::GetSolutionAbsolutePath() + "/Fonts/arial.ttf");
+	textRenderer.SetFTFont(FileHelper::GetSolutionAbsolutePath() + "/Fonts/arial.ttf");
 
 	for (const BodySystem& bodySystem : bodySystems)
 	{
@@ -174,10 +174,10 @@ void SolarSystem::BuildBodySystemsLegend()
 
 void SolarSystem::BuildBodyRings()
 {
-	const std::string currentSolutionPath(FileUtils::GetSolutionAbsolutePath());
+	const std::string currentSolutionPath(FileHelper::GetSolutionAbsolutePath());
 
 	std::unordered_map<std::string, std::filesystem::path> ringPaths;
-	FileUtils::ListPaths(currentSolutionPath + "/Models/Rings/", ringPaths);
+	FileHelper::ListPaths(currentSolutionPath + "/Models/Rings/", ringPaths);
 
 	ResourceCSVParser ringCSVParser(currentSolutionPath + "/Data/RingData.csv");
 
@@ -197,10 +197,10 @@ void SolarSystem::BuildBodyRings()
 
 void SolarSystem::BuildBelts()
 {
-	const std::string currentSolutionPath(FileUtils::GetSolutionAbsolutePath());
+	const std::string currentSolutionPath(FileHelper::GetSolutionAbsolutePath());
 
 	std::unordered_map<std::string, std::filesystem::path> beltPaths;
-	FileUtils::ListPaths(currentSolutionPath + "/Models/Belts/", beltPaths);
+	FileHelper::ListPaths(currentSolutionPath + "/Models/Belts/", beltPaths);
 
 	ResourceCSVParser beltCSVParser(currentSolutionPath + "/Data/BeltData.csv");
 	belts.reserve(beltCSVParser.GetCSVLinesCount());

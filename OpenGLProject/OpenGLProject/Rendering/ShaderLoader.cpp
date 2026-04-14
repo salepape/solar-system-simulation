@@ -16,7 +16,7 @@ void ShaderLoader::BuildShaders()
 {
 	shaders.reserve(ShaderLookUpID::Num);
 
-	const std::string currentProjectPath(FileUtils::GetProjectAbsolutePath() + '/');
+	const std::string currentProjectPath(FileHelper::GetProjectAbsolutePath() + '/');
 
 	shaders.emplace_back(ShaderLookUpID::Enum::CELESTIAL_BODY, currentProjectPath + "Rendering/GLSL/DefaultShader.vs", currentProjectPath + "Rendering/GLSL/DefaultShader.fs");
 	shaders.emplace_back(ShaderLookUpID::Enum::SUN, currentProjectPath + "Rendering/GLSL/DefaultShader.vs", currentProjectPath + "Rendering/GLSL/SunShader.fs");

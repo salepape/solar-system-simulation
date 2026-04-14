@@ -12,7 +12,7 @@ class Window;
 
 
 
-class GLFWUtils
+class GLFWHelper
 {
 public:
 	// Register user data field to access it later from within static GLFWwindow callbacks (to avoid making variable global)
@@ -25,7 +25,7 @@ public:
 
 
 // Utility class gathering functions to process and parse directories and files
-class FileUtils
+class FileHelper
 {
 public:
 	// Return file buffer content as a string

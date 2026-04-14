@@ -16,12 +16,12 @@
 
 
 
-void GLFWUtils::SetGLFWCallbackData(GLFWwindow* GLFWWindow, Window* data)
+void GLFWHelper::SetGLFWCallbackData(GLFWwindow* GLFWWindow, Window* data)
 {
 	glfwSetWindowUserPointer(GLFWWindow, static_cast<void*>(data));
 }
 
-Window* GLFWUtils::GetGLFWCallbackData(GLFWwindow* GLFWWindow)
+Window* GLFWHelper::GetGLFWCallbackData(GLFWwindow* GLFWWindow)
 {
 	Window* const callbackData = static_cast<Window*>(glfwGetWindowUserPointer(GLFWWindow));
 	if (callbackData == nullptr)
@@ -35,7 +35,7 @@ Window* GLFWUtils::GetGLFWCallbackData(GLFWwindow* GLFWWindow)
 
 
 
-void FileUtils::ListPaths(const std::filesystem::path& inMap, std::unordered_map<std::string, std::filesystem::path>& outPaths)
+void FileHelper::ListPaths(const std::filesystem::path& inMap, std::unordered_map<std::string, std::filesystem::path>& outPaths)
 {
 	for (const std::filesystem::directory_entry& directory : std::filesystem::recursive_directory_iterator(inMap))
 	{
@@ -50,7 +50,7 @@ void FileUtils::ListPaths(const std::filesystem::path& inMap, std::unordered_map
 	}
 }
 
-std::string FileUtils::GetNameFromPath(const std::filesystem::path& inPath)
+std::string FileHelper::GetNameFromPath(const std::filesystem::path& inPath)
 {
 	const std::string fileName(inPath.filename().string());
 
@@ -78,7 +78,7 @@ std::string FileUtils::GetNameFromPath(const std::filesystem::path& inPath)
 	return modelName;
 }
 
-std::string FileUtils::GetTexturePathFromMtlLine(const std::string& mtlLine)
+std::string FileHelper::GetTexturePathFromMtlLine(const std::string& mtlLine)
 {
 	// Detect any tabulation or space
 	std::size_t trimSymbol = mtlLine.find_first_of("\t");
@@ -94,12 +94,12 @@ std::string FileUtils::GetTexturePathFromMtlLine(const std::string& mtlLine)
 	return mtlLine.substr(0, trimSymbol);
 }
 
-std::string FileUtils::ReadFile(const std::string& path)
+std::string FileHelper::ReadFile(const std::string& path)
 {
 	std::ifstream fileStream(path, std::ios::in | std::ios::binary);
 	if (fileStream.fail())
 	{
-		std::cout << "ERROR::UTILS - " << "File " << FileUtils::GetNameFromPath(path) << " has not been successfully read.\nReason: " << GetErrorStateFlagMessage(fileStream) << "\n" << std::endl;
+		std::cout << "ERROR::UTILS - " << "File " << FileHelper::GetNameFromPath(path) << " has not been successfully read.\nReason: " << GetErrorStateFlagMessage(fileStream) << "\n" << std::endl;
 		assert(false);
 	}
 
@@ -112,7 +112,7 @@ std::string FileUtils::ReadFile(const std::string& path)
 	return fileStringStream.str();
 }
 
-std::string FileUtils::GetErrorStateFlagMessage(const std::ifstream& fileStream)
+std::string FileHelper::GetErrorStateFlagMessage(const std::ifstream& fileStream)
 {
 	std::string result;
 
@@ -144,7 +144,7 @@ std::string FileUtils::GetErrorStateFlagMessage(const std::ifstream& fileStream)
 	return result;
 }
 
-std::string FileUtils::GetSolutionAbsolutePath()
+std::string FileHelper::GetSolutionAbsolutePath()
 {
 	// Solution absolute path needs to be determined from the executable absolute path, so it both works when running from VS editor and from executable
 	const std::string currentExecutablePath(Application::GetInstance().GetExecutablePath());
@@ -155,9 +155,9 @@ std::string FileUtils::GetSolutionAbsolutePath()
 	return currentExecutablePath.substr(0, lastDoubleBackslashSymbol) + "/../../..";
 }
 
-std::string FileUtils::GetProjectAbsolutePath()
+std::string FileHelper::GetProjectAbsolutePath()
 {
-	return FileUtils::GetSolutionAbsolutePath() + "/OpenGLProject";
+	return FileHelper::GetSolutionAbsolutePath() + "/OpenGLProject";
 }
 
 
@@ -169,7 +169,7 @@ ResourceCSVParser::ResourceCSVParser(const std::filesystem::path& inDataPath)
 
 void ResourceCSVParser::ReadCSV(const std::filesystem::path& inDataPath)
 {
-	const std::string csvFile(FileUtils::ReadFile(inDataPath.string()));
+	const std::string csvFile(FileHelper::ReadFile(inDataPath.string()));
 	std::string csvLine;
 	std::stringstream csvLineStream(csvFile);
 
