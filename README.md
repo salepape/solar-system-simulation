@@ -26,7 +26,8 @@ The simulation contains the following celestial bodies:
 * 2 belts (Asteroid and Kuiper ones, plus the Scattered Disc),
 * Milky Way in background.
 
-> [!NOTE] For most distant celestial bodies, information can be hard to find, so texture maps are fictionnal, and chosen according to the photometry analysis presented in Astrophysical research papers. 
+> [!NOTE]
+> For most distant celestial bodies, information can be hard to find, so texture maps are fictionnal, and chosen according to the photometry analysis presented in Astrophysical research papers. 
 
 ## Features
 
@@ -43,7 +44,8 @@ Comments within the codebase describe more specifically how it works (algorithmi
 
 ## Setup
 
-> [!WARNING] The simulation is available only for Windows OS, on a x86 or x64 architecture.
+> [!WARNING] 
+> The simulation is available only for Windows OS, on a x86 or x64 architecture.
 
 You can either clone the Git repository to your computer, or unzip the corresponding .zip folder after downloading it (it will be called solar-system-simulation-master). Then:
 * If you just want to run the program as an end user, double-click on the executable <b>OpenGLProject.exe</b> you need according to your OS architecture (stored in <i>OpenGLProject/Output/Release/Win32</i> for x86, or <i>x64/</i> for x64).
@@ -56,7 +58,8 @@ You can either clone the Git repository to your computer, or unzip the correspon
 
 The execution of the program should require around 4 seconds in Release mode, and 8 seconds in Debug mode before starting. Enjoy!
 
-> [!NOTE] If Avast antivirus gives you a warning that there is a threat while the simulation is starting, just ignore it: my program is safe to use :)
+> [!NOTE]
+> If Avast antivirus gives you a warning that there is a threat while the simulation is starting, just ignore it: my program is safe to use :)
 
 ## Controls
 
