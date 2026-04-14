@@ -59,7 +59,7 @@ You can either clone the Git repository to your computer, or unzip the correspon
 The execution of the program should require around 4 seconds in Release mode, and 8 seconds in Debug mode before starting. Enjoy!
 
 > [!NOTE]
-> If Avast antivirus gives you a warning that there is a threat while the simulation is starting, just ignore it: my program is safe to use :)
+> If your antivirus is flagging a threat just after running an executable from the File Explorer, just ignore it: my program is safe to use :)
 
 ## Controls
 
