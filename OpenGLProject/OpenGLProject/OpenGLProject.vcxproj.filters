@@ -19,8 +19,8 @@
     <Filter Include="Header Files\Rendering">
       <UniqueIdentifier>{5cf6b12a-b5db-465b-aefe-50689ac9e11c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Extern Files">
-      <UniqueIdentifier>{332f4d4c-63df-42a3-88a4-2cab99135963}</UniqueIdentifier>
+    <Filter Include="Source Files\External Dependencies">
+      <UniqueIdentifier>{a31fb1f6-95d9-4ef0-862d-e11859d2ee76}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Buffers">
       <UniqueIdentifier>{9ede1af1-4a03-4d46-967a-3426cb7cccd4}</UniqueIdentifier>
@@ -245,8 +245,8 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glad.c">
-      <Filter>Source Files\Extern Files</Filter>
+    <ClCompile Include="External Dependencies/glad/glad.c">
+      <Filter>Source Files\External Dependencies\glad</Filter>
     </ClCompile>
     <ClCompile Include="Buffers/DataBuffer.cpp">
       <Filter>Source Files\Buffers</Filter>
