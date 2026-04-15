@@ -29,6 +29,7 @@ public:
 	void Enable() const;
 	void Disable() const;
 
+	// @todo - Uppercase first letter of all setters
 	// Utility uniform setters
 	void setUniformBool(const std::string& name, const bool value) const;
 	void setUniformInt(const std::string& name, const int32_t value) const;
