@@ -1,6 +1,6 @@
 #include "Application.h"
 
-#include <glad/glad.h>
+#include <glad/glad.h>	// No OpenGL functions called here, just setting up GLAD
 #include <glfw/glfw3.h>
 
 #include <cassert>
@@ -44,6 +44,11 @@ Application::Application(const std::string& inExecutablePath) :
 	instance = this;
 }
 
+Application::~Application()
+{
+	window->ClearResources();
+}
+
 void Application::SetUp()
 {
 	ShaderLoader::BuildShaders();
@@ -58,8 +63,6 @@ void Application::Run()
 	{
 		Tick();
 	}
-
-	Terminate();
 }
 
 void Application::Tick()
@@ -76,11 +79,6 @@ void Application::Tick()
 
 	window->SwapFrontAndBackBuffers();
 	window->ProcessPendingEvents();
-}
-
-void Application::Terminate()
-{
-	window->ClearResources();
 }
 
 bool Application::IsClosed() const

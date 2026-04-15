@@ -15,7 +15,7 @@ public:
 	Application(const std::string& inExecutablePath);
 
 	// Virtual destructor (needed to handle any custom polymorphic deletion in child classes)
-	virtual ~Application() = default;
+	virtual ~Application();
 
 	virtual void Run();
 
@@ -52,7 +52,6 @@ protected:
 	virtual void SetUp() = 0;
 	virtual void Tick();
 	virtual void Refresh() = 0;
-	virtual void Terminate();
 
 private:
 	std::string executablePath;
