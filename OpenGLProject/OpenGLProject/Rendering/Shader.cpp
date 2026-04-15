@@ -11,8 +11,8 @@
 
 
 
-Shader::Shader(const ShaderLookUpID::Enum inLookUpID, const std::string& vsPath, const std::string& fsPath) :
-	lookUpID(inLookUpID)
+Shader::Shader(const ShaderLookUpID::Enum inShaderLookUpID, const std::string& vsPath, const std::string& fsPath) :
+	lookUpID(inShaderLookUpID)
 {
 	const std::string vsContent(FileHelper::ReadFile(vsPath));
 	const std::string fsContent(FileHelper::ReadFile(fsPath));

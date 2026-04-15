@@ -22,7 +22,7 @@ enum class ShaderProcessStage
 class Shader
 {
 public:
-	Shader(const ShaderLookUpID::Enum inEntityName, const std::string& vsPath, const std::string& fsPath);
+	Shader(const ShaderLookUpID::Enum inShaderLookUpID, const std::string& vsPath, const std::string& fsPath);
 	~Shader();
 
 	// Needs to be called before we initialise a uniform defined in the shader
