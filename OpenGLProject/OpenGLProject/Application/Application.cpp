@@ -6,6 +6,7 @@
 #include <cassert>
 #include <iostream>
 
+#include "Rendering/ShaderLoader.h"
 #include "Window.h"
 
 Application* Application::instance = nullptr;
@@ -41,6 +42,11 @@ Application::Application(const std::string& inExecutablePath) :
 	}
 
 	instance = this;
+}
+
+void Application::SetUp()
+{
+	ShaderLoader::BuildShaders();
 }
 
 void Application::Run()

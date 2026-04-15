@@ -17,11 +17,7 @@ public:
 	// Virtual destructor (needed to handle any custom polymorphic deletion in child classes)
 	virtual ~Application() = default;
 
-	virtual void SetUp() = 0;
 	virtual void Run();
-	void Tick();
-	virtual void Refresh() = 0;
-	virtual void Terminate();
 
 	float elapsedTime{ 0.0f };
 
@@ -51,6 +47,12 @@ public:
 	void UpdateSpeed(const float inSpeedFactor);
 
 	const std::string& GetExecutablePath() const { return executablePath; }
+
+protected:
+	virtual void SetUp() = 0;
+	virtual void Tick();
+	virtual void Refresh() = 0;
+	virtual void Terminate();
 
 private:
 	std::string executablePath;

@@ -17,7 +17,7 @@ SolarSystemSimulation::SolarSystemSimulation(const std::string& inExecutablePath
 
 void SolarSystemSimulation::SetUp()
 {
-	ShaderLoader::BuildShaders();
+	Application::SetUp();
 
 	solarSystemScene = std::unique_ptr<SolarSystem, SolarSystemDeleter>(new SolarSystem());
 }
