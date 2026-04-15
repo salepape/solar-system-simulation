@@ -70,7 +70,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)External Dependencies\glad;$(ProjectDir)Interactions;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)External Dependencies\glad;$(ProjectDir)Interactions;$(ProjectDir)Models;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Tools\Libraries\x32;$(SolutionDir)Tools\Libraries\x32\freetype;$(SolutionDir)Tools\Libraries\x32\glfw;$(SolutionDir)Tools\Libraries\x32\soil2;$(SolutionDir)Tools\Libraries\x32\assimp;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
@@ -78,7 +78,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)External Dependencies\glad;$(ProjectDir)Interactions;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)External Dependencies\glad;$(ProjectDir)Interactions;$(ProjectDir)Models;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Tools\Libraries\x64;$(SolutionDir)Tools\Libraries\x64\freetype;$(SolutionDir)Tools\Libraries\x64\glfw;$(SolutionDir)Tools\Libraries\x64\soil2;$(SolutionDir)Tools\Libraries\x64\assimp;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
@@ -87,14 +87,14 @@
     <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)External Dependencies\glad;$(ProjectDir)Interactions;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)External Dependencies\glad;$(ProjectDir)Interactions;$(ProjectDir)Models;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Tools\Libraries\x32;$(SolutionDir)Tools\Libraries\x32\freetype;$(SolutionDir)Tools\Libraries\x32\glfw;$(SolutionDir)Tools\Libraries\x32\soil2;$(SolutionDir)Tools\Libraries\x32\assimp;$(LibraryPath)</LibraryPath>
     <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
     <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)External Dependencies\glad;$(ProjectDir)Interactions;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)External Dependencies\glad;$(ProjectDir)Interactions;$(ProjectDir)Models;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Tools\Libraries\x64;$(SolutionDir)Tools\Libraries\x64\freetype;$(SolutionDir)Tools\Libraries\x64\glfw;$(SolutionDir)Tools\Libraries\x64\soil2;$(SolutionDir)Tools\Libraries\x64\assimp;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
@@ -211,11 +211,10 @@
     <ClInclude Include="Interactions/Headlamp.h" />
     <ClInclude Include="Interactions/InputHandler.h" />
     <ClInclude Include="Interactions/PerspectiveCameraController.h" />
-    <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="Models/Model.h" />
+	<ClInclude Include="Models/ModelLoader.h" />
     <ClInclude Include="Rendering/BlinnPhongMaterial.h" />
     <ClInclude Include="Rendering/Material.h" />
-    <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="Rendering/PBRMaterial.h" />
     <ClInclude Include="Rendering/Renderer.h" />
     <ClInclude Include="Rendering/Shader.h" />
@@ -262,6 +261,7 @@
     <ClCompile Include="Interactions/PerspectiveCameraController.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Models/Model.cpp" />
+	<ClCompile Include="Models/ModelLoader.cpp" />
     <ClCompile Include="Rendering/BlinnPhongMaterial.cpp" />
     <ClCompile Include="Rendering/Material.cpp" />
     <ClCompile Include="Rendering/PBRMaterial.cpp" />
