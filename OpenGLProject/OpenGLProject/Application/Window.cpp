@@ -10,50 +10,61 @@
 
 
 Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::string& inTitle) :
-	title(inTitle)
+	width(inWidth), height(inHeight), title(inTitle), aspectRatio(width * 1.0f / height), lastCursorPosition(glm::vec2(0.5f * width, 0.5f * height))
 {
-	Resize(inWidth, inHeight);
+	// Initialise GLFW library
+	glfwInit();
 
-	lastCursorPosition = glm::vec2(0.5f * width, 0.5f * height);
-
-	GLFWWindow = InitGLFWWindow();
+	InitGLFWWindowAndOpenGLContext();
 	if (GLFWWindow == nullptr)
 	{
-		std::cout << "ERROR::GLFW - Failed to create GLFW window!" << std::endl;
+		std::cout << "ERROR::GLFW - Failed to create GLFW Window and its associated OpenGL Context!" << std::endl;
 		assert(false);
 	}
 
+	MakeOpenGLContextCurrent();
+
 	GLFWHelper::SetGLFWCallbackData(GLFWWindow, this);
-
-	MakeContextCurrent();
-
 	Callback_DetectWindowResize();
 
 	SetCursorMode(GLFW_CURSOR_DISABLED);
 }
 
-GLFWwindow* Window::InitGLFWWindow() const
+Window::~Window()
 {
-	// Initialise GLFW library
-	glfwInit();
+	ClearGLFWWindowAndOpenGLContext();
+	GLFWWindow = nullptr;
 
-	// Set major and minor version of OpenGL, to prevent others who have not this OpenGL version GLFW to fail
+	// Free any resource related to all GLFW Windows and library
+	glfwTerminate();
+}
+
+void Window::InitGLFWWindowAndOpenGLContext()
+{
+	// Set major and minor version of OpenGL, to prevent others who have not this OpenGL version GLFW from crashing
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
-	// Tell explicitly GLFW that we want to use OpenGL core profile 
+	// Set OpenGL core profile for the upcoming GLFW Window creation
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	return glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+	// Warning - GLFW function includes the creation of an OpenGL Context!
+	GLFWWindow = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 }
 
-void Window::MakeContextCurrent() const
+void Window::ClearGLFWWindowAndOpenGLContext() const
+{
+	glfwDestroyWindow(GLFWWindow);
+}
+
+void Window::MakeOpenGLContextCurrent() const
 {
 	glfwMakeContextCurrent(GLFWWindow);
 
-	if (glfwGetCurrentContext() == nullptr)
+	const GLFWwindow* const windowWithCurrentOpenGLContext = glfwGetCurrentContext();
+	if (windowWithCurrentOpenGLContext == nullptr)
 	{
-		std::cout << "ERROR::GLFW - Failed to get current context: OpenGL functions will not work correctly!" << std::endl;
+		std::cout << "ERROR::GLFW - No current OpenGL context running for this GLFW Window: OpenGL functions cannot work!" << std::endl;
 		assert(false);
 	}
 }
@@ -66,11 +77,6 @@ void Window::SwapFrontAndBackBuffers() const
 void Window::ProcessPendingEvents() const
 {
 	glfwPollEvents();
-}
-
-void Window::ClearResources() const
-{
-	glfwTerminate();
 }
 
 void Window::Callback_DetectWindowResize() const

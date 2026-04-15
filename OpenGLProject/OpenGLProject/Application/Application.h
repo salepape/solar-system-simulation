@@ -15,7 +15,7 @@ public:
 	Application(const std::string& inExecutablePath);
 
 	// Virtual destructor (needed to handle any custom polymorphic deletion in child classes)
-	virtual ~Application();
+	virtual ~Application() = default;
 
 	virtual void Run();
 

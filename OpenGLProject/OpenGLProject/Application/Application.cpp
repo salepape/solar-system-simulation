@@ -16,8 +16,6 @@ void Application::WindowDeleter::operator()(Window* ptr)
 	delete ptr;
 }
 
-
-
 Application& Application::GetInstance()
 {
 	if (instance == nullptr)
@@ -29,24 +27,22 @@ Application& Application::GetInstance()
 	return *instance;
 }
 
+
+
 Application::Application(const std::string& inExecutablePath) :
 	executablePath(inExecutablePath)
 {
+	// Create the main Window from which we will render the Application and set up an OpenGL Context for it
 	window = std::unique_ptr<Window, WindowDeleter>(new Window(1000, 1000, "Solar System Simulation"));
 
-	// Load all OpenGL function pointers locations using GLAD
+	// Load all OpenGL function pointers locations using GLAD, after an OpenGL Context has been set up for the current GLFW Window
 	if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
 	{
-		std::cout << "ERROR::GLAD - Failed to initialise GLAD..." << std::endl;
+		std::cout << "ERROR::GLAD - Failed to initialise GLAD, so no OpenGL functions are available!" << std::endl;
 		assert(false);
 	}
 
 	instance = this;
-}
-
-Application::~Application()
-{
-	window->ClearResources();
 }
 
 void Application::SetUp()
