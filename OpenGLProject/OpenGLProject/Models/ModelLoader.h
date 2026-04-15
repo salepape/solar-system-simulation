@@ -30,10 +30,10 @@ private:
 	static void ProcessMesh(Model& model, const aiMesh& mesh);
 
 	// Retrieve ASSIMP vertex data (in .obj Material file) and build a vector of Vertex instances out of it
-	static std::vector<Vertex> ProcessMeshVertices(Model& model, const aiMesh& mesh);
+	static std::vector<Vertex> ProcessMeshVertices(const aiMesh& mesh);
 
 	// Retrieve ASSIMP index data (in .obj Material file) and build a vector of (Vertex) indexes out of it
-	static std::vector<uint32_t> ProcessMeshIndices(Model& model, const aiMesh& mesh);
+	static std::vector<uint32_t> ProcessMeshIndices(const aiMesh& mesh);
 
 	// Retrieve ASSIMP material data (in .mtl Material companion file) and store Material instances in the associated vector
 	static void ProcessMaterial(Model& model, const aiMesh& mesh, const aiScene& scene);

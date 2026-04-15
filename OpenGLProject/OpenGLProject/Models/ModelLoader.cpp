@@ -65,10 +65,10 @@ void ModelLoader::ProcessMeshNode(Model& model, const aiNode& node, const aiScen
 
 void ModelLoader::ProcessMesh(Model& model, const aiMesh& mesh)
 {
-	model.AddMesh(MeshComponent{ ProcessMeshVertices(model, mesh), ProcessMeshIndices(model, mesh) });
+	model.AddMesh(MeshComponent{ ProcessMeshVertices(mesh), ProcessMeshIndices(mesh) });
 }
 
-std::vector<Vertex> ModelLoader::ProcessMeshVertices(Model& inModel, const aiMesh& mesh)
+std::vector<Vertex> ModelLoader::ProcessMeshVertices(const aiMesh& mesh)
 {
 	std::vector<Vertex> vertices;
 	vertices.reserve(mesh.mNumVertices);
@@ -99,7 +99,7 @@ std::vector<Vertex> ModelLoader::ProcessMeshVertices(Model& inModel, const aiMes
 	return vertices;
 }
 
-std::vector<uint32_t> ModelLoader::ProcessMeshIndices(Model& model, const aiMesh& mesh)
+std::vector<uint32_t> ModelLoader::ProcessMeshIndices(const aiMesh& mesh)
 {
 	std::vector<uint32_t> indices;
 	indices.reserve(mesh.mNumFaces);
