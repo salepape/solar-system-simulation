@@ -57,7 +57,7 @@ BlinnPhongMaterial CelestialBodyEntity::InitialiseMaterial(const std::filesystem
 	}
 	else
 	{
-		return BlinnPhongMaterial(ShaderLookUpID::Enum::CELESTIAL_BODY, std::vector<Texture>{ std::move(texture) });
+		return BlinnPhongMaterial(ShaderLookUpID::Enum::DEFAULT, std::vector<Texture>{ std::move(texture) });
 	}
 }
 

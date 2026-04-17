@@ -32,7 +32,7 @@ BlinnPhongMaterial OrbitEntity::InitialiseMaterial(const std::filesystem::path& 
 	Texture texture(inTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadDDS();
 
-	return BlinnPhongMaterial(ShaderLookUpID::Enum::ORBIT, std::vector<Texture>{ std::move(texture) });
+	return BlinnPhongMaterial(ShaderLookUpID::Enum::DEFAULT, std::vector<Texture>{ std::move(texture) });
 }
 
 void OrbitEntity::ComputeModelMatrixVUniform(const glm::vec3& parentPosition, const float /*elapsedTime*/)
