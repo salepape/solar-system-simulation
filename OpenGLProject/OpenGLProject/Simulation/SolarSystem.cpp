@@ -95,7 +95,7 @@ void SolarSystem::BuildBodySystems()
 	const std::string currentSolutionPath(FileHelper::GetSolutionAbsolutePath());
 
 	std::unordered_map<std::string, std::filesystem::path> bodyPaths;
-	FileHelper::ListPaths(currentSolutionPath + "/Textures/CelestialBodies/", bodyPaths);
+	FileHelper::ListModelPaths(currentSolutionPath + "/Textures/CelestialBodies/", bodyPaths);
 
 	ResourceCSVParser bodyCSVParser(currentSolutionPath + "/Data/CelestialBodyData.csv");
 	bodySystems.reserve(bodyCSVParser.GetCSVLinesCount());
@@ -178,7 +178,7 @@ void SolarSystem::BuildBodyRings()
 	const std::string currentSolutionPath(FileHelper::GetSolutionAbsolutePath());
 
 	std::unordered_map<std::string, std::filesystem::path> ringPaths;
-	FileHelper::ListPaths(currentSolutionPath + "/Models/Rings/", ringPaths);
+	FileHelper::ListModelPaths(currentSolutionPath + "/Models/Rings/", ringPaths);
 
 	ResourceCSVParser ringCSVParser(currentSolutionPath + "/Data/RingData.csv");
 
@@ -200,7 +200,7 @@ void SolarSystem::BuildBelts()
 	const std::string currentSolutionPath(FileHelper::GetSolutionAbsolutePath());
 
 	std::unordered_map<std::string, std::filesystem::path> beltPaths;
-	FileHelper::ListPaths(currentSolutionPath + "/Models/Belts/", beltPaths);
+	FileHelper::ListModelPaths(currentSolutionPath + "/Models/Belts/", beltPaths);
 
 	ResourceCSVParser beltCSVParser(currentSolutionPath + "/Data/BeltData.csv");
 	belts.reserve(beltCSVParser.GetCSVLinesCount());

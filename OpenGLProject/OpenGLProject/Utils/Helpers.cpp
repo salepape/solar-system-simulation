@@ -35,22 +35,22 @@ Window* GLFWHelper::GetGLFWCallbackData(GLFWwindow* GLFWWindow)
 
 
 
-void FileHelper::ListPaths(const std::filesystem::path& inMap, std::unordered_map<std::string, std::filesystem::path>& outPaths)
+void FileHelper::ListModelPaths(const std::filesystem::path& inDirectory, std::unordered_map<std::string, std::filesystem::path>& outPaths)
 {
-	for (const std::filesystem::directory_entry& directory : std::filesystem::recursive_directory_iterator(inMap))
+	for (const std::filesystem::directory_entry& modelFile : std::filesystem::recursive_directory_iterator(inDirectory))
 	{
-		const std::filesystem::path directoryPath(directory.path());
-		const std::string modelName(GetNameFromPath(directoryPath));
+		const std::filesystem::path modelPath(modelFile.path());
+		const std::string modelName(GetModelNameFromPath(modelPath));
 		if (modelName.empty())
 		{
 			continue;
 		}
 
-		outPaths[modelName] = directoryPath;
+		outPaths[modelName] = modelPath;
 	}
 }
 
-std::string FileHelper::GetNameFromPath(const std::filesystem::path& inPath)
+std::string FileHelper::GetModelNameFromPath(const std::filesystem::path& inPath)
 {
 	const std::string fileName(inPath.filename().string());
 
@@ -60,8 +60,10 @@ std::string FileHelper::GetNameFromPath(const std::filesystem::path& inPath)
 		firstTrimSymbol = fileName.find_first_of(".");
 		if (firstTrimSymbol == std::string::npos)
 		{
+			return std::string("");
 		}
 	}
+
 	const std::string fileNameWithSizeTrimmed(
 		firstTrimSymbol == fileName.find_first_of("_") ?
 		fileName.substr(firstTrimSymbol + 1, fileName.length() - firstTrimSymbol - 1) :
@@ -72,6 +74,7 @@ std::string FileHelper::GetNameFromPath(const std::filesystem::path& inPath)
 	{
 		lastTrimSymbol = fileNameWithSizeTrimmed.find_first_of(".");
 	}
+
 	std::string modelName(fileNameWithSizeTrimmed.substr(0, lastTrimSymbol));
 	modelName[0] = std::toupper(modelName[0]);
 

@@ -31,10 +31,10 @@ public:
 	// Return file buffer content as an std::string
 	static std::string ReadFile(const std::filesystem::path& path);
 
-	static void ListPaths(const std::filesystem::path& inMap, std::unordered_map<std::string, std::filesystem::path>& outPaths);
+	static void ListModelPaths(const std::filesystem::path& inDirectory, std::unordered_map<std::string, std::filesystem::path>& outPaths);
 
 	// Get model name from path (e.g. by convention, texture name stored in folders follows: [num]k_[bodyName]_[bodyNameOptionalPrecisions])
-	static std::string GetNameFromPath(const std::filesystem::path& inPath);
+	static std::string GetModelNameFromPath(const std::filesystem::path& inPath);
 
 	// Retrieve the path a Material .mtl file for which the concerned line is provided as an argument, including a comment we need to remove 
 	static std::string GetTexturePathFromMtlLine(const std::string& mtlLine);
