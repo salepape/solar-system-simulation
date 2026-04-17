@@ -61,9 +61,9 @@ void SolarSystem::Update()
 		const CelestialBodyEntity* parentBody = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? &GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody() : nullptr;
 		bodySystem.GetCelestialBody().ComputeCartesianPosition(runningApp.elapsedTime * runningApp.speedFactor, parentBody);
 
-		bodiesSortedByDistance.insert({
+		bodiesSortedByDistance.emplace(
 			glm::distance(cameraPosition, bodySystem.GetCelestialBody().GetPosition()),
-			bodySystem });
+			bodySystem);
 	}
 
 	// Draw all the body systems of the Solar System

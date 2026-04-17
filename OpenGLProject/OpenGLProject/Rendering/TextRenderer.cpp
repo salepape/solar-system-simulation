@@ -80,7 +80,7 @@ void TextRenderer::LoadFTGlyphs(const std::string& text)
 			face->glyph->advance.x
 		};
 
-		ASCIICharacterCache.insert(std::make_pair(character, glyphParams));
+		ASCIICharacterCache.emplace(character, glyphParams);
 	}
 }
 
