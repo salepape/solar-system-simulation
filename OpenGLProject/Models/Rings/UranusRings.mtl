@@ -8,7 +8,7 @@ Ks 0.500000 0.500000 0.500000			# Specular colour
 Ns 250.000000					# Specular exponent
 Ke 0.000000 0.000000 0.000000			# Emissive colour
 Ni 1.450000					# Refraction index
-d 1.000000					# Dissolve
+d 0.350000					# Dissolve
 illum 2						# Illumination model -> 2 : highlight on
 
 # DDS Texture path

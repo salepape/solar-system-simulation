@@ -188,11 +188,10 @@ void SolarSystem::BuildBodyRings()
 		const std::string bodyName(ringParams[0]);
 		const std::filesystem::path modelPath(ringPaths[ringParams[1]]);
 		const float radius = std::stof(ringParams[2]);
-		const float opacity = std::stof(ringParams[3]);
 
 		// Add the Rings to each parent Body once initialised
 		BodySystem& parentBodySystem = GetBodySystem(bodyName);
-		parentBodySystem.SetBodyRings(RingsData{ modelPath, bodyName, radius, opacity });
+		parentBodySystem.SetBodyRings(RingsData{ modelPath, bodyName, radius });
 	}
 }
 

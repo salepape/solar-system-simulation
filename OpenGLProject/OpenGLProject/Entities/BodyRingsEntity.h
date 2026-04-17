@@ -18,7 +18,6 @@ struct RingsData
 	std::filesystem::path modelPath;
 	std::string bodyName;
 	float radius{ 0.0f };
-	float opacity{ 0.5f };
 };
 
 class BodyRingsEntity : public SceneEntity

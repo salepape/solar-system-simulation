@@ -12,7 +12,7 @@
 
 
 BodyRingsEntity::BodyRingsEntity(RingsData&& inRingsData) : SceneEntity(inRingsData.bodyName + "Rings"),
-ringsData(inRingsData), model(ringsData.modelPath, ringsData.opacity < 0.5f ? ShaderLookUpID::Enum::INFRARED_BODY_RINGS : ShaderLookUpID::Enum::VISIBLE_BODY_RINGS), bodyName(ringsData.bodyName)
+ringsData(inRingsData), model(ringsData.modelPath, ShaderLookUpID::Enum::DEFAULT), bodyName(ringsData.bodyName)
 {
 
 }
