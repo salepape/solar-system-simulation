@@ -1,10 +1,10 @@
 # Solar System Simulation
 
-## Introduction
+## :video_game: Introduction
 
 Here is a simulation of the Solar System in 3D! This project mainly originates from a strong interest in the Universe and Graphics programming. I familiarised myself with the OpenGL specification and classic Rendering techniques. The development of this project is still ongoing...
 
-## Technologies
+## :gear: Technologies
 
 The project is developed under a Windows 10 environment using Visual Studio 22. It is implemented in C17/C++17/GLSL, uses OpenGL 4.6 (Core Profile) specification as well as the following set of libraries:
 * Glad to get Core OpenGL function pointers to the correct implementation version,
@@ -15,7 +15,7 @@ The project is developed under a Windows 10 environment using Visual Studio 22. 
 * FreeType to render 2D glyph characters.
 Finally, RenderDoc has also been used to improve the performance in some places.
 
-## Content 
+## :telescope: Content 
 
 The simulation contains the following celestial bodies:
 * the Sun,
@@ -29,20 +29,20 @@ The simulation contains the following celestial bodies:
 > [!NOTE]
 > For most distant celestial bodies, information can be hard to find, so texture maps are fictionnal, and chosen according to the photometry analysis presented in Astrophysical research papers. 
 
-## Features
+## :bricks: Features
 
 The actual 3D Solar System simulation is decoupled from the object-oriented engine that runs it. Below are the main features implemented so far:
-* Celestial bodies in motion according along circular orbits, with adjustable simulation speed,
-* Perspective Camera/Controller & Input System for an intuitive exploration, including an accelerator, a magnifier and a headlamp (using GLFW3),
-* Geometric meshes computations, including a cubemap for the Skybox, and a 3D model loader for asteroids/ring systems (using Assimp),
-* Mesh blending taking into account the distance of each scene entity to the camera,
-* 3D Mesh Renderer with instanced rendering to draw the belts in a more performant way,
-* 2D Text renderer to display celestial body names,
-* Blinn-Phong Illumination model running on the GPU via GLSL shaders, for all scene entities, with a point light approximating Sun contribution.
+* :ringed_planet: Celestial bodies in motion according along circular orbits, with adjustable simulation speed,
+* :movie_camera: Perspective Camera/Controller & Input System for an intuitive exploration, including an accelerator, a magnifier and a headlamp (using GLFW3),
+* :globe_with_meridians: Geometric meshes computations, including a cubemap for the Skybox, and a 3D model loader for asteroids/ring systems (using Assimp),
+* :mag: Mesh blending taking into account the distance of each scene entity to the camera,
+* :rocket: 3D Mesh Renderer with instanced rendering to draw the belts in a more performant way,
+* :page_facing_up: 2D Text renderer to display celestial body names,
+* :flashlight: Blinn-Phong Illumination model running on the GPU via GLSL shaders, for all scene entities, with a point light approximating Sun contribution.
 
 Comments within the codebase describe more specifically how it works (algorithmic clarifications, stances, technical decision explanations, etc.)
 
-## Setup
+## :hammer: Setup
 
 > [!WARNING] 
 > The simulation is available only for Windows OS, on a x86 or x64 architecture.
@@ -61,7 +61,7 @@ The execution of the program should require around 4 seconds in Release mode, an
 > [!NOTE]
 > If your antivirus is flagging a threat just after running an executable from the File Explorer, just ignore it: my program is safe to use :)
 
-## Controls
+## :joystick: Controls
 
 To be able to explore the Solar System, the user should use the following controls:
 * <kbd>Z</kbd>, <kbd>Q</kbd>, <kbd>S</kbd>, <kbd>D</kbd> (for an AZERTY keyboard), <kbd>left mouse button</kbd> and <kbd>right mouse button</kbd> to move forward, to the left, backward, to the right, up and down respectively,
@@ -76,7 +76,7 @@ To be able to explore the Solar System, the user should use the following contro
 * <kbd>Tab</kbd> to switch the application to cursor mode (to resize the window easily, or background the simulation for instance),
 * <kbd>Esc</kbd> to quit the simulation.
 
-## Resources
+## :gem: Resources
 
 Scientific data and several models has been retrieved from the NASA website (National Space Science Data Center).
 
