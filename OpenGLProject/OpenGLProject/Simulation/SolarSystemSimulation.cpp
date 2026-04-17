@@ -10,7 +10,7 @@ void SolarSystemSimulation::SolarSystemDeleter::operator()(SolarSystem* ptr)
 
 
 
-SolarSystemSimulation::SolarSystemSimulation(const std::string& inExecutablePath) : Application(inExecutablePath)
+SolarSystemSimulation::SolarSystemSimulation(const std::filesystem::path& inExecutablePath) : Application(inExecutablePath)
 {
 
 }

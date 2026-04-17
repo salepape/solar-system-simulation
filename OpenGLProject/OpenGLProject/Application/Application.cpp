@@ -29,7 +29,7 @@ Application& Application::GetInstance()
 
 
 
-Application::Application(const std::string& inExecutablePath) :
+Application::Application(const std::filesystem::path& inExecutablePath) :
 	executablePath(inExecutablePath)
 {
 	// Create the main Window from which we will render the Application and set up an OpenGL Context for it

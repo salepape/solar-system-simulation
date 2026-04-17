@@ -28,8 +28,8 @@ public:
 class FileHelper
 {
 public:
-	// Return file buffer content as a string
-	static std::string ReadFile(const std::string& path);
+	// Return file buffer content as an std::string
+	static std::string ReadFile(const std::filesystem::path& path);
 
 	static void ListPaths(const std::filesystem::path& inMap, std::unordered_map<std::string, std::filesystem::path>& outPaths);
 

@@ -1,15 +1,15 @@
 #include "Simulation/SolarSystemSimulation.h"
 
+#include <filesystem>
 #include <iostream>
-#include <string>
 
 
 
 int main(int argc, char** argv)
 {
-	const std::string executablePath(argv[0]);
+	const std::filesystem::path executablePath(argv[0]);
 
-	std::cout << "Executable path: " << executablePath << std::endl;
+	std::cout << "Executable path: " << executablePath.string() << std::endl;
 
 	SolarSystemSimulation app(executablePath);
 	app.Run();

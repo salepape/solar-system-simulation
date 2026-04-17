@@ -1,8 +1,8 @@
 #ifndef SOLAR_SYSTEM_SIMULATION_H
 #define SOLAR_SYSTEM_SIMULATION_H
 
+#include <filesystem>
 #include <memory>
-#include <string>
 
 #include "Application/Application.h"
 
@@ -14,7 +14,7 @@ class SolarSystem;
 class SolarSystemSimulation : public Application
 {
 public:
-	SolarSystemSimulation(const std::string& inExecutablePath);
+	SolarSystemSimulation(const std::filesystem::path& inExecutablePath);
 
 private:
 	// As Solar System destructor is called by unique_ptr at some point in Solar System Simulation source file, 

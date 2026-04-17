@@ -94,12 +94,12 @@ std::string FileHelper::GetTexturePathFromMtlLine(const std::string& mtlLine)
 	return mtlLine.substr(0, trimSymbol);
 }
 
-std::string FileHelper::ReadFile(const std::string& path)
+std::string FileHelper::ReadFile(const std::filesystem::path& path)
 {
-	std::ifstream fileStream(path, std::ios::in | std::ios::binary);
+	std::ifstream fileStream(path.string(), std::ios::in | std::ios::binary);
 	if (fileStream.fail())
 	{
-		std::cout << "ERROR::UTILS - " << "File " << FileHelper::GetNameFromPath(path) << " has not been successfully read.\nReason: " << GetErrorStateFlagMessage(fileStream) << "\n" << std::endl;
+		std::cout << "ERROR::UTILS - " << "File " << path.filename().string() << " has not been successfully read.\nReason: " << GetErrorStateFlagMessage(fileStream) << "\n" << std::endl;
 		assert(false);
 	}
 
@@ -147,7 +147,7 @@ std::string FileHelper::GetErrorStateFlagMessage(const std::ifstream& fileStream
 std::string FileHelper::GetSolutionAbsolutePath()
 {
 	// Solution absolute path needs to be determined from the executable absolute path, so it both works when running from VS editor and from executable
-	const std::string currentExecutablePath(Application::GetInstance().GetExecutablePath());
+	const std::string currentExecutablePath(Application::GetInstance().GetExecutablePath().string());
 
 	// Cut off the name of the executable from the path
 	const size_t lastDoubleBackslashSymbol = currentExecutablePath.find_last_of("\\");
@@ -169,7 +169,7 @@ ResourceCSVParser::ResourceCSVParser(const std::filesystem::path& inDataPath)
 
 void ResourceCSVParser::ReadCSV(const std::filesystem::path& inDataPath)
 {
-	const std::string csvFile(FileHelper::ReadFile(inDataPath.string()));
+	const std::string csvFile(FileHelper::ReadFile(inDataPath));
 	std::string csvLine;
 	std::stringstream csvLineStream(csvFile);
 
