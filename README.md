@@ -4,6 +4,8 @@
 
 Here is a simulation of the Solar System in 3D! This project mainly originates from a strong interest in the Universe and Graphics programming. I familiarised myself with the OpenGL specification and classic Rendering techniques. The development of this project is still ongoing...
 
+![](https://github.com/solar-system-simulation/README Gifs/SimulationStartingPoint.gif)
+
 ## :gear: Technologies
 
 The project is developed under a Windows 10 environment using Visual Studio 22. It is implemented in C17/C++17/GLSL, uses OpenGL 4.6 (Core Profile) specification as well as the following set of libraries:
