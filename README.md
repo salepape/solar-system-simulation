@@ -4,7 +4,7 @@
 
 Here is a simulation of the Solar System in 3D! This project mainly originates from a strong interest in the Universe and Graphics programming. I familiarised myself with the OpenGL specification and classic Rendering techniques. The development of this project is still ongoing...
 
-![](https://github.com/solar-system-simulation/README Gifs/SimulationStartingPoint.gif)
+![SimulationStartingPoint](https://github.com/salepape/solar-system-simulation/blob/master/README%20Gifs/SimulationStartingPoint.gif)
 
 ## :gear: Technologies
 
