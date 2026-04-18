@@ -9,14 +9,14 @@ Here is a simulation of the Solar System in 3D! This project mainly originates f
 ## :gear: Technologies
 
 The project is developed under a Windows 10 environment using Visual Studio 22. It is implemented in C17/C++17/GLSL, uses OpenGL 4.6 (Core Profile) specification as well as the following set of libraries:
-* ![Glad](https://github.com/dav1dde/glad) to get Core OpenGL function pointers to the correct implementation version,
-* ![GLFW](https://github.com/glfw/glfw) to initialise the aaplication window and handle user input,
-* ![GLM](https://github.com/g-truc/glm) for mathematical utility functions,
-* ![SOIL2](https://github.com/SpartanJ/soil2) to load DDS textures in different fashion (i.e. bitmaps and cubemaps),
-* ![Assimp](https://github.com/assimp/assimp) to load 3D models (i.e. sub-meshes and materials),
-* ![FreeType](https://github.com/freetype) to render 2D glyph characters.
+* [Glad](https://github.com/dav1dde/glad) to get Core OpenGL function pointers to the correct implementation version,
+* [GLFW](https://github.com/glfw/glfw) to initialise the aaplication window and handle user input,
+* [GLM](https://github.com/g-truc/glm) for mathematical utility functions,
+* [SOIL2](https://github.com/SpartanJ/soil2) to load DDS textures in different fashion (i.e. bitmaps and cubemaps),
+* [Assimp](https://github.com/assimp/assimp) to load 3D models (i.e. sub-meshes and materials),
+* [FreeType](https://github.com/freetype) to render 2D glyph characters.
 
-Finally, ![RenderDoc](https://github.com/baldurk/renderdoc) has also been used to improve the performance in some places.
+Finally, [RenderDoc](https://github.com/baldurk/renderdoc) has also been used to improve the performance in some places.
 
 ## :telescope: Content 
 
@@ -81,18 +81,18 @@ To be able to explore the Solar System, the user should use the following contro
 
 ## :gem: Resources
 
-Scientific data and several models has been retrieved from the NASA website (in particular the ![National Space Science Data Center](https://science.nasa.gov/solar-system/)).
+Scientific data and several models has been retrieved from the NASA website (in particular the [National Space Science Data Center](https://science.nasa.gov/solar-system/)).
 
 Celestial body textures have been downloaded from the websites:
-* ![Solar System Scope](https://www.solarsystemscope.com/textures),
-* ![JHT's Planetary Pixel Emporium](https://planetpixelemporium.com/planets.html),
-* ![Jet Propulsion Laboratory](https://www.jpl.nasa.gov) data,
-* ![3D Asteroid Catalogue](https://3d-asteroids.space),
-* websites of passionate people such as ![Planet Texture Maps Wiki](https://planet-texture-maps.fandom.com/wiki).
+* [Solar System Scope](https://www.solarsystemscope.com/textures),
+* [JHT's Planetary Pixel Emporium](https://planetpixelemporium.com/planets.html),
+* [Jet Propulsion Laboratory](https://www.jpl.nasa.gov) data,
+* [3D Asteroid Catalogue](https://3d-asteroids.space),
+* websites of passionate people such as [Planet Texture Maps Wiki](https://planet-texture-maps.fandom.com/wiki).
 
 My understanding of OpenGL and the world of programming has mainly been thanks to these people and websites:
-* Joey De Vries for his tutorial website ![Learn OpenGL](https://learnopengl.com),
-* Yan Chernikov (aka TheCherno) for his tutorial videos ![here](https://www.youtube.com/user/TheChernoProject),
-* the website ![opengl-tutorial](http://www.opengl-tutorial.org),
-* the website ![open.gl](https://open.gl),
+* Joey De Vries for his tutorial website [Learn OpenGL](https://learnopengl.com),
+* Yan Chernikov (aka TheCherno) for his tutorial videos [here](https://www.youtube.com/user/TheChernoProject),
+* the website [opengl-tutorial](http://www.opengl-tutorial.org),
+* the website [open.gl](https://open.gl),
 * online documentation, many books and Stack Overflow/Reddit threads!
