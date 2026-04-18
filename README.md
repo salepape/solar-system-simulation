@@ -2,13 +2,20 @@
 
 ## :video_game: Introduction
 
-Here is a simulation of the Solar System in 3D! This project mainly originates from a strong interest in the Universe and Graphics programming. I familiarised myself with the OpenGL specification and classic Rendering techniques. The development of this project is still ongoing...
+Here is a simulation of the Solar System in 3D! This project mainly originates from a strong interest in the Universe and Graphics programming. Developping this project led me to dive into the OpenGL specification and classic Rendering techniques. The development of this project is still ongoing.
 
 ![SimulationStartingPoint](https://github.com/salepape/solar-system-simulation/blob/master/README%20Gifs/SimulationStartingPoint.gif)
 
 ## :gear: Technologies
 
-The project is developed under a Windows 10 environment using Visual Studio 22. It is implemented in C17/C++17/GLSL, uses OpenGL 4.6 (Core Profile) specification as well as the following set of libraries:
+This project is being developed under an environment with the following specifications:
+* ASUS UX461U with Intel(R) Core(TM) i7-8550U CPU and Intel(R) UHD Graphics 620 GPU,
+* Windows 10 OS with x64 architecture,
+* Visual Studio 22 IDE lately,
+* C17/C++17/GLSL programming languages,
+* OpenGL 4.6 (Core Profile) specification.
+
+Many open-source libraries have been used as well:
 * [Glad](https://github.com/dav1dde/glad) to get Core OpenGL function pointers to the correct implementation version,
 * [GLFW](https://github.com/glfw) to initialise the application window and handle user input,
 * [GLM](https://github.com/g-truc/glm) for mathematical utility functions,
@@ -43,7 +50,7 @@ The actual simulation is decoupled from the object-oriented engine that runs it.
 * :page_facing_up: 2D Text renderer to display celestial body names,
 * :flashlight: Blinn-Phong Illumination model running on GPU via GLSL shaders, with a Point Light for Sun contribution.
 
-Comments in the codebase describe implementation details more specifically (documentation, technical decisions, etc.)
+Comments in the codebase describe implementation details (technical decisions, documentation, etc.)
 
 ## :hammer: Setup
 
