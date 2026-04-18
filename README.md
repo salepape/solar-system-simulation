@@ -10,10 +10,10 @@ Here is a simulation of the Solar System in 3D! This project mainly originates f
 
 The project is developed under a Windows 10 environment using Visual Studio 22. It is implemented in C17/C++17/GLSL, uses OpenGL 4.6 (Core Profile) specification as well as the following set of libraries:
 * [Glad](https://github.com/dav1dde/glad) to get Core OpenGL function pointers to the correct implementation version,
-* [GLFW](https://github.com/glfw/glfw) to initialise the aaplication window and handle user input,
+* [GLFW](https://github.com/glfw) to initialise the aaplication window and handle user input,
 * [GLM](https://github.com/g-truc/glm) for mathematical utility functions,
 * [SOIL2](https://github.com/SpartanJ/soil2) to load DDS textures in different fashion (i.e. bitmaps and cubemaps),
-* [Assimp](https://github.com/assimp/assimp) to load 3D models (i.e. sub-meshes and materials),
+* [Assimp](https://github.com/assimp) to load 3D models (i.e. sub-meshes and materials),
 * [FreeType](https://github.com/freetype) to render 2D glyph characters.
 
 Finally, [RenderDoc](https://github.com/baldurk/renderdoc) has also been used to improve the performance in some places.
