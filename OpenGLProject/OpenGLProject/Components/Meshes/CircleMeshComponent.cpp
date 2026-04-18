@@ -39,7 +39,7 @@ void CircleMeshComponent::ComputeVertices()
 	}
 }
 
-void CircleMeshComponent::Render(const Renderer& renderer) const
+void CircleMeshComponent::Render() const
 {
-	renderer.Draw(*vao, GL_LINE_LOOP, meridianStripsCount);
+	Renderer::Draw(*vao, GL_LINE_LOOP, meridianStripsCount);
 }

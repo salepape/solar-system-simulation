@@ -13,8 +13,6 @@
 #include "Rendering/ShaderLoader.h"
 #include "Rendering/Texture.h"
 
-class Renderer;
-
 
 
 // Set of Meshes with Materials already applied from a 3D Software (e.g. Blender, Maya, etc.)
@@ -25,8 +23,8 @@ public:
 
 	void StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const std::size_t sizeInBytes) const;
 
-	void Render(const Renderer& renderer) const;
-	void RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const;
+	void Render() const;
+	void RenderInstances(const uint32_t instanceCount) const;
 
 	const std::vector<BlinnPhongMaterial>& GetMaterials() const { return materials; }
 	ShaderLookUpID::Enum GetShaderLookUpID() const { return shaderLookUpID; }

@@ -72,18 +72,18 @@ void SolarSystem::Update()
 		// Draw celestial bodies, and animate them accordingly over time
 		BodySystem& bodySystem = bodyIt->second;
 		const glm::vec3& parentPosition = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody().GetPosition() : glm::vec3(0.0f);
-		bodySystem.Render(renderer, runningApp.IsLegendDisplayed(), textRenderer, camera, parentPosition, runningApp.elapsedTime * runningApp.speedFactor);
+		bodySystem.Render(runningApp.IsLegendDisplayed(), textRenderer, camera, parentPosition, runningApp.elapsedTime * runningApp.speedFactor);
 	}
 
 	// Draw the 2 main belts of the Solar System
 	for (BeltEntity& belt : belts)
 	{
-		belt.Render(renderer);
+		belt.Render();
 	}
 
 	// Draw Milky Way skybox
 	camera.SetInfiniteProjectionViewVUniform(runningWindow.GetAspectRatio());
-	milkyWay.Render(renderer);
+	milkyWay.Render();
 }
 
 void SolarSystem::BuildBodySystems()

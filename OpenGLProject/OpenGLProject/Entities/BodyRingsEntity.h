@@ -9,8 +9,6 @@
 #include "Models/Model.h"
 #include "SceneEntity.h"
 
-class Renderer;
-
 
 
 struct RingsData
@@ -25,8 +23,8 @@ class BodyRingsEntity : public SceneEntity
 public:
 	BodyRingsEntity(RingsData&& inRingsData);
 
-	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
-	void Render(const Renderer& renderer, const glm::mat4& modelMatrix, const float elapsedTime = 0.0f);
+	void Render(const float elapsedTime = 0.0f) override {};
+	void Render(const glm::mat4& modelMatrix, const float elapsedTime = 0.0f);
 
 private:
 	RingsData ringsData;

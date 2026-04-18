@@ -63,7 +63,7 @@ void MeshComponent::StoreInstanceModelMatrices(const VertexBuffer& vbo) const
 	vao->AddInstancedBuffer(std::move(vbl));
 }
 
-void MeshComponent::Render(const Renderer& renderer) const
+void MeshComponent::Render() const
 {
 	if (indices.empty())
 	{
@@ -71,10 +71,10 @@ void MeshComponent::Render(const Renderer& renderer) const
 		assert(false);
 	}
 
-	renderer.Draw(*vao, *ibo);
+	Renderer::Draw(*vao, *ibo);
 }
 
-void MeshComponent::RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const
+void MeshComponent::RenderInstances(const uint32_t instanceCount) const
 {
-	renderer.DrawInstances(*vao, ibo->GetCount(), instanceCount);
+	Renderer::DrawInstances(*vao, ibo->GetCount(), instanceCount);
 }

@@ -50,7 +50,7 @@ void OrbitEntity::ComputeModelMatrixVUniform(const glm::vec3& parentPosition, co
 	modelMatrix = glm::rotate(modelMatrix, orbInclinationInRad, GLMConstants::forwardVector);
 }
 
-void OrbitEntity::Render(const Renderer& renderer, const glm::vec3& parentPosition, const float /*elapsedTime*/)
+void OrbitEntity::Render(const glm::vec3& parentPosition, const float /*elapsedTime*/)
 {
 	// Only moons have their parent position (= Planet) moving, whereas planets have their parent position (= Sun) constant
 	if (isMoon)
@@ -61,10 +61,10 @@ void OrbitEntity::Render(const Renderer& renderer, const glm::vec3& parentPositi
 	const Shader& shader = material.GetShader();
 	shader.Enable();
 
-	renderer.SetModelMatrixVUniform(shader, modelMatrix);
+	Renderer::SetModelMatrixVUniform(shader, modelMatrix);
 
 	material.EnableTextures();
-	circle.Render(renderer);
+	circle.Render();
 	material.DisableTextures();
 
 	shader.Disable();

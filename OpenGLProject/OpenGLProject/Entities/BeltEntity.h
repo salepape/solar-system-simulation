@@ -12,8 +12,6 @@
 #include "Rendering/BlinnPhongMaterial.h"
 #include "SceneEntity.h"
 
-class Renderer;
-
 
 
 // Instance is an asteroid for a belt
@@ -46,7 +44,7 @@ class BeltEntity : public SceneEntity
 public:
 	BeltEntity(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams);
 
-	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
+	void Render(const float elapsedTime = 0.0f) override;
 
 private:
 	InstanceParams instanceParams;

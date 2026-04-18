@@ -10,7 +10,6 @@
 #include "SceneEntity.h"
 
 struct BodyData;
-class Renderer;
 class TextRenderer;
 
 
@@ -20,8 +19,8 @@ class BillboardEntity : public SceneEntity
 public:
 	BillboardEntity(const BodyData& inBodyData);
 
-	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
-	void Render(const Renderer& renderer, TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
+	void Render(const float elapsedTime = 0.0f) override {};
+	void Render(TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
 
 private:
 	// No Mesh instance here: directly managed by the Text Renderer

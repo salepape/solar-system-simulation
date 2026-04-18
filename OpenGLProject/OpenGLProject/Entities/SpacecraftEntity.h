@@ -6,8 +6,6 @@
 #include "Interactions/PerspectiveCameraController.h"
 #include "SceneEntity.h"
 
-class Renderer;
-
 
 
 // Not considered a SceneEntity, since it doesn't need a Mesh or a Material attached to it (doesn't have any visual representation yet)
@@ -25,7 +23,7 @@ private:
 	PerspectiveCameraController cameraController;
 
 	// Simulation is player first-person, so no visual representation of the Spaceship to be rendered on screen
-	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
+	void Render(const float elapsedTime = 0.0f) override {};
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 };
 

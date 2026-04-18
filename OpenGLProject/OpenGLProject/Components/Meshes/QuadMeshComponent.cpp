@@ -33,7 +33,7 @@ void QuadMeshComponent::StoreVertices(VertexBuffer& vbo) const
 	vbo.SetSubData(static_cast<const void*>(vertexCoor.data()), QuadMeshComponent::GetSize());
 }
 
-void QuadMeshComponent::Render(const Renderer& renderer, const VertexArray& vao) const
+void QuadMeshComponent::Render(const VertexArray& vao) const
 {
-	renderer.Draw(vao, GL_TRIANGLES, QuadMeshComponent::VERTICES_COUNT);
+	Renderer::Draw(vao, GL_TRIANGLES, QuadMeshComponent::VERTICES_COUNT);
 }

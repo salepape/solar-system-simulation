@@ -54,16 +54,16 @@ void BillboardEntity::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, 
 	modelMatrix[3] = glm::vec4(bodyPosition, 1.0f);
 }
 
-void BillboardEntity::Render(const Renderer& renderer, TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)
+void BillboardEntity::Render(TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)
 {
 	ComputeModelMatrixVUniform(bodyPosition, cameraForward, cameraRight);
 
 	const Shader& shader = material.GetShader();
 	shader.Enable();
 
-	renderer.SetModelMatrixVUniform(shader, modelMatrix);
+	Renderer::SetModelMatrixVUniform(shader, modelMatrix);
 
-	textRenderer.Render(renderer, textureUnit, legend, 0.0f, textHeight, textScale);
+	textRenderer.Render(textureUnit, legend, 0.0f, textHeight, textScale);
 
 	shader.Disable();
 }

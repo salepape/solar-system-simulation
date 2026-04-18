@@ -6,8 +6,6 @@
 #include <cstdint>
 #include <string>
 
-class Renderer;
-
 
 
 // Represent a 'Game Object', i.e. a name and a Transform for now
@@ -37,7 +35,7 @@ public:
 	const glm::mat4& GetModelMatrix() const { return modelMatrix; }
 
 	// @todo - Empty body in several child classes, and implementation with different params. Should be moved to interface?
-	virtual void Render(const Renderer& renderer, const float elapsedTime = 0.0f) = 0;
+	virtual void Render(const float elapsedTime = 0.0f) = 0;
 
 protected:
 	int32_t ID{ -1 };

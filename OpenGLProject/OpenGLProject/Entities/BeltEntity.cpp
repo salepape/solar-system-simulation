@@ -72,14 +72,14 @@ void BeltEntity::StoreInstanceModelMatrices() const
 	model.StoreInstanceModelMatrices(modelMatrices, static_cast<std::size_t>(instanceParams.count) * sizeof(glm::mat4));
 }
 
-void BeltEntity::Render(const Renderer& renderer, const float /*elapsedTime*/)
+void BeltEntity::Render(const float /*elapsedTime*/)
 {
 	const Material& modelMaterial = model.GetMaterials()[0];
 	const Shader& shader = modelMaterial.GetShader();
 	shader.Enable();
 
 	modelMaterial.EnableTextures();
-	model.RenderInstances(renderer, instanceParams.count);
+	model.RenderInstances(instanceParams.count);
 	modelMaterial.DisableTextures();
 
 	shader.Disable();

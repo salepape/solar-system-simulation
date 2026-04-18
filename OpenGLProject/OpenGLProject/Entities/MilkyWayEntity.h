@@ -7,8 +7,6 @@
 #include "Rendering/BlinnPhongMaterial.h"
 #include "SceneEntity.h"
 
-class Renderer;
-
 
 
 class MilkyWayEntity : public SceneEntity
@@ -16,7 +14,7 @@ class MilkyWayEntity : public SceneEntity
 public:
 	MilkyWayEntity(const std::filesystem::path& inTexturePath);
 
-	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override;
+	void Render(const float elapsedTime = 0.0f) override;
 
 private:
 	SkyboxMeshComponent skybox;

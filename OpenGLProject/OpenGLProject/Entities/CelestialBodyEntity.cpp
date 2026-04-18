@@ -111,17 +111,17 @@ void CelestialBodyEntity::ComputeCartesianPosition(const float elapsedTime, cons
 		bodyData.distanceToParent * glm::cos(travelledOrbitAngle));
 }
 
-void CelestialBodyEntity::Render(const Renderer& renderer, const float elapsedTime)
+void CelestialBodyEntity::Render(const float elapsedTime)
 {
 	ComputeModelMatrixVUniform(elapsedTime);
 
 	const Shader& shader = material.GetShader();
 	shader.Enable();
 
-	renderer.SetModelMatrixVUniform(shader, modelMatrix);
+	Renderer::SetModelMatrixVUniform(shader, modelMatrix);
 
 	material.EnableTextures();
-	sphere.Render(renderer);
+	sphere.Render();
 	material.EnableTextures();
 
 	shader.Disable();

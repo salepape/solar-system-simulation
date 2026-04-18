@@ -113,7 +113,7 @@ void TextRenderer::FreeFTResources() const
 	FT_Done_FreeType(FreeTypeLibrary);
 }
 
-void TextRenderer::Render(const Renderer& renderer, const uint32_t textureUnit, const std::string& text, float x, const float y, const float scale)
+void TextRenderer::Render(const uint32_t textureUnit, const std::string& text, float x, const float y, const float scale)
 {
 	// Left-shift billboard position to half its width to center-align it to the celestial body
 	x = -GetBillboardSize(text, scale) * 0.5f;
@@ -142,7 +142,7 @@ void TextRenderer::Render(const Renderer& renderer, const uint32_t textureUnit, 
 
 		// @todo - Enabling/Disabling operations should be brought outside the for-loop for optimisation num of permutations
 		glyphParams.textures[0].Enable(textureUnit);
-		quad.Render(renderer, *vao);
+		quad.Render(*vao);
 		glyphParams.textures[0].Disable();
 
 		x += GetGlyphAdvance(glyphParams, scale);

@@ -5,8 +5,6 @@
 
 #include "MeshComponent.h"
 
-class Renderer;
-
 
 
 class CircleMeshComponent : public MeshComponent
@@ -14,7 +12,7 @@ class CircleMeshComponent : public MeshComponent
 public:
 	CircleMeshComponent(const float inRadius);
 
-	void Render(const Renderer& renderer) const override;
+	void Render() const override;
 
 private:
 	float radius{ 0.0f };

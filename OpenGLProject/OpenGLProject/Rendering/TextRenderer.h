@@ -13,7 +13,6 @@
 
 #include "Texture.h"
 
-class Renderer;
 class VertexArray;
 class VertexBuffer;
 
@@ -49,7 +48,7 @@ public:
 	void SetFTFont(const std::string& fontPath);
 
 	// Update VBO for each character of the text provided as input
-	void Render(const Renderer& renderer, const uint32_t textureUnit, const std::string& text, float x, const float y, const float scale);
+	void Render(const uint32_t textureUnit, const std::string& text, float x, const float y, const float scale);
 
 private:
 	FT_Library FreeTypeLibrary;

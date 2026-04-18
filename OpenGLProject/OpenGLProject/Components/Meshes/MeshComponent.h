@@ -9,7 +9,6 @@
 #include <vector>
 
 class IndexBuffer;
-class Renderer;
 class VertexArray;
 class VertexBuffer;
 
@@ -55,8 +54,8 @@ public:
 
 	void StoreInstanceModelMatrices(const VertexBuffer& vbo) const;
 
-	virtual void Render(const Renderer& renderer) const;
-	void RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const;
+	virtual void Render() const;
+	void RenderInstances(const uint32_t instanceCount) const;
 
 protected:
 	std::vector<Vertex> vertices;
