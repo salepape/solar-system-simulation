@@ -1,7 +1,6 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "Rendering/Renderer.h"
 #include "Rendering/TextRenderer.h"
 
 
@@ -20,7 +19,6 @@ protected:
 	virtual void Update() = 0;
 	void Clear() const;
 
-	Renderer renderer;
 	TextRenderer textRenderer;
 };
 

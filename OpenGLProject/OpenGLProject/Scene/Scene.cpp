@@ -1,18 +1,20 @@
 #include "Scene.h"
 
+#include "Rendering/Renderer.h"
+
 
 
 Scene::Scene()
 {
-	renderer.EnableDepthTesting();
-	renderer.EnableBlending();
+	Renderer::EnableDepthTesting();
+	Renderer::EnableBlending();
 	// @todo - Optimise rendering by activating face culling only when the controller is outside spheres
-	//renderer.EnableFaceCulling();
+	//Renderer::EnableFaceCulling();
 }
 
 void Scene::Clear() const
 {
-	//renderer.DisableFaceCulling();
-	renderer.DisableBlending();
-	renderer.DisableDepthTesting();
+	//Renderer::DisableFaceCulling();
+	Renderer::DisableBlending();
+	Renderer::DisableDepthTesting();
 }

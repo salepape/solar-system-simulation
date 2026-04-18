@@ -39,7 +39,7 @@ SolarSystem::SolarSystem() :
 // @todo - Do SPIKE for going full ECS instead of only Entity-Component Composition relationships
 void SolarSystem::Update()
 {
-	renderer.Clear();
+	Renderer::Clear();
 
 	const Application& runningApp = Application::GetInstance();
 	const Window& runningWindow = runningApp.GetWindow();
