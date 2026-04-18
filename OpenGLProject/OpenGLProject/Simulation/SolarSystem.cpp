@@ -154,23 +154,7 @@ void SolarSystem::BuildBodySystems()
 		celestialBodyNameCache = celestialBodyName;
 	}
 
-	BuildBodySystemsLegend();
-
 	BuildBodyRings();
-}
-
-void SolarSystem::BuildBodySystemsLegend()
-{
-	textRenderer.SetFTFont(FileHelper::GetSolutionAbsolutePath() + "/Fonts/arial.ttf");
-
-	for (const BodySystem& bodySystem : bodySystems)
-	{
-		// Texture creation is handled by the Text Renderer for now (glyph rendering issue when textures created otherwise)
-		textRenderer.LoadFTGlyphs(bodySystem.GetCelestialBody().GetName());
-	}
-
-	// Free FT resources once we don't have any more letters to load
-	textRenderer.FreeFTResources();
 }
 
 void SolarSystem::BuildBodyRings()

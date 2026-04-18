@@ -10,6 +10,7 @@
 #include "Buffers/VertexBuffer.h"
 #include "Buffers/VertexBufferLayout.h"
 #include "Components/Meshes/QuadMeshComponent.h"
+#include "Helpers.h"
 #include "Renderer.h"
 
 
@@ -18,12 +19,12 @@ TextRenderer::TextRenderer()
 {
 	AllocateBufferObjects();
 
-	FT_Error FTInitFreeTypeError = FT_Init_FreeType(&FreeTypeLibrary);
-	if (FTInitFreeTypeError != 0)
-	{
-		std::cout << "ERROR::FREETYPE - Failed to initialise FreeType Library" << std::endl;
-		assert(false);
-	}
+	LoadFreeTypeLibrary();
+	LoadFreeTypeFace(FileHelper::GetSolutionAbsolutePath() + "/Fonts/arial.ttf");
+
+	LoadFreeTypeGlyphs();
+
+	ClearFreeTypeResources();
 }
 
 void TextRenderer::AllocateBufferObjects()
@@ -39,24 +40,19 @@ void TextRenderer::AllocateBufferObjects()
 	vbo->Unbind();
 }
 
-void TextRenderer::LoadFTGlyphs(const std::string& text)
+void TextRenderer::LoadFreeTypeGlyphs()
 {
-	for (const char& character : text)
+	// Warning - Any character appearing in rendered text should be listed below
+	for (const char& character : "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'")
 	{
-		// Avoid loading a character previously loaded
-		if (ASCIICharacterCache.find(character) != ASCIICharacterCache.end())
-		{
-			continue;
-		}
-
-		FT_Error FTLoaderCharError = FT_Load_Char(face, character, FT_LOAD_RENDER);
+		const FT_Error FTLoaderCharError = FT_Load_Char(FreeTypeFace, character, FT_LOAD_RENDER);
 		if (FTLoaderCharError != 0)
 		{
 			std::cout << "ERROR::FREETYTPE - Failed to load the face object glyph for character " << character << "!" << std::endl;
 			assert(false);
 		}
 
-		FT_GlyphSlot glyph = face->glyph;
+		const FT_GlyphSlot glyph = FreeTypeFace->glyph;
 		if (glyph == nullptr)
 		{
 			std::cout << "ERROR::FREETYPE - Glyph slot for character " << character << " is abnormally empty!" << std::endl;
@@ -72,22 +68,32 @@ void TextRenderer::LoadFTGlyphs(const std::string& text)
 		glyphTexture.LoadFTBitmap(glyph->bitmap, GL_RED);
 
 		// Use direct-list-initialisation to avoid having to add constructors in the plain-old data struct
-		GlyphParams glyphParams{
-			{ std::move(glyphTexture) },
+		const GlyphParams glyphParams{
+			std::vector<Texture>{ std::move(glyphTexture) },
 			glyph->bitmap.width,
 			glyph->bitmap.rows,
 			glm::ivec2(glyph->bitmap_left, glyph->bitmap_top),
-			face->glyph->advance.x
+			FreeTypeFace->glyph->advance.x
 		};
 
 		ASCIICharacterCache.emplace(character, glyphParams);
 	}
 }
 
-void TextRenderer::SetFTFont(const std::string& fontPath)
+void TextRenderer::LoadFreeTypeLibrary()
 {
-	// Load font as face object
-	FT_Error FTNewFaceError = FT_New_Face(FreeTypeLibrary, fontPath.c_str(), 0, &face);
+	const FT_Error FTInitFreeTypeError = FT_Init_FreeType(&FreeTypeLibrary);
+	if (FTInitFreeTypeError != 0)
+	{
+		std::cout << "ERROR::FREETYPE - Failed to initialise FreeType Library" << std::endl;
+		assert(false);
+	}
+}
+
+void TextRenderer::LoadFreeTypeFace(const std::string& fontPath)
+{
+	// Load font as face object (to be used for all glyphs that will be loaded further down the pipe)
+	const FT_Error FTNewFaceError = FT_New_Face(FreeTypeLibrary, fontPath.c_str(), 0, &FreeTypeFace);
 	if (FTNewFaceError != 0)
 	{
 		std::cout << "ERROR::FREETYPE - Failed to load the font located at " << fontPath << "!" << std::endl;
@@ -100,16 +106,16 @@ void TextRenderer::SetFTFont(const std::string& fontPath)
 
 	// Set pixel font size (i.e. render quality) we want to retrieve from this face object
 	// @todo - Might consider Signed Distance Field Fonts technique instead of hardcode pixel size values 
-	FT_Set_Pixel_Sizes(face, pixelFontWidth, pixelFontHeight);
+	FT_Set_Pixel_Sizes(FreeTypeFace, pixelFontWidth, pixelFontHeight);
 
 	// Disable default OpenGL restriction for each texel to be coded as a multiple of 4 bytes (rgba) due to 
 	// each FreeType glyph bitmap colour being coded on 1 byte
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
-void TextRenderer::FreeFTResources() const
+void TextRenderer::ClearFreeTypeResources() const
 {
-	FT_Done_Face(face);
+	FT_Done_Face(FreeTypeFace);
 	FT_Done_FreeType(FreeTypeLibrary);
 }
 
@@ -125,7 +131,7 @@ void TextRenderer::Render(const uint32_t textureUnit, const std::string& text, f
 		const GlyphParams& glyphParams = ASCIICharacterCache[static_cast<int8_t>(character)];
 		if (glyphParams.textures.size() <= 0)
 		{
-			std::cout << "ERROR::TEXT_RENDERER - Reference to Glyph Texture2D for character " << character << " has been lost!" << std::endl;
+			std::cout << "ERROR::TEXT_RENDERER - No 2D Glyph has been generated for character " << character << " - check if this is an unsupported character in the ASCII table" << std::endl;
 			assert(false);
 		}
 

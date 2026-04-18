@@ -7,8 +7,8 @@
 
 #include <cstdint>
 #include <memory>
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "Texture.h"
@@ -40,27 +40,30 @@ class TextRenderer
 public:
 	TextRenderer();
 
-	// Load ASCII characters (data + texture creation) of the text provided as input
-	void LoadFTGlyphs(const std::string& text);
-	void FreeFTResources() const;
-
-	// Set FreeType font type and size used in the Simulation
-	void SetFTFont(const std::string& fontPath);
-
 	// Update VBO for each character of the text provided as input
 	void Render(const uint32_t textureUnit, const std::string& text, float x, const float y, const float scale);
 
 private:
-	FT_Library FreeTypeLibrary;
-	FT_Face face;
-
 	std::shared_ptr<VertexArray> vao;
 	std::shared_ptr<VertexBuffer> vbo;
+
+	FT_Library FreeTypeLibrary;
+	FT_Face FreeTypeFace;
 
 	std::unordered_map<int8_t, GlyphParams> ASCIICharacterCache;
 
 	// Only allocate VBO and VAO (will be filled with subdata later) 
 	void AllocateBufferObjects();
+
+	// Set up FreeType environment to load 2D glyphs
+	void LoadFreeTypeLibrary();
+	void LoadFreeTypeFace(const std::string& fontPath);
+
+	// Load ASCII characters of the alphabet + some symbols (e.g. ')
+	void LoadFreeTypeGlyphs();
+
+	// Free FreeType resources once we don't have any more letters to load
+	void ClearFreeTypeResources() const;
 
 	// Return the width of the text (spaces included)
 	float GetBillboardSize(const std::string& text, const float scale);
