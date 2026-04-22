@@ -16,12 +16,20 @@
 
 
 
-void GLFWHelper::SetGLFWCallbackData(GLFWwindow* GLFWWindow, Window* data)
+void GLFWHelper::SetErrorHandlingGLFWCallback()
+{
+	glfwSetErrorCallback([](int errorCode, const char* errorDescription)
+	{
+		std::cout << "ERROR::GLFW - GLFW has returned error code " << errorCode << " (see macro 0x000" << std::hex << errorCode << " in glfw3.h): " << errorDescription << std::endl;
+	});
+}
+
+void GLFWHelper::SetGLFWWindowPointerToUserData(GLFWwindow* GLFWWindow, Window* data)
 {
 	glfwSetWindowUserPointer(GLFWWindow, static_cast<void*>(data));
 }
 
-Window* GLFWHelper::GetGLFWCallbackData(GLFWwindow* GLFWWindow)
+Window* GLFWHelper::GetGLFWWindowPointerToUserData(GLFWwindow* GLFWWindow)
 {
 	Window* const callbackData = static_cast<Window*>(glfwGetWindowUserPointer(GLFWWindow));
 	if (callbackData == nullptr)

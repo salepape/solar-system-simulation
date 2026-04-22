@@ -17,44 +17,46 @@ Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::strin
 
 	lastCursorPosition = glm::vec2(0.5f * width, 0.5f * height);
 
+	GLFWHelper::SetErrorHandlingGLFWCallback();
+
 	GLFWWindow = InitGLFWWindow();
 	if (GLFWWindow == nullptr)
 	{
-		std::cout << "ERROR::GLFW - Failed to create GLFW window!" << std::endl;
+		std::cout << "ERROR::WINDOW - Failed to create GLFW window!" << std::endl;
 		assert(false);
 	}
 
-	GLFWHelper::SetGLFWCallbackData(GLFWWindow, this);
+	GLFWHelper::SetGLFWWindowPointerToUserData(GLFWWindow, this);
 
-	MakeContextCurrent();
+	MakeOpenGLContextCurrent();
 
-	Callback_DetectWindowResize();
+	SetWindowResizeGLFWCallback();
 
 	SetCursorMode(GLFW_CURSOR_DISABLED);
 }
 
 GLFWwindow* Window::InitGLFWWindow() const
 {
-	// Initialise GLFW library
+	// Initialise GLFW library before any GLFW function calls
 	glfwInit();
 
-	// Set major and minor version of OpenGL, to prevent others who have not this OpenGL version GLFW to fail
+	// Set major and minor version of OpenGL, to prevent users who have not the latest OpenGL version to fail GLFW setup
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
-	// Tell explicitly GLFW that we want to use OpenGL core profile 
+	// Tell explicitly GLFW that we want to use OpenGL core profile (i.e. most recent OpenGL paradigm)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	return glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 }
 
-void Window::MakeContextCurrent() const
+void Window::MakeOpenGLContextCurrent() const
 {
 	glfwMakeContextCurrent(GLFWWindow);
 
 	if (glfwGetCurrentContext() == nullptr)
 	{
-		std::cout << "ERROR::GLFW - Failed to get current context: OpenGL functions will not work correctly!" << std::endl;
+		std::cout << "ERROR::WINDOW - Failed to get current context: OpenGL functions will not work correctly!" << std::endl;
 		assert(false);
 	}
 }
@@ -74,14 +76,13 @@ void Window::ClearResources() const
 	glfwTerminate();
 }
 
-void Window::Callback_DetectWindowResize() const
+void Window::SetWindowResizeGLFWCallback() const
 {
 	glfwSetFramebufferSizeCallback(GLFWWindow, [](GLFWwindow* GLFWWindow, int32_t width, int32_t height)
 	{
 		glViewport(0, 0, width, height);
 
-		// Access contextual data from within GLFWwindow callback
-		Window* const window = GLFWHelper::GetGLFWCallbackData(GLFWWindow);
+		Window* const window = GLFWHelper::GetGLFWWindowPointerToUserData(GLFWWindow);
 		window->Resize(width, height);
 	});
 }

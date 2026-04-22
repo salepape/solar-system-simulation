@@ -49,10 +49,10 @@ private:
 	void IncreaseTravelSpeed(const float factor);
 	void DecreaseTravelSpeed(const float factor);
 
-	// Call corresponding GLFW callback functions
-	void Callback_DetectMouseInput();
-	void Callback_DetectMouseWheelInput();
-	void Callback_DetectKeyboardInput();
+	// Detect user input relative to any action occurring from within the bounds of the current GLFW Window
+	void SetMouseInputGLFWCallback();
+	void SetMouseWheelInputGLFWCallback();
+	void SetKeyboardInputGLFWCallback();
 };
 
 

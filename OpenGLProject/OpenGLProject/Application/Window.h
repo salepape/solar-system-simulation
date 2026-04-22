@@ -49,10 +49,10 @@ private:
 
 	GLFWwindow* InitGLFWWindow() const;
 
-	void Callback_DetectWindowResize() const;
+	void SetWindowResizeGLFWCallback() const;
 
-	// Tell GLFW that we want the context of the window to be the single one for the current thread
-	void MakeContextCurrent() const;
+	// Tell GLFW that we want the OpenGL Context of the GLFW Window to be the active one on the current thread
+	void MakeOpenGLContextCurrent() const;
 
 	void Resize(const uint32_t newWidth, const uint32_t newHeight);
 };

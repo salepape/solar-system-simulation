@@ -15,11 +15,14 @@ class Window;
 class GLFWHelper
 {
 public:
-	// Register user data field to access it later from within static GLFWwindow callbacks (to avoid making variable global)
-	static void SetGLFWCallbackData(GLFWwindow* GLFWWindow, Window* data);
+	// Register the callback that will be called each time GLFW returns an error code/message (preferred over multiple uses of glfwGetError())
+	static void SetErrorHandlingGLFWCallback();
 
-	// Access user data field from within static GLFWwindow callbacks
-	static Window* GetGLFWCallbackData(GLFWwindow* GLFWWindow);
+	// Register user of current GLFW Window to access contextual data from within static GLFWwindow callbacks later on (avoid making global variable)
+	static void SetGLFWWindowPointerToUserData(GLFWwindow* GLFWWindow, Window* data);
+
+	// Access contextual user data of current GLFW Window from within static GLFWwindow callbacks
+	static Window* GetGLFWWindowPointerToUserData(GLFWwindow* GLFWWindow);
 };
 
 
