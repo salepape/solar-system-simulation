@@ -28,7 +28,7 @@ Here is the list of all the open-source libraries used for this project:
 * [Assimp](https://github.com/assimp) to load 3D models (i.e. composed of sub-meshes and materials)
 * [FreeType](https://github.com/freetype) to render 2D glyphs (i.e. ASCII characters).
 
-Finally, [RenderDoc](https://github.com/baldurk/renderdoc) has also been used to improve the rendering performance/frame rate in some places.
+Finally, [RenderDoc](https://github.com/baldurk/renderdoc) has been used to improve the rendering performance/frame rate in some places.
 
 ## :telescope: Content 
 
@@ -68,31 +68,30 @@ The execution of the program should require around 4 seconds in Release mode, an
 
 ### For end-users
 
-If you want to run the executable, go to <i>OpenGLProject/Output/Release/[OS architecture]</i> (<i>Win32</i> for x86, or <i>x64/</i> for x64), and double-click on <b>OpenGLProject.exe</b>
+To run the executable, go to <i>OpenGLProject/Output/Release/[OS architecture]</i> (<i>Win32</i> for x86, or <i>x64/</i> for x64), and double-click on <b>OpenGLProject.exe</b>
 
-An Assimp DLL needs to be located in the same folder as the executable. If, for some reason, you don't, double-check you got the latest version of the remote Git Repository. You can also run the batch file yourself from a command line, or copy the DLL manually located in <i>OpenGLProject/Tools/Libraries/[OS Architecture]/Assimp</i>.
+An Assimp DLL needs to be located in the same folder as the executable to run. If, for some reason, you don't, double-check you got the latest version of the remote Git Repository. You can also run the batch file yourself from a command line, or copy the DLL manually located in <i>OpenGLProject/Tools/Libraries/[OS Architecture]/Assimp</i>.
 
 > [!NOTE]
-> If your antivirus is flagging a threat just after running an executable from the File Explorer, just ignore it: the program is safe to use :) You can also try to run it in Admin mode.
+> If your antivirus is flagging a threat just after running an executable from the Windows File Explorer, just ignore it: the program is safe to use :) You can also try to run it in Admin mode.
 
 ### For developers
 
-If you want to build the executable, go to <i>OpenGLProject/OpenGLProject</i>, and double-click on <b>OpenGLProject.sln</b>. Choose the OS architecture/configuration you need, and click on the green arrow button. 
+To build the executable, go to <i>OpenGLProject/OpenGLProject</i>, and double-click on <b>OpenGLProject.sln</b>. Choose the OS architecture/configuration you need, and click on the green arrow button. 
 
 > [!WARNING]
-> Not having the same Visual Studio environment installed (as specified [here](#environment-specifications)) can lead to build errors. You can set this up from Visual Studio Installer or download all needed elements from [the official website](https://visualstudio.microsoft.com/downloads).
-> Furthermore, all used libraires need to be compatible with your OS/computer specifications.
+> Not having the same Visual Studio environment installed (as specified [here](#environment-specifications)) can lead to build errors. You can set this up from Visual Studio Installer, or download all needed elements from [the official website](https://visualstudio.microsoft.com/downloads).
 
 Here are the required Visual Studio elements to build the Solution:
-* IDE version: Visual Studio 2022 (running it in later versions should be fine if Solution is upgraded)
-* programming language: worload "Desktop Development in C++"
-* compiler: individual components "C++ Clang Compiler for Windows (19.1.5)" and "MSBuild support for LLVM (clang-cl) toolset" (you can still switch back to Microsoft MSVC Compiler in the Project Settings if you prefer)
+* IDE version: Visual Studio 2022 (running it in later versions should be fine if the Solution is upgraded)
+* programming language: workload <b>Desktop Development in C++</b>
+* compiler: individual components <b>C++ Clang Compiler for Windows (19.1.5)</b> and <b>MSBuild support for LLVM (clang-cl) toolset</b> (you can still switch back to Microsoft MSVC Compiler in the Project Settings if you prefer)
 
-You might also need to right-click on the Solution from inside the Visual Studio IDE and click:
-* "Load Project" if unloaded
-* "Set it as Startup project" if Solution Configuration is empty.
+You might then need to right-click on the Solution from inside the Visual Studio IDE and click:
+* <b>Load Project</b> if unloaded
+* <b>Set it as Startup project</b> if Solution Configuration is empty.
 
-The batch script <b>CopyDLLPostBuild.bat</b> is automatically run after the project has successfully built to add an Assimp DDL to the Project folder.
+The batch script <b>CopyDLLPostBuild.bat</b> is automatically run after the project has successfully built (as a Visual Studio post-build event), to add an Assimp DDL to the Project folder.
 
 ## :joystick: Controls
 
