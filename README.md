@@ -2,7 +2,7 @@
 
 ## :video_game: Introduction
 
-Here is a simulation of the Solar System in 3D! This project mainly originates from a strong interest in the Universe and Graphics programming. Developping this project led me to dive into the OpenGL specification and classic Rendering techniques. The development of this project is still ongoing.
+Here is a simulation of the Solar System in 3D! This project mainly originates from a strong interest in the Universe and Graphics programming. Developing this project led me to dive into the OpenGL specification and classic Rendering techniques. The development of this project is still ongoing.
 
 ![SimulationStartingPoint](https://github.com/salepape/solar-system-simulation/blob/master/README%20Gifs/SimulationStartingPoint.gif)
 
@@ -20,7 +20,7 @@ This project is being developed under an environment with the following specific
 
 ### Third-Party Libraries
 
-Many open-source libraries have been used as well:
+Here is the list of all the open-source libraries used for this project:
 * [Glad](https://github.com/dav1dde/glad) to get Core OpenGL function pointers to the correct implementation version
 * [GLFW](https://github.com/glfw) to initialise both the OpenGL context/application window and handle user input
 * [GLM](https://github.com/g-truc/glm) for mathematical utility functions
@@ -63,6 +63,7 @@ Comments in the codebase describe implementation details (technical decisions, d
 > The simulation is available only for Windows OS, on a x86 or x64 architecture.
 
 You can either clone the Git repository to your computer via Git commands/your favourite Source Control IDE, or unzip the corresponding .zip folder after downloading it (it will be called <i>solar-system-simulation-master</i>).
+
 The execution of the program should require around 4 seconds in Release mode, and 8 seconds in Debug mode before starting. Enjoy!
 
 ### For end-users
@@ -79,7 +80,8 @@ An Assimp DLL needs to be located in the same folder as the executable. If, for 
 If you want to build the executable, go to <i>OpenGLProject/OpenGLProject</i>, and double-click on <b>OpenGLProject.sln</b>. Choose the OS architecture/configuration you need, and click on the green arrow button. 
 
 > [!WARNING]
-> Not having the same Visual Studio environment installed (as specified [here](#gear-technologies)) can lead to build errors. You can set this up from Visual Studio Installer or download all needed elements from the official website.
+> Not having the same Visual Studio environment installed (as specified [here](#environment-specifications)) can lead to build errors. You can set this up from Visual Studio Installer or download all needed elements from [the official website](https://visualstudio.microsoft.com/downloads).
+> Furthermore, all used libraires need to be compatible with your OS/computer specifications.
 
 Here are the required Visual Studio elements to build the Solution:
 * IDE version: Visual Studio 2022 (running it in later versions should be fine if Solution is upgraded)
@@ -120,7 +122,7 @@ Celestial body textures have been downloaded from the websites below:
 * [3D Asteroid Catalogue](https://3d-asteroids.space)
 * sources from passionate people such as [Planet Texture Maps Wiki](https://planet-texture-maps.fandom.com/wiki).
 
-Finally, I am very grateful to the following people/websites: they have been real catalysers for my understanding of OpenGL and the world of Graphics.
+Finally, I am very grateful to the following people/sources: they have been real catalysers for my understanding of OpenGL and the world of Graphics.
 * Joey De Vries for his tutorial website [Learn OpenGL](https://learnopengl.com)
 * Yan Chernikov (aka TheCherno) for his tutorial videos [here](https://www.youtube.com/user/TheChernoProject)
 * Rémy Malgouyres for his course "Programmation 3D avec OpenGL"
@@ -128,4 +130,5 @@ Finally, I am very grateful to the following people/websites: they have been rea
 * the website [open.gl](https://open.gl)
 * the [official Khronos documentation](https://registry.khronos.org/OpenGL-Refpages/)
 * the [OpenGL Wiki](https://wikis.khronos.org/opengl/Main_Page)
+* on-site SIGGRAPH conferences
 * other websites, as well as many Stack Overflow/Reddit threads, videos and books!
