@@ -26,7 +26,7 @@ class BodyRingsEntity : public SceneEntity
 public:
 	BodyRingsEntity(RingsData&& inRingsData);
 
-	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
+	void Render(const Renderer& /*renderer*/, const float /*elapsedTime*/) override {};
 	void Render(const Renderer& renderer, const glm::mat4& modelMatrix, const float elapsedTime = 0.0f);
 
 private:
@@ -37,7 +37,7 @@ private:
 
 	std::string bodyName;
 
-	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
+	void ComputeModelMatrixVUniform(const float /*elapsedTime*/) override {};
 	void ComputeModelMatrixVUniform(const glm::mat4& modelMatrix, const float elapsedTime = 0.0f);
 };
 

@@ -29,7 +29,7 @@ public:
 	void AddUniformField(const void* data, const std::size_t type) { uniformFields.emplace_back(SubData{ data, type }); }
 
 	// Compute total size of the struct (corresponding to the sum of each GLSL variable size in the case of structs)
-	const std::size_t GetSizeInBytes() const
+	std::size_t GetSizeInBytes() const
 	{
 		std::size_t result = 0;
 		for (const SubData& uniformField : uniformFields)

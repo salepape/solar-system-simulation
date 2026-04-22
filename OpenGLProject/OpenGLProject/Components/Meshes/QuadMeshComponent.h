@@ -33,7 +33,7 @@ public:
 	void StoreVertices(VertexBuffer& vbo) const;
 
 	// Render texture over the quad (e.g. the one of a character glyph)
-	void Render(const Renderer& renderer) const override {};
+	void Render(const Renderer& /*renderer*/) const override {};
 	void Render(const Renderer& renderer, const VertexArray& vao) const;
 
 	static constexpr int32_t VERTICES_COUNT = 6;

@@ -92,7 +92,7 @@ void Application::Pause(const bool inIsPaused)
 	isPaused = inIsPaused;
 	if (isPaused == false)
 	{
-		glfwSetTime(lastFrameElapsedTime);
+		glfwSetTime(static_cast<double>(lastFrameElapsedTime));
 	}
 }
 

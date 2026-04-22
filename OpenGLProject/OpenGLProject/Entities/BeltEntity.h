@@ -56,7 +56,7 @@ private:
 	// Model used to represent a Belt "Rock" for instancing (contains the Mesh + the Material definition, as opposed to traditional SceneEntities)
 	Model model;
 
-	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
+	void ComputeModelMatrixVUniform(const float /*elapsedTime*/) override {};
 	void ComputeInstanceModelMatrices();
 	void StoreInstanceModelMatrices() const;
 };

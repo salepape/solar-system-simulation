@@ -20,7 +20,7 @@ void Model::StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatric
 	// Set transformation matrices as an instance vertex attribute for each mesh VAO already created
 	for (const MeshComponent& mesh : meshes)
 	{
-		mesh.StoreInstanceModelMatrices(vbo);
+		mesh.StoreInstanceModelMatrices();
 	}
 
 	vbo.Unbind();

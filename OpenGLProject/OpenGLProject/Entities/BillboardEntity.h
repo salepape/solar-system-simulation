@@ -20,7 +20,7 @@ class BillboardEntity : public SceneEntity
 public:
 	BillboardEntity(const BodyData& inBodyData);
 
-	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
+	void Render(const Renderer& /*renderer*/, const float /*elapsedTime*/) override {};
 	void Render(const Renderer& renderer, TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
 
 private:
@@ -34,7 +34,7 @@ private:
 
 	BlinnPhongMaterial InitialiseMaterial();
 
-	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
+	void ComputeModelMatrixVUniform(const float /*elapsedTime*/) override {};
 	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
 };
 

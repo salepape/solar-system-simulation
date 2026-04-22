@@ -53,7 +53,7 @@ public:
 	// Virtual destructor (needed, as class is not final)
 	virtual ~MeshComponent() = default;
 
-	void StoreInstanceModelMatrices(const VertexBuffer& vbo) const;
+	void StoreInstanceModelMatrices() const;
 
 	virtual void Render(const Renderer& renderer) const;
 	void RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const;

@@ -35,7 +35,7 @@ namespace ShaderLookUpID
 	static const std::array<Enum, Num> All = { CELESTIAL_BODY, SUN, BILLBOARD, BELT, MILKY_WAY, ORBIT, VISIBLE_BODY_RINGS, INFRARED_BODY_RINGS, };
 
 	// [[maybe_unused]] only used here to silence a Clang warning!
-	[[maybe_unused]] static const Enum Get(const int index) { return All[index]; }
+	[[maybe_unused]] static Enum Get(const int index) { return All[index]; }
 };
 
 // @todo - Re-arrange so code is independant from the simulation ("Engine" code)

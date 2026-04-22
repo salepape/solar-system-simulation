@@ -25,8 +25,8 @@ private:
 	PerspectiveCameraController cameraController;
 
 	// Simulation is player first-person, so no visual representation of the Spaceship to be rendered on screen
-	void Render(const Renderer& renderer, const float elapsedTime = 0.0f) override {};
-	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
+	void Render(const Renderer& /*renderer*/, const float /*elapsedTime*/) override {};
+	void ComputeModelMatrixVUniform(const float /*elapsedTime*/) override {};
 };
 
 

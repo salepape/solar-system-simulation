@@ -41,7 +41,7 @@ public:
 	bool IsUniformRequired(const std::string& name);
 
 	uint32_t GetRendererID() const { return rendererID; }
-	const ShaderLookUpID::Enum GetShaderLookUpID() const { return lookUpID; }
+	ShaderLookUpID::Enum GetShaderLookUpID() const { return lookUpID; }
 
 private:
 	uint32_t rendererID{ 0 };
