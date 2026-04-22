@@ -17,7 +17,7 @@ This project is being developed under an environment with the following specific
 
 Many open-source libraries have been used as well:
 * [Glad](https://github.com/dav1dde/glad) to get Core OpenGL function pointers to the correct implementation version
-* [GLFW](https://github.com/glfw) to initialise the application window and handle user input
+* [GLFW](https://github.com/glfw) to initialise both the OpenGL context/application window and handle user input
 * [GLM](https://github.com/g-truc/glm) for mathematical utility functions
 * [SOIL2](https://github.com/SpartanJ/soil2) to load DDS textures in different fashion (i.e. bitmaps and cubemaps)
 * [Assimp](https://github.com/assimp) to load 3D models (i.e. composed of sub-meshes and materials)
@@ -102,6 +102,9 @@ Celestial body textures have been downloaded from the websites below:
 Finally, I am very grateful to the following people/websites: they have been real catalysers for my understanding of OpenGL and the world of Graphics.
 * Joey De Vries for his tutorial website [Learn OpenGL](https://learnopengl.com)
 * Yan Chernikov (aka TheCherno) for his tutorial videos [here](https://www.youtube.com/user/TheChernoProject)
+* Rémy Malgouyres for his course "Programmation 3D avec OpenGL"
 * the website [opengl-tutorial](http://www.opengl-tutorial.org)
 * the website [open.gl](https://open.gl)
-* online documentation, many and Stack Overflow/Reddit threads, videos and books!
+* the [official Khronos documentation](https://registry.khronos.org/OpenGL-Refpages/)
+* the [OpenGL Wiki](https://wikis.khronos.org/opengl/Main_Page)
+* other websites, as well as many Stack Overflow/Reddit threads, videos and books!
