@@ -38,7 +38,12 @@ Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::strin
 GLFWwindow* Window::InitGLFWWindow() const
 {
 	// Initialise GLFW library before any GLFW function calls
-	glfwInit();
+	const int isGlfwInitialised = glfwInit();
+	if (isGlfwInitialised == GLFW_FALSE)
+	{
+		std::cout << "ERROR::GLFW - Failed to initialise GLFW3 library properly: closing the application..." << std::endl;
+		assert(false);
+	}
 
 	// Set major and minor version of OpenGL, to prevent users who have not the latest OpenGL version to fail GLFW setup
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -56,7 +61,7 @@ void Window::MakeOpenGLContextCurrent() const
 
 	if (glfwGetCurrentContext() == nullptr)
 	{
-		std::cout << "ERROR::WINDOW - Failed to get current context: OpenGL functions will not work correctly!" << std::endl;
+		std::cout << "ERROR::WINDOW - Failed to get current OpenGL context: OpenGL functions will not work correctly!" << std::endl;
 		assert(false);
 	}
 }
