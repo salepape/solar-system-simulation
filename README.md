@@ -13,8 +13,8 @@ Here is a simulation of the Solar System in 3D! This project mainly originates f
 This project is being developed under an environment with the following specifications:
 * ASUS UX461U with Intel(R) Core(TM) i7-8550U CPU and Intel(R) UHD Graphics 620 GPU
 * Windows 10 OS with x64 architecture
-* Visual Studio Community 22 IDE
-* LLVM Clang C++ compiler
+* Visual Studio Community 2022 IDE version 17
+* LLVM Clang C++ compiler version 19.1.5
 * C17/C++17/GLSL programming languages
 * OpenGL 4.6 (Core Profile) specification.
 
@@ -83,8 +83,8 @@ To build the executable, go to <i>OpenGLProject/OpenGLProject</i>, and double-cl
 > Not having the same Visual Studio environment installed (as specified [here](#environment-specifications)) can lead to build errors. You can set this up from Visual Studio Installer, or download all needed elements from [the official website](https://visualstudio.microsoft.com/downloads).
 
 Here are the required Visual Studio elements to build the Solution:
-* IDE version: Visual Studio 2022 (running it in later versions should be fine if the Solution is upgraded)
-* programming language: workload <b>Desktop Development in C++</b>
+* IDE: Visual Studio 2022 or later (the latter requiring a Solution upgrade)
+* programming language: workload <b>Desktop Development in C++</b> (should include the latest SDK available, i.e the individual component <b>Windows 11 SDK (10.0.26100.7705)</b> or later)
 * compiler: individual components <b>C++ Clang Compiler for Windows (19.1.5)</b> and <b>MSBuild support for LLVM (clang-cl) toolset</b> (you can still switch back to Microsoft MSVC Compiler in the Project Settings if you prefer)
 
 You might then need to right-click on the Solution from inside the Visual Studio IDE and click:
