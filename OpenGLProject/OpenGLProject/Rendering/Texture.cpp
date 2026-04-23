@@ -15,7 +15,7 @@ Texture::Texture(const std::filesystem::path& inImagePath, const uint32_t inTarg
 	SetFilters(filterOptions);
 }
 
-void Texture::LoadFTBitmap(const FT_Bitmap& bitmap, const uint32_t format)
+void Texture::LoadBitmapImage(const int width, const int height, const uint32_t format, const void* pixels)
 {
 	// Generate then bind Texture Object (= TO) to the OpenGL TO type we want 
 	glGenTextures(1, &rendererID);
@@ -24,7 +24,7 @@ void Texture::LoadFTBitmap(const FT_Bitmap& bitmap, const uint32_t format)
 
 	// @todo - Add 1 texel border to each side to avoid leaking from adjacent glyphs due to linear filtering used?
 	// Generate texture image on the currently bound TO at the active texture unit
-	glTexImage2D(target, 0, format, bitmap.width, bitmap.rows, 0, format, GL_UNSIGNED_BYTE, bitmap.buffer);
+	glTexImage2D(target, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
 
 	// Generate all mipmap levels for the previous currently bound TO
 	glGenerateMipmap(target);

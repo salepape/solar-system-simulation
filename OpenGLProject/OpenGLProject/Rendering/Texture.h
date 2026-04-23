@@ -1,8 +1,6 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
 #include <assimp/material.h>
 
 #include <array>
@@ -75,7 +73,7 @@ public:
 	// Destructor (not virtual needed, until child classes exist)
 	~Texture() = default;
 
-	void LoadFTBitmap(const FT_Bitmap& bitmap, const uint32_t format);
+	void LoadBitmapImage(const int width, const int height, const uint32_t format, const void* pixels);
 	void LoadDDS();
 	void LoadCubemapDDS();
 

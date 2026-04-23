@@ -65,7 +65,7 @@ void TextRenderer::LoadFreeTypeGlyphs()
 
 		// FreeType glyph bitmaps are 8-bit grayscale images: it means only one channel (black/white) will be used, encoded with 8 bits,
 		// so we just need to store the colour result in the first vector component, equivalent to red for RGBA
-		glyphTexture.LoadFTBitmap(glyph->bitmap, GL_RED);
+		glyphTexture.LoadBitmapImage(glyph->bitmap.width, glyph->bitmap.rows, GL_RED, glyph->bitmap.buffer);
 
 		// Use direct-list-initialisation to avoid having to add constructors in the plain-old data struct
 		const GlyphParams glyphParams{
