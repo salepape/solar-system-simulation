@@ -25,7 +25,7 @@ Here is the list of all the open-source libraries used for this project:
 * [GLFW](https://github.com/glfw) to initialise both the OpenGL context/application window and handle user input
 * [GLM](https://github.com/g-truc/glm) for mathematical utility functions
 * [SOIL2](https://github.com/SpartanJ/soil2) to load DDS textures in different fashion (i.e. bitmaps and cubemaps)
-* [Assimp](https://github.com/assimp) to load 3D models (i.e. composed of sub-meshes and materials)
+* [Assimp](https://github.com/assimp) DLL to load 3D models (i.e. composed of sub-meshes and materials)
 * [FreeType](https://github.com/freetype) to render 2D glyphs (i.e. ASCII characters).
 
 Finally, [RenderDoc](https://github.com/baldurk/renderdoc) has been used to improve the rendering performance/frame rate in some places.
