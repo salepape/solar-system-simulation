@@ -28,8 +28,8 @@ struct Vertex2D
 	glm::vec2 position{ 0.0f };
 	glm::vec2 texCoords{ 0.0f };
 
-	static constexpr uint32_t POSITION_ELMTS_COUNT = 2;
-	static constexpr uint32_t TEXCOORDS_ELMTS_COUNT = 2;
+	static constexpr uint32_t POSITION_TYPE_DIMENSION = 2;
+	static constexpr uint32_t TEXCOORDS_TYPE_DIMENSION = 2;
 };
 
 // A chain of 2D Quad Mesh. Not inheriting from Mesh class which is for element layout/VAO management in 3D only

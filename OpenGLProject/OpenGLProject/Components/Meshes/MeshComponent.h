@@ -23,13 +23,13 @@ struct Vertex
 	glm::vec3 tangent{ 0.0f };
 	glm::vec3 biTangent{ 0.0f };
 
-	static constexpr uint32_t POSITION_ELMTS_COUNT = 3;
-	static constexpr uint32_t NORMAL_ELMTS_COUNT = 3;
-	static constexpr uint32_t TEXCOORDS_ELMTS_COUNT = 2;
-	static constexpr uint32_t TANGENT_ELMTS_COUNT = 3;
-	static constexpr uint32_t BITANGENT_ELMTS_COUNT = 3;
+	static constexpr uint32_t POSITION_TYPE_DIMENSION = 3;
+	static constexpr uint32_t NORMAL_TYPE_DIMENSION = 3;
+	static constexpr uint32_t TEXCOORDS_TYPE_DIMENSION = 2;
+	static constexpr uint32_t TANGENT_TYPE_DIMENSION = 3;
+	static constexpr uint32_t BITANGENT_TYPE_DIMENSION = 3;
 
-	static constexpr uint32_t INSTANCE_MATRIX_ELMTS_COUNT = 4;
+	static constexpr uint32_t INSTANCE_MATRIX_TYPE_DIMENSION = 4;
 };
 
 // 3D Geometry and its associated buffer objects
