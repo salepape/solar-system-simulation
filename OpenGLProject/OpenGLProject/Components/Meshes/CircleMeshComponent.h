@@ -12,11 +12,11 @@ class CircleMeshComponent : public MeshComponent
 public:
 	CircleMeshComponent(const float inRadius);
 
-	void Render() const override;
+	void Render(const unsigned int mode = 0) const override;
 
 private:
 	float radius{ 0.0f };
-	uint32_t meridianStripsCount{ 500 };
+	int32_t meridianStripsCount{ 500 };
 
 	void ComputeVertices();
 };

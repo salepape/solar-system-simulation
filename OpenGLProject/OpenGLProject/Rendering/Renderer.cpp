@@ -4,7 +4,6 @@
 #include <glfw/glfw3.h>
 #include <iostream>
 
-#include "Buffers/IndexBuffer.h"
 #include "Buffers/VertexArray.h"
 #include "Shader.h"
 
@@ -75,7 +74,7 @@ void Renderer::SetModelMatrixVUniform(const Shader& shader, const glm::mat4& mod
 	shader.setUniformMat4("vu_Model", modelMatrix);
 }
 
-void Renderer::Draw(const VertexArray& vao, const unsigned int mode, const int32_t startIndex, const unsigned int count)
+void Renderer::Draw(const VertexArray& vao, const unsigned int mode, const int32_t startIndex, const int32_t count)
 {
 	vao.Bind();
 
@@ -84,23 +83,20 @@ void Renderer::Draw(const VertexArray& vao, const unsigned int mode, const int32
 	vao.Unbind();
 }
 
-void Renderer::Draw(const VertexArray& vao, const IndexBuffer& ibo)
+void Renderer::Draw(const VertexArray& vao, const unsigned int mode, const int32_t count, const void* offsetInBytes)
 {
 	vao.Bind();
-	ibo.Bind();
 
-	glDrawElements(GL_TRIANGLES, ibo.GetCount(), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 
-	// Do NOT unbind IBO before VAO since the latter contains references to IBO BindBuffer
 	vao.Unbind();
-	ibo.Unbind();
 }
 
-void Renderer::DrawInstances(const VertexArray& vao, const unsigned int iboCount, const unsigned int instanceCount)
+void Renderer::DrawInstances(const VertexArray& vao, const unsigned int mode, const int32_t startIndex, const int32_t count, const int32_t instanceCount)
 {
 	vao.Bind();
 
-	glDrawElementsInstanced(GL_TRIANGLES, iboCount, GL_UNSIGNED_INT, 0, instanceCount);
+	glDrawArraysInstanced(mode, startIndex, count, instanceCount);
 
 	vao.Unbind();
 }

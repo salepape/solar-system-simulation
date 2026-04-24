@@ -10,12 +10,12 @@
 class IndexBuffer : public DataBuffer
 {
 public:
-	IndexBuffer(const void* data, const uint32_t inCount);
+	IndexBuffer(const void* data, const int32_t inCount);
 
-	uint32_t GetCount() const { return count; }
+	int32_t GetCount() const { return count; }
 
 private:
-	uint32_t count{ 0 };
+	int32_t count{ 0 };
 };
 
 

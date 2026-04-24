@@ -1,6 +1,5 @@
 #include "SkyboxMeshComponent.h"
 
-#include <glad/glad.h>
 #include <glm/vec3.hpp>
 
 #include <array>
@@ -20,7 +19,8 @@ SkyboxMeshComponent::SkyboxMeshComponent()
 
 void SkyboxMeshComponent::ComputeVertices()
 {
-	std::array<float, 3 * VERTICES_COUNT> vertexCoor =
+	// 6 faces of the cube defined
+	std::array<float, static_cast<size_t>(3 * VERTICES_COUNT)> vertexCoor =
 	{
 		-1.0f,  1.0f, -1.0f,
 		-1.0f, -1.0f, -1.0f,
@@ -66,7 +66,7 @@ void SkyboxMeshComponent::ComputeVertices()
 	};
 
 	uint32_t positionIndex = 0;
-	vertices.reserve(VERTICES_COUNT);
+	vertices.reserve(static_cast<size_t>(VERTICES_COUNT));
 	while (positionIndex < VERTICES_COUNT * Vertex::POSITION_ELMTS_COUNT)
 	{
 		Vertex vertex;
@@ -79,9 +79,4 @@ void SkyboxMeshComponent::ComputeVertices()
 
 		positionIndex += Vertex::POSITION_ELMTS_COUNT;
 	}
-}
-
-void SkyboxMeshComponent::Render() const
-{
-	Renderer::Draw(*vao, GL_TRIANGLES, 0, VERTICES_COUNT);
 }

@@ -1,6 +1,7 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include <glad/glad.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
@@ -54,8 +55,9 @@ public:
 
 	void StoreInstanceModelMatrices(const VertexBuffer& vbo) const;
 
-	virtual void Render() const;
-	void RenderInstances(const uint32_t instanceCount) const;
+	// Call the appropriate OpenGL draw function according to the emptiness of the indices vector
+	virtual void Render(const unsigned int mode = GL_TRIANGLES) const;
+	virtual void RenderInstances(const uint32_t instanceCount) const;
 
 protected:
 	std::vector<Vertex> vertices;
@@ -66,6 +68,9 @@ protected:
 
 	// Set vertex buffers and its attribute pointers once we have all required data
 	void StoreVertices();
+
+private:
+	bool IsIndicesBuffer() const { return indices.empty() == false; }
 };
 
 

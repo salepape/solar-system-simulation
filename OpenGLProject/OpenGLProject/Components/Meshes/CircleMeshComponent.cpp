@@ -1,6 +1,5 @@
 #include "CircleMeshComponent.h"
 
-#include <glad/glad.h>
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
 
@@ -24,7 +23,7 @@ void CircleMeshComponent::ComputeVertices()
 
 	const glm::vec3 zeroVector(0.0f);
 
-	vertices.reserve(meridianStripsCount + 1);
+	vertices.reserve(static_cast<size_t>(meridianStripsCount + 1));
 	for (uint32_t i = 0; i <= meridianStripsCount; ++i)
 	{
 		const float theta = i * thetaAngle;
@@ -39,7 +38,7 @@ void CircleMeshComponent::ComputeVertices()
 	}
 }
 
-void CircleMeshComponent::Render() const
+void CircleMeshComponent::Render(const unsigned int mode) const
 {
-	Renderer::Draw(*vao, GL_LINE_LOOP, 0, meridianStripsCount + 1);
+	MeshComponent::Render(GL_LINE_LOOP);
 }

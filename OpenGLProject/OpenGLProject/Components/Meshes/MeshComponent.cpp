@@ -27,11 +27,10 @@ void MeshComponent::StoreVertices()
 		std::cout << "ERROR::MESH - No vertices found!" << std::endl;
 		assert(false);
 	}
-	const bool isIndexBuffer = indices.empty() == false;
 
 	vao = std::make_shared<VertexArray>();
 	VertexBuffer vbo(static_cast<const void*>(vertices.data()), vertices.size() * sizeof(Vertex));
-	if (isIndexBuffer)
+	if (IsIndicesBuffer())
 	{
 		ibo = std::make_shared<IndexBuffer>(static_cast<const void*>(indices.data()), static_cast<uint32_t>(indices.size()));
 	}
@@ -47,7 +46,7 @@ void MeshComponent::StoreVertices()
 	// Do NOT unbind IBO before VAO since the latter contains references to IBO BindBuffer
 	vao->Unbind();
 	vbo.Unbind();
-	if (isIndexBuffer)
+	if (IsIndicesBuffer())
 	{
 		ibo->Unbind();
 	}
@@ -63,18 +62,26 @@ void MeshComponent::StoreInstanceModelMatrices(const VertexBuffer& vbo) const
 	vao->AddInstancedBuffer(std::move(vbl));
 }
 
-void MeshComponent::Render() const
+void MeshComponent::Render(const unsigned int mode) const
 {
-	if (indices.empty())
+	// Do not call the same OpenGL wrapper function whether there is a non-null indices buffer
+	if (IsIndicesBuffer())
 	{
-		std::cout << "ERROR::MESH - The base version of Render() needs indices array to be non null!" << std::endl;
-		assert(false);
-	}
+		// Expected to be called for any Mesh defining indices
+		if (ibo == nullptr || ibo->GetCount() == 0)
+		{
+			std::cout << "ERROR::MESH - Any call to this method should have a non-null IBO!" << std::endl;
+		}
 
-	Renderer::Draw(*vao, *ibo);
+		Renderer::Draw(*vao, mode, indices.size(), nullptr);
+	}
+	else
+	{
+		Renderer::Draw(*vao, mode, 0, vertices.size());
+	}
 }
 
 void MeshComponent::RenderInstances(const uint32_t instanceCount) const
 {
-	Renderer::DrawInstances(*vao, ibo->GetCount(), instanceCount);
+	Renderer::DrawInstances(*vao, GL_TRIANGLES, 0, ibo->GetCount(), instanceCount);
 }
