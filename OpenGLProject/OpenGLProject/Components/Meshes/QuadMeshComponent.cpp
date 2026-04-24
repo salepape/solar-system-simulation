@@ -66,7 +66,7 @@ void QuadMeshComponent::RenderGlyphs(const std::string& text, const uint32_t tex
 	{
 		const char& character = text[i];
 
-		const GlyphParams& glyphParams = TextRenderer::GetGlyphParams(static_cast<int8_t>(character));
+		const GlyphParams& glyphParams = GlyphLoader::GetGlyphParams(static_cast<int8_t>(character));
 		if (glyphParams.textures.size() <= 0)
 		{
 			std::cout << "ERROR::QUAD_MESH - No 2D quad has been generated for character glyph " << character << " - check if this is an unsupported one in the ASCII table" << std::endl;

@@ -31,8 +31,8 @@ struct GlyphParams
 	FT_Pos advance;
 };
 
-// Singleton class allowing a global access point for a single Application class.
-class TextRenderer
+// Globally accessible FreeType glyph loader of a partial ASCII table that stores its params in a structure and instantiate a Texture for each
+class GlyphLoader
 {
 public:
 	static void LoadASCIICharacters();
@@ -40,8 +40,10 @@ public:
 	static GlyphParams& GetGlyphParams(const int8_t index);
 
 private:
-	// Hold texture and glyph data per character of the ASCII alphabet. Will be used by all billboard legends
+	// Hold texture and glyph data per character of a partial ASCII table. Will be used by all billboard legends
 	static std::unordered_map<int8_t, GlyphParams> ASCIICharacterCache;
+
+	static std::string partialASCIITable;
 
 	// Set up FreeType environment to load 2D glyphs
 	static void LoadFreeTypeLibrary(FT_Library* outFreeTypeLibrary);

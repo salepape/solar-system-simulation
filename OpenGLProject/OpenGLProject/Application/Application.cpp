@@ -49,7 +49,7 @@ Application::Application(const std::filesystem::path& inExecutablePath) :
 void Application::SetUp()
 {
 	ShaderLoader::BuildShaders();
-	TextRenderer::LoadASCIICharacters();
+	GlyphLoader::LoadASCIICharacters();
 }
 
 void Application::Run()

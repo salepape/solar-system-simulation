@@ -15,7 +15,7 @@ struct Vertex;
 
 
 
-// Stateless ASSIMP loader that reads Mesh/Material info from .obj/.mtl files, and add instances to the relevant vectors owned by the Model passed in argument
+// Globally accessible ASSIMP loader that reads Mesh/Material info from .obj/.mtl files, and add instances to the relevant vectors owned by the Model passed in argument
 class ModelLoader
 {
 public:

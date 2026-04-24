@@ -18,7 +18,7 @@
 
 namespace
 {
-	// Only a unique Texture2D Unit needed for all ASCII Glyphs from TextRenderer called by this class
+	// Only a unique Texture2D Unit needed for all ASCII Glyphs from Glyph Loader called by this class
 	constexpr uint32_t textureUnit{ 0 };
 }
 
@@ -37,8 +37,8 @@ material(InitialiseMaterial())
 
 BlinnPhongMaterial BillboardEntity::InitialiseMaterial()
 {
-	// All Textures2D used by the Billboard are Glyph Textures2D managed in the Text Renderer directly, so not linked in this Material
-	return BlinnPhongMaterial(ShaderLookUpID::Enum::BILLBOARD, std::vector<Texture>{ /* texturesLoadedFromTheTextRenderer */ }, DiffuseProperties{ GLMConstants::whiteColour });
+	// All Textures2D used by the Billboard are created by the Glyph Loader and globally accessible, so not linked in this Material
+	return BlinnPhongMaterial(ShaderLookUpID::Enum::BILLBOARD, std::vector<Texture>{ /* texturesLoadedFromTheGlyphLoader */ }, DiffuseProperties{ GLMConstants::whiteColour });
 }
 
 void BillboardEntity::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& forward, const glm::vec3& right)
@@ -64,7 +64,7 @@ std::vector<QuadParams> BillboardEntity::ComputeQuadParams(const float billboard
 	// Instantiate a quad to render each character of the legend
 	for (const char& character : legend)
 	{
-		const GlyphParams& glyphParams = TextRenderer::GetGlyphParams(static_cast<int8_t>(character));
+		const GlyphParams& glyphParams = GlyphLoader::GetGlyphParams(static_cast<int8_t>(character));
 		if (glyphParams.textures.size() <= 0)
 		{
 			std::cout << "ERROR::BILLBOARD - No Glyph Texture2D has been generated for character " << character << " - check if it is supported in the ASCII table" << std::endl;
@@ -92,7 +92,7 @@ float BillboardEntity::ComputeBillboardWidth() const
 	float totalAdvance = 0.0f;
 	for (const char& character : legend)
 	{
-		totalAdvance += GetGlyphAdvance(TextRenderer::GetGlyphParams(static_cast<int8_t>(character)));
+		totalAdvance += GetGlyphAdvance(GlyphLoader::GetGlyphParams(static_cast<int8_t>(character)));
 	}
 
 	return totalAdvance;

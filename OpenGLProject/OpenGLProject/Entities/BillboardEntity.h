@@ -14,7 +14,7 @@ struct GlyphParams;
 
 
 
-// Set of quads each containing an ASCII glyph texture from the Text Renderer 
+// Create set of quads according to FreeType glyph texture and parameters retrieved out of the Glyph Loader
 class BillboardEntity : public SceneEntity
 {
 public:
