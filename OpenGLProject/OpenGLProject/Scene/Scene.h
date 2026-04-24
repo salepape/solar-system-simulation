@@ -18,8 +18,6 @@ public:
 protected:
 	virtual void Update() = 0;
 	void Clear() const;
-
-	TextRenderer textRenderer;
 };
 
 

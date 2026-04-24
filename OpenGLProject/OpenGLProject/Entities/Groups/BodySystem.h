@@ -12,7 +12,6 @@
 class BodyRingsEntity;
 class PerspectiveCamera;
 struct RingsData;
-class TextRenderer;
 
 
 
@@ -42,7 +41,7 @@ public:
 
 	void SetBodyRings(RingsData&& inRingsData);
 
-	void Render(const bool isBillboard, TextRenderer& textRenderer, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float elapsedTime);
+	void Render(const bool isBillboard, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float elapsedTime);
 
 private:
 	CelestialBodyEntity celestialBody;

@@ -75,11 +75,11 @@ void Renderer::SetModelMatrixVUniform(const Shader& shader, const glm::mat4& mod
 	shader.setUniformMat4("vu_Model", modelMatrix);
 }
 
-void Renderer::Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count)
+void Renderer::Draw(const VertexArray& vao, const unsigned int mode, const int32_t startIndex, const unsigned int count)
 {
 	vao.Bind();
 
-	glDrawArrays(mode, 0, count);
+	glDrawArrays(mode, startIndex, count);
 
 	vao.Unbind();
 }

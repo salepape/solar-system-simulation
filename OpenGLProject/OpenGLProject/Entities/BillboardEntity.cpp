@@ -1,9 +1,11 @@
 #include "BillboardEntity.h"
 
+#include <cstdint>
 #include <glm/geometric.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
-
+#include <iostream>
+#include <utility>
 #include <vector>
 
 #include "CelestialBodyEntity.h"
@@ -11,6 +13,7 @@
 #include "Rendering/Shader.h"
 #include "Rendering/ShaderLoader.h"
 #include "Rendering/TextRenderer.h"
+#include "Rendering/Texture.h"
 #include "Utils/Constants.h"
 
 namespace
@@ -21,20 +24,15 @@ namespace
 
 
 
+// @todo - Avoid magic numbers and automate it as much as possible from a UI dimensions point of view
 BillboardEntity::BillboardEntity(const BodyData& inBodyData) : SceneEntity(inBodyData.name + "Billboard"),
-material(InitialiseMaterial()), legend(inBodyData.name)
+legend(inBodyData.name),
+isMoon(inBodyData.parentName.length() != 0),
+glyphAdvanceScaleFactor(inBodyData.radius * (isMoon ? 0.03f : 0.01f)),
+quads(ComputeQuadParams(0.0f, inBodyData.radius * (isMoon ? 3.5f : 1.5f))),
+material(InitialiseMaterial())
 {
-	float textHeightFactor = 1.5f;
-	float textScaleFactor = 0.01f;
-	// If the current celestial body is a satellite (i.e. has a parent)
-	if (inBodyData.parentName.length() != 0)
-	{
-		textHeightFactor = 3.5f;
-		textScaleFactor = 0.03f;
-	}
 
-	textHeight = inBodyData.radius * textHeightFactor;
-	textScale = inBodyData.radius * textScaleFactor;
 }
 
 BlinnPhongMaterial BillboardEntity::InitialiseMaterial()
@@ -54,7 +52,59 @@ void BillboardEntity::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, 
 	modelMatrix[3] = glm::vec4(bodyPosition, 1.0f);
 }
 
-void BillboardEntity::Render(TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)
+std::vector<QuadParams> BillboardEntity::ComputeQuadParams(const float billboardXStart, const float billboardYStart)
+{
+	std::vector<QuadParams> quadPerGlyph;
+	quadPerGlyph.reserve(legend.length());
+
+	// Left-shift billboard X position to half its width to center-align it to the body
+	float quadXStart = billboardXStart - 0.5f * ComputeBillboardWidth();
+	const float quadYStart = billboardYStart;
+
+	// Instantiate a quad to render each character of the legend
+	for (const char& character : legend)
+	{
+		const GlyphParams& glyphParams = TextRenderer::GetGlyphParams(static_cast<int8_t>(character));
+		if (glyphParams.textures.size() <= 0)
+		{
+			std::cout << "ERROR::BILLBOARD - No Glyph Texture2D has been generated for character " << character << " - check if it is supported in the ASCII table" << std::endl;
+			assert(false);
+		}
+
+		// Position of the glyph quad
+		const float xPosition = quadXStart + glyphParams.bearing.x * glyphAdvanceScaleFactor;
+		const float yPosition = quadYStart - (glyphParams.height - glyphParams.bearing.y) * glyphAdvanceScaleFactor;
+
+		// Size of the glyph quad
+		const float width = glyphParams.width * glyphAdvanceScaleFactor;
+		const float height = glyphParams.height * glyphAdvanceScaleFactor;
+
+		quadPerGlyph.emplace_back(QuadParams{ xPosition, yPosition, width, height });
+
+		quadXStart += GetGlyphAdvance(glyphParams);
+	}
+
+	return quadPerGlyph;
+}
+
+float BillboardEntity::ComputeBillboardWidth() const
+{
+	float totalAdvance = 0.0f;
+	for (const char& character : legend)
+	{
+		totalAdvance += GetGlyphAdvance(TextRenderer::GetGlyphParams(static_cast<int8_t>(character)));
+	}
+
+	return totalAdvance;
+}
+
+float BillboardEntity::GetGlyphAdvance(const GlyphParams& glyphParams) const
+{
+	// Bitshift advance by VERTICES_COUNT to get value in pixels (2^QUAD_VERTICES_COUNT = 64, so we divide 1/64th pixels by 64 to get the amount of pixels)
+	return (glyphParams.advance >> QuadMeshComponent::QUAD_VERTICES_COUNT) * glyphAdvanceScaleFactor;
+}
+
+void BillboardEntity::Render(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)
 {
 	ComputeModelMatrixVUniform(bodyPosition, cameraForward, cameraRight);
 
@@ -63,7 +113,7 @@ void BillboardEntity::Render(TextRenderer& textRenderer, const glm::vec3& bodyPo
 
 	Renderer::SetModelMatrixVUniform(shader, modelMatrix);
 
-	textRenderer.Render(textureUnit, legend, 0.0f, textHeight, textScale);
+	quads.RenderGlyphs(legend, textureUnit);
 
 	shader.Disable();
 }

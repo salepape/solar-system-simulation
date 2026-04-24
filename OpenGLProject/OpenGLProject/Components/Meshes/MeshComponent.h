@@ -31,7 +31,7 @@ struct Vertex
 	static constexpr uint32_t INSTANCE_MATRIX_ELMTS_COUNT = 4;
 };
 
-// Geometry and its associated buffer objects
+// 3D Geometry and its associated buffer objects
 class MeshComponent
 {
 public:

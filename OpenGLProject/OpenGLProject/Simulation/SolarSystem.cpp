@@ -19,7 +19,6 @@
 #include "Interactions/PerspectiveCameraController.h"
 #include "Rendering/Renderer.h"
 #include "Rendering/ShaderLoader.h"
-#include "Rendering/TextRenderer.h"
 #include "Utils/Helpers.h"
 
 
@@ -72,7 +71,7 @@ void SolarSystem::Update()
 		// Draw celestial bodies, and animate them accordingly over time
 		BodySystem& bodySystem = bodyIt->second;
 		const glm::vec3& parentPosition = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody().GetPosition() : glm::vec3(0.0f);
-		bodySystem.Render(runningApp.IsLegendDisplayed(), textRenderer, camera, parentPosition, runningApp.elapsedTime * runningApp.speedFactor);
+		bodySystem.Render(runningApp.IsLegendDisplayed(), camera, parentPosition, runningApp.elapsedTime * runningApp.speedFactor);
 	}
 
 	// Draw the 2 main belts of the Solar System

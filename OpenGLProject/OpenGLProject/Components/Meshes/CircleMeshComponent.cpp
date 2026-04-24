@@ -41,5 +41,5 @@ void CircleMeshComponent::ComputeVertices()
 
 void CircleMeshComponent::Render() const
 {
-	Renderer::Draw(*vao, GL_LINE_LOOP, meridianStripsCount);
+	Renderer::Draw(*vao, GL_LINE_LOOP, 0, meridianStripsCount + 1);
 }

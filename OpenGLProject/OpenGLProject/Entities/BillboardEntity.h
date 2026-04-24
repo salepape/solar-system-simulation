@@ -3,38 +3,49 @@
 
 #include <glm/vec3.hpp>
 
-#include <cstdint>
 #include <string>
 
+#include "Components/Meshes/QuadMeshComponent.h"
 #include "Rendering/BlinnPhongMaterial.h"
 #include "SceneEntity.h"
 
 struct BodyData;
-class TextRenderer;
+struct GlyphParams;
 
 
 
+// Set of quads each containing an ASCII glyph texture from the Text Renderer 
 class BillboardEntity : public SceneEntity
 {
 public:
 	BillboardEntity(const BodyData& inBodyData);
 
 	void Render(const float elapsedTime = 0.0f) override {};
-	void Render(TextRenderer& textRenderer, const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
+	void Render(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
 
 private:
-	// No Mesh instance here: directly managed by the Text Renderer
-	BlinnPhongMaterial material;
-
 	std::string legend;
+	bool isMoon{ false };
 
-	float textHeight{ 0.0f };
-	float textScale{ 0.0f };
+	// Reduce default glyph texture size we get out of FreeType, as it's too big compared to celestial body sizes
+	float glyphAdvanceScaleFactor{ 1.0f };
+
+	QuadMeshComponent quads;
+	BlinnPhongMaterial material;
 
 	BlinnPhongMaterial InitialiseMaterial();
 
 	void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) override {};
 	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
+
+	// Sum up all the glyph advance values, as per FreeType convention (i.e. the width needed each glyph to be rendered, inclusive of horizontal spacing)
+	float ComputeBillboardWidth() const;
+
+	// Get the advance value of a glyph, as per FreeType convention (i.e. the width needed each glyph to be rendered, inclusive of horizontal spacing)
+	float GetGlyphAdvance(const GlyphParams& c) const;
+
+	// Return a vector of params for each quad (one for each glyph) to be rendered on this billboard
+	std::vector<QuadParams> ComputeQuadParams(const float billboardXStart, const float billboardYStart);
 };
 
 

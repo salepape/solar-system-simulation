@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "Rendering/ShaderLoader.h"
+#include "Rendering/TextRenderer.h"
 #include "Window.h"
 
 Application* Application::instance = nullptr;
@@ -48,6 +49,7 @@ Application::Application(const std::filesystem::path& inExecutablePath) :
 void Application::SetUp()
 {
 	ShaderLoader::BuildShaders();
+	TextRenderer::LoadASCIICharacters();
 }
 
 void Application::Run()

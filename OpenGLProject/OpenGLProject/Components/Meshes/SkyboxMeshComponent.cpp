@@ -83,5 +83,5 @@ void SkyboxMeshComponent::ComputeVertices()
 
 void SkyboxMeshComponent::Render() const
 {
-	Renderer::Draw(*vao, GL_TRIANGLES, VERTICES_COUNT);
+	Renderer::Draw(*vao, GL_TRIANGLES, 0, VERTICES_COUNT);
 }

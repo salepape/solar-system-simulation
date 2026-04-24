@@ -6,60 +6,46 @@
 #include <iostream>
 #include <utility>
 
-#include "Buffers/VertexArray.h"
-#include "Buffers/VertexBuffer.h"
-#include "Buffers/VertexBufferLayout.h"
 #include "Components/Meshes/QuadMeshComponent.h"
 #include "Helpers.h"
-#include "Renderer.h"
+
+std::unordered_map<int8_t, GlyphParams> TextRenderer::ASCIICharacterCache;
 
 
 
-TextRenderer::TextRenderer()
+void TextRenderer::LoadASCIICharacters()
 {
-	AllocateBufferObjects();
+	FT_Library FreeTypeLibrary;
+	LoadFreeTypeLibrary(&FreeTypeLibrary);
 
-	LoadFreeTypeLibrary();
-	LoadFreeTypeFace(FileHelper::GetSolutionAbsolutePath() + "/Fonts/arial.ttf");
+	FT_Face FreeTypeFontFace;
+	LoadFreeTypeFontFace(&FreeTypeFontFace, FreeTypeLibrary, FileHelper::GetSolutionAbsolutePath() + "/Fonts/arial.ttf");
 
-	LoadFreeTypeGlyphs();
+	LoadFreeTypeGlyphs(FreeTypeFontFace);
 
-	ClearFreeTypeResources();
+	ClearFreeTypeResources(FreeTypeLibrary, FreeTypeFontFace);
 }
 
-void TextRenderer::AllocateBufferObjects()
-{
-	vao = std::make_shared<VertexArray>();
-	vbo = std::make_shared<VertexBuffer>(nullptr, QuadMeshComponent::GetSize(), GL_DYNAMIC_DRAW);
-
-	VertexBufferLayout vbl;
-	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, QuadVertex::ELMTS_COUNT);
-	vao->AddBuffer(std::move(vbl));
-
-	vao->Unbind();
-	vbo->Unbind();
-}
-
-void TextRenderer::LoadFreeTypeGlyphs()
+void TextRenderer::LoadFreeTypeGlyphs(const FT_Face& inFreeTypeFontFace)
 {
 	// Warning - Any character appearing in rendered text should be listed below
 	for (const char& character : "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'")
 	{
-		const FT_Error FTLoaderCharError = FT_Load_Char(FreeTypeFace, character, FT_LOAD_RENDER);
+		const FT_Error FTLoaderCharError = FT_Load_Char(inFreeTypeFontFace, character, FT_LOAD_RENDER);
 		if (FTLoaderCharError != 0)
 		{
 			std::cout << "ERROR::FREETYTPE - Failed to load the face object glyph for character " << character << "!" << std::endl;
 			assert(false);
 		}
 
-		const FT_GlyphSlot glyph = FreeTypeFace->glyph;
+		const FT_GlyphSlot glyph = inFreeTypeFontFace->glyph;
 		if (glyph == nullptr)
 		{
 			std::cout << "ERROR::FREETYPE - Glyph slot for character " << character << " is abnormally empty!" << std::endl;
 			assert(false);
 		}
 
-		// No need to specify an image path here since the glyph bitmap directly contains the data
+		// No need to specify an image path here since the glyph bitmap loaded below contains the data
 		// @todo - Store all characters into a single texture atlas/sprite sheet for better performance
 		Texture glyphTexture("", GL_TEXTURE_2D, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 
@@ -73,16 +59,16 @@ void TextRenderer::LoadFreeTypeGlyphs()
 			glyph->bitmap.width,
 			glyph->bitmap.rows,
 			glm::ivec2(glyph->bitmap_left, glyph->bitmap_top),
-			FreeTypeFace->glyph->advance.x
+			inFreeTypeFontFace->glyph->advance.x
 		};
 
 		ASCIICharacterCache.emplace(character, glyphParams);
 	}
 }
 
-void TextRenderer::LoadFreeTypeLibrary()
+void TextRenderer::LoadFreeTypeLibrary(FT_Library* outFreeTypeLibrary)
 {
-	const FT_Error FTInitFreeTypeError = FT_Init_FreeType(&FreeTypeLibrary);
+	const FT_Error FTInitFreeTypeError = FT_Init_FreeType(outFreeTypeLibrary);
 	if (FTInitFreeTypeError != 0)
 	{
 		std::cout << "ERROR::FREETYPE - Failed to initialise FreeType Library" << std::endl;
@@ -90,13 +76,13 @@ void TextRenderer::LoadFreeTypeLibrary()
 	}
 }
 
-void TextRenderer::LoadFreeTypeFace(const std::string& fontPath)
+void TextRenderer::LoadFreeTypeFontFace(FT_Face* outFreeTypeFontFace, const FT_Library& inFreeTypeLibrary, const std::string& inFontPath)
 {
 	// Load font as face object (to be used for all glyphs that will be loaded further down the pipe)
-	const FT_Error FTNewFaceError = FT_New_Face(FreeTypeLibrary, fontPath.c_str(), 0, &FreeTypeFace);
+	const FT_Error FTNewFaceError = FT_New_Face(inFreeTypeLibrary, inFontPath.c_str(), 0, outFreeTypeFontFace);
 	if (FTNewFaceError != 0)
 	{
-		std::cout << "ERROR::FREETYPE - Failed to load the font located at " << fontPath << "!" << std::endl;
+		std::cout << "ERROR::FREETYPE - Failed to load the font located at " << inFontPath << "!" << std::endl;
 		assert(false);
 	}
 
@@ -106,70 +92,42 @@ void TextRenderer::LoadFreeTypeFace(const std::string& fontPath)
 
 	// Set pixel font size (i.e. render quality) we want to retrieve from this face object
 	// @todo - Might consider Signed Distance Field Fonts technique instead of hardcode pixel size values 
-	FT_Set_Pixel_Sizes(FreeTypeFace, pixelFontWidth, pixelFontHeight);
+	const FT_Error FTSetPixelSizingError = FT_Set_Pixel_Sizes(*outFreeTypeFontFace, pixelFontWidth, pixelFontHeight);
+	if (FTSetPixelSizingError != 0)
+	{
+		std::cout << "ERROR::FREETYPE - Failed to set the size of pixels for the font located at " << inFontPath << "!" << std::endl;
+		assert(false);
+	}
 
 	// Disable default OpenGL restriction for each texel to be coded as a multiple of 4 bytes (rgba) due to 
 	// each FreeType glyph bitmap colour being coded on 1 byte
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
-void TextRenderer::ClearFreeTypeResources() const
+void TextRenderer::ClearFreeTypeResources(const FT_Library& inFreeTypeLibrary, const FT_Face& inFreeTypeFontFace)
 {
-	FT_Done_Face(FreeTypeFace);
-	FT_Done_FreeType(FreeTypeLibrary);
-}
-
-void TextRenderer::Render(const uint32_t textureUnit, const std::string& text, float x, const float y, const float scale)
-{
-	// Left-shift billboard position to half its width to center-align it to the celestial body
-	x = -GetBillboardSize(text, scale) * 0.5f;
-
-	vao->Bind();
-
-	for (const char& character : text)
+	const FT_Error FTReleaseFace = FT_Done_Face(inFreeTypeFontFace);
+	if (FTReleaseFace != 0)
 	{
-		const GlyphParams& glyphParams = ASCIICharacterCache[static_cast<int8_t>(character)];
-		if (glyphParams.textures.size() <= 0)
-		{
-			std::cout << "ERROR::TEXT_RENDERER - No 2D Glyph has been generated for character " << character << " - check if this is an unsupported character in the ASCII table" << std::endl;
-			assert(false);
-		}
-
-		// Position of the quad on the billboard
-		const float xPosition = x + glyphParams.bearing.x * scale;
-		const float yPosition = y - (glyphParams.height - glyphParams.bearing.y) * scale;
-
-		// Size of the quad
-		const float width = glyphParams.width * scale;
-		const float height = glyphParams.height * scale;
-
-		QuadMeshComponent quad(xPosition, yPosition, width, height);
-		quad.StoreVertices(*vbo);
-
-		// @todo - Enabling/Disabling operations should be brought outside the for-loop for optimisation num of permutations
-		glyphParams.textures[0].Enable(textureUnit);
-		quad.Render(*vao);
-		glyphParams.textures[0].Disable();
-
-		x += GetGlyphAdvance(glyphParams, scale);
+		std::cout << "ERROR::FREETYPE - Failed to clear resources of the loaded Face." << std::endl;
+		assert(false);
 	}
 
-	vao->Unbind();
+	const FT_Error FTReleaseLibrary = FT_Done_FreeType(inFreeTypeLibrary);
+	if (FTReleaseLibrary != 0)
+	{
+		std::cout << "ERROR::FREETYPE - Failed to clear resources of the loaded Library" << std::endl;
+		assert(false);
+	}
 }
 
-float TextRenderer::GetBillboardSize(const std::string& text, const float scale)
+GlyphParams& TextRenderer::GetGlyphParams(const int8_t character)
 {
-	float totalAdvance = 0.0f;
-	for (const char& character : text)
+	if (ASCIICharacterCache.find(character) == ASCIICharacterCache.end())
 	{
-		totalAdvance += GetGlyphAdvance(ASCIICharacterCache[character], scale);
+		std::cout << "ERROR::FREETYPE - Cannot access ASCII character at index " << character << " because map length is smaller!" << std::endl;
+		assert(false);
 	}
 
-	return totalAdvance;
-}
-
-float TextRenderer::GetGlyphAdvance(const GlyphParams& glyphParams, const float scale) const
-{
-	// Bitshift by VERTICES_COUNT to get value in pixels (2^VERTICES_COUNT = 64, so we divide 1/64th pixels by 64 to get the amount of pixels)
-	return (glyphParams.advance >> QuadMeshComponent::VERTICES_COUNT) * scale;
+	return ASCIICharacterCache[character];
 }

@@ -39,7 +39,7 @@ public:
 	static void SetModelMatrixVUniform(const Shader& shader, const glm::mat4& modelMatrix);
 
 	// Draw arrays (e.g. for Orbit, Skybox and Text instances)
-	static void Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count);
+	static void Draw(const VertexArray& vao, const unsigned int mode, const int32_t startIndex, const unsigned int count);
 
 	// Draw elements using an IBO (e.g. for Mesh instances)
 	static void Draw(const VertexArray& vao, const IndexBuffer& ibo);
