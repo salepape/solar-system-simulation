@@ -7,7 +7,7 @@
 #include <iostream>
 
 #include "Rendering/ShaderLoader.h"
-#include "Rendering/TextRenderer.h"
+#include "Rendering/GlyphLoader.h"
 #include "Window.h"
 
 Application* Application::instance = nullptr;

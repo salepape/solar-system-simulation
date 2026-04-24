@@ -8,7 +8,7 @@
 #include "Buffers/VertexBuffer.h"
 #include "Buffers/VertexBufferLayout.h"
 #include "Rendering/Renderer.h"
-#include "Rendering/TextRenderer.h"
+#include "Rendering/GlyphLoader.h"
 
 
 

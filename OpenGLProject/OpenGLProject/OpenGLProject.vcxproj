@@ -220,7 +220,7 @@
     <ClInclude Include="Rendering/Renderer.h" />
     <ClInclude Include="Rendering/Shader.h" />
     <ClInclude Include="Rendering/ShaderLoader.h" />
-    <ClInclude Include="Rendering/TextRenderer.h" />
+    <ClInclude Include="Rendering/GlyphLoader.h" />
     <ClInclude Include="Rendering/Texture.h" />
     <ClInclude Include="Scene/Scene.h" />
     <ClInclude Include="Simulation/SolarSystem.h" />
@@ -268,7 +268,7 @@
     <ClCompile Include="Rendering/Renderer.cpp" />
     <ClCompile Include="Rendering/Shader.cpp" />
     <ClCompile Include="Rendering/ShaderLoader.cpp" />
-    <ClCompile Include="Rendering/TextRenderer.cpp" />
+    <ClCompile Include="Rendering/GlyphLoader.cpp" />
     <ClCompile Include="Rendering/Texture.cpp" />
     <ClCompile Include="Scene/Scene.cpp" />
     <ClCompile Include="Simulation/SolarSystem.cpp" />

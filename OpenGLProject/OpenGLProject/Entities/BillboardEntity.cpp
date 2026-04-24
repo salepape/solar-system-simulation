@@ -12,7 +12,7 @@
 #include "Rendering/Renderer.h"
 #include "Rendering/Shader.h"
 #include "Rendering/ShaderLoader.h"
-#include "Rendering/TextRenderer.h"
+#include "Rendering/GlyphLoader.h"
 #include "Rendering/Texture.h"
 #include "Utils/Constants.h"
 
