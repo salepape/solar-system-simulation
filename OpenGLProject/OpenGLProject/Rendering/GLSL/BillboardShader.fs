@@ -13,7 +13,7 @@ uniform Material material;
 
 void main()
 {
-    // FreeType glyph bitmap colours have been stored in their red component (just black/white) 
+    // FreeType glyph bitmap colours have been stored in their red component (black & white textures) 
     float diffuseTexColour = texture(material.fu_DiffuseTex_0, vo_TexCoords).r;
 
     // We want each pixel to be transparent for glyph background colours and visible for character colour, 
