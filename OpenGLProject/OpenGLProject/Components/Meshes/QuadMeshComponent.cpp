@@ -52,7 +52,7 @@ void QuadMeshComponent::StoreVertices()
 	// For 2D character glyphs, GLSL Vertex attribute definition can be more simply defined, i.e. as a single Vec4 instead of 2 Vec2
 	VertexBufferLayout vbl;
 	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, Vertex2D::POSITION_TYPE_DIMENSION + Vertex2D::TEXCOORDS_TYPE_DIMENSION);
-	vao->AddBuffer(std::move(vbl));
+	vao->RegisterVertexBufferLayout(std::move(vbl));
 
 	vao->Unbind();
 	vbo.Unbind();

@@ -18,8 +18,11 @@ public:
 	// Unselect the currently used VAO
 	void Unbind() const;
 
-	void AddBuffer(const VertexBufferLayout& layout);
-	void AddInstancedBuffer(const VertexBufferLayout& layout) const;
+	// Parameterise VAO so the VBO is interpreted correctly for GLSL Shader attributes. Warning: require VAO/VBO to be bound beforehand 
+	void RegisterVertexBufferLayout(const VertexBufferLayout& layout);
+
+	// Parameterise VAO so the VBO is interpreted correctly for GLSL Shader attributes in an instancing context. Warning: require VAO/VBO to be bound beforehand 
+	void RegisterInstancingVertexBufferLayout(const VertexBufferLayout& layout) const;
 
 private:
 	unsigned int rendererID{ 0 };
