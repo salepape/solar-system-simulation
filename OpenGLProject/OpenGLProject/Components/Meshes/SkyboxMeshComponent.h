@@ -14,7 +14,7 @@ public:
 
 private:
 	// FacesCount is 6, verticesPerFaceCount is 6
-	static constexpr int32_t VERTICES_COUNT = 36;
+	static constexpr int32_t VERTEX_COUNT = 36;
 
 	void ComputeVertices();
 };

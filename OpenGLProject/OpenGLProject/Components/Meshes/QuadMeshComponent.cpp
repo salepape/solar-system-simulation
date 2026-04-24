@@ -21,7 +21,7 @@ QuadMeshComponent::QuadMeshComponent(std::vector<QuadParams>&& inQuadParams) :
 
 void QuadMeshComponent::ComputeVertices()
 {
-	vertices.reserve(allQuadParams.size() * static_cast<size_t>(QuadMeshComponent::QUAD_VERTICES_COUNT));
+	vertices.reserve(allQuadParams.size() * static_cast<size_t>(QuadMeshComponent::QUAD_VERTEX_COUNT));
 
 	// Compute batch of 6 vertices (forming a quad) to render each glyph letter of the provided text (e.g. on a billboard)
 	for (const QuadParams& quadParams : allQuadParams)
@@ -74,7 +74,7 @@ void QuadMeshComponent::RenderGlyphs(const std::string& text, const uint32_t tex
 		}
 
 		glyphParams.textures[0].Enable(textureUnit);
-		Renderer::Draw(*vao, GL_TRIANGLES, i * QuadMeshComponent::QUAD_VERTICES_COUNT, QuadMeshComponent::QUAD_VERTICES_COUNT);
+		Renderer::Draw(*vao, GL_TRIANGLES, i * QuadMeshComponent::QUAD_VERTEX_COUNT, QuadMeshComponent::QUAD_VERTEX_COUNT);
 		glyphParams.textures[0].Disable();
 	}
 

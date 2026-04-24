@@ -100,8 +100,8 @@ float BillboardEntity::ComputeBillboardWidth() const
 
 float BillboardEntity::GetGlyphAdvance(const GlyphParams& glyphParams) const
 {
-	// Bitshift advance by VERTICES_COUNT to get value in pixels (2^QUAD_VERTICES_COUNT = 64, so we divide 1/64th pixels by 64 to get the amount of pixels)
-	return (glyphParams.advance >> QuadMeshComponent::QUAD_VERTICES_COUNT) * glyphAdvanceScaleFactor;
+	// Bitshift advance by QUAD_VERTEX_COUNT to get value in pixels (2^QUAD_VERTEX_COUNT = 64, so we divide 1/64th pixels by 64 to get the amount of pixels)
+	return (glyphParams.advance >> QuadMeshComponent::QUAD_VERTEX_COUNT) * glyphAdvanceScaleFactor;
 }
 
 void BillboardEntity::Render(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)

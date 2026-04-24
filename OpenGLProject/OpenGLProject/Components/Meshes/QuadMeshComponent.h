@@ -42,7 +42,7 @@ public:
 	void RenderGlyphs(const std::string& text, const uint32_t textureUnit) const;
 
 	// Amount of vertices needed to shape a quad (formed of 2 triangles)
-	static constexpr int32_t QUAD_VERTICES_COUNT = 6;
+	static constexpr int32_t QUAD_VERTEX_COUNT = 6;
 
 private:
 	// Quad coordinates/dimensions computed from another class, needed to build actual Quad vertices

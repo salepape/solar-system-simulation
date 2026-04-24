@@ -19,8 +19,10 @@ SkyboxMeshComponent::SkyboxMeshComponent()
 
 void SkyboxMeshComponent::ComputeVertices()
 {
+	constexpr int32_t VERTEX_COORDINATE_COUNT = Vertex::POSITION_ELMTS_COUNT * VERTEX_COUNT;
+
 	// 6 faces of the cube defined
-	std::array<float, static_cast<size_t>(3 * VERTICES_COUNT)> vertexCoor =
+	std::array<float, static_cast<size_t>(VERTEX_COORDINATE_COUNT)> vertexCoor =
 	{
 		-1.0f,  1.0f, -1.0f,
 		-1.0f, -1.0f, -1.0f,
@@ -66,8 +68,8 @@ void SkyboxMeshComponent::ComputeVertices()
 	};
 
 	uint32_t positionIndex = 0;
-	vertices.reserve(static_cast<size_t>(VERTICES_COUNT));
-	while (positionIndex < VERTICES_COUNT * Vertex::POSITION_ELMTS_COUNT)
+	vertices.reserve(static_cast<size_t>(VERTEX_COUNT));
+	while (positionIndex < VERTEX_COORDINATE_COUNT)
 	{
 		Vertex vertex;
 		vertex.position = glm::vec3(vertexCoor[positionIndex], vertexCoor[positionIndex + 1], vertexCoor[positionIndex + 2]);
