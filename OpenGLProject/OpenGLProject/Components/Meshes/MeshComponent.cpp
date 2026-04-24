@@ -64,6 +64,8 @@ void MeshComponent::StoreInstanceModelMatrices(const VertexBuffer& vbo) const
 
 void MeshComponent::Render(const unsigned int mode) const
 {
+	vao->Bind();
+
 	// Do not call the same OpenGL wrapper function whether there is a non-null indices buffer
 	if (IsIndicesBuffer())
 	{
@@ -73,15 +75,21 @@ void MeshComponent::Render(const unsigned int mode) const
 			std::cout << "ERROR::MESH - Any call to this method should have a non-null IBO!" << std::endl;
 		}
 
-		Renderer::Draw(*vao, mode, indices.size(), nullptr);
+		Renderer::Draw(mode, indices.size(), nullptr);
 	}
 	else
 	{
-		Renderer::Draw(*vao, mode, 0, vertices.size());
+		Renderer::Draw(mode, 0, vertices.size());
 	}
+
+	vao->Unbind();
 }
 
 void MeshComponent::RenderInstances(const uint32_t instanceCount) const
 {
-	Renderer::DrawInstances(*vao, GL_TRIANGLES, 0, ibo->GetCount(), instanceCount);
+	vao->Bind();
+
+	Renderer::DrawInstances(GL_TRIANGLES, 0, ibo->GetCount(), instanceCount);
+
+	vao->Unbind();
 }

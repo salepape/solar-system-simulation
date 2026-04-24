@@ -4,7 +4,6 @@
 #include <glfw/glfw3.h>
 #include <iostream>
 
-#include "Buffers/VertexArray.h"
 #include "Shader.h"
 
 
@@ -74,29 +73,17 @@ void Renderer::SetModelMatrixVUniform(const Shader& shader, const glm::mat4& mod
 	shader.setUniformMat4("vu_Model", modelMatrix);
 }
 
-void Renderer::Draw(const VertexArray& vao, const unsigned int mode, const int32_t startIndex, const int32_t count)
+void Renderer::Draw(const unsigned int mode, const int32_t startIndex, const int32_t count)
 {
-	vao.Bind();
-
 	glDrawArrays(mode, startIndex, count);
-
-	vao.Unbind();
 }
 
-void Renderer::Draw(const VertexArray& vao, const unsigned int mode, const int32_t count, const void* offsetInBytes)
+void Renderer::Draw(const unsigned int mode, const int32_t count, const void* offsetInBytes)
 {
-	vao.Bind();
-
 	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
-
-	vao.Unbind();
 }
 
-void Renderer::DrawInstances(const VertexArray& vao, const unsigned int mode, const int32_t startIndex, const int32_t count, const int32_t instanceCount)
+void Renderer::DrawInstances(const unsigned int mode, const int32_t startIndex, const int32_t count, const int32_t instanceCount)
 {
-	vao.Bind();
-
 	glDrawArraysInstanced(mode, startIndex, count, instanceCount);
-
-	vao.Unbind();
 }

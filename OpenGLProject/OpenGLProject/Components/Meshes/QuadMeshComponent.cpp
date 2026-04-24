@@ -60,7 +60,7 @@ void QuadMeshComponent::StoreVertices()
 
 void QuadMeshComponent::RenderGlyphs(const std::string& text, const uint32_t textureUnit) const
 {
-	//vao->Bind();
+	vao->Bind();
 
 	for (int i = 0; i < text.size(); ++i)
 	{
@@ -74,9 +74,9 @@ void QuadMeshComponent::RenderGlyphs(const std::string& text, const uint32_t tex
 		}
 
 		glyphParams.textures[0].Enable(textureUnit);
-		Renderer::Draw(*vao, GL_TRIANGLES, i * QuadMeshComponent::QUAD_VERTEX_COUNT, QuadMeshComponent::QUAD_VERTEX_COUNT);
+		Renderer::Draw(GL_TRIANGLES, i * QuadMeshComponent::QUAD_VERTEX_COUNT, QuadMeshComponent::QUAD_VERTEX_COUNT);
 		glyphParams.textures[0].Disable();
 	}
 
-	//vao->Unbind();
+	vao->Unbind();
 }

@@ -5,7 +5,6 @@
 #include <glm/mat4x4.hpp>
 
 class Shader;
-class VertexArray;
 
 
 
@@ -38,14 +37,14 @@ public:
 	// Shader should already be enabled in each Scene Entity child Render() method prior to call this one. Uniform to be updated in child classes
 	static void SetModelMatrixVUniform(const Shader& shader, const glm::mat4& modelMatrix);
 
-	// Render a primitive without indices (e.g. for Orbit, Skybox and 2D Quad instance)
-	static void Draw(const VertexArray& vao, const unsigned int mode, const int32_t startIndex, const int32_t count);
+	// Render a primitive without indices (e.g. for Orbit, Skybox and 2D Quad instance) - Warning: VAO must be bound prior to this call, and unbound afterwards
+	static void Draw(const unsigned int mode, const int32_t startIndex, const int32_t count);
 
-	// Render a primitive with indices (e.g. for Mesh instance)
-	static void Draw(const VertexArray& vao, const unsigned int mode, const int32_t count, const void* offsetInBytes);
+	// Render a primitive with indices (e.g. for Mesh instance) - Warning: VAO must be bound prior to this call, and unbound afterwards
+	static void Draw(const unsigned int mode, const int32_t count, const void* offsetInBytes);
 
-	// Render primitives without indices using instancing (e.g. for 'Rock' Models in Belt instance)
-	static void DrawInstances(const VertexArray& vao, const unsigned int mode, const int32_t startIndex, const int32_t count, const int32_t instanceCount);
+	// Render primitives without indices using instancing (e.g. for 'Rock' Models in Belt instance) - Warning: VAO must be bound prior to this call, and unbound afterwards
+	static void DrawInstances(const unsigned int mode, const int32_t startIndex, const int32_t count, const int32_t instanceCount);
 };
 
 
