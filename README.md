@@ -124,6 +124,7 @@ Celestial body textures have been downloaded from the websites below:
 Finally, I am very grateful to the following people/sources: they have been real catalysers for my understanding of OpenGL and the world of Graphics.
 * Joey De Vries for his tutorial website [Learn OpenGL](https://learnopengl.com)
 * Yan Chernikov (aka TheCherno) for his tutorial videos [here](https://www.youtube.com/user/TheChernoProject)
+* Nicol Bolas for his numerous interventions and [his website](https://nicolbolas.github.io)
 * Rémy Malgouyres for his course "Programmation 3D avec OpenGL"
 * the website [opengl-tutorial](http://www.opengl-tutorial.org)
 * the website [open.gl](https://open.gl)
