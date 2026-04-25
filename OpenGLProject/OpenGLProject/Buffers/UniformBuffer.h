@@ -47,6 +47,7 @@ private:
 };
 
 // Store the reference to a GLSL Uniform that is shared across several GLSL Vertex/Fragment Shaders, to allow for a single call to update its value in all of them
+// Note: maximise its use, as it has a non-negligeable impact on performance
 class UniformBuffer : public DataBuffer
 {
 public:

@@ -9,7 +9,7 @@
 
 
 
-// Block of contiguous memory which holds plain Vertex data. Does not have to be defined per Model/Mesh if more performant.
+// Block of contiguous memory which holds unformatted Vertex data. Does not have to be defined per Model/Mesh if more performant.
 // Its layout in GLSL Shaders correspond to Vertex Attributes, and need to be stored in a VAO preferrably to be in line with modern OpenGL.
 // Note: binding of VBOs is a global OpenGL state, and decide when subsequent OpenGL calls will work
 class VertexBuffer : public DataBuffer

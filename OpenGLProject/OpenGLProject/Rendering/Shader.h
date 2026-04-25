@@ -60,7 +60,8 @@ private:
 	// Utility function to check object compilation/linking errors
 	void CheckValidity(const uint32_t ID, const ShaderProcessStage shaderProcessStage) const;
 
-	// Should only be called internally, and always after a IsUniformRequired() call so the local Uniform cache is set up appropriately
+	// Should only be called from this Shader class, and always after 'IsUniformRequired()' so the local Uniform cache is set up appropriately.
+	// If Uniform location getter returns -1, it might mean that it lost track of current OpenGL Context, or constructors not copying/moving OpenGL data correctly
 	int32_t GetUniformLocation(const std::string& name) const;
 };
 

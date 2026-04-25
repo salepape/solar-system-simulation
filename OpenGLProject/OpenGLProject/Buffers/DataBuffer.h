@@ -15,7 +15,7 @@ struct SubData
 	std::size_t sizeInBytes{ 0 };
 };
 
-// Represent a contiguous block of memory containing data, called Buffer Object (BO), to be be rendered somohow on screen
+// Represent a contiguous block of memory containing unformatted data, called Buffer Object (BO), that OpenGL can access and modify.
 // Common class of all OpenGL buffer Objects of use (i.e. VBO, IBO or EBO, VAO, UBO). BO should never been instantiated outside of its children.
 // Note: binding of BOs is a global OpenGL state, and decide when subsequent OpenGL calls will work
 class DataBuffer
@@ -26,13 +26,13 @@ public:
 	DataBuffer(const void* data, const std::size_t sizeInBytes, const uint32_t inTarget, const uint32_t usage = GL_STATIC_DRAW);
 	~DataBuffer();
 
-	// Select the BO state we want to make current
+	// Select an OpenGL Target listed in the Context so we make the State associated with the BO current
 	void Bind() const;
 
-	// Unselect the currently used Buffer Object
+	// Clear the specified OpenGL Target for the current BO, letting it free to be bound to any other target later on
 	void Unbind() const;
 
-	// Set data in the memory region starting after the indicated amount of bytes
+	// Allocate the needed number of data bytes in the memory region of the GPU (after a certain byte offset, if needed)
 	void SetSubData(const void* data, const std::size_t sizeInBytes, const uint32_t dataStart = 0) const;
 	void SetSubData(const std::vector<SubData>& data, const uint32_t dataStart = 0) const;
 

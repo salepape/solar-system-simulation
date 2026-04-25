@@ -6,7 +6,7 @@ class VertexBufferLayout;
 
 
 
-// Array saving the GLSL Shader layout representation of Vertex data (defined as plain data in VBOs) as GLSL Vertex Attributes.
+// Collection of OpenGL States to understand which GLSL Shader memory layout to apply to which VBO (resulting in the definition of GLSL Vertex Attributes as expected).
 // No VBO/IBO bindings needed when using VAO bindings: save states as well. Using them to be in line modern OpenGL way of accessing info.
 // Note: binding of VAOs is a global state, and decide when subsequent OpenGL calls will work
 class VertexArray
