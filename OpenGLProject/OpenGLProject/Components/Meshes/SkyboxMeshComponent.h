@@ -5,8 +5,6 @@
 
 #include "MeshComponent.h"
 
-class Renderer;
-
 
 
 class SkyboxMeshComponent : public MeshComponent
@@ -14,11 +12,9 @@ class SkyboxMeshComponent : public MeshComponent
 public:
 	SkyboxMeshComponent();
 
-	void Render(const Renderer& renderer) const override;
-
 private:
 	// FacesCount is 6, verticesPerFaceCount is 6
-	static constexpr int32_t VERTICES_COUNT = 36;
+	static constexpr int32_t VERTEX_COUNT = 36;
 
 	void ComputeVertices();
 };

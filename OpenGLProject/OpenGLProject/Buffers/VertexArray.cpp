@@ -28,7 +28,7 @@ VertexArray::~VertexArray()
 
 void VertexArray::Bind() const
 {
-	// Bind to the VAO ID, which will store all subsequent VBO calls until unbound
+	// Bind to the VAO ID, which will store all subsequent VBO/IBO calls until unbound
 	glBindVertexArray(rendererID);
 }
 
@@ -37,23 +37,24 @@ void VertexArray::Unbind() const
 	glBindVertexArray(0);
 }
 
-void VertexArray::AddBuffer(const VertexBufferLayout& layout)
+void VertexArray::RegisterVertexBufferLayout(const VertexBufferLayout& layout)
 {
 	std::size_t offset = 0;
 
 	for (const VertexAttributeLayout& attributeLayout : layout.GetAttributeLayouts())
 	{
-		// Enable the attribute index at location i in the vertex shader to be used
+		// Enable the Vertex Attribute at a specific index in the GLSL Vertex Shader to be used
 		glEnableVertexAttribArray(attributeLayout.location);
 
-		// Store in the VAO how we want OpenGL to interpret the VBO data relative to the attribute index (layout)
+		// Specify how the VAO should interpret the VBO data relative to the attribute index
 		glVertexAttribPointer(attributeLayout.location, attributeLayout.count, attributeLayout.type, attributeLayout.normalised, layout.GetStride(), reinterpret_cast<const void*>(offset));
 
+		// Skip the blocks of memory holding previously processed data for the next iteration
 		offset += static_cast<std::size_t>(attributeLayout.count) * sizeof(attributeLayout.type);
 	}
 }
 
-void VertexArray::AddInstancedBuffer(const VertexBufferLayout& layout) const
+void VertexArray::RegisterInstancingVertexBufferLayout(const VertexBufferLayout& layout) const
 {
 	Bind();
 
@@ -61,7 +62,7 @@ void VertexArray::AddInstancedBuffer(const VertexBufferLayout& layout) const
 	const std::size_t vec4sizeInBytes = sizeof(glm::vec4);
 	std::size_t offset = 0;
 
-	// Iterate through the instanced matrix only
+	// Iterate through the matrix containing Vertex Attribute layout for instancing
 	for (const VertexAttributeLayout& attributeLayout : layout.GetAttributeLayouts())
 	{
 		// Enable the attribute index at location i in the vertex shader to be used

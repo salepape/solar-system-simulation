@@ -1,6 +1,7 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include <glad/glad.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
@@ -9,7 +10,6 @@
 #include <vector>
 
 class IndexBuffer;
-class Renderer;
 class VertexArray;
 class VertexBuffer;
 
@@ -23,16 +23,16 @@ struct Vertex
 	glm::vec3 tangent{ 0.0f };
 	glm::vec3 biTangent{ 0.0f };
 
-	static constexpr uint32_t POSITION_ELMTS_COUNT = 3;
-	static constexpr uint32_t NORMAL_ELMTS_COUNT = 3;
-	static constexpr uint32_t TEXCOORDS_ELMTS_COUNT = 2;
-	static constexpr uint32_t TANGENT_ELMTS_COUNT = 3;
-	static constexpr uint32_t BITANGENT_ELMTS_COUNT = 3;
+	static constexpr uint32_t POSITION_TYPE_DIMENSION = 3;
+	static constexpr uint32_t NORMAL_TYPE_DIMENSION = 3;
+	static constexpr uint32_t TEXCOORDS_TYPE_DIMENSION = 2;
+	static constexpr uint32_t TANGENT_TYPE_DIMENSION = 3;
+	static constexpr uint32_t BITANGENT_TYPE_DIMENSION = 3;
 
-	static constexpr uint32_t INSTANCE_MATRIX_ELMTS_COUNT = 4;
+	static constexpr uint32_t INSTANCE_MATRIX_TYPE_DIMENSION = 4;
 };
 
-// Geometry and its associated buffer objects
+// 3D Geometry and its associated buffer objects
 class MeshComponent
 {
 public:
@@ -55,8 +55,9 @@ public:
 
 	void StoreInstanceModelMatrices() const;
 
-	virtual void Render(const Renderer& renderer) const;
-	void RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const;
+	// Call the appropriate OpenGL draw function according to the emptiness of the indices vector
+	virtual void Render(const unsigned int mode = GL_TRIANGLES) const;
+	virtual void RenderInstances(const uint32_t instanceCount) const;
 
 protected:
 	std::vector<Vertex> vertices;
@@ -67,6 +68,9 @@ protected:
 
 	// Set vertex buffers and its attribute pointers once we have all required data
 	void StoreVertices();
+
+private:
+	bool IsIndicesBuffer() const { return indices.empty() == false; }
 };
 
 

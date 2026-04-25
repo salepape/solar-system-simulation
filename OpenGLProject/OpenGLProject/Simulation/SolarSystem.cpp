@@ -19,7 +19,6 @@
 #include "Interactions/PerspectiveCameraController.h"
 #include "Rendering/Renderer.h"
 #include "Rendering/ShaderLoader.h"
-#include "Rendering/TextRenderer.h"
 #include "Utils/Helpers.h"
 
 
@@ -39,7 +38,7 @@ SolarSystem::SolarSystem() :
 // @todo - Do SPIKE for going full ECS instead of only Entity-Component Composition relationships
 void SolarSystem::Update()
 {
-	renderer.Clear();
+	Renderer::Clear();
 
 	const Application& runningApp = Application::GetInstance();
 	const Window& runningWindow = runningApp.GetWindow();
@@ -61,9 +60,9 @@ void SolarSystem::Update()
 		const CelestialBodyEntity* parentBody = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? &GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody() : nullptr;
 		bodySystem.GetCelestialBody().ComputeCartesianPosition(runningApp.elapsedTime * runningApp.speedFactor, parentBody);
 
-		bodiesSortedByDistance.insert({
+		bodiesSortedByDistance.emplace(
 			glm::distance(cameraPosition, bodySystem.GetCelestialBody().GetPosition()),
-			bodySystem });
+			bodySystem);
 	}
 
 	// Draw all the body systems of the Solar System
@@ -72,18 +71,18 @@ void SolarSystem::Update()
 		// Draw celestial bodies, and animate them accordingly over time
 		BodySystem& bodySystem = bodyIt->second;
 		const glm::vec3& parentPosition = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody().GetPosition() : glm::vec3(0.0f);
-		bodySystem.Render(renderer, runningApp.IsLegendDisplayed(), textRenderer, camera, parentPosition, runningApp.elapsedTime * runningApp.speedFactor);
+		bodySystem.Render(runningApp.IsLegendDisplayed(), camera, parentPosition, runningApp.elapsedTime * runningApp.speedFactor);
 	}
 
 	// Draw the 2 main belts of the Solar System
 	for (BeltEntity& belt : belts)
 	{
-		belt.Render(renderer);
+		belt.Render();
 	}
 
 	// Draw Milky Way skybox
 	camera.SetInfiniteProjectionViewVUniform(runningWindow.GetAspectRatio());
-	milkyWay.Render(renderer);
+	milkyWay.Render();
 }
 
 void SolarSystem::BuildBodySystems()
@@ -95,7 +94,7 @@ void SolarSystem::BuildBodySystems()
 	const std::string currentSolutionPath(FileHelper::GetSolutionAbsolutePath());
 
 	std::unordered_map<std::string, std::filesystem::path> bodyPaths;
-	FileHelper::ListPaths(currentSolutionPath + "/Textures/CelestialBodies/", bodyPaths);
+	FileHelper::ListModelPaths(currentSolutionPath + "/Textures/CelestialBodies/", bodyPaths);
 
 	ResourceCSVParser bodyCSVParser(currentSolutionPath + "/Data/CelestialBodyData.csv");
 	bodySystems.reserve(bodyCSVParser.GetCSVLinesCount());
@@ -154,23 +153,7 @@ void SolarSystem::BuildBodySystems()
 		celestialBodyNameCache = celestialBodyName;
 	}
 
-	BuildBodySystemsLegend();
-
 	BuildBodyRings();
-}
-
-void SolarSystem::BuildBodySystemsLegend()
-{
-	textRenderer.SetFTFont(FileHelper::GetSolutionAbsolutePath() + "/Fonts/arial.ttf");
-
-	for (const BodySystem& bodySystem : bodySystems)
-	{
-		// Texture creation is handled by the Text Renderer for now (glyph rendering issue when textures created otherwise)
-		textRenderer.LoadFTGlyphs(bodySystem.GetCelestialBody().GetName());
-	}
-
-	// Free FT resources once we don't have any more letters to load
-	textRenderer.FreeFTResources();
 }
 
 void SolarSystem::BuildBodyRings()
@@ -178,7 +161,7 @@ void SolarSystem::BuildBodyRings()
 	const std::string currentSolutionPath(FileHelper::GetSolutionAbsolutePath());
 
 	std::unordered_map<std::string, std::filesystem::path> ringPaths;
-	FileHelper::ListPaths(currentSolutionPath + "/Models/Rings/", ringPaths);
+	FileHelper::ListModelPaths(currentSolutionPath + "/Models/Rings/", ringPaths);
 
 	ResourceCSVParser ringCSVParser(currentSolutionPath + "/Data/RingData.csv");
 
@@ -188,11 +171,10 @@ void SolarSystem::BuildBodyRings()
 		const std::string bodyName(ringParams[0]);
 		const std::filesystem::path modelPath(ringPaths[ringParams[1]]);
 		const float radius = std::stof(ringParams[2]);
-		const float opacity = std::stof(ringParams[3]);
 
 		// Add the Rings to each parent Body once initialised
 		BodySystem& parentBodySystem = GetBodySystem(bodyName);
-		parentBodySystem.SetBodyRings(RingsData{ modelPath, bodyName, radius, opacity });
+		parentBodySystem.SetBodyRings(RingsData{ modelPath, bodyName, radius });
 	}
 }
 
@@ -201,7 +183,7 @@ void SolarSystem::BuildBelts()
 	const std::string currentSolutionPath(FileHelper::GetSolutionAbsolutePath());
 
 	std::unordered_map<std::string, std::filesystem::path> beltPaths;
-	FileHelper::ListPaths(currentSolutionPath + "/Models/Belts/", beltPaths);
+	FileHelper::ListModelPaths(currentSolutionPath + "/Models/Belts/", beltPaths);
 
 	ResourceCSVParser beltCSVParser(currentSolutionPath + "/Data/BeltData.csv");
 	belts.reserve(beltCSVParser.GetCSVLinesCount());

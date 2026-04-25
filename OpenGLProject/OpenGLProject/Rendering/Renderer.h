@@ -1,51 +1,50 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include <cstdint>
 #include <glm/mat4x4.hpp>
 
 class Shader;
-class IndexBuffer;
-class VertexArray;
 
 
 
+// Static wrapper of all OpenGL functions allowing to draw or have a visual change on screen
 class Renderer
 {
 public:
-	// Default constructor needed since we deleted the copy constructor
-	Renderer() = default;
-	Renderer(const Renderer&) = delete;
+	static bool IsOpenGLContextActive();
 
 	// Clear the depth buffer
-	void Clear() const;
+	static void Clear();
 
-	void EnableDepthTesting() const;
-	void DisableDepthTesting() const;
+	static void EnableDepthTesting();
+	static void DisableDepthTesting();
 
 	// Be sure all meshes are defined in a counter-clockwise fashion
-	void EnableFaceCulling() const;
-	void DisableFaceCulling() const;
+	static void EnableFaceCulling();
+	static void DisableFaceCulling();
 
 	// Enable OpenGL states for blending to make texts rendered correctly
-	void EnableBlending() const;
-	void DisableBlending() const;
+	static void EnableBlending();
+	static void DisableBlending();
 
 	// Set the function that will be used to compare each pixel depth value with the one stored in buffer
-	void SetDepthFctToEqual() const;
-	void SetDepthFctToLess() const;
+	static void SetDepthFctToEqual();
+	static void SetDepthFctToLess();
 
+	// @todo - Create a Movement Component and move this method out of it
 	// Called on a per-frame basis to update the Transform.
 	// Shader should already be enabled in each Scene Entity child Render() method prior to call this one. Uniform to be updated in child classes
-	void SetModelMatrixVUniform(const Shader& shader, const glm::mat4& modelMatrix) const;
+	static void SetModelMatrixVUniform(const Shader& shader, const glm::mat4& modelMatrix);
 
-	// Draw arrays (e.g. for Orbit, Skybox and Text instances)
-	void Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count) const;
+	// Render a primitive without indices (e.g. for Orbit, Skybox and 2D Quad instance) - Warning: VAO must be bound prior to this call, and unbound afterwards
+	static void Draw(const unsigned int mode, const int32_t startIndex, const int32_t count);
 
-	// Draw elements using an IBO (e.g. for Mesh instances)
-	void Draw(const VertexArray& vao, const IndexBuffer& ibo) const;
+	// Render a primitive with indices (e.g. for Mesh instance) - Warning: VAO must be bound prior to this call, and unbound afterwards
+	static void Draw(const unsigned int mode, const int32_t count, const void* offsetInBytes);
 
-	// Draw elements (e.g. for Belt instances 'Rock' Model instancing)
-	void DrawInstances(const VertexArray& vao, const unsigned int iboCount, const unsigned int instanceCount) const;
+	// Render primitives without indices using instancing (e.g. for 'Rock' Models in Belt instance) - Warning: VAO must be bound prior to this call, and unbound afterwards
+	static void DrawInstances(const unsigned int mode, const int32_t startIndex, const int32_t count, const int32_t instanceCount);
 };
 
 

@@ -10,8 +10,8 @@
 
 
 
-SphereMeshComponent::SphereMeshComponent(const float inRadius, const uint32_t inMeridianStripsCount, const uint32_t inParallelStripsCount) :
-	radius(inRadius), meridianStripsCount(inMeridianStripsCount), parallelStripsCount(inParallelStripsCount)
+SphereMeshComponent::SphereMeshComponent(const float inRadius, const uint32_t inMeridianStripCount, const uint32_t inParallelStripCount) :
+	radius(inRadius), meridianStripCount(inMeridianStripCount), parallelStripCount(inParallelStripCount)
 {
 	ComputeVertices();
 	ComputeIndices();
@@ -20,24 +20,24 @@ SphereMeshComponent::SphereMeshComponent(const float inRadius, const uint32_t in
 
 void SphereMeshComponent::ComputeVertices()
 {
-	const float invMeridianStripsCount = 1.0f / meridianStripsCount;
-	const float invParallelStripsCount = 1.0f / parallelStripsCount;
+	const float invMeridianStripCount = 1.0f / meridianStripCount;
+	const float invParallelStripCount = 1.0f / parallelStripCount;
 	const float invRadius = 1.0f / radius;
 
-	vertices.reserve((parallelStripsCount + 1) * (meridianStripsCount + 1));
-	for (uint32_t i = 0; i <= parallelStripsCount; ++i)
+	vertices.reserve((parallelStripCount + 1) * (meridianStripCount + 1));
+	for (uint32_t i = 0; i <= parallelStripCount; ++i)
 	{
-		const float iInvParallelStripsCount = i * invParallelStripsCount;
+		const float iInvParallelStripsCount = i * invParallelStripCount;
 
 		// Angle between two squares (i.e. area formed by the intersection between one meridian strip and one parallel strip) of one parallel strip (in radians)
 		const float theta = GLMConstants::unitPi * (0.5f - iInvParallelStripsCount);
 		const float rCosTheta = radius * glm::cos(theta);
 		const float zCoor = radius * glm::sin(theta);
 
-		for (uint32_t j = 0; j <= meridianStripsCount; ++j)
+		for (uint32_t j = 0; j <= meridianStripCount; ++j)
 		{
 			// Angle between two squares of one meridian strip (in radians)
-			const float jInvMeridianStripsCount = j * invMeridianStripsCount;
+			const float jInvMeridianStripsCount = j * invMeridianStripCount;
 			const float phi = GLMConstants::doublePi * jInvMeridianStripsCount;
 			const float xCoor = rCosTheta * glm::cos(phi);
 			const float yCoor = rCosTheta * glm::sin(phi);
@@ -61,13 +61,13 @@ void SphereMeshComponent::ComputeIndices()
 	// | /  |
 	// k2--k2+1
 
-	indices.reserve(meridianStripsCount * meridianStripsCount);
-	for (uint32_t i = 0; i < meridianStripsCount; ++i)
+	indices.reserve(meridianStripCount * meridianStripCount);
+	for (uint32_t i = 0; i < meridianStripCount; ++i)
 	{
-		uint32_t parallelStripIndice = i * (parallelStripsCount + 1);
-		uint32_t nextParallelStripIndice = parallelStripIndice + meridianStripsCount + 1;
+		uint32_t parallelStripIndice = i * (parallelStripCount + 1);
+		uint32_t nextParallelStripIndice = parallelStripIndice + meridianStripCount + 1;
 
-		for (uint32_t j = 0; j < meridianStripsCount; ++j, ++parallelStripIndice, ++nextParallelStripIndice)
+		for (uint32_t j = 0; j < meridianStripCount; ++j, ++parallelStripIndice, ++nextParallelStripIndice)
 		{
 			// 2 triangles per square (i.e. area formed by the intersection between one meridian strip and one parallel strip) except for those formed by first (top) and last (bottom) parallel strips
 			if (i != 0)
@@ -78,7 +78,7 @@ void SphereMeshComponent::ComputeIndices()
 				indices.push_back(parallelStripIndice + 1);
 			}
 
-			if (i != (parallelStripsCount - 1))
+			if (i != (parallelStripCount - 1))
 			{
 				// k1+1---k2---k2+1
 				indices.push_back(parallelStripIndice + 1);

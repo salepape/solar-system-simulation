@@ -12,10 +12,12 @@ struct GLFWwindow;
 
 
 // @todo - Reduce exposure of most attributes once the event system is implemented
+// Wrap a GLFW Window and an OpenGL Context
 class Window
 {
 public:
 	Window(const uint32_t inWidth, const uint32_t inHeight, const std::string& inTitle);
+	~Window();
 
 	GLFWwindow* GLFWWindow{ nullptr };
 
@@ -27,8 +29,6 @@ public:
 
 	// Call all window callbacks associated with each queueing events
 	void ProcessPendingEvents() const;
-
-	void ClearResources() const;
 
 	float GetAspectRatio() const { return aspectRatio; }
 
@@ -44,17 +44,22 @@ private:
 
 	float aspectRatio{ 0.0f };
 
-	bool isFirstMouseInput{ true };
 	glm::vec2 lastCursorPosition;
+	bool isFirstMouseInput{ true };
 
-	GLFWwindow* InitGLFWWindow() const;
+	// Create the underlying GLFW Window and associate an OpenGL Context with it
+	// Warning - Any OpenGL command that would be run before the creation of the Window will fail (as the OpenGL Context creation is wrapped in GLFW Window class)
+	void InitGLFWWindowAndOpenGLContext();
 
-	void SetWindowResizeGLFWCallback() const;
+	// Destroy the underlying GLFW Window and its associated OpenGL Context
+	// Warning - Any OpenGL command that would be run after the destruction of the Window will fail (as the OpenGL Context destruction is wrapped in GLFW Window destructor)
+	void ClearGLFWWindowAndOpenGLContext() const;
 
-	// Tell GLFW that we want the OpenGL Context of the GLFW Window to be the active one on the current thread
+	// Set the OpenGL Context asssociated with the GLFW Window to be the current one used on the GPU rendering thread
 	void MakeOpenGLContextCurrent() const;
 
 	void Resize(const uint32_t newWidth, const uint32_t newHeight);
+	void SetWindowResizeGLFWCallback() const;
 };
 
 

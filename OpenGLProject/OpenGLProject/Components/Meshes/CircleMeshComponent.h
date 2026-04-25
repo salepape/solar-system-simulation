@@ -5,20 +5,18 @@
 
 #include "MeshComponent.h"
 
-class Renderer;
-
 
 
 class CircleMeshComponent : public MeshComponent
 {
 public:
-	CircleMeshComponent(const float inRadius);
+	CircleMeshComponent(const float inRadius, const uint32_t inMeridianStripCount = 500);
 
-	void Render(const Renderer& renderer) const override;
+	void Render(const unsigned int mode = 0) const override;
 
 private:
 	float radius{ 0.0f };
-	uint32_t meridianStripsCount{ 500 };
+	int32_t meridianStripCount{ 500 };
 
 	void ComputeVertices();
 };

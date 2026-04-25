@@ -6,29 +6,24 @@
 
 uint32_t UniformBuffer::globalBlockBindingPoint = 0;
 
+// @todo - To be move outside of "Engine code"
 std::unordered_map<UniformShaderGroup, std::vector<ShaderLookUpID::Enum>> UniformBuffer::shaderGroups
 {
 	{
 		UniformShaderGroup::PROJECTION_VIEW,
 		{
-			ShaderLookUpID::Enum::CELESTIAL_BODY,
+			ShaderLookUpID::Enum::DEFAULT,
 			ShaderLookUpID::Enum::SUN,
 			ShaderLookUpID::Enum::BILLBOARD,
 			ShaderLookUpID::Enum::BELT,
 			ShaderLookUpID::Enum::MILKY_WAY,
-			ShaderLookUpID::Enum::ORBIT,
-			ShaderLookUpID::Enum::VISIBLE_BODY_RINGS,
-			ShaderLookUpID::Enum::INFRARED_BODY_RINGS
 		}
 	},
 	{
 		UniformShaderGroup::LINE_OF_SIGHT,
 		{
-			ShaderLookUpID::Enum::CELESTIAL_BODY,
+			ShaderLookUpID::Enum::DEFAULT,
 			ShaderLookUpID::Enum::BELT,
-			ShaderLookUpID::Enum::ORBIT,
-			ShaderLookUpID::Enum::VISIBLE_BODY_RINGS,
-			ShaderLookUpID::Enum::INFRARED_BODY_RINGS
 		}
 	}
 };

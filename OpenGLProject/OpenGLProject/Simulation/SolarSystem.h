@@ -39,7 +39,6 @@ private:
 	// Instantiate "spherical" celestial bodies/ring systems/belt systems, after loading data from .csv files,
 	// and re-scaling it so we can visualise the whole Solar System without having to travel for too long
 	void BuildBodySystems();
-	void BuildBodySystemsLegend();
 	void BuildBodyRings();
 	void BuildBelts();
 };

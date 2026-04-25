@@ -219,7 +219,7 @@
     <ClInclude Include="Rendering/ShaderLoader.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering/TextRenderer.h">
+    <ClInclude Include="Rendering/GlyphLoader.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Rendering/Texture.h">
@@ -365,7 +365,7 @@
     <ClCompile Include="Rendering/ShaderLoader.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering/TextRenderer.cpp">
+    <ClCompile Include="Rendering/GlyphLoader.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rendering/Texture.cpp">

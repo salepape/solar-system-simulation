@@ -26,19 +26,19 @@ void Model::StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatric
 	vbo.Unbind();
 }
 
-void Model::Render(const Renderer& renderer) const
+void Model::Render() const
 {
 	for (const MeshComponent& mesh : meshes)
 	{
-		mesh.Render(renderer);
+		mesh.Render();
 	}
 }
 
-void Model::RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const
+void Model::RenderInstances(const uint32_t instanceCount) const
 {
 	for (const MeshComponent& mesh : meshes)
 	{
-		mesh.RenderInstances(renderer, instanceCount);
+		mesh.RenderInstances(instanceCount);
 	}
 }
 

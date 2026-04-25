@@ -22,13 +22,14 @@ enum class ShaderProcessStage
 class Shader
 {
 public:
-	Shader(const ShaderLookUpID::Enum inEntityName, const std::string& vsPath, const std::string& fsPath);
+	Shader(const ShaderLookUpID::Enum inShaderLookUpID, const std::string& vsPath, const std::string& fsPath);
 	~Shader();
 
 	// Needs to be called before we initialise a uniform defined in the shader
 	void Enable() const;
 	void Disable() const;
 
+	// @todo - Uppercase first letter of all setters
 	// Utility uniform setters
 	void setUniformBool(const std::string& name, const bool value) const;
 	void setUniformInt(const std::string& name, const int32_t value) const;
@@ -59,7 +60,8 @@ private:
 	// Utility function to check object compilation/linking errors
 	void CheckValidity(const uint32_t ID, const ShaderProcessStage shaderProcessStage) const;
 
-	// Should only be called internally, and always after a IsUniformRequired() call so the local Uniform cache is set up appropriately
+	// Should only be called from this Shader class, and always after 'IsUniformRequired()' so the local Uniform cache is set up appropriately.
+	// If Uniform location getter returns -1, it might mean that it lost track of current OpenGL Context, or constructors not copying/moving OpenGL data correctly
 	int32_t GetUniformLocation(const std::string& name) const;
 };
 

@@ -1,90 +1,89 @@
 #include "Renderer.h"
 
 #include <glad/glad.h>
+#include <glfw/glfw3.h>
+#include <iostream>
 
-#include "Buffers/IndexBuffer.h"
-#include "Buffers/VertexArray.h"
 #include "Shader.h"
 
 
 
-void Renderer::Clear() const
+bool Renderer::IsOpenGLContextActive()
+{
+	const GLFWwindow* const windowWithCurrentOpenGLContext = glfwGetCurrentContext();
+	const bool isOpenGLContextActive = windowWithCurrentOpenGLContext == nullptr;
+
+	if (isOpenGLContextActive == false)
+	{
+		std::cout << "ERROR::RENDERER - No current OpenGL context running for the GLFW Window: OpenGL functions cannot work!" << std::endl;
+		assert(false);
+	}
+
+	return isOpenGLContextActive;
+}
+
+void Renderer::Clear()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::EnableDepthTesting() const
+void Renderer::EnableDepthTesting()
 {
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Renderer::EnableFaceCulling() const
+void Renderer::EnableFaceCulling()
 {
 	glEnable(GL_CULL_FACE);
 }
 
-void Renderer::DisableFaceCulling() const
+void Renderer::DisableFaceCulling()
 {
 	glDisable(GL_CULL_FACE);
 }
 
-void Renderer::EnableBlending() const
+void Renderer::EnableBlending()
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void Renderer::DisableDepthTesting() const
+void Renderer::DisableDepthTesting()
 {
 	glDisable(GL_DEPTH_TEST);
 }
 
-void Renderer::DisableBlending() const
+void Renderer::DisableBlending()
 {
 	glDisable(GL_BLEND);
 }
 
-void Renderer::SetDepthFctToEqual() const
+void Renderer::SetDepthFctToEqual()
 {
 	glDepthFunc(GL_LEQUAL);
 }
 
-void Renderer::SetDepthFctToLess() const
+void Renderer::SetDepthFctToLess()
 {
 	glDepthFunc(GL_LESS);
 }
 
-void Renderer::SetModelMatrixVUniform(const Shader& shader, const glm::mat4& modelMatrix) const
+void Renderer::SetModelMatrixVUniform(const Shader& shader, const glm::mat4& modelMatrix)
 {
 	shader.setUniformMat4("vu_Model", modelMatrix);
 }
 
-void Renderer::Draw(const VertexArray& vao, const unsigned int mode, const unsigned int count) const
+void Renderer::Draw(const unsigned int mode, const int32_t startIndex, const int32_t count)
 {
-	vao.Bind();
-
-	glDrawArrays(mode, 0, count);
-
-	vao.Unbind();
+	glDrawArrays(mode, startIndex, count);
 }
 
-void Renderer::Draw(const VertexArray& vao, const IndexBuffer& ibo) const
+void Renderer::Draw(const unsigned int mode, const int32_t count, const void* offsetInBytes)
 {
-	vao.Bind();
-	ibo.Bind();
-
-	glDrawElements(GL_TRIANGLES, ibo.GetCount(), GL_UNSIGNED_INT, nullptr);
-
-	// Do NOT unbind IBO before VAO since the latter contains references to IBO BindBuffer
-	vao.Unbind();
-	ibo.Unbind();
+	glDrawElements(mode, count, GL_UNSIGNED_INT, offsetInBytes);
 }
 
-void Renderer::DrawInstances(const VertexArray& vao, const unsigned int iboCount, const unsigned int instanceCount) const
+void Renderer::DrawInstances(const unsigned int mode, const int32_t startIndex, const int32_t count, const int32_t instanceCount)
 {
-	vao.Bind();
-
-	glDrawElementsInstanced(GL_TRIANGLES, iboCount, GL_UNSIGNED_INT, 0, instanceCount);
-
-	vao.Unbind();
+	glDrawArraysInstanced(mode, startIndex, count, instanceCount);
 }

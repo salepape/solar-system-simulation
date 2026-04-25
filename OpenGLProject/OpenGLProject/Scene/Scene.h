@@ -1,9 +1,6 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "Rendering/Renderer.h"
-#include "Rendering/TextRenderer.h"
-
 
 
 // @todo - Find a way to keep a list of all SceneEntities and other renderables in this class instead of its children
@@ -19,9 +16,6 @@ public:
 protected:
 	virtual void Update() = 0;
 	void Clear() const;
-
-	Renderer renderer;
-	TextRenderer textRenderer;
 };
 
 

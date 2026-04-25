@@ -5,49 +5,57 @@
 
 #include <cstddef> // std::size_t
 #include <cstdint>
+#include <memory>
+#include <string>
 #include <vector>
 
-#include "MeshComponent.h"
-
-class Renderer;
 class VertexArray;
-class VertexBuffer;
 
 
 
-struct QuadVertex
+struct QuadParams
+{
+	float xPosition{ 0.0f };
+	float yPosition{ 0.0f };
+
+	float width{ 0.0f };
+	float height{ 0.0f };
+};
+
+// Warning: make sure this struct always contain the same data as the mirrored attribute (called 'va_Quad') in the GLSL Vertex Shader
+struct Vertex2D
 {
 	glm::vec2 position{ 0.0f };
 	glm::vec2 texCoords{ 0.0f };
 
-	static constexpr uint32_t ELMTS_COUNT = 4;
+	static constexpr uint32_t POSITION_TYPE_DIMENSION = 2;
+	static constexpr uint32_t TEXCOORDS_TYPE_DIMENSION = 2;
 };
 
-// A 2D quad used to render a texture (e.g. a character glyph). Not inheriting from Mesh class since we do not want the same vertex elements/VAO management.
-class QuadMeshComponent : public MeshComponent
+// A chain of 2D Quad Mesh. Not inheriting from Mesh class which is for element layout/VAO management in 3D only
+class QuadMeshComponent
 {
 public:
-	QuadMeshComponent(const float inXPosition, const float inYPosition, const float inWidth, const float inHeight);
-
-	// Update content of VBO memory with quad data
-	void StoreVertices(VertexBuffer& vbo) const;
+	QuadMeshComponent(std::vector<QuadParams>&& inQuadParams);
 
 	// Render texture over the quad (e.g. the one of a character glyph)
-	void Render(const Renderer& /*renderer*/) const override {};
-	void Render(const Renderer& renderer, const VertexArray& vao) const;
+	void RenderGlyphs(const std::string& text, const uint32_t textureUnit) const;
 
-	static constexpr int32_t VERTICES_COUNT = 6;
-	static constexpr std::size_t GetSize() { return static_cast<std::size_t>(QuadMeshComponent::VERTICES_COUNT) * sizeof(QuadVertex); }
+	// Amount of vertices needed to shape a quad (formed of 2 triangles)
+	static constexpr int32_t QUAD_VERTEX_COUNT = 6;
 
 private:
-	float xPosition{ 0.0f };
-	float yPosition{ 0.0f };
-	float width{ 0.0f };
-	float height{ 0.0f };
+	// Quad coordinates/dimensions computed from another class, needed to build actual Quad vertices
+	std::vector<QuadParams> allQuadParams;
+	// List of Quad vertices (to be read per batch of 6 elements - batch not represented in data)
+	std::vector<Vertex2D> vertices;
 
-	std::vector<QuadVertex> vertexCoor;
+	std::shared_ptr<VertexArray> vao;
 
 	void ComputeVertices();
+
+	// Allocate needed VBO memory for quad data and communicate to VAO how to interpret its layout
+	void StoreVertices();
 };
 
 

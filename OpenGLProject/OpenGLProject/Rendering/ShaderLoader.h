@@ -12,27 +12,20 @@ class Shader;
 // To be used to refer to any Shader instead of relying on raw strings (layer of security over the existence of LookUpIDs when instantiating or look-up functions)
 namespace ShaderLookUpID
 {
-	static const int Num = 8;
+	static const size_t Num = 5;
 
 	// Enum elements do not correspond to GLSL Shader names but on which Scene Entity/Object Mesh they are applied to
 	enum Enum
 	{
 		UNDEFINED = 0,
-
-		// Mesh info built from code
-		CELESTIAL_BODY,
+		DEFAULT,
 		SUN,
 		BILLBOARD,
 		MILKY_WAY,
-		ORBIT,
-
-		// Mesh info retrieve from .obj/.mat files
 		BELT,
-		VISIBLE_BODY_RINGS,
-		INFRARED_BODY_RINGS,
 	};
 
-	static const std::array<Enum, Num> All = { CELESTIAL_BODY, SUN, BILLBOARD, BELT, MILKY_WAY, ORBIT, VISIBLE_BODY_RINGS, INFRARED_BODY_RINGS, };
+	static const std::array<Enum, Num> All = { DEFAULT, SUN, BILLBOARD, BELT, MILKY_WAY, };
 
 	// [[maybe_unused]] only used here to silence a Clang warning!
 	[[maybe_unused]] static Enum Get(const int index) { return All[index]; }

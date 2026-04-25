@@ -6,7 +6,8 @@
 
 
 
-// Index at which a GLSL Vertex Shader attribute will be set (we assume this convention for all shader files)
+
+// Index at which a user-defined input value of a GLSL Vertex Shader will be set (we assume this convention for all shader files)
 enum VertexAttributeLocation
 {
 	Position = 0,
@@ -21,13 +22,18 @@ enum VertexAttributeLocation
 	InstancedMatrixCol4 = 8,
 };
 
-// Define a GLSL Vertex Shader attribute (via the 'layout' keyword) at a specific index as well as information on the nature of the variable itself
+// Group of parameters so the VAO interprets VBO data correctly, enabling a correct initialisation of user-defined input values of GLSL Vertex Shaders 
 struct VertexAttributeLayout
 {
 	VertexAttributeLocation location;
 
+	// Type of each element (e.g. simple OpenGL types: GL_FLOAT, GL_INT, etc.)
 	uint32_t type{ 0 };
+
+	// Dimension of the attribute (e.g. 2 for a Vec2, 3 for a Vec3, etc.)
 	uint32_t count{ 0 };
+
+	// Describe whether the fixed-point attribute should be normalised before conversion
 	uint8_t normalised{ 0 };
 };
 

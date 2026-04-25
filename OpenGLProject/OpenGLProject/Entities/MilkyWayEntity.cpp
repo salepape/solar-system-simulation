@@ -26,18 +26,18 @@ BlinnPhongMaterial MilkyWayEntity::InitialiseMaterial(const std::filesystem::pat
 	return BlinnPhongMaterial(ShaderLookUpID::Enum::MILKY_WAY, std::vector<Texture>{ std::move(texture) });
 }
 
-void MilkyWayEntity::Render(const Renderer& renderer, const float /*elapsedTime*/)
+void MilkyWayEntity::Render(const float /*elapsedTime*/)
 {
 	Shader& shader = material.GetShader();
 	shader.Enable();
 
-	renderer.SetDepthFctToEqual();
+	Renderer::SetDepthFctToEqual();
 
 	material.EnableTextures();
-	skybox.Render(renderer);
+	skybox.Render();
 	material.DisableTextures();
 
-	renderer.SetDepthFctToLess();
+	Renderer::SetDepthFctToLess();
 
 	shader.Disable();
 }

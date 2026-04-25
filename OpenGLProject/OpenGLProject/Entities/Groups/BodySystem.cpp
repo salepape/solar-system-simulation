@@ -26,15 +26,15 @@ void BodySystem::SetBodyRings(RingsData&& inRingsData)
 	celestialBodyRings = std::make_shared<BodyRingsEntity, RingsData&&>(std::move(inRingsData));
 }
 
-void BodySystem::Render(const Renderer& renderer, const bool isBillboard, TextRenderer& textRenderer, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float elapsedTime)
+void BodySystem::Render(const bool isBillboard, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float elapsedTime)
 {
-	celestialBody.Render(renderer, elapsedTime);
+	celestialBody.Render(elapsedTime);
 
-	orbit.Render(renderer, parentPosition, elapsedTime);
+	orbit.Render(parentPosition, elapsedTime);
 
 	if (celestialBodyRings != nullptr)
 	{
-		celestialBodyRings->Render(renderer, celestialBody.GetModelMatrix(), elapsedTime);
+		celestialBodyRings->Render(celestialBody.GetModelMatrix(), elapsedTime);
 	}
 
 	if (isBillboard)
@@ -42,6 +42,6 @@ void BodySystem::Render(const Renderer& renderer, const bool isBillboard, TextRe
 		// Orient text billboards so the correct side (i.e. with the glyphs rendered in the correct direction) always faces the camera
 		const glm::vec3& forward = glm::normalize(camera.GetPosition() - celestialBody.GetPosition());
 		const glm::vec3& right = glm::cross(camera.GetUp(), forward);
-		billboard.Render(renderer, textRenderer, celestialBody.GetPosition(), forward, right);
+		billboard.Render(celestialBody.GetPosition(), forward, right);
 	}
 }

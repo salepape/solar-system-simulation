@@ -12,7 +12,6 @@
 #include "SceneEntity.h"
 
 struct BodyData;
-class Renderer;
 
 
 
@@ -21,8 +20,8 @@ class OrbitEntity : public SceneEntity
 public:
 	OrbitEntity(const BodyData& inBodyData);
 
-	void Render(const Renderer& /*renderer*/, const float /*elapsedTime*/) override {};
-	void Render(const Renderer& renderer, const glm::vec3& parentPosition, const float /*elapsedTime*/);
+	void Render(const float /*elapsedTime*/) override {};
+	void Render(const glm::vec3& parentPosition, const float /*elapsedTime*/);
 
 private:
 	// @todo - Implement ellipse for a more realistic simulation (circular orbits with eccentricities close to 0 for now)

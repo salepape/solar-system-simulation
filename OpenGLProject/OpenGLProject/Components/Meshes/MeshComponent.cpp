@@ -27,27 +27,26 @@ void MeshComponent::StoreVertices()
 		std::cout << "ERROR::MESH - No vertices found!" << std::endl;
 		assert(false);
 	}
-	const bool isIndexBuffer = indices.empty() == false;
 
 	vao = std::make_shared<VertexArray>();
 	VertexBuffer vbo(static_cast<const void*>(vertices.data()), vertices.size() * sizeof(Vertex));
-	if (isIndexBuffer)
+	if (IsIndicesBuffer())
 	{
 		ibo = std::make_shared<IndexBuffer>(static_cast<const void*>(indices.data()), static_cast<uint32_t>(indices.size()));
 	}
 
 	VertexBufferLayout vbl;
-	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, Vertex::POSITION_ELMTS_COUNT);
-	vbl.AddAttributeLayout(VertexAttributeLocation::Normal, GL_FLOAT, Vertex::NORMAL_ELMTS_COUNT);
-	vbl.AddAttributeLayout(VertexAttributeLocation::TextCoord, GL_FLOAT, Vertex::TEXCOORDS_ELMTS_COUNT);
-	vbl.AddAttributeLayout(VertexAttributeLocation::Tangent, GL_FLOAT, Vertex::TANGENT_ELMTS_COUNT);
-	vbl.AddAttributeLayout(VertexAttributeLocation::Bitangent, GL_FLOAT, Vertex::BITANGENT_ELMTS_COUNT);
-	vao->AddBuffer(std::move(vbl));
+	vbl.AddAttributeLayout(VertexAttributeLocation::Position, GL_FLOAT, Vertex::POSITION_TYPE_DIMENSION);
+	vbl.AddAttributeLayout(VertexAttributeLocation::Normal, GL_FLOAT, Vertex::NORMAL_TYPE_DIMENSION);
+	vbl.AddAttributeLayout(VertexAttributeLocation::TextCoord, GL_FLOAT, Vertex::TEXCOORDS_TYPE_DIMENSION);
+	vbl.AddAttributeLayout(VertexAttributeLocation::Tangent, GL_FLOAT, Vertex::TANGENT_TYPE_DIMENSION);
+	vbl.AddAttributeLayout(VertexAttributeLocation::Bitangent, GL_FLOAT, Vertex::BITANGENT_TYPE_DIMENSION);
+	vao->RegisterVertexBufferLayout(std::move(vbl));
 
 	// Do NOT unbind IBO before VAO since the latter contains references to IBO BindBuffer
 	vao->Unbind();
 	vbo.Unbind();
-	if (isIndexBuffer)
+	if (IsIndicesBuffer())
 	{
 		ibo->Unbind();
 	}
@@ -56,25 +55,41 @@ void MeshComponent::StoreVertices()
 void MeshComponent::StoreInstanceModelMatrices() const
 {
 	VertexBufferLayout vbl;
-	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, Vertex::INSTANCE_MATRIX_ELMTS_COUNT);
-	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol2, GL_FLOAT, Vertex::INSTANCE_MATRIX_ELMTS_COUNT);
-	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol3, GL_FLOAT, Vertex::INSTANCE_MATRIX_ELMTS_COUNT);
-	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol4, GL_FLOAT, Vertex::INSTANCE_MATRIX_ELMTS_COUNT);
-	vao->AddInstancedBuffer(std::move(vbl));
+	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, Vertex::INSTANCE_MATRIX_TYPE_DIMENSION);
+	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol2, GL_FLOAT, Vertex::INSTANCE_MATRIX_TYPE_DIMENSION);
+	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol3, GL_FLOAT, Vertex::INSTANCE_MATRIX_TYPE_DIMENSION);
+	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol4, GL_FLOAT, Vertex::INSTANCE_MATRIX_TYPE_DIMENSION);
+	vao->RegisterInstancingVertexBufferLayout(std::move(vbl));
 }
 
-void MeshComponent::Render(const Renderer& renderer) const
+void MeshComponent::Render(const unsigned int mode) const
 {
-	if (indices.empty())
+	vao->Bind();
+
+	// Do not call the same OpenGL wrapper function whether there is a non-null indices buffer
+	if (IsIndicesBuffer())
 	{
-		std::cout << "ERROR::MESH - The base version of Render() needs indices array to be non null!" << std::endl;
-		assert(false);
+		// Expected to be called for any Mesh defining indices
+		if (ibo == nullptr || ibo->GetCount() == 0)
+		{
+			std::cout << "ERROR::MESH - Any call to this method should have a non-null IBO!" << std::endl;
+		}
+
+		Renderer::Draw(mode, indices.size(), nullptr);
+	}
+	else
+	{
+		Renderer::Draw(mode, 0, vertices.size());
 	}
 
-	renderer.Draw(*vao, *ibo);
+	vao->Unbind();
 }
 
-void MeshComponent::RenderInstances(const Renderer& renderer, const uint32_t instanceCount) const
+void MeshComponent::RenderInstances(const uint32_t instanceCount) const
 {
-	renderer.DrawInstances(*vao, ibo->GetCount(), instanceCount);
+	vao->Bind();
+
+	Renderer::DrawInstances(GL_TRIANGLES, 0, ibo->GetCount(), instanceCount);
+
+	vao->Unbind();
 }

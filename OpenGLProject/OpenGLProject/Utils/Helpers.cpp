@@ -43,22 +43,22 @@ Window* GLFWHelper::GetGLFWWindowPointerToUserData(GLFWwindow* GLFWWindow)
 
 
 
-void FileHelper::ListPaths(const std::filesystem::path& inMap, std::unordered_map<std::string, std::filesystem::path>& outPaths)
+void FileHelper::ListModelPaths(const std::filesystem::path& inDirectory, std::unordered_map<std::string, std::filesystem::path>& outPaths)
 {
-	for (const std::filesystem::directory_entry& directory : std::filesystem::recursive_directory_iterator(inMap))
+	for (const std::filesystem::directory_entry& modelFile : std::filesystem::recursive_directory_iterator(inDirectory))
 	{
-		const std::filesystem::path directoryPath(directory.path());
-		const std::string modelName(GetNameFromPath(directoryPath));
+		const std::filesystem::path modelPath(modelFile.path());
+		const std::string modelName(GetModelNameFromPath(modelPath));
 		if (modelName.empty())
 		{
 			continue;
 		}
 
-		outPaths[modelName] = directoryPath;
+		outPaths[modelName] = modelPath;
 	}
 }
 
-std::string FileHelper::GetNameFromPath(const std::filesystem::path& inPath)
+std::string FileHelper::GetModelNameFromPath(const std::filesystem::path& inPath)
 {
 	const std::string fileName(inPath.filename().string());
 
@@ -68,8 +68,10 @@ std::string FileHelper::GetNameFromPath(const std::filesystem::path& inPath)
 		firstTrimSymbol = fileName.find_first_of(".");
 		if (firstTrimSymbol == std::string::npos)
 		{
+			return std::string("");
 		}
 	}
+
 	const std::string fileNameWithSizeTrimmed(
 		firstTrimSymbol == fileName.find_first_of("_") ?
 		fileName.substr(firstTrimSymbol + 1, fileName.length() - firstTrimSymbol - 1) :
@@ -80,6 +82,7 @@ std::string FileHelper::GetNameFromPath(const std::filesystem::path& inPath)
 	{
 		lastTrimSymbol = fileNameWithSizeTrimmed.find_first_of(".");
 	}
+
 	std::string modelName(fileNameWithSizeTrimmed.substr(0, lastTrimSymbol));
 	modelName[0] = std::toupper(modelName[0]);
 
@@ -102,12 +105,12 @@ std::string FileHelper::GetTexturePathFromMtlLine(const std::string& mtlLine)
 	return mtlLine.substr(0, trimSymbol);
 }
 
-std::string FileHelper::ReadFile(const std::string& path)
+std::string FileHelper::ReadFile(const std::filesystem::path& path)
 {
-	std::ifstream fileStream(path, std::ios::in | std::ios::binary);
+	std::ifstream fileStream(path.string(), std::ios::in | std::ios::binary);
 	if (fileStream.fail())
 	{
-		std::cout << "ERROR::UTILS - " << "File " << FileHelper::GetNameFromPath(path) << " has not been successfully read.\nReason: " << GetErrorStateFlagMessage(fileStream) << "\n" << std::endl;
+		std::cout << "ERROR::UTILS - " << "File " << path.filename().string() << " has not been successfully read.\nReason: " << GetErrorStateFlagMessage(fileStream) << "\n" << std::endl;
 		assert(false);
 	}
 
@@ -155,7 +158,7 @@ std::string FileHelper::GetErrorStateFlagMessage(const std::ifstream& fileStream
 std::string FileHelper::GetSolutionAbsolutePath()
 {
 	// Solution absolute path needs to be determined from the executable absolute path, so it both works when running from VS editor and from executable
-	const std::string currentExecutablePath(Application::GetInstance().GetExecutablePath());
+	const std::string currentExecutablePath(Application::GetInstance().GetExecutablePath().string());
 
 	// Cut off the name of the executable from the path
 	const size_t lastDoubleBackslashSymbol = currentExecutablePath.find_last_of("\\");
@@ -177,7 +180,7 @@ ResourceCSVParser::ResourceCSVParser(const std::filesystem::path& inDataPath)
 
 void ResourceCSVParser::ReadCSV(const std::filesystem::path& inDataPath)
 {
-	const std::string csvFile(FileHelper::ReadFile(inDataPath.string()));
+	const std::string csvFile(FileHelper::ReadFile(inDataPath));
 	std::string csvLine;
 	std::stringstream csvLineStream(csvFile);
 

@@ -1,11 +1,13 @@
 #include "Application.h"
 
-#include <glad/glad.h>
+#include <glad/glad.h>	// No OpenGL functions called here, just setting up GLAD
 #include <glfw/glfw3.h>
 
 #include <cassert>
 #include <iostream>
 
+#include "Rendering/ShaderLoader.h"
+#include "Rendering/GlyphLoader.h"
 #include "Window.h"
 
 Application* Application::instance = nullptr;
@@ -14,8 +16,6 @@ void Application::WindowDeleter::operator()(Window* ptr)
 {
 	delete ptr;
 }
-
-
 
 Application& Application::GetInstance()
 {
@@ -28,19 +28,28 @@ Application& Application::GetInstance()
 	return *instance;
 }
 
-Application::Application(const std::string& inExecutablePath) :
+
+
+Application::Application(const std::filesystem::path& inExecutablePath) :
 	executablePath(inExecutablePath)
 {
+	// Create the main Window from which we will render the Application and set up an OpenGL Context for it
 	window = std::unique_ptr<Window, WindowDeleter>(new Window(1000, 1000, "Solar System Simulation"));
 
-	// Load all OpenGL function pointers locations using GLAD
+	// Load all OpenGL function pointers locations using GLAD, after an OpenGL Context has been set up for the current GLFW Window
 	if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
 	{
-		std::cout << "ERROR::GLAD - Failed to initialise GLAD..." << std::endl;
+		std::cout << "ERROR::GLAD - Failed to initialise GLAD, so no OpenGL functions are available!" << std::endl;
 		assert(false);
 	}
 
 	instance = this;
+}
+
+void Application::SetUp()
+{
+	ShaderLoader::BuildShaders();
+	GlyphLoader::LoadASCIICharacters();
 }
 
 void Application::Run()
@@ -52,8 +61,6 @@ void Application::Run()
 	{
 		Tick();
 	}
-
-	Terminate();
 }
 
 void Application::Tick()
@@ -70,11 +77,6 @@ void Application::Tick()
 
 	window->SwapFrontAndBackBuffers();
 	window->ProcessPendingEvents();
-}
-
-void Application::Terminate()
-{
-	window->ClearResources();
 }
 
 bool Application::IsClosed() const
