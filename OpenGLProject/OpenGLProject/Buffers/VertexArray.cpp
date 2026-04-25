@@ -28,7 +28,7 @@ VertexArray::~VertexArray()
 
 void VertexArray::Bind() const
 {
-	// Bind to the VAO ID, which will store all subsequent VBO calls until unbound
+	// Bind to the VAO ID, which will store all subsequent VBO/IBO calls until unbound
 	glBindVertexArray(rendererID);
 }
 
@@ -62,7 +62,7 @@ void VertexArray::RegisterInstancingVertexBufferLayout(const VertexBufferLayout&
 	const std::size_t vec4sizeInBytes = sizeof(glm::vec4);
 	std::size_t offset = 0;
 
-	// Iterate through the instanced matrix only
+	// Iterate through the matrix containing Vertex Attribute layout for instancing
 	for (const VertexAttributeLayout& attributeLayout : layout.GetAttributeLayouts())
 	{
 		// Enable the attribute index at location i in the vertex shader to be used

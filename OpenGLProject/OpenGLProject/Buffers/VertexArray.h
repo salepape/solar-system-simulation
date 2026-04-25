@@ -6,13 +6,17 @@ class VertexBufferLayout;
 
 
 
+// Array saving the GLSL Shader layout representation of Vertex data (defined as plain data in VBOs) as GLSL Vertex Attributes.
+// No VBO/IBO bindings needed when using VAO bindings: save states as well. Using them to be in line modern OpenGL way of accessing info.
+// Note: binding of VAOs is a global state, and decide when subsequent OpenGL calls will work
 class VertexArray
 {
 public:
+	// Constructor of VAO includes a binding, so no need to call the method separately just after instantiation
 	VertexArray();
 	~VertexArray();
 
-	// Select the VAO we want to use
+	// Select the VAO we want to activate in the array
 	void Bind() const;
 
 	// Unselect the currently used VAO

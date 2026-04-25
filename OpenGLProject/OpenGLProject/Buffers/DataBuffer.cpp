@@ -18,7 +18,7 @@ DataBuffer::~DataBuffer()
 {
 	Unbind();
 
-	// Delete the VBO and free up the ID that was being used by it
+	// Delete the BO and free up the ID that was being used by it
 	glDeleteBuffers(1, &rendererID);
 }
 
