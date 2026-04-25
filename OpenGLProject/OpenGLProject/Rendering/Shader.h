@@ -29,14 +29,12 @@ public:
 	void Enable() const;
 	void Disable() const;
 
-	// @todo - Uppercase first letter of all setters
-	// Utility uniform setters
-	void setUniformBool(const std::string& name, const bool value) const;
-	void setUniformInt(const std::string& name, const int32_t value) const;
-	void setUniformFloat(const std::string& name, const float value) const;
-	void setUniformVec3(const std::string& name, const glm::vec3& value) const;
-	void setUniformVec3(const std::string& name, const float x, const float y, const float z) const;
-	void setUniformMat4(const std::string& name, const glm::mat4& mat) const;
+	void SetUniformBool(const std::string& name, const bool value) const;
+	void SetUniformInt(const std::string& name, const int32_t value) const;
+	void SetUniformFloat(const std::string& name, const float value) const;
+	void SetUniformVec3(const std::string& name, const glm::vec3& value) const;
+	void SetUniformVec3(const std::string& name, const float x, const float y, const float z) const;
+	void SetUniformMat4(const std::string& name, const glm::mat4& mat) const;
 
 	// Return whether the Uniform is required for the Shader and perform caching of its location if so. Should always be called prior to attempt setting a Uniform 
 	bool IsUniformRequired(const std::string& name);

@@ -24,13 +24,13 @@ void Material::SetFUniforms() const
 	const std::string modelVU("vu_Model");
 	if (shader.IsUniformRequired(modelVU.c_str()))
 	{
-		shader.setUniformMat4(modelVU, glm::mat4(0.0f));
+		shader.SetUniformMat4(modelVU, glm::mat4(0.0f));
 	}
 
 	const std::string transparencyFU("material.fu_Transparency");
 	if (shader.IsUniformRequired(transparencyFU.c_str()))
 	{
-		shader.setUniformFloat(transparencyFU, transparency);
+		shader.SetUniformFloat(transparencyFU, transparency);
 	}
 }
 

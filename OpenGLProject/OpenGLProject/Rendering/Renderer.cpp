@@ -70,7 +70,7 @@ void Renderer::SetDepthFctToLess()
 
 void Renderer::SetModelMatrixVUniform(const Shader& shader, const glm::mat4& modelMatrix)
 {
-	shader.setUniformMat4("vu_Model", modelMatrix);
+	shader.SetUniformMat4("vu_Model", modelMatrix);
 }
 
 void Renderer::Draw(const unsigned int mode, const int32_t startIndex, const int32_t count)

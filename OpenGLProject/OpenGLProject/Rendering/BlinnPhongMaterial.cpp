@@ -38,26 +38,26 @@ void BlinnPhongMaterial::SetFUniforms() const
 	const std::string diffuseTexFU("material.fu_DiffuseTex_" + std::to_string(diffuseTexFUTextureUnit));
 	if (shader.IsUniformRequired(diffuseTexFU.c_str()))
 	{
-		shader.setUniformInt(diffuseTexFU, diffuseTexFUTextureUnit);
+		shader.SetUniformInt(diffuseTexFU, diffuseTexFUTextureUnit);
 	}
 	IncrementTextureUnitCount(diffuseTexFUTextureUnit);
 
 	const std::string diffuseColourFU("material.fu_DiffuseColour");
 	if (shader.IsUniformRequired(diffuseColourFU.c_str()))
 	{
-		shader.setUniformVec3(diffuseColourFU, diffuseProperties.colour);
+		shader.SetUniformVec3(diffuseColourFU, diffuseProperties.colour);
 	}
 
 	const std::string specularColourFU("material.fu_SpecularColour");
 	if (shader.IsUniformRequired(specularColourFU.c_str()))
 	{
-		shader.setUniformVec3(specularColourFU, specularProperties.colour);
+		shader.SetUniformVec3(specularColourFU, specularProperties.colour);
 	}
 
 	const std::string shininessFU("material.fu_Shininess");
 	if (shader.IsUniformRequired(shininessFU.c_str()))
 	{
-		shader.setUniformFloat(shininessFU, specularProperties.shininess);
+		shader.SetUniformFloat(shininessFU, specularProperties.shininess);
 	}
 
 	Material::SetFUniforms();
