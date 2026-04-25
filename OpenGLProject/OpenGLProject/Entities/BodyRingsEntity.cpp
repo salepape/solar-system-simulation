@@ -28,7 +28,7 @@ void BodyRingsEntity::ComputeModelMatrixVUniform(const glm::mat4& inModelMatrix,
 	modelMatrix = glm::rotate(modelMatrix, -GLMConstants::halfPi, GLMConstants::rightVector);
 }
 
-void BodyRingsEntity::Render(const glm::mat4& inModelMatrix, const float /*elapsedTime*/)
+void BodyRingsEntity::Render(const glm::mat4& inModelMatrix)
 {
 	ComputeModelMatrixVUniform(inModelMatrix);
 

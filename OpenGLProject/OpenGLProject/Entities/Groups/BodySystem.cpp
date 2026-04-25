@@ -30,11 +30,11 @@ void BodySystem::Render(const bool isBillboard, PerspectiveCamera& camera, const
 {
 	celestialBody.Render(elapsedTime);
 
-	orbit.Render(parentPosition, elapsedTime);
+	orbit.Render(parentPosition);
 
 	if (celestialBodyRings != nullptr)
 	{
-		celestialBodyRings->Render(celestialBody.GetModelMatrix(), elapsedTime);
+		celestialBodyRings->Render(celestialBody.GetModelMatrix());
 	}
 
 	if (isBillboard)

@@ -20,8 +20,7 @@ class OrbitEntity : public SceneEntity
 public:
 	OrbitEntity(const BodyData& inBodyData);
 
-	void Render(const float /*elapsedTime*/) override {};
-	void Render(const glm::vec3& parentPosition, const float /*elapsedTime*/);
+	void Render(const glm::vec3& parentPosition);
 
 private:
 	// @todo - Implement ellipse for a more realistic simulation (circular orbits with eccentricities close to 0 for now)
@@ -37,7 +36,7 @@ private:
 	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& inTexturePath);
 
 	void ComputeModelMatrixVUniform(const float /*elapsedTime*/) override {};
-	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const float elapsedTime = 0.0f);
+	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition);
 };
 
 

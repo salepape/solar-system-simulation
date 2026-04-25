@@ -57,7 +57,7 @@ public:
 	void ComputeCartesianPosition(const float elapsedTime, const CelestialBodyEntity* satelliteParentBody = nullptr);
 	const glm::vec3& GetPosition() const { return position; }
 
-	void Render(const float elapsedTime = 0.0f) override;
+	void Render(const float elapsedTime = 0.0f);
 
 private:
 	BodyData bodyData;

@@ -8,7 +8,7 @@
 
 
 
-// Not considered a SceneEntity, since it doesn't need a Mesh or a Material attached to it (doesn't have any visual representation yet)
+// Representation of the Player in the Simulation as First-Person (i.e. no visual representation of the Spaceship to be rendered on screen)
 class SpacecraftEntity : public SceneEntity
 {
 public:
@@ -22,8 +22,6 @@ public:
 private:
 	PerspectiveCameraController cameraController;
 
-	// Simulation is player first-person, so no visual representation of the Spaceship to be rendered on screen
-	void Render(const float /*elapsedTime*/) override {};
 	void ComputeModelMatrixVUniform(const float /*elapsedTime*/) override {};
 };
 

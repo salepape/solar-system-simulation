@@ -35,7 +35,7 @@ BlinnPhongMaterial OrbitEntity::InitialiseMaterial(const std::filesystem::path& 
 	return BlinnPhongMaterial(ShaderLookUpID::Enum::DEFAULT, std::vector<Texture>{ std::move(texture) });
 }
 
-void OrbitEntity::ComputeModelMatrixVUniform(const glm::vec3& parentPosition, const float /*elapsedTime*/)
+void OrbitEntity::ComputeModelMatrixVUniform(const glm::vec3& parentPosition)
 {
 	modelMatrix = glm::mat4(1.0f);
 
@@ -50,7 +50,7 @@ void OrbitEntity::ComputeModelMatrixVUniform(const glm::vec3& parentPosition, co
 	modelMatrix = glm::rotate(modelMatrix, orbInclinationInRad, GLMConstants::forwardVector);
 }
 
-void OrbitEntity::Render(const glm::vec3& parentPosition, const float /*elapsedTime*/)
+void OrbitEntity::Render(const glm::vec3& parentPosition)
 {
 	// Only moons have their parent position (= Planet) moving, whereas planets have their parent position (= Sun) constant
 	if (isMoon)

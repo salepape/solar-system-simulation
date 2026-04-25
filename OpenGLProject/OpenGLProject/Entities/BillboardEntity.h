@@ -20,7 +20,6 @@ class BillboardEntity : public SceneEntity
 public:
 	BillboardEntity(const BodyData& inBodyData);
 
-	void Render(const float /*elapsedTime*/) override {};
 	void Render(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
 
 private:

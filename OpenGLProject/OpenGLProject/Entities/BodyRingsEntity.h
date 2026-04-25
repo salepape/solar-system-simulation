@@ -23,8 +23,7 @@ class BodyRingsEntity : public SceneEntity
 public:
 	BodyRingsEntity(RingsData&& inRingsData);
 
-	void Render(const float /*elapsedTime*/) override {};
-	void Render(const glm::mat4& modelMatrix, const float /*elapsedTime*/);
+	void Render(const glm::mat4& modelMatrix);
 
 private:
 	RingsData ringsData;

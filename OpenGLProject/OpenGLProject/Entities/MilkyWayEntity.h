@@ -14,7 +14,7 @@ class MilkyWayEntity : public SceneEntity
 public:
 	MilkyWayEntity(const std::filesystem::path& inTexturePath);
 
-	void Render(const float /*elapsedTime*/ = 0.0f) override;
+	void Render();
 
 private:
 	SkyboxMeshComponent skybox;

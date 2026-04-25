@@ -44,7 +44,7 @@ class BeltEntity : public SceneEntity
 public:
 	BeltEntity(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams);
 
-	void Render(const float elapsedTime = 0.0f) override;
+	void Render(const float elapsedTime = 0.0f);
 
 private:
 	InstanceParams instanceParams;

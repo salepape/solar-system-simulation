@@ -26,7 +26,7 @@ BlinnPhongMaterial MilkyWayEntity::InitialiseMaterial(const std::filesystem::pat
 	return BlinnPhongMaterial(ShaderLookUpID::Enum::MILKY_WAY, std::vector<Texture>{ std::move(texture) });
 }
 
-void MilkyWayEntity::Render(const float /*elapsedTime*/)
+void MilkyWayEntity::Render()
 {
 	Shader& shader = material.GetShader();
 	shader.Enable();
