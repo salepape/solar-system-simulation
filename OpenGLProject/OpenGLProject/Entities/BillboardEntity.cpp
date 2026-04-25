@@ -20,16 +20,21 @@ namespace
 {
 	// Only a unique Texture2D Unit needed for all ASCII Glyphs from Glyph Loader called by this class
 	constexpr uint32_t textureUnit{ 0 };
+
+	constexpr float bodyGlyphTextureScaleFactor = 0.01f;
+	constexpr float moonGlyphTextureScaleFactor = 0.03f;
+
+	constexpr float bodyBilboardYStartScaleFactor = 1.5f;
+	constexpr float moonBilboardYStartScaleFactor = 3.5f;
 }
 
 
 
-// @todo - Avoid magic numbers and automate it as much as possible from a UI dimensions point of view
 BillboardEntity::BillboardEntity(const BodyData& inBodyData) : SceneEntity(inBodyData.name + "Billboard"),
 legend(inBodyData.name),
 isMoon(inBodyData.parentName.length() != 0),
-glyphAdvanceScaleFactor(inBodyData.radius * (isMoon ? 0.03f : 0.01f)),
-quads(ComputeQuadParams(0.0f, inBodyData.radius * (isMoon ? 3.5f : 1.5f))),
+glyphTextureScaleFactor(inBodyData.radius * (isMoon ? moonGlyphTextureScaleFactor : bodyGlyphTextureScaleFactor)),
+quads(ComputeQuadParams(0.0f, inBodyData.radius * (isMoon ? moonBilboardYStartScaleFactor : bodyBilboardYStartScaleFactor))),
 material(InitialiseMaterial())
 {
 
@@ -72,12 +77,12 @@ std::vector<QuadParams> BillboardEntity::ComputeQuadParams(const float billboard
 		}
 
 		// Position of the glyph quad
-		const float xPosition = quadXStart + glyphParams.bearing.x * glyphAdvanceScaleFactor;
-		const float yPosition = quadYStart - (glyphParams.height - glyphParams.bearing.y) * glyphAdvanceScaleFactor;
+		const float xPosition = quadXStart + glyphParams.bearing.x * glyphTextureScaleFactor;
+		const float yPosition = quadYStart - (glyphParams.height - glyphParams.bearing.y) * glyphTextureScaleFactor;
 
 		// Size of the glyph quad
-		const float width = glyphParams.width * glyphAdvanceScaleFactor;
-		const float height = glyphParams.height * glyphAdvanceScaleFactor;
+		const float width = glyphParams.width * glyphTextureScaleFactor;
+		const float height = glyphParams.height * glyphTextureScaleFactor;
 
 		quadPerGlyph.emplace_back(QuadParams{ xPosition, yPosition, width, height });
 
@@ -100,8 +105,8 @@ float BillboardEntity::ComputeBillboardWidth() const
 
 float BillboardEntity::GetGlyphAdvance(const GlyphParams& glyphParams) const
 {
-	// Bitshift advance by QUAD_VERTEX_COUNT to get value in pixels (2^QUAD_VERTEX_COUNT = 64, so we divide 1/64th pixels by 64 to get the amount of pixels)
-	return (glyphParams.advance >> QuadMeshComponent::QUAD_VERTEX_COUNT) * glyphAdvanceScaleFactor;
+	// Get value in pixels by a bitshift (2^QUAD_VERTEX_COUNT = 64, so we divide 1/64th pixels by 64 to get the amount of pixels)
+	return (glyphParams.advance >> QuadMeshComponent::QUAD_VERTEX_COUNT) * glyphTextureScaleFactor;
 }
 
 void BillboardEntity::Render(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)

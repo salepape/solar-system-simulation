@@ -27,7 +27,7 @@ private:
 	bool isMoon{ false };
 
 	// Reduce default glyph texture size we get out of FreeType, as it's too big compared to celestial body sizes
-	float glyphAdvanceScaleFactor{ 1.0f };
+	float glyphTextureScaleFactor{ 1.0f };
 
 	QuadMeshComponent quads;
 	BlinnPhongMaterial material;
