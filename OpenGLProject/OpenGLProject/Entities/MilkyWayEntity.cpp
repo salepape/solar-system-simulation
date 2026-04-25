@@ -28,7 +28,7 @@ BlinnPhongMaterial MilkyWayEntity::InitialiseMaterial(const std::filesystem::pat
 
 void MilkyWayEntity::Render()
 {
-	Shader& shader = material.GetShader();
+	const Shader& shader = material.GetShader();
 	shader.Enable();
 
 	Renderer::SetDepthFctToEqual();

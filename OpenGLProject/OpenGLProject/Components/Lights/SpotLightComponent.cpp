@@ -7,7 +7,7 @@
 
 
 SpotLightComponent::SpotLightComponent(const glm::vec3& inPosition, const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const SpotParams& inSpotParams, const bool inIsBlinn) :
-	GLSLParams({ inPosition, inDirection, inReflectionParams, inAttenuationParams, inSpotParams, inIsBlinn, false }), fubo("fubo_SpotLight", UniformShaderGroup::LINE_OF_SIGHT)
+	GLSLParams({ inPosition, inDirection, inReflectionParams, inAttenuationParams, inSpotParams, inIsBlinn, false }), fubo("fubo_SpotLight", GLSLUniform::LINE_OF_SIGHT)
 {
 	SetFUniforms();
 }

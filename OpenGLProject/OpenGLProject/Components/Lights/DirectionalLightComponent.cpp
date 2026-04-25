@@ -7,7 +7,7 @@
 
 
 DirectionalLightComponent::DirectionalLightComponent(const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const bool inIsBlinn) :
-	GLSLParams({ inDirection, inReflectionParams, inIsBlinn }), fubo("fubo_DirectionalLight", UniformShaderGroup::PROJECTION_VIEW)
+	GLSLParams({ inDirection, inReflectionParams, inIsBlinn }), fubo("fubo_DirectionalLight", GLSLUniform::PROJECTION_VIEW)
 {
 	SetFUniforms();
 }

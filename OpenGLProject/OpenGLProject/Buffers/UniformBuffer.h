@@ -4,23 +4,12 @@
 #include <cstddef> // std::size_t
 #include <cstdint>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 #include "DataBuffer.h"
 #include "Rendering/ShaderLoader.h"
 
 
-
-// Group of Shaders for which their corresponding GLSL Vertex/Fragment Program share a Uniform
-enum class UniformShaderGroup
-{
-	// All Shaders applied on Scene Entities/Objects affected by projection-view matrix in real-time
-	PROJECTION_VIEW = 0,
-
-	// All Shaders applied on Scene Entities/Objects affected by camera position in real-time
-	LINE_OF_SIGHT
-};
 
 // Define a set of fields contained in a GLSL struct (defined via 'layout' keyword) shared across several GLSL Vertex/Fragment Shaders
 class UniformGLSLStruct
@@ -53,7 +42,7 @@ class UniformBuffer : public DataBuffer
 public:
 	// @todo - Could be automated when reading shader text file
 	// inGLSLUniformName - Can either be a single variable or a set of variables stored in struct defined using the 'layout (std140)' syntax in a GLSL Vertex/Fragment Shader
-	UniformBuffer(const std::string& inGLSLUniformName, const UniformShaderGroup inShaderGroup);
+	UniformBuffer(const std::string& inGLSLUniformName, const GLSLUniform::Enum inGLSLUniform);
 
 	void SetData(const void* data, const std::size_t sizeInBytes);
 	void SetData(const UniformGLSLStruct& inStruct);
@@ -61,8 +50,6 @@ public:
 private:
 	uint32_t blockBindingPoint{ 0 };
 	static uint32_t globalBlockBindingPoint;
-
-	static std::unordered_map<UniformShaderGroup, std::vector<ShaderLookUpID::Enum>> shaderGroups;
 };
 
 

@@ -7,7 +7,7 @@
 
 
 PointLightComponent::PointLightComponent(const glm::vec3& inPosition, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const bool inIsBlinn) :
-	GLSLParams({ inPosition, inReflectionParams, inAttenuationParams, inIsBlinn }), fubo("fubo_PointLight", UniformShaderGroup::LINE_OF_SIGHT)
+	GLSLParams({ inPosition, inReflectionParams, inAttenuationParams, inIsBlinn }), fubo("fubo_PointLight", GLSLUniform::LINE_OF_SIGHT)
 {
 	SetFUniforms();
 }

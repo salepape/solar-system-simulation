@@ -9,7 +9,7 @@
 
 Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane) :
 	initialPosition(inPosition), initialRotation(inRotation), position(inPosition), roll(inRotation.x), pitch(inRotation.y), yaw(inRotation.z), fovY(inFovY), farPlane(inFarPlane),
-	vuboProjectionView("vubo_ProjectionView", UniformShaderGroup::PROJECTION_VIEW), fuboCameraPosition("fubo_CameraPosition", UniformShaderGroup::LINE_OF_SIGHT)
+	vuboProjectionView("vubo_ProjectionView", GLSLUniform::PROJECTION_VIEW), fuboCameraPosition("fubo_CameraPosition", GLSLUniform::LINE_OF_SIGHT)
 {
 	// Stored in a GLSL struct (containing a single Uniform field) with in Fragment Shader
 	UniformGLSLStruct vuboProjectionViewStruct;

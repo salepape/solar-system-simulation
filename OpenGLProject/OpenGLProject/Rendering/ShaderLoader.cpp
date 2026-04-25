@@ -8,9 +8,30 @@
 #include "Shader.h"
 #include "Utils/Helpers.h"
 
-
-
 std::vector<Shader> ShaderLoader::shaders;
+
+std::unordered_map<GLSLUniform::Enum, std::vector<ShaderLookUpID::Enum>> ShaderLoader::uniformGroups
+{
+	{
+		GLSLUniform::PROJECTION_VIEW,
+		{
+			ShaderLookUpID::Enum::DEFAULT,
+			ShaderLookUpID::Enum::SUN,
+			ShaderLookUpID::Enum::BILLBOARD,
+			ShaderLookUpID::Enum::BELT,
+			ShaderLookUpID::Enum::MILKY_WAY,
+		}
+	},
+	{
+		GLSLUniform::LINE_OF_SIGHT,
+		{
+			ShaderLookUpID::Enum::DEFAULT,
+			ShaderLookUpID::Enum::BELT,
+		}
+	}
+};
+
+
 
 void ShaderLoader::BuildShaders()
 {
@@ -45,4 +66,15 @@ Shader& ShaderLoader::GetShader(const ShaderLookUpID::Enum inShaderLookUpID)
 	}
 
 	return *shaderIt;
+}
+
+std::vector<ShaderLookUpID::Enum>& ShaderLoader::GetShaderGroup(const GLSLUniform::Enum inGLSLUniform)
+{
+	if (uniformGroups.find(inGLSLUniform) == uniformGroups.end())
+	{
+		std::cout << "ERROR::SHADER_LOADER - Uniform " << GLSLUniform::All[inGLSLUniform] << " has not been found!" << std::endl;
+		assert(false);
+	}
+
+	return uniformGroups[inGLSLUniform];
 }

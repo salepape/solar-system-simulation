@@ -6,37 +6,15 @@
 
 uint32_t UniformBuffer::globalBlockBindingPoint = 0;
 
-// @todo - To be move outside of "Engine code"
-std::unordered_map<UniformShaderGroup, std::vector<ShaderLookUpID::Enum>> UniformBuffer::shaderGroups
-{
-	{
-		UniformShaderGroup::PROJECTION_VIEW,
-		{
-			ShaderLookUpID::Enum::DEFAULT,
-			ShaderLookUpID::Enum::SUN,
-			ShaderLookUpID::Enum::BILLBOARD,
-			ShaderLookUpID::Enum::BELT,
-			ShaderLookUpID::Enum::MILKY_WAY,
-		}
-	},
-	{
-		UniformShaderGroup::LINE_OF_SIGHT,
-		{
-			ShaderLookUpID::Enum::DEFAULT,
-			ShaderLookUpID::Enum::BELT,
-		}
-	}
-};
 
 
-
-UniformBuffer::UniformBuffer(const std::string& inGLSLUniformName, const UniformShaderGroup inShaderGroup)
+UniformBuffer::UniformBuffer(const std::string& inGLSLUniformName, const GLSLUniform::Enum inGLSLUniform)
 {
 	target = GL_UNIFORM_BUFFER;
 
 	blockBindingPoint = globalBlockBindingPoint++;
 
-	for (const ShaderLookUpID::Enum shaderLookUpID : shaderGroups[inShaderGroup])
+	for (const ShaderLookUpID::Enum shaderLookUpID : ShaderLoader::GetShaderGroup(inGLSLUniform))
 	{
 		const Shader& shader = ShaderLoader::GetShader(shaderLookUpID);
 		const uint32_t shaderID = shader.GetRendererID();

@@ -8,7 +8,7 @@
 
 
 // Index at which a user-defined input value of a GLSL Vertex Shader will be set (we assume this convention for all shader files)
-enum VertexAttributeLocation
+enum VertexAttributeLocation: unsigned int
 {
 	Position = 0,
 	Normal = 1,

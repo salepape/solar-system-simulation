@@ -3,11 +3,12 @@
 
 #include <array>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 class Shader;
 
-
+// @todo - Re-arrange so code is independant from the simulation ("Engine" code)
 
 // To be used to refer to any Shader instead of relying on raw strings (layer of security over the existence of LookUpIDs when instantiating or look-up functions)
 namespace ShaderLookUpID
@@ -31,7 +32,19 @@ namespace ShaderLookUpID
 	[[maybe_unused]] static Enum Get(const int index) { return All[index]; }
 };
 
-// @todo - Re-arrange so code is independant from the simulation ("Engine" code)
+// GLSL Uniforms shared across Vertex/Fragment Shaders
+namespace GLSLUniform
+{
+	// All Shaders applied on Scene Entities/Objects affected by Uniform in real-time
+	enum Enum
+	{
+		PROJECTION_VIEW = 0,
+		LINE_OF_SIGHT
+	};
+
+	static const std::array<Enum, 2> All = { PROJECTION_VIEW, LINE_OF_SIGHT, };
+};
+
 // Util static class giving a global access point to all Shaders applied on Scene Entity/Objects of the simulation
 class ShaderLoader
 {
@@ -40,9 +53,11 @@ public:
 	static void BuildShaders();
 
 	static Shader& GetShader(const ShaderLookUpID::Enum inShaderName);
+	static std::vector<ShaderLookUpID::Enum>& GetShaderGroup(const GLSLUniform::Enum inGLSLUniform);
 
 private:
 	static std::vector<Shader> shaders;
+	static std::unordered_map<GLSLUniform::Enum, std::vector<ShaderLookUpID::Enum>> uniformGroups;
 };
 
 
