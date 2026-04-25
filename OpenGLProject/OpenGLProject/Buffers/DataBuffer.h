@@ -1,5 +1,5 @@
-#ifndef DATABUFFER_H
-#define DATABUFFER_H
+#ifndef DATA_BUFFER_H
+#define DATA_BUFFER_H
 
 #include <glad/glad.h>
 
@@ -43,4 +43,4 @@ protected:
 
 
 
-#endif // DATABUFFER_H
+#endif // DATA_BUFFER_H

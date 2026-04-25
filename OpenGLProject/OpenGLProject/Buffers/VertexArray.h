@@ -1,5 +1,5 @@
-#ifndef VERTEXARRAY_H
-#define VERTEXARRAY_H
+#ifndef VERTEX_ARRAY_H
+#define VERTEX_ARRAY_H
 
 class VertexBuffer;
 class VertexBufferLayout;
@@ -34,4 +34,4 @@ private:
 
 
 
-#endif // VERTEXARRAY_H
+#endif // VERTEX_ARRAY_H

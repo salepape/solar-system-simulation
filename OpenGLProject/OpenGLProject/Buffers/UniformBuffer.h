@@ -1,5 +1,5 @@
-#ifndef UNIFORMBUFFER_H
-#define UNIFORMBUFFER_H
+#ifndef UNIFORM_BUFFER_H
+#define UNIFORM_BUFFER_H
 
 #include <cstddef> // std::size_t
 #include <cstdint>
@@ -54,4 +54,4 @@ private:
 
 
 
-#endif // UNIFORMBUFFER_H
+#endif // UNIFORM_BUFFER_H

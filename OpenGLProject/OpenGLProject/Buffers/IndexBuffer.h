@@ -1,5 +1,5 @@
-#ifndef INDEXBUFFER_H
-#define INDEXBUFFER_H
+#ifndef INDEX_BUFFER_H
+#define INDEX_BUFFER_H
 
 #include <cstdint>
 
@@ -25,4 +25,4 @@ private:
 
 
 
-#endif // INDEXBUFFER_H
+#endif // INDEX_BUFFER_H
