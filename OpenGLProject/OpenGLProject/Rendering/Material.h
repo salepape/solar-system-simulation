@@ -16,7 +16,7 @@ struct EmissiveProperties
 };
 
 // Class handling the application of a Shader on a single Mesh (built from scratch, or retrieved from a .mtl Material file for Models)
-// Warning: Model is supposed to be simple enough, i.e. only contains 1 Mesh for 1 Material definition containing 1 Texture
+// Warning: model is supposed to be simple enough, i.e. only contains 1 Mesh for 1 Material definition containing 1 Texture
 class Material
 {
 public:

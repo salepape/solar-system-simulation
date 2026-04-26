@@ -30,7 +30,7 @@ void GlyphLoader::LoadASCIICharacters()
 
 void GlyphLoader::LoadFreeTypeGlyphs(const FT_Face& inFreeTypeFontFace)
 {
-	// Warning - Any character appearing in rendered text should be listed below
+	// Warning: any character appearing in rendered text should be listed below
 	for (const char& character : partialASCIITable)
 	{
 		const FT_Error FTLoaderCharError = FT_Load_Char(inFreeTypeFontFace, character, FT_LOAD_RENDER);

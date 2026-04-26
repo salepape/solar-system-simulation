@@ -43,7 +43,7 @@ uint32_t Shader::CreateShader(const uint32_t type, const std::string& content) c
 
 void Shader::CreateProgram(const uint32_t vertexShaderID, const uint32_t fragmentShaderID)
 {
-	// Warning - According to the scope in which all Shaders are initialised, rendererID generated is always the same!
+	// Warning: according to the scope in which all Shaders are initialised, rendererID generated is always the same!
 	rendererID = glCreateProgram();
 
 	glAttachShader(rendererID, vertexShaderID);
@@ -86,7 +86,7 @@ bool Shader::IsUniformRequired(const std::string& name)
 	}
 	else
 	{
-		// Warning - Function returning -1 while the Uniform is present in a GLSL Shader contained in this class will result in a rendering error
+		// Warning: function returning -1 while the Uniform is present in a GLSL Shader contained in this class will result in a rendering error
 		return false;
 	}
 }

@@ -34,11 +34,11 @@ public:
 
 private:
 	// List of Sub-Meshes that represents the Model (retrieved from .obj file)
-	// Warning: Model is supposed to be simple enough, i.e. only contains 1 Mesh, 1 Material definition, 1 Texture
+	// Warning: model is supposed to be simple enough, i.e. only contains 1 Mesh, 1 Material definition, 1 Texture
 	std::vector<MeshComponent> meshes;
 
 	// List of Materials that applies to each Sub-Mesh of the Model (retrieved from .mtl file), as per ASSIMP convention
-	// Warning: Model is supposed to be simple enough, i.e. only contains 1 Mesh, 1 Material definition, 1 Texture
+	// Warning: model is supposed to be simple enough, i.e. only contains 1 Mesh, 1 Material definition, 1 Texture
 	std::vector<BlinnPhongMaterial> materials;
 	ShaderLookUpID::Enum shaderLookUpID;
 

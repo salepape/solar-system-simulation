@@ -48,11 +48,11 @@ private:
 	bool isFirstMouseInput{ true };
 
 	// Create the underlying GLFW Window and associate an OpenGL Context with it
-	// Warning - Any OpenGL command that would be run before the creation of the Window will fail (as the OpenGL Context creation is wrapped in GLFW Window class)
+	// Warning: any OpenGL command that would be run before the creation of the Window will fail (as the OpenGL Context creation is wrapped in GLFW Window class)
 	void InitGLFWWindowAndOpenGLContext();
 
 	// Destroy the underlying GLFW Window and its associated OpenGL Context
-	// Warning - Any OpenGL command that would be run after the destruction of the Window will fail (as the OpenGL Context destruction is wrapped in GLFW Window destructor)
+	// Warning: any OpenGL command that would be run after the destruction of the Window will fail (as the OpenGL Context destruction is wrapped in GLFW Window destructor)
 	void ClearGLFWWindowAndOpenGLContext() const;
 
 	// Set the OpenGL Context asssociated with the GLFW Window to be the current one used on the GPU rendering thread

@@ -58,7 +58,7 @@ void Window::InitGLFWWindowAndOpenGLContext()
 	// Tell explicitly GLFW that we want to use OpenGL core profile (i.e. most recent OpenGL paradigm)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// Warning - GLFW function includes the creation of an OpenGL Context!
+	// Warning: GLFW function includes the creation of an OpenGL Context!
 	GLFWWindow = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 }
 

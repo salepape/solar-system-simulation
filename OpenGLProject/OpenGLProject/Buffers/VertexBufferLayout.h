@@ -50,7 +50,7 @@ public:
 private:
 	std::vector<VertexAttributeLayout> attributeLayouts;
 
-	// Note we are not storing the stride as a std::size_t since the OpenGL function needing this parameter requires a GLsizei, i.e. an int
+	// Note: we are not storing the stride as a std::size_t since the OpenGL function needing this parameter requires a GLsizei, i.e. an int
 	uint32_t stride{ 0 };
 };
 
