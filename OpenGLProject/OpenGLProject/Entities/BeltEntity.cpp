@@ -15,8 +15,11 @@
 
 
 
-BeltEntity::BeltEntity(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams) : SceneEntity(inName),
-instanceParams(inInstanceParams), torusParams(inTorusParams), model(inInstanceParams.modelPath, ShaderLookUpID::Enum::BELT)
+BeltEntity::BeltEntity(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams) :
+	SceneEntity(inName),
+	instanceParams(inInstanceParams),
+	torusParams(inTorusParams),
+	model(inInstanceParams.modelPath, ShaderLookUpID::Enum::BELT)
 {
 	ComputeInstanceModelMatrices();
 	StoreInstanceModelMatrices();

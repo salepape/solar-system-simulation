@@ -8,7 +8,8 @@
 
 
 
-PerspectiveCamera::PerspectiveCamera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane) : Camera(inPosition, inRotation, inFovY, inFarPlane)
+PerspectiveCamera::PerspectiveCamera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane) :
+	Camera(inPosition, inRotation, inFovY, inFarPlane)
 {
 	UpdateCameraVectors();
 }

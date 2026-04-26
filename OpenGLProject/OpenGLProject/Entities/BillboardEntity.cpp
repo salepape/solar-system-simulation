@@ -30,12 +30,13 @@ namespace
 
 
 
-BillboardEntity::BillboardEntity(const BodyData& inBodyData) : SceneEntity(inBodyData.name + "Billboard"),
-legend(inBodyData.name),
-isMoon(inBodyData.parentName.length() != 0),
-glyphTextureScaleFactor(inBodyData.radius * (isMoon ? moonGlyphTextureScaleFactor : bodyGlyphTextureScaleFactor)),
-quads(ComputeQuadParams(0.0f, inBodyData.radius * (isMoon ? moonBilboardYStartScaleFactor : bodyBilboardYStartScaleFactor))),
-material(InitialiseMaterial())
+BillboardEntity::BillboardEntity(const BodyData& inBodyData) :
+	SceneEntity(inBodyData.name + "Billboard"),
+	legend(inBodyData.name),
+	isMoon(inBodyData.parentName.length() != 0),
+	glyphTextureScaleFactor(inBodyData.radius * (isMoon ? moonGlyphTextureScaleFactor : bodyGlyphTextureScaleFactor)),
+	quads(ComputeQuadParams(0.0f, inBodyData.radius * (isMoon ? moonBilboardYStartScaleFactor : bodyBilboardYStartScaleFactor))),
+	material(InitialiseMaterial())
 {
 
 }

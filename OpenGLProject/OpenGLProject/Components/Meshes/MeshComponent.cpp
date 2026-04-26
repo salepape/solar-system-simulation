@@ -15,7 +15,8 @@
 
 
 MeshComponent::MeshComponent(const std::vector<Vertex>& inVertices, const std::vector<uint32_t>& inIndices) :
-	vertices(inVertices), indices(inIndices)
+	vertices(inVertices),
+	indices(inIndices)
 {
 	StoreVertices();
 }

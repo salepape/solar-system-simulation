@@ -10,7 +10,11 @@
 
 
 Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::string& inTitle) :
-	width(inWidth), height(inHeight), title(inTitle), aspectRatio(width * 1.0f / height), lastCursorPosition(glm::vec2(0.5f * width, 0.5f * height))
+	width(inWidth),
+	height(inHeight),
+	title(inTitle),
+	aspectRatio(width * 1.0f / height),
+	lastCursorPosition(glm::vec2(0.5f * width, 0.5f * height))
 {
 	// Initialise GLFW library before any GLFW function calls
 	const int isGlfwInitialised = glfwInit();

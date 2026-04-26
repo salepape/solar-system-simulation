@@ -11,7 +11,9 @@
 
 
 SphereMeshComponent::SphereMeshComponent(const float inRadius, const uint32_t inMeridianStripCount, const uint32_t inParallelStripCount) :
-	radius(inRadius), meridianStripCount(inMeridianStripCount), parallelStripCount(inParallelStripCount)
+	radius(inRadius),
+	meridianStripCount(inMeridianStripCount),
+	parallelStripCount(inParallelStripCount)
 {
 	ComputeVertices();
 	ComputeIndices();

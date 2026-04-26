@@ -12,8 +12,9 @@
 
 
 
-MilkyWayEntity::MilkyWayEntity(const std::filesystem::path& inTexturePath) : SceneEntity("MilkyWay"),
-material(InitialiseMaterial(inTexturePath))
+MilkyWayEntity::MilkyWayEntity(const std::filesystem::path& inTexturePath) :
+	SceneEntity("MilkyWay"),
+	material(InitialiseMaterial(inTexturePath))
 {
 
 }

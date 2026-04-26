@@ -11,7 +11,8 @@
 
 
 CircleMeshComponent::CircleMeshComponent(const float inRadius, const uint32_t inMeridianStripCount) :
-	radius(inRadius), meridianStripCount(inMeridianStripCount)
+	radius(inRadius),
+	meridianStripCount(inMeridianStripCount)
 {
 	ComputeVertices();
 	StoreVertices();

@@ -11,8 +11,11 @@
 
 
 
-BodyRingsEntity::BodyRingsEntity(RingsData&& inRingsData) : SceneEntity(inRingsData.bodyName + "Rings"),
-ringsData(inRingsData), model(ringsData.modelPath, ShaderLookUpID::Enum::DEFAULT), bodyName(ringsData.bodyName)
+BodyRingsEntity::BodyRingsEntity(RingsData&& inRingsData) :
+	SceneEntity(inRingsData.bodyName + "Rings"),
+	ringsData(inRingsData),
+	model(ringsData.modelPath, ShaderLookUpID::Enum::DEFAULT),
+	bodyName(ringsData.bodyName)
 {
 
 }

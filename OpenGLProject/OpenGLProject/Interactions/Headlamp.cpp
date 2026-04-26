@@ -9,7 +9,7 @@
 
 
 Headlamp::Headlamp(const glm::vec3& inPosition) :
-	headlight(inPosition, glm::vec3(0.0f, 0.0f, -1.0f), { glm::vec3(0.2f), glm::vec3(0.8f), glm::vec3(1.0f) }, { 1.0f, 0.007f, 0.0002f }, { glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f)) })
+	headlight(inPosition, glm::vec3(0.0f, 0.0f, -1.0f), ReflectionParams{ glm::vec3(0.2f), glm::vec3(0.8f), glm::vec3(1.0f) }, AttenuationParams{ 1.0f, 0.007f, 0.0002f }, SpotParams{ glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f)) })
 {
 
 }

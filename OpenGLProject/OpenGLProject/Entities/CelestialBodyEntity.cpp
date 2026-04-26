@@ -19,10 +19,11 @@
 
 
 
-CelestialBodyEntity::CelestialBodyEntity(BodyData&& inBodyData) : SceneEntity(inBodyData.name),
-bodyData(std::move(inBodyData)),
-sphere(bodyData.radius),
-material(InitialiseMaterial(bodyData.texturePath, bodyData.name))
+CelestialBodyEntity::CelestialBodyEntity(BodyData&& inBodyData) :
+	SceneEntity(inBodyData.name),
+	bodyData(std::move(inBodyData)),
+	sphere(bodyData.radius),
+	material(InitialiseMaterial(bodyData.texturePath, bodyData.name))
 {
 	if (bodyData.name == "Sun")
 	{

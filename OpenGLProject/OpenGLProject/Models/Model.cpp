@@ -7,7 +7,8 @@
 
 
 Model::Model(const std::filesystem::path& inPath, const ShaderLookUpID::Enum inShaderLookUpID, const bool inGammaCorrection) :
-	shaderLookUpID(inShaderLookUpID), gammaCorrection(inGammaCorrection)
+	shaderLookUpID(inShaderLookUpID),
+	gammaCorrection(inGammaCorrection)
 {
 	ModelLoader::LoadModel(*this, inPath);
 }
