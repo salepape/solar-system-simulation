@@ -1,5 +1,5 @@
-#ifndef TEXT_RENDERER_H
-#define TEXT_RENDERER_H
+#ifndef GLYPH_LOADER_H
+#define GLYPH_LOADER_H
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -58,4 +58,4 @@ private:
 
 
 
-#endif // TEXT_RENDERER_H
+#endif // GLYPH_LOADER_H

@@ -36,4 +36,3 @@ bool InputHandler::IsMouseButtonPressed(const int buttonCode)
 	Window& currentWindow = Application::GetInstance().GetWindow();
 	return glfwGetMouseButton(currentWindow.GLFWWindow, buttonCode) == GLFW_PRESS;
 }
-
