@@ -50,9 +50,9 @@ The actual simulation is decoupled from the object-oriented engine that runs it.
 * :ringed_planet: Celestial Bodies with their moons, in motion along circular orbits, with adjustable simulation speed
 * :movie_camera: Perspective Camera Controller & Input System for an intuitive exploration
 * :globe_with_meridians: Meshes computed in code from scratch, or loaded from file for asteroid/ring system 3D Models
-* :mag: Mesh blending taking into account the distance of each scene entity to the player camera
+* :mag: Mesh blending taking into account the distance of each Scene Entity to the Perspective Camera
 * :rocket: 3D Mesh Renderer with instanced rendering to draw the belts in a more performant way
-* :page_facing_up: 2D Text renderer to display celestial body names
+* :page_facing_up: Glyph Loader rendered on 2D quads to display the names of Celestial Bodies
 * :flashlight: Blinn-Phong Illumination model running on GPU via GLSL shaders, with a Point Light for Sun contribution.
 
 Comments in the codebase describe implementation details (technical decisions, documentation, etc.)
@@ -60,48 +60,49 @@ Comments in the codebase describe implementation details (technical decisions, d
 ## :hammer: Setup
 
 > [!WARNING]
-> The simulation is available only for Windows OS, on a x86 or x64 architecture.
+> The simulation is available only for Windows OS, on a x86 or x64 architecture. Look for the respective nested folders <i>Win32</i> for x86, or <i>x64/</i> for x64 when following this section.
 
-You can either clone the Git repository to your computer via Git commands/your favourite Source Control IDE, or unzip the corresponding .zip folder after downloading it (it will be called <i>solar-system-simulation-master</i>).
-
-The execution of the program should require around 4 seconds in Release mode, and 8 seconds in Debug mode before starting. Enjoy!
+Scroll up this GitHub page and locate the green "Code" button. Click on it, then select one of the two options below from the newly opened "Clone" menu:
+* clone the repository: click the icon "copy URL to clipboard" to get the HTTPS web URL XXX, then open Git Bash, go to the folder you want to set up the project in, and run the command `git clone XXX`. You can also use your favourite Source Control IDE to proceed
+* download the repository: click the button "Download ZIP" to get the project in a `.zip` folder, and unzip it once completed (it will be called <i>solar-system-simulation-master</i>).
 
 ### For end-users
 
-To run the executable, go to <i>OpenGLProject/Output/Release/[OS architecture]</i> (<i>Win32</i> for x86, or <i>x64/</i> for x64), and double-click on <b>OpenGLProject.exe</b>
+To run the executable, go to <i>OpenGLProject/Output/Release/[OS architecture]</i>, and double-click on `OpenGLProject.exe`.
 
 An Assimp DLL needs to be located in the same folder as the executable to run. If, for some reason, you don't, double-check you got the latest version of the remote Git Repository. You can also run the batch file yourself from a command line, or copy the DLL manually located in <i>OpenGLProject/Tools/Libraries/[OS Architecture]/Assimp</i>.
 
 > [!NOTE]
 > If your antivirus is flagging a threat just after running an executable from the Windows File Explorer, just ignore it: the program is safe to use :) You can also try to run it in Admin mode.
 
+The execution of the program should require around 4 seconds in Release mode, and 8 seconds in Debug mode before starting. Enjoy!
+
 ### For developers
 
-To build the executable, go to <i>OpenGLProject/OpenGLProject</i>, and double-click on <b>OpenGLProject.sln</b>. Choose the OS architecture/configuration you need, and click on the green arrow button. 
+To build the executable, go to <i>OpenGLProject/OpenGLProject</i>, and double-click on `OpenGLProject.sln`. Choose the OS architecture/configuration you need, and click on the green arrow button. 
 
 > [!WARNING]
 > Not having the same Visual Studio environment installed (as specified [here](#environment-specifications)) can lead to build errors. You can set this up from Visual Studio Installer, or download all needed elements from [the official website](https://visualstudio.microsoft.com/downloads).
 
 Here are the required Visual Studio elements to build the Solution:
 * IDE: Visual Studio 2022 or later (the latter requiring a Solution upgrade)
-* programming language: workload <b>Desktop Development in C++</b> (should include the latest SDK available, i.e the individual component <b>Windows 11 SDK (10.0.26100.7705)</b> or later)
+* programming language: workload <b>Desktop Development in C++</b> (should include the latest SDK available, i.e. the individual component <b>Windows 11 SDK (10.0.26100.7705)</b> or later)
 * compiler: individual components <b>C++ Clang Compiler for Windows (19.1.5)</b> and <b>MSBuild support for LLVM (clang-cl) toolset</b> (you can still switch back to Microsoft MSVC Compiler in the Project Settings if you prefer)
 
 You might then need to right-click on the Solution from inside the Visual Studio IDE and click:
 * <b>Load Project</b> if unloaded
 * <b>Set it as Startup project</b> if Solution Configuration is empty.
 
-The batch script <b>CopyDLLPostBuild.bat</b> is automatically run after the project has successfully built (as a Visual Studio post-build event), to add an Assimp DDL to the Project folder.
+The batch script `CopyDLLPostBuild.bat` is automatically run after the project has successfully built (as a Visual Studio post-build event), to add an Assimp DDL to the Project folder.
 
 ## :joystick: Controls
 
 To be able to explore the Solar System, the user should use the following controls:
 * <kbd>Z</kbd>, <kbd>Q</kbd>, <kbd>S</kbd>, <kbd>D</kbd> (for an AZERTY keyboard) to move forward, left, backward, and right respectively,
-* <kbd>left mouse button</kbd> and <kbd>right mouse button</kbd> to move up and down
-* <kbd>mouse scroll wheel</kbd> to zoom in/out
-* <kbd>Shift</kbd> to increase speed when moving
+* <kbd>left mouse button</kbd>, <kbd>right mouse button</kbd> to move up and down, <kbd>mouse scroll wheel</kbd> to zoom in and out
+* <kbd>Shift</kbd> to move faster
 * <kbd>R</kbd> (like Reset) to teleport the user to the initial location (i.e. just above the Sun)
-* <kbd>L</kbd> (like Legend) to make celestial body names appear above the meshes
+* <kbd>L</kbd> (like Legend) to display names of each celestial body
 * <kbd>H</kbd> (like Headlamp) to turn on/off user's headlight, to better explore regions with poor lighting
 * <kbd>Up arrow</kbd> and <kbd>down arrow</kbd> to speed up/slow down the simulation
 * <kbd>Space</kbd> to pause/unpause the simulation
