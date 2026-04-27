@@ -45,6 +45,20 @@ You might then need to right-click on the Solution from inside the Visual Studio
 
 The batch script `CopyDLLPostBuild.bat` is automatically run after the project has successfully built (as a Visual Studio post-build event), to add an Assimp DDL to the Project folder.
 
+## :joystick: Controls
+
+To be able to explore the Solar System, the user should use the following controls:
+* <kbd>Z</kbd>, <kbd>Q</kbd>, <kbd>S</kbd>, <kbd>D</kbd> (for an AZERTY keyboard) to move forward, left, backward, and right respectively,
+* <kbd>left mouse button</kbd>, <kbd>right mouse button</kbd> to move up and down, <kbd>mouse scroll wheel</kbd> to zoom in and out
+* <kbd>Shift</kbd> to move faster
+* <kbd>R</kbd> (like Reset) to teleport the user to the initial location (i.e. just above the Sun)
+* <kbd>L</kbd> (like Legend) to display names of each celestial body
+* <kbd>H</kbd> (like Headlamp) to turn on/off user's headlight, to better explore regions with poor lighting
+* <kbd>Up arrow</kbd> and <kbd>down arrow</kbd> to speed up/slow down the simulation
+* <kbd>Space</kbd> to pause/unpause the simulation
+* <kbd>Tab</kbd> to switch the application to cursor mode (allowing you to resize the window, background the simulation, etc.)
+* <kbd>Esc</kbd> to quit the simulation.
+
 ## :telescope: Content 
 
 The simulation contains the following celestial bodies:
@@ -71,20 +85,6 @@ The actual simulation is decoupled from the object-oriented engine that runs it.
 * :flashlight: Blinn-Phong Illumination model running on GPU via GLSL shaders, with a Point Light for Sun contribution.
 
 Comments in the codebase describe implementation details (technical decisions, documentation, etc.)
-
-## :joystick: Controls
-
-To be able to explore the Solar System, the user should use the following controls:
-* <kbd>Z</kbd>, <kbd>Q</kbd>, <kbd>S</kbd>, <kbd>D</kbd> (for an AZERTY keyboard) to move forward, left, backward, and right respectively,
-* <kbd>left mouse button</kbd>, <kbd>right mouse button</kbd> to move up and down, <kbd>mouse scroll wheel</kbd> to zoom in and out
-* <kbd>Shift</kbd> to move faster
-* <kbd>R</kbd> (like Reset) to teleport the user to the initial location (i.e. just above the Sun)
-* <kbd>L</kbd> (like Legend) to display names of each celestial body
-* <kbd>H</kbd> (like Headlamp) to turn on/off user's headlight, to better explore regions with poor lighting
-* <kbd>Up arrow</kbd> and <kbd>down arrow</kbd> to speed up/slow down the simulation
-* <kbd>Space</kbd> to pause/unpause the simulation
-* <kbd>Tab</kbd> to switch the application to cursor mode (allowing you to resize the window, background the simulation, etc.)
-* <kbd>Esc</kbd> to quit the simulation.
 
 ## :gear: Technologies
 
