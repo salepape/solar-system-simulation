@@ -2,30 +2,29 @@
 
 ## :video_game: Introduction
 
-Here is a simulation of the Solar System in 3D! This project mainly originates from a strong interest in the Universe and Graphics programming. Developing this project led me to dive into the OpenGL specification and classic Rendering techniques. The development of this project is still ongoing.
+Here is a simulation of the Solar System in 3D! This project mainly originates from a strong interest in the Universe and Graphics programming. Developing it led me to dive into the OpenGL specification and classic Rendering techniques. The development of this project is still ongoing.
 
 ![SimulationStartingPoint](https://github.com/salepape/solar-system-simulation/blob/master/README%20Gifs/SimulationStartingPoint.gif)
 
 ## :hammer: Setup
 
 > [!WARNING]
-> The simulation is available only for Windows OS, on a x86 or x64 architecture. Look for the respective nested folders <i>Win32</i> for x86, or <i>x64</i> for x64 when following this section.
+> The simulation is available only for Windows OS, on a x86 (<i>[OS Architecture] = Win32</i>) or x64 (<i>[OS Architecture] = x64</i>) architecture.
 
-Scroll up this GitHub page and locate the green "Code" button. Click on it, then select one of the two options below from the newly opened "Clone" menu:
-* clone the repository: click the icon "copy URL to clipboard" to get the HTTPS web URL XXX, then open Git Bash, go to the folder you want to set up the project in, and run the command `git clone XXX`. You can also use your favourite Source Control IDE to proceed
-* download the repository: click the button "Download ZIP" to get the project in a `.zip` folder, and unzip it once completed (it will be called <i>solar-system-simulation-master</i>).
+Scroll up this GitHub page and locate the green "Code" button. Click on it, then select one of the two options below:
+* clone the repository: click the icon labelled "copy URL to clipboard", then open Git Bash to the folder you want to set up the project in, and run the command `git clone URL`. You can also use a Source Control IDE to proceed
+* download the repository: click the button "Download ZIP", then unzip the folder once completed (it should be called <i>solar-system-simulation-master</i>).
+
+> [!NOTE]
+> If your antivirus is flagging a threat just after running an executable from the Windows File Explorer, just ignore it: the program is safe to use :) You can also try to run it in Admin mode.
+
+Program should start after 4 seconds in Release mode, and after 8 seconds in Debug mode. Enjoy!
 
 ### For end-users
 
 To run the executable, go to <i>OpenGLProject/Output/Release/[OS architecture]</i>, and double-click on `OpenGLProject.exe`.
 
-An Assimp DLL needs to be located in the same folder as the executable to run. If, for some reason, you don't, double-check you got the latest version of the remote Git Repository.
-You can also execute the batch file yourself from a cmd (e.g. if you are in the `Scripts` folder, by running the command `copy ..\Tools\Libraries\[OS Architecture]\assimp\[assimp].dll ..\Output\Release\[OS Architecture]`), or copy the DLL manually located in <i>OpenGLProject/Tools/Libraries/[OS Architecture]/Assimp</i>.
-
-> [!NOTE]
-> If your antivirus is flagging a threat just after running an executable from the Windows File Explorer, just ignore it: the program is safe to use :) You can also try to run it in Admin mode.
-
-The execution of the program should require around 4 seconds in Release mode, and 8 seconds in Debug mode before starting. Enjoy!
+An Assimp DLL should be located in the same folder as the executable to run. If, for some reason, you don't, double-check you got the latest version of the remote Git Repository.
 
 ### For developers
 
@@ -43,7 +42,9 @@ You might then need to right-click on the Solution from inside the Visual Studio
 * <b>Load Project</b> if unloaded
 * <b>Set it as Startup project</b> if Solution Configuration is empty.
 
-The batch script `CopyDLLPostBuild.bat` is automatically run after the project has successfully built (as a Visual Studio post-build event), to add an Assimp DDL to the Project folder.
+An Assimp DLL should automatically be added to the Project folder after it has successfully built. If, for some reason, it doesn't work, you can:
+* copy the DLL manually located in <i>OpenGLProject/Tools/Libraries/[OS Architecture]/Assimp</i>
+* execute the batch file `CopyDLLPostBuild.bat` yourself from a cmd by running the command `copy [Relative path to DLL]\[assimp].dll [Relative path to .exe]`.
 
 ## :joystick: Controls
 
@@ -123,7 +124,7 @@ Celestial body textures have been downloaded from the websites below:
 * [3D Asteroid Catalogue](https://3d-asteroids.space)
 * sources from passionate people such as [Planet Texture Maps Wiki](https://planet-texture-maps.fandom.com/wiki).
 
-Finally, I am very grateful to the following people/sources: they have been real catalysers for my understanding of OpenGL and the world of Graphics.
+Finally, I am very grateful to the following people/sources, real catalysers for my understanding of OpenGL.
 * Joey De Vries for his tutorial website [Learn OpenGL](https://learnopengl.com)
 * Yan Chernikov (aka TheCherno) for his tutorial videos [here](https://www.youtube.com/user/TheChernoProject)
 * Nicol Bolas for his numerous interventions and [his website](https://nicolbolas.github.io)
