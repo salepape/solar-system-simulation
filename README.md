@@ -6,29 +6,44 @@ Here is a simulation of the Solar System in 3D! This project mainly originates f
 
 ![SimulationStartingPoint](https://github.com/salepape/solar-system-simulation/blob/master/README%20Gifs/SimulationStartingPoint.gif)
 
-## :gear: Technologies
+## :hammer: Setup
 
-### Environment Specifications
+> [!WARNING]
+> The simulation is available only for Windows OS, on a x86 or x64 architecture. Look for the respective nested folders <i>Win32</i> for x86, or <i>x64</i> for x64 when following this section.
 
-This project is being developed under an environment with the following specifications:
-* ASUS UX461U with Intel(R) Core(TM) i7-8550U CPU and Intel(R) UHD Graphics 620 GPU
-* Windows 10 OS with x64 architecture
-* Visual Studio Community 2022 IDE version 17
-* LLVM Clang C++ compiler version 19.1.5
-* C17/C++17/GLSL programming languages
-* OpenGL 4.6 (Core Profile) specification.
+Scroll up this GitHub page and locate the green "Code" button. Click on it, then select one of the two options below from the newly opened "Clone" menu:
+* clone the repository: click the icon "copy URL to clipboard" to get the HTTPS web URL XXX, then open Git Bash, go to the folder you want to set up the project in, and run the command `git clone XXX`. You can also use your favourite Source Control IDE to proceed
+* download the repository: click the button "Download ZIP" to get the project in a `.zip` folder, and unzip it once completed (it will be called <i>solar-system-simulation-master</i>).
 
-### Third-Party Libraries
+### For end-users
 
-Here is the list of all the open-source libraries used for this project:
-* [Glad](https://github.com/dav1dde/glad) to get Core OpenGL function pointers to the correct implementation version
-* [GLFW](https://github.com/glfw) to initialise both the OpenGL context/application window and handle user input
-* [GLM](https://github.com/g-truc/glm) for mathematical utility functions
-* [SOIL2](https://github.com/SpartanJ/soil2) to load DDS textures in different fashion (i.e. bitmaps and cubemaps)
-* [Assimp](https://github.com/assimp) DLL to load 3D models (i.e. composed of sub-meshes and materials)
-* [FreeType](https://github.com/freetype) to render 2D glyphs (i.e. ASCII characters).
+To run the executable, go to <i>OpenGLProject/Output/Release/[OS architecture]</i>, and double-click on `OpenGLProject.exe`.
 
-Finally, [RenderDoc](https://github.com/baldurk/renderdoc) has been used to improve the rendering performance/frame rate in some places.
+An Assimp DLL needs to be located in the same folder as the executable to run. If, for some reason, you don't, double-check you got the latest version of the remote Git Repository.
+You can also execute the batch file yourself from a cmd (e.g. if you are in the `Scripts` folder, by running the command `copy ..\Tools\Libraries\[OS Architecture]\assimp\[assimp].dll ..\Output\Release\[OS Architecture]`), or copy the DLL manually located in <i>OpenGLProject/Tools/Libraries/[OS Architecture]/Assimp</i>.
+
+> [!NOTE]
+> If your antivirus is flagging a threat just after running an executable from the Windows File Explorer, just ignore it: the program is safe to use :) You can also try to run it in Admin mode.
+
+The execution of the program should require around 4 seconds in Release mode, and 8 seconds in Debug mode before starting. Enjoy!
+
+### For developers
+
+To build the executable, go to <i>OpenGLProject/OpenGLProject</i>, and double-click on `OpenGLProject.sln`. Choose the OS architecture/configuration you need, and click on the green arrow button. 
+
+> [!WARNING]
+> Not having the same Visual Studio environment installed (as specified [here](#environment-specifications)) can lead to build errors. You can set this up from Visual Studio Installer, or download all needed elements from [the official website](https://visualstudio.microsoft.com/downloads).
+
+Here are the required Visual Studio elements to build the Solution:
+* IDE: Visual Studio 2022 or later (the latter requiring a Solution upgrade)
+* programming language: workload <b>Desktop Development in C++</b> (should include the latest SDK available, i.e. the individual component <b>Windows 11 SDK (10.0.26100.7705)</b> or later)
+* compiler: individual components <b>C++ Clang Compiler for Windows (19.1.5)</b> and <b>MSBuild support for LLVM (clang-cl) toolset</b> (you can still switch back to Microsoft MSVC Compiler in the Project Settings if you prefer).
+
+You might then need to right-click on the Solution from inside the Visual Studio IDE and click:
+* <b>Load Project</b> if unloaded
+* <b>Set it as Startup project</b> if Solution Configuration is empty.
+
+The batch script `CopyDLLPostBuild.bat` is automatically run after the project has successfully built (as a Visual Studio post-build event), to add an Assimp DDL to the Project folder.
 
 ## :telescope: Content 
 
@@ -57,44 +72,6 @@ The actual simulation is decoupled from the object-oriented engine that runs it.
 
 Comments in the codebase describe implementation details (technical decisions, documentation, etc.)
 
-## :hammer: Setup
-
-> [!WARNING]
-> The simulation is available only for Windows OS, on a x86 or x64 architecture. Look for the respective nested folders <i>Win32</i> for x86, or <i>x64/</i> for x64 when following this section.
-
-Scroll up this GitHub page and locate the green "Code" button. Click on it, then select one of the two options below from the newly opened "Clone" menu:
-* clone the repository: click the icon "copy URL to clipboard" to get the HTTPS web URL XXX, then open Git Bash, go to the folder you want to set up the project in, and run the command `git clone XXX`. You can also use your favourite Source Control IDE to proceed
-* download the repository: click the button "Download ZIP" to get the project in a `.zip` folder, and unzip it once completed (it will be called <i>solar-system-simulation-master</i>).
-
-### For end-users
-
-To run the executable, go to <i>OpenGLProject/Output/Release/[OS architecture]</i>, and double-click on `OpenGLProject.exe`.
-
-An Assimp DLL needs to be located in the same folder as the executable to run. If, for some reason, you don't, double-check you got the latest version of the remote Git Repository. You can also run the batch file yourself from a command line, or copy the DLL manually located in <i>OpenGLProject/Tools/Libraries/[OS Architecture]/Assimp</i>.
-
-> [!NOTE]
-> If your antivirus is flagging a threat just after running an executable from the Windows File Explorer, just ignore it: the program is safe to use :) You can also try to run it in Admin mode.
-
-The execution of the program should require around 4 seconds in Release mode, and 8 seconds in Debug mode before starting. Enjoy!
-
-### For developers
-
-To build the executable, go to <i>OpenGLProject/OpenGLProject</i>, and double-click on `OpenGLProject.sln`. Choose the OS architecture/configuration you need, and click on the green arrow button. 
-
-> [!WARNING]
-> Not having the same Visual Studio environment installed (as specified [here](#environment-specifications)) can lead to build errors. You can set this up from Visual Studio Installer, or download all needed elements from [the official website](https://visualstudio.microsoft.com/downloads).
-
-Here are the required Visual Studio elements to build the Solution:
-* IDE: Visual Studio 2022 or later (the latter requiring a Solution upgrade)
-* programming language: workload <b>Desktop Development in C++</b> (should include the latest SDK available, i.e. the individual component <b>Windows 11 SDK (10.0.26100.7705)</b> or later)
-* compiler: individual components <b>C++ Clang Compiler for Windows (19.1.5)</b> and <b>MSBuild support for LLVM (clang-cl) toolset</b> (you can still switch back to Microsoft MSVC Compiler in the Project Settings if you prefer)
-
-You might then need to right-click on the Solution from inside the Visual Studio IDE and click:
-* <b>Load Project</b> if unloaded
-* <b>Set it as Startup project</b> if Solution Configuration is empty.
-
-The batch script `CopyDLLPostBuild.bat` is automatically run after the project has successfully built (as a Visual Studio post-build event), to add an Assimp DDL to the Project folder.
-
 ## :joystick: Controls
 
 To be able to explore the Solar System, the user should use the following controls:
@@ -108,6 +85,30 @@ To be able to explore the Solar System, the user should use the following contro
 * <kbd>Space</kbd> to pause/unpause the simulation
 * <kbd>Tab</kbd> to switch the application to cursor mode (allowing you to resize the window, background the simulation, etc.)
 * <kbd>Esc</kbd> to quit the simulation.
+
+## :gear: Technologies
+
+### Environment Specifications
+
+This project is being developed under an environment with the following specifications:
+* ASUS UX461U with Intel(R) Core(TM) i7-8550U CPU and Intel(R) UHD Graphics 620 GPU
+* Windows 10 OS with x64 architecture
+* Visual Studio Community 2022 IDE version 17
+* LLVM Clang C++ compiler version 19.1.5
+* C17/C++17/GLSL programming languages
+* OpenGL 4.6 (Core Profile) specification.
+
+### Third-Party Libraries
+
+Here is the list of all the open-source libraries used for this project:
+* [Glad](https://github.com/dav1dde/glad) to get Core OpenGL function pointers to the correct implementation version
+* [GLFW](https://github.com/glfw) to initialise both the OpenGL context/application window and handle user input
+* [GLM](https://github.com/g-truc/glm) for mathematical utility functions
+* [SOIL2](https://github.com/SpartanJ/soil2) to load DDS textures in different fashion (i.e. bitmaps and cubemaps)
+* [Assimp](https://github.com/assimp) DLL to load 3D models (i.e. composed of sub-meshes and materials)
+* [FreeType](https://github.com/freetype) to render 2D glyphs (i.e. ASCII characters).
+
+Finally, [RenderDoc](https://github.com/baldurk/renderdoc) has been used to improve the rendering performance/frame rate in some places.
 
 ## :gem: Resources
 
