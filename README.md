@@ -11,24 +11,22 @@ Here is a simulation of the Solar System in 3D! This project mainly originates f
 > [!WARNING]
 > The simulation is only available on Windows x86 (<i>[OS architecture] = Win32</i>) or x64 (<i>[OS architecture] = x64</i>).
 
-Scroll up this GitHub page and locate the green "Code" button. Click on it, then select one of the two options below:
-* clone the repository: click the icon labelled "copy URL to clipboard", then open Git Bash to the folder you want to set up the project in, and run the command `git clone [URL]`. You can also use a Source Control IDE to proceed
-* download the repository: click the button "Download ZIP", then unzip the folder once completed (it should be called <i>solar-system-simulation-master</i>).
-
 > [!NOTE]
 > If your antivirus is flagging a threat just after running an executable from the Windows File Explorer, just ignore it: the program is safe to use :) You can also try to run it in Admin mode.
 
-Program should start after 4 seconds in Release mode, and after 8 seconds in Debug mode. Enjoy!
+First, scroll up this GitHub page and locate the green "Code" button, and click on it.
 
 ### For end-users
 
-To run the executable, go to <i>OpenGLProject/Output/Release/[OS architecture]</i>, and double-click on `OpenGLProject.exe`.
+Download the repository by clicking the "Download ZIP" button, and unzip the folder once completed (it should be called <i>solar-system-simulation-master</i>).
+To run the executable, go to <i>OpenGLProject/Output/Release/[OS architecture]</i>, and double-click on `OpenGLProject.exe` (should start after 4 seconds in Release mode).
 
 An Assimp DLL should be located in the same folder as the executable to run. If not, double-check you got the latest version of the remote Git Repository.
 
 ### For developers
 
-To build the executable, go to <i>OpenGLProject/OpenGLProject</i>, and double-click on `OpenGLProject.sln`. Choose the OS architecture/configuration you need, and click on the green arrow button. 
+Clone the repository by clicking the icon labelled "copy URL to clipboard", then open Git Bash to the folder you want to set up the project in, and run the command `git clone [URL]`. You can also use a Source Control IDE to proceed.
+To build the executable, go to <i>OpenGLProject/OpenGLProject</i>, and double-click on `OpenGLProject.sln`. Choose the OS architecture/configuration you need, and click on the green arrow button (`.exe` in Debug mode should start after 8 seconds).
 
 > [!WARNING]
 > Not having the same Visual Studio environment installed (as specified [here](#environment-specifications)) can lead to build errors. You can set this up from Visual Studio Installer, or download all needed elements from [the official website](https://visualstudio.microsoft.com/downloads).
