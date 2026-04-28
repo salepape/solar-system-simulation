@@ -9,18 +9,18 @@
 *.opendb
 
 # Visual Studio cache/options directory
-OpenGLProject/.vs/
+.vs/
 
 # Temporary Debug/Release folders
-OpenGLProject/OpenGLProject/Intermediate/
+OpenGLProject/Intermediate/
 
-# Debug build folder
-OpenGLProject/Output/Debug
+# Debug build files
+Output/Debug
 
 # Unnecessary release build files
-OpenGLProject/Output/Release/**/*.iobj
-OpenGLProject/Output/Release/**/*.ipdb
-OpenGLProject/Output/Release/**/*.pdb
+Output/Release/**/*.iobj
+Output/Release/**/*.ipdb
+Output/Release/**/*.pdb
 
 # Sciencific research papers
 Documents
