@@ -19,14 +19,14 @@ First, scroll up this GitHub page and locate the green "Code" button, and click 
 ### For end-users
 
 Download the repository by clicking the "Download ZIP" button, and unzip the folder once completed (it should be called <i>solar-system-simulation-master</i>).
-To run the executable, go to <i>OpenGLProject/Output/Release/[OS architecture]</i>, and double-click on `OpenGLProject.exe` (should start after 4 seconds in Release mode).
+To run the executable, go to <i>Output/Release/[OS architecture]</i>, and double-click on `OpenGLProject.exe` (should start after 4 seconds in Release mode).
 
 An Assimp DLL should be located in the same folder as the executable to run. If not, double-check you got the latest version of the remote Git Repository.
 
 ### For developers
 
-Clone the repository by clicking the icon labelled "copy URL to clipboard", then open Git Bash to the folder you want to set up the project in, and run the command `git clone [URL]`. You can also use a Source Control IDE to proceed.
-To build the executable, go to <i>OpenGLProject/OpenGLProject</i>, and double-click on `OpenGLProject.sln`. Choose the OS architecture/configuration you need, and click on the green arrow button (`.exe` in Debug mode should start after 8 seconds).
+Clone the repository by clicking the icon labelled "copy URL to clipboard", then open Git Bash from the folder you want to set up the project in, and run the command `git clone [URL]`. You can also use a Source Control IDE to proceed.
+To build the executable, go to <i>OpenGLProject</i>, and double-click on `OpenGLProject.sln`. Choose the OS architecture/configuration you need, and click on the green arrow button (`.exe` in Debug mode should start after 8 seconds).
 
 > [!WARNING]
 > Not having the same Visual Studio environment installed (as specified [here](#environment-specifications)) can lead to build errors. You can set this up from Visual Studio Installer, or download all needed elements from [the official website](https://visualstudio.microsoft.com/downloads).
@@ -41,7 +41,7 @@ You might then need to right-click on the Solution from inside the Visual Studio
 * <b>Set it as Startup project</b> if Solution Configuration is empty.
 
 An Assimp DLL should automatically be added to the Project folder after it has successfully built. If not, you can:
-* copy the DLL manually located in <i>OpenGLProject/Tools/Libraries/[OS Architecture]/Assimp</i>
+* copy the DLL manually located in <i>Tools/Libraries/[OS Architecture]/Assimp</i>
 * execute the batch file `CopyDLLPostBuild.bat` from a cmd: `copy [path to DLL]\[assimp].dll [path to .exe]`.
 
 ## :joystick: Controls
