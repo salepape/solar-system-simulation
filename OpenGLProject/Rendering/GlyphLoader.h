@@ -1,7 +1,7 @@
 #ifndef GLYPH_LOADER_H
 #define GLYPH_LOADER_H
 
-#include <ft2build.h>
+#include <freetype/ft2build.h>
 #include FT_FREETYPE_H
 #include <glm/ext/vector_int2.hpp>
 

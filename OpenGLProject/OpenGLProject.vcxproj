@@ -70,16 +70,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Buffers;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)Interactions;$(ProjectDir)Models;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Tools\Libraries\x32;$(SolutionDir)Tools\Libraries\x32\freetype;$(SolutionDir)Tools\Libraries\x32\glfw;$(SolutionDir)Tools\Libraries\x32\soil2;$(SolutionDir)Tools\Libraries\x32\assimp;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Buffers;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)Interactions;$(ProjectDir)Models;$(ProjectDir)Rendering;$(ProjectDir)Scene;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Tools\Libraries\x32\assimp;$(SolutionDir)Tools\Libraries\x32\freetype;$(SolutionDir)Tools\Libraries\x32\glfw;$(SolutionDir)Tools\Libraries\x32\soil2;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Buffers;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)Interactions;$(ProjectDir)Models;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Tools\Libraries\x64;$(SolutionDir)Tools\Libraries\x64\freetype;$(SolutionDir)Tools\Libraries\x64\glfw;$(SolutionDir)Tools\Libraries\x64\soil2;$(SolutionDir)Tools\Libraries\x64\assimp;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Buffers;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)Interactions;$(ProjectDir)Models;$(ProjectDir)Rendering;$(ProjectDir)Scene;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Tools\Libraries\x64\assimp;$(SolutionDir)Tools\Libraries\x64\freetype;$(SolutionDir)Tools\Libraries\x64\glfw;$(SolutionDir)Tools\Libraries\x64\soil2;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -87,15 +87,15 @@
     <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Buffers;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)Interactions;$(ProjectDir)Models;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Tools\Libraries\x32;$(SolutionDir)Tools\Libraries\x32\freetype;$(SolutionDir)Tools\Libraries\x32\glfw;$(SolutionDir)Tools\Libraries\x32\soil2;$(SolutionDir)Tools\Libraries\x32\assimp;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Buffers;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)Interactions;$(ProjectDir)Models;$(ProjectDir)Rendering;$(ProjectDir)Scene;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Tools\Libraries\x32\assimp;$(SolutionDir)Tools\Libraries\x32\freetype;$(SolutionDir)Tools\Libraries\x32\glfw;$(SolutionDir)Tools\Libraries\x32\soil2;$(LibraryPath)</LibraryPath>
     <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
     <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Buffers;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)Interactions;$(ProjectDir)Models;$(ProjectDir)Rendering;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Tools\Libraries\x64;$(SolutionDir)Tools\Libraries\x64\freetype;$(SolutionDir)Tools\Libraries\x64\glfw;$(SolutionDir)Tools\Libraries\x64\soil2;$(SolutionDir)Tools\Libraries\x64\assimp;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)Application;$(ProjectDir)Buffers;$(ProjectDir)Cameras;$(ProjectDir)Components;$(ProjectDir)Components\Lights;$(ProjectDir)Components\Meshes;$(ProjectDir)Entities;$(ProjectDir)Entities\Groups;$(ProjectDir)Interactions;$(ProjectDir)Models;$(ProjectDir)Rendering;$(ProjectDir)Scene;$(ProjectDir)Simulation;$(ProjectDir)Utils;$(SolutionDir)Tools\Includes;$(SolutionDir)Tools\Includes\assimp;$(SolutionDir)Tools\Includes\freetype;$(SolutionDir)Tools\Includes\glad;$(SolutionDir)Tools\Includes\glfw;$(SolutionDir)Tools\Includes\glm;$(SolutionDir)Tools\Includes\soil2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Tools\Libraries\x64\assimp;$(SolutionDir)Tools\Libraries\x64\freetype;$(SolutionDir)Tools\Libraries\x64\glfw;$(SolutionDir)Tools\Libraries\x64\soil2;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>Intermediate\$(Configuration)\$(Platform)\</IntDir>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
@@ -267,7 +267,7 @@
     <ClCompile Include="Entities/OrbitEntity.cpp" />
     <ClCompile Include="Entities/SceneEntity.cpp" />
     <ClCompile Include="Entities/SpacecraftEntity.cpp" />
-    <ClCompile Include="External Dependencies/glad/glad.c" />
+    <ClCompile Include="External Dependencies/Glad/glad.c" />
     <ClCompile Include="Interactions/Headlamp.cpp" />
     <ClCompile Include="Interactions/InputHandler.cpp" />
     <ClCompile Include="Interactions/PerspectiveCameraController.cpp" />

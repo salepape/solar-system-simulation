@@ -52,6 +52,9 @@
     <Filter Include="Source Files\External Dependencies">
       <UniqueIdentifier>{a31fb1f6-95d9-4ef0-862d-e11859d2ee76}</UniqueIdentifier>
     </Filter>
+	<Filter Include="Source Files\External Dependencies\Glad">
+      <UniqueIdentifier>{86720e9e-cbad-4f8f-9afd-7a197c56176b}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Entities">
       <UniqueIdentifier>{982857c7-2877-4dfe-beb6-fb32cb2c719d}</UniqueIdentifier>
     </Filter>
@@ -201,7 +204,7 @@
     <ClInclude Include="Models/Model.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-	<ClInclude Include="Models/ModelLoader.h">
+    <ClInclude Include="Models/ModelLoader.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="Rendering/BlinnPhongMaterial.h">
@@ -323,8 +326,8 @@
     <ClCompile Include="Entities/Groups/BodySystem.cpp">
       <Filter>Source Files\Entities\Groups</Filter>
     </ClCompile>
-    <ClCompile Include="External Dependencies/glad/glad.c">
-      <Filter>Source Files\External Dependencies</Filter>
+	<ClCompile Include="External Dependencies/Glad/glad.c">
+      <Filter>Source Files\External Dependencies\Glad</Filter>
     </ClCompile>
     <ClCompile Include="Interactions/Headlamp.cpp">
       <Filter>Source Files\Interactions</Filter>
@@ -341,7 +344,7 @@
     <ClCompile Include="Models/Model.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
-	<ClCompile Include="Models/ModelLoader.cpp">
+    <ClCompile Include="Models/ModelLoader.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="Rendering/PBRMaterial.h">
