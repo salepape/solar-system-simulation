@@ -55,11 +55,12 @@ Window::~Window()
 
 void Window::InitGLFWWindowAndOpenGLContext()
 {
-	// Set major and minor version of OpenGL, to prevent users who have not the latest OpenGL version to fail GLFW setup
+	// Set OpenGL major.minor version to one supported by large range of GPUs (check 'dxdiag' then click 'Display' section
+	// for DirectX 12 max feature level: if OpenGL version not supported, GPU or installed driver too old, and program will abort)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	// Tell explicitly GLFW that we want to use OpenGL core profile (i.e. most recent OpenGL paradigm)
+	// Set OpenGL profile to Core, to not get all deprecated functions that are not needed anymore on Windows OS
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Warning: GLFW function includes the creation of an OpenGL Context!

@@ -9,7 +9,8 @@ Here is a simulation of the Solar System in 3D! This project mainly originates f
 ## :hammer: Setup
 
 > [!WARNING]
-> The simulation is only available on Windows x86 (<i>[OS architecture] = Win32</i>) or x64 (<i>[OS architecture] = x64</i>).
+> The simulation is only available on Windows x86 (<i>[OS architecture] = Win32</i>) or x64 (<i>[OS architecture] = x64</i>), and for GPUs compatible with OpenGL version 4.0.
+> To check the latter, open 'dxdiag' then 'Display' section, and look for the GPU model and DirectX 12 max feature level supported: if the max OpenGL version supported is lower, either the GPU or installed driver is considered legacy, and program will abort.
 
 > [!NOTE]
 > If your antivirus is flagging a threat just after running an executable from the Windows File Explorer, just ignore it: the program is safe to use :) You can also try to run it in Admin mode.
@@ -90,12 +91,13 @@ Comments in the codebase describe implementation details (technical decisions, d
 ### Environment Specifications
 
 This project is being developed under an environment with the following specifications:
-* ASUS UX461U with Intel(R) Core(TM) i7-8550U CPU and Intel(R) UHD Graphics 620 GPU
+* Intel(R) Core(TM) i7-8550U CPU
+* Intel(R) UHD Graphics 620 GPU (DirectX 12-compatible)
 * Windows 10 OS with x64 architecture
 * Visual Studio Community 2022 IDE version 17
 * LLVM Clang C++ compiler version 19.1.5
 * C17/C++17/GLSL programming languages
-* OpenGL 4.6 (Core Profile) specification.
+* OpenGL 4.0 (Core Profile) specification.
 
 ### Third-Party Libraries
 
