@@ -26,7 +26,7 @@ An Assimp DLL should be located in the same folder as the executable to run. If 
 ### For developers
 
 Clone the repository by clicking the icon labelled "copy URL to clipboard", then open Git Bash from the folder you want to set up the project in, and run the command `git clone [URL]`. You can also use a Source Control IDE to proceed.
-To build the executable, go to <i>OpenGLProject</i>, and double-click on `OpenGLProject.sln`. Choose the OS architecture/configuration you need, and click on the green arrow button (`.exe` in Debug mode should start after 8 seconds).
+To build the executable, go to <i>OpenGLProject</i>, and double-click on `OpenGLProject.sln`. Choose the OS architecture/configuration you need, click on the green arrow button (building time around 80 seconds).
 
 > [!WARNING]
 > Not having the same Visual Studio environment installed (as specified [here](#environment-specifications)) can lead to build errors. You can set this up from Visual Studio Installer, or download all needed elements from [the official website](https://visualstudio.microsoft.com/downloads).
