@@ -59,22 +59,24 @@ glm::mat4 Camera::ComputeInfiniteView() const
 
 void Camera::SetProjectionViewVUniform(const ViewMode viewMode, const float windowAspectRatio) const
 {
-	glm::mat4& projectionView = ComputeProjection(windowAspectRatio);
+	glm::mat4 projectionView = ComputeProjection(windowAspectRatio);
 	switch (viewMode)
 	{
-		case ViewMode::FiniteLookAt:
-		{
-			projectionView *= ComputeView();
-		}
-		case ViewMode::InifinteLookAt:
-		{
-			projectionView *= ComputeInfiniteView();
-		}
-		default:
-		{
-			std::cout << "CAMERA::ERROR - View mode is not valid!";
-			assert(false);
-		}
+	case ViewMode::FiniteLookAt:
+	{
+		projectionView *= ComputeView();
+		break;
+	}
+	case ViewMode::InifinteLookAt:
+	{
+		projectionView *= ComputeInfiniteView();
+		break;
+	}
+	default:
+	{
+		std::cout << "CAMERA::ERROR - View mode is not valid!" << std::endl;
+		assert(false);
+	}
 	}
 
 	vuboProjectionView.SetSubData(static_cast<const void*>(glm::value_ptr(projectionView)), GLSLConstants::mat4v4SizeInBytes, 0);
