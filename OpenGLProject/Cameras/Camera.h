@@ -9,6 +9,13 @@
 
 
 
+// View matrix type to use when computing the Projection-View matrix for a given Scene Entity and frame 
+enum class ViewMode
+{
+	FiniteLookAt = 0,
+	InifinteLookAt,
+};
+
 // Base class that contain all getters/setters needed for all types of Cameras
 class Camera
 {
@@ -34,8 +41,7 @@ public:
 	virtual glm::mat4 ComputeView() const = 0;
 	virtual glm::mat4 ComputeInfiniteView() const;
 
-	void SetProjectionViewVUniform(const float windowAspectRatio) const;
-	void SetInfiniteProjectionViewVUniform(const float windowAspectRatio) const;
+	void SetProjectionViewVUniform(const ViewMode viewMode, const float windowAspectRatio) const;
 	void SetPositionFUniform() const;
 
 protected:

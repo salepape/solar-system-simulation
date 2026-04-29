@@ -8,13 +8,14 @@
 
 
 
-// Camera controller that processes all keyboard user input
+// Detect and process all keyboard and mouse user input
 class PerspectiveCameraController
 {
 public:
 	PerspectiveCameraController(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inZoomMaxLevel, const float inFarPlane);
 
-	void ProcessKeyboardInput(const float deltaTime);
+	// Trigger code logic according to the keyboard touch/mouse button pressed or released (see 'Controls' section of README)
+	void ProcessUserInput(const float deltaTime);
 
 	PerspectiveCamera& GetCamera() { return camera; }
 	Headlamp& GetHeadlamp() { return headlamp; }

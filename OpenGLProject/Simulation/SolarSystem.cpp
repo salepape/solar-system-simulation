@@ -44,10 +44,10 @@ void SolarSystem::Update()
 	const Window& runningWindow = runningApp.GetWindow();
 
 	PerspectiveCameraController& cameraController = spacecraft.GetCameraController();
-	cameraController.ProcessKeyboardInput(runningApp.deltaTime);
+	cameraController.ProcessUserInput(runningApp.deltaTime);
 
 	PerspectiveCamera& camera = cameraController.GetCamera();
-	camera.SetProjectionViewVUniform(runningWindow.GetAspectRatio());
+	camera.SetProjectionViewVUniform(ViewMode::FiniteLookAt, runningWindow.GetAspectRatio());
 	camera.SetPositionFUniform();
 
 	const glm::vec3& cameraPosition = camera.GetPosition();
@@ -81,7 +81,7 @@ void SolarSystem::Update()
 	}
 
 	// Draw Milky Way skybox
-	camera.SetInfiniteProjectionViewVUniform(runningWindow.GetAspectRatio());
+	camera.SetProjectionViewVUniform(ViewMode::InifinteLookAt, runningWindow.GetAspectRatio());
 	milkyWay.Render();
 }
 

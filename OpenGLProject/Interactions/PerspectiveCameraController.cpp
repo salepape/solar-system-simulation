@@ -26,7 +26,7 @@ PerspectiveCameraController::PerspectiveCameraController(const glm::vec3& inPosi
 	SetKeyboardInputGLFWCallback();
 }
 
-void PerspectiveCameraController::ProcessKeyboardInput(const float deltaTime)
+void PerspectiveCameraController::ProcessUserInput(const float deltaTime)
 {
 	// Quit the simulation
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_ESCAPE))
