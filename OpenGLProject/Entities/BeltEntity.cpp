@@ -34,7 +34,7 @@ void BeltEntity::ComputeInstanceModelMatrices()
 	const int32_t rangeSpanOffset = static_cast<int32_t>(upperBoundOffset - lowerBoundOffset);
 
 	// Initialise random seed
-	std::srand(static_cast<uint32_t>(Application::GetInstance().GetTime()));
+	std::srand(static_cast<uint32_t>(Application::GetInstance().GetElapsedTime()));
 
 	modelMatrices.reserve(instanceParams.count);
 	for (uint32_t i = 0; i < instanceParams.count; ++i)

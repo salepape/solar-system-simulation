@@ -58,7 +58,7 @@ void SolarSystem::Update()
 	for (BodySystem& bodySystem : bodySystems)
 	{
 		const CelestialBodyEntity* parentBody = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? &GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody() : nullptr;
-		bodySystem.GetCelestialBody().ComputeCartesianPosition(runningApp.elapsedTime * runningApp.speedFactor, parentBody);
+		bodySystem.GetCelestialBody().ComputeCartesianPosition(runningApp.GetElapsedTime() * runningApp.speedFactor, parentBody);
 
 		bodiesSortedByDistance.emplace(
 			glm::distance(cameraPosition, bodySystem.GetCelestialBody().GetPosition()),
@@ -71,7 +71,7 @@ void SolarSystem::Update()
 		// Draw celestial bodies, and animate them accordingly over time
 		BodySystem& bodySystem = bodyIt->second;
 		const glm::vec3& parentPosition = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody().GetPosition() : glm::vec3(0.0f);
-		bodySystem.Render(runningApp.IsLegendDisplayed(), camera, parentPosition, runningApp.elapsedTime * runningApp.speedFactor);
+		bodySystem.Render(runningApp.IsLegendDisplayed(), camera, parentPosition, runningApp.GetElapsedTime() * runningApp.speedFactor);
 	}
 
 	// Draw the 2 main belts of the Solar System

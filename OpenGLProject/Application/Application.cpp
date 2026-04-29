@@ -67,7 +67,7 @@ void Application::Tick()
 {
 	if (isPaused == false)
 	{
-		elapsedTime = static_cast<float>(GetTime());
+		elapsedTime = static_cast<float>(glfwGetTime());
 
 		deltaTime = elapsedTime - lastFrameElapsedTime;
 		lastFrameElapsedTime = elapsedTime;
@@ -96,11 +96,6 @@ void Application::Pause(const bool inIsPaused)
 	{
 		glfwSetTime(static_cast<double>(lastFrameElapsedTime));
 	}
-}
-
-double Application::GetTime() const
-{
-	return glfwGetTime();
 }
 
 void Application::UpdateSpeed(const float inSpeedFactor)

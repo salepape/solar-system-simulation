@@ -30,12 +30,12 @@ void Headlamp::UpdateHeadlight(const Camera& camera)
 
 void Headlamp::UpdateHeadlightState(double timeBeforeReleaseRegistered, int32_t action)
 {
-	const bool isReleaseActionRegistered = Application::GetInstance().GetTime() - headlightStartTime > timeBeforeReleaseRegistered;
+	const bool isReleaseActionRegistered = Application::GetInstance().GetElapsedTime() - headlightStartTime > timeBeforeReleaseRegistered;
 
 	if (action == GLFW_PRESS && headlightStartTime == 0.0)
 	{
 		SetHeadlightState(true);
-		headlightStartTime = Application::GetInstance().GetTime();
+		headlightStartTime = Application::GetInstance().GetElapsedTime();
 	}
 
 	if (action == GLFW_RELEASE && isReleaseActionRegistered)

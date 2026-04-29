@@ -195,7 +195,7 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 		const auto& IsReleaseActionRegistered = [&GetCameraController](const double pressTime) -> bool
 		{
 			const PerspectiveCameraController* const cameraController = GetCameraController();
-			return Application::GetInstance().GetTime() - pressTime > cameraController->timeBeforeReleaseRegistered;
+			return Application::GetInstance().GetElapsedTime() - pressTime > cameraController->timeBeforeReleaseRegistered;
 		};
 
 		PerspectiveCameraController* const cameraController = GetCameraController();
@@ -205,7 +205,7 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 			if (action == GLFW_PRESS && cameraController->pauseStartTime == 0.0)
 			{
 				Application::GetInstance().Pause(true);
-				cameraController->pauseStartTime = Application::GetInstance().GetTime();
+				cameraController->pauseStartTime = Application::GetInstance().GetElapsedTime();
 			}
 
 			if (action == GLFW_RELEASE && IsReleaseActionRegistered(cameraController->pauseStartTime))
@@ -219,7 +219,7 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 			if (action == GLFW_PRESS && cameraController->cursorModeStartTime == 0.0)
 			{
 				window->SetCursorMode(GLFW_CURSOR_NORMAL);
-				cameraController->cursorModeStartTime = Application::GetInstance().GetTime();
+				cameraController->cursorModeStartTime = Application::GetInstance().GetElapsedTime();
 			}
 
 			if (action == GLFW_RELEASE && IsReleaseActionRegistered(cameraController->cursorModeStartTime))
@@ -233,7 +233,7 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 			if (action == GLFW_PRESS && cameraController->displayLegendStartTime == 0.0)
 			{
 				Application::GetInstance().DisplayLegend(true);
-				cameraController->displayLegendStartTime = Application::GetInstance().GetTime();
+				cameraController->displayLegendStartTime = Application::GetInstance().GetElapsedTime();
 			}
 
 			if (action == GLFW_RELEASE && IsReleaseActionRegistered(cameraController->displayLegendStartTime))

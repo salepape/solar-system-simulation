@@ -20,8 +20,6 @@ public:
 
 	virtual void Run();
 
-	float elapsedTime{ 0.0f };
-
 	// Factor which consistently increases/decreases the angle values travelled by the celestial bodies since the simulation started
 	float speedFactor{ 1.0f };
 
@@ -41,7 +39,8 @@ public:
 	bool IsLegendDisplayed() const { return isLegendDisplayed; }
 	void DisplayLegend(const bool inIsLegendDisplayed) { isLegendDisplayed = inIsLegendDisplayed; }
 
-	double GetTime() const;
+	// Get duration since the GLFW Window associated to the application has been created [in secs]
+	double GetElapsedTime() const { return elapsedTime; }
 
 	// @todo - Jumps in the simulation are due to the Model matrix of each body being computed from elapsed time and not delta time. Worth solving it? Seems complex...
 	// See what the simulation looks like with celestial body slower/faster movements (does not keep body positions between different speed simulations)
@@ -50,6 +49,9 @@ public:
 	const std::filesystem::path& GetExecutablePath() const { return executablePath; }
 
 protected:
+	// Time elapsed since GLFW Window was initialised [in secs]
+	float elapsedTime{ 0.0f };
+
 	virtual void SetUp() = 0;
 	virtual void Tick();
 	virtual void Refresh() = 0;
