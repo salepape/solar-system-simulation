@@ -44,7 +44,7 @@ class BeltEntity : public SceneEntity
 public:
 	BeltEntity(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams);
 
-	void Render(const float elapsedTime = 0.0f);
+	void Render();
 
 private:
 	InstanceParams instanceParams;
@@ -54,7 +54,7 @@ private:
 	// Model used to represent a Belt "Rock" for instancing (contains the Mesh + the Material definition, as opposed to traditional SceneEntities)
 	Model model;
 
-	void ComputeModelMatrixVUniform(const float /*elapsedTime*/) override {};
+	void ComputeModelMatrixVUniform(const float /*deltaTime*/) override {};
 	void ComputeInstanceModelMatrices();
 	void StoreInstanceModelMatrices() const;
 };

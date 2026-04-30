@@ -41,7 +41,7 @@ public:
 
 	void SetBodyRings(RingsData&& inRingsData);
 
-	void Render(const bool isBillboard, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float elapsedTime);
+	void Render(const bool isBillboard, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float deltaTime);
 
 private:
 	CelestialBodyEntity celestialBody;

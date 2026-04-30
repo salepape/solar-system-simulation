@@ -42,7 +42,7 @@ protected:
 	glm::mat4 modelMatrix{ 1.0f };
 
 	// @todo - Empty body in several child classes, and implementation with different params. Should be moved to interface?
-	virtual void ComputeModelMatrixVUniform(const float elapsedTime = 0.0f) = 0;
+	virtual void ComputeModelMatrixVUniform(const float /*deltaTime*/ = 0.0f) = 0;
 
 private:
 	static uint32_t entityIDCounter;

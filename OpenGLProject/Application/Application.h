@@ -20,12 +20,6 @@ public:
 
 	virtual void Run();
 
-	// Factor which consistently increases/decreases the angle values travelled by the celestial bodies since the simulation started
-	float speedFactor{ 1.0f };
-
-	// Compute delta time between last frame and current one in order to reduce differences between computer processing powers
-	float deltaTime{ 0.0f };
-
 	static Application& GetInstance();
 	Window& GetWindow() const { return *window; }
 
@@ -33,24 +27,27 @@ public:
 	bool IsClosed() const;
 	void Close() const;
 
-	bool IsPaused() const { return isPaused; }
 	void Pause(const bool inIsPaused);
 
 	bool IsLegendDisplayed() const { return isLegendDisplayed; }
 	void DisplayLegend(const bool inIsLegendDisplayed) { isLegendDisplayed = inIsLegendDisplayed; }
 
-	// Get duration since the GLFW Window associated to the application has been created [in secs]
-	double GetElapsedTime() const { return elapsedTime; }
+	// Get time duration [in seconds] since the GLFW Window associated to the application has been created
+	float GetElapsedTime() const;
 
-	// @todo - Jumps in the simulation are due to the Model matrix of each body being computed from elapsed time and not delta time. Worth solving it? Seems complex...
-	// See what the simulation looks like with celestial body slower/faster movements (does not keep body positions between different speed simulations)
+	float GetSpeedFactor() const { return speedFactor; }
+	bool IsPaused() const { return speedFactor == 0.0f; }
+	bool IsMinSpeed() const { return speedFactor <= SPEED_MIN_THRESHOLD; }
+	bool IsMaxSpeed() const { return speedFactor >= SPEED_MAX_THRESHOLD; }
+
+	// See what the simulation looks like when celestial bodies move slower/faster (won't be of any effect when simulation has been paused)
 	void UpdateSpeed(const float inSpeedFactor);
 
 	const std::filesystem::path& GetExecutablePath() const { return executablePath; }
 
 protected:
-	// Time elapsed since GLFW Window was initialised [in secs]
-	float elapsedTime{ 0.0f };
+	// Time [in seconds] between the last frame and the current one (used to reduce processing power differences between computers)
+	float deltaTime{ 0.0f };
 
 	virtual void SetUp() = 0;
 	virtual void Tick();
@@ -71,9 +68,22 @@ private:
 
 	std::unique_ptr<Window, WindowDeleter> window;
 
-	// Time elapsed since GLFW initialisation [in seconds]
-	float lastFrameElapsedTime{ 0.0f };
-	bool isPaused{ false };
+	// Time [in seconds] elapsed in Play mode since the GLFW Window associated to the application has been created
+	float elapsedPlayTime{ 0.0f };
+	// Time [in seconds] elapsed in Pause mode since the GLFW Window associated to the application has been created
+	float elapsedPauseTime{ 0.0f };
+
+	// Time cache [in seconds] to be able to compute Play delta time at next iteration
+	float lastFrameElapsedPlayTime{ 0.0f };
+	// Time cache [in seconds] to be able to compute Pause delta time at next iteration
+	float lastFrameElapsedPauseTime{ 0.0f };
+
+	// Factor which consistently increases/decreases the angle values travelled by each celestial body
+	float speedFactor{ 1.0f };
+	float cachedSpeedFactor{ 0.0f };
+	constexpr static float SPEED_MIN_THRESHOLD = 0.125f;
+	constexpr static float SPEED_MAX_THRESHOLD = 512.0f;
+
 	bool isLegendDisplayed{ false };
 };
 

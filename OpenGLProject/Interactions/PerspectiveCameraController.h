@@ -14,7 +14,7 @@ class PerspectiveCameraController
 public:
 	PerspectiveCameraController(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inZoomMaxLevel, const float inFarPlane);
 
-	// Trigger code logic according to the keyboard touch/mouse button pressed or released (see 'Controls' section of README)
+	// Trigger code logic according to the keyboard key/mouse button pressed or released (see 'Controls' section of README)
 	void ProcessUserInput(const float deltaTime);
 
 	PerspectiveCamera& GetCamera() { return camera; }
@@ -24,8 +24,8 @@ public:
 	float mouseMaxSensitivity{ 0.05f };
 	float mouseSensitivity{ 0.05f };
 
-	// Allow to not register a release action if the time that separates it from the preceeding press action is below this one, considered too small
-	double timeBeforeReleaseRegistered{ 1.0 };
+	// Keyboard key release action will not be registered if press action has happened at a delta time equal/lower to this value
+	float keyReleaseSensitivity{ 1.0f };
 
 private:
 	PerspectiveCamera camera;
@@ -39,10 +39,10 @@ private:
 	float travelSpeedDefault{ 20.0f };
 	float travelSpeed{ 20.0f };
 
-	// Cache used to avoid detecting the button release happening after a button press if quick
-	double pauseStartTime{ 0.0 };
-	double displayLegendStartTime{ 0.0 };
-	double cursorModeStartTime{ 0.0 };
+	// Time caching used to avoid detecting when a keyboard key has been released while it has been pressed just before
+	float pauseStartTime{ 0.0f };
+	float displayLegendStartTime{ 0.0f };
+	float cursorModeStartTime{ 0.0f };
 
 	// Process input received from a mouse scroll-wheel event (vertical wheel-axis to be considered only)
 	void UpdateZoomLeft(const float yOffset);

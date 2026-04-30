@@ -14,7 +14,7 @@ public:
 	virtual ~Scene() = default;
 
 protected:
-	virtual void Update() = 0;
+	virtual void Update(const float deltaTime) = 0;
 	void Clear() const;
 };
 

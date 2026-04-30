@@ -3,6 +3,7 @@
 #include <glad/glad.h>	// No OpenGL functions called here, just setting up GLAD
 #include <glfw/glfw3.h>
 
+#include <algorithm>	// for std::min and std::max
 #include <cassert>
 #include <iostream>
 
@@ -65,12 +66,18 @@ void Application::Run()
 
 void Application::Tick()
 {
-	if (isPaused == false)
+	// Delta time should always be computed, regardless of simulation pause state
+	if (IsPaused() == false)
 	{
-		elapsedTime = static_cast<float>(glfwGetTime());
-
-		deltaTime = elapsedTime - lastFrameElapsedTime;
-		lastFrameElapsedTime = elapsedTime;
+		elapsedPlayTime = GetElapsedTime() - elapsedPauseTime;
+		deltaTime = elapsedPlayTime - lastFrameElapsedPlayTime;
+		lastFrameElapsedPlayTime = elapsedPlayTime;
+	}
+	else
+	{
+		elapsedPauseTime = GetElapsedTime() - elapsedPlayTime;
+		deltaTime = elapsedPauseTime - lastFrameElapsedPauseTime;
+		lastFrameElapsedPauseTime = elapsedPauseTime;
 	}
 
 	Refresh();
@@ -89,16 +96,29 @@ void Application::Close() const
 	glfwSetWindowShouldClose(window->GLFWWindow, true);
 }
 
+float Application::GetElapsedTime() const
+{
+	return static_cast<float>(glfwGetTime());
+}
+
 void Application::Pause(const bool inIsPaused)
 {
-	isPaused = inIsPaused;
-	if (isPaused == false)
+	if (inIsPaused)
 	{
-		glfwSetTime(static_cast<double>(lastFrameElapsedTime));
+		cachedSpeedFactor = speedFactor;
+		speedFactor = 0.0f;
+	}
+	else
+	{
+		speedFactor = cachedSpeedFactor;
+		cachedSpeedFactor = 0.0f;
 	}
 }
 
 void Application::UpdateSpeed(const float inSpeedFactor)
 {
 	speedFactor *= inSpeedFactor;
+
+	speedFactor = std::max(SPEED_MIN_THRESHOLD, speedFactor);
+	speedFactor = std::min(SPEED_MAX_THRESHOLD, speedFactor);
 }

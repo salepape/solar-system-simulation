@@ -62,7 +62,7 @@ BlinnPhongMaterial CelestialBodyEntity::InitialiseMaterial(const std::filesystem
 	}
 }
 
-void CelestialBodyEntity::ComputeModelMatrixVUniform(const float elapsedTime)
+void CelestialBodyEntity::ComputeModelMatrixVUniform(const float deltaTime)
 {
 	modelMatrix = glm::mat4(1.0f);
 
@@ -72,8 +72,8 @@ void CelestialBodyEntity::ComputeModelMatrixVUniform(const float elapsedTime)
 	// Rotate the body (constant over time) around an axis colinear to orbit direction to reproduce its axial tilt
 	modelMatrix = glm::rotate(modelMatrix, obliquityInRad, GLMConstants::forwardVector);
 
-	// Angle travelled by the celestial body around itself since the simulation started [in radians]
-	const float travelledSpinAngle = spinAngularFreq * elapsedTime;
+	// Angle travelled by the celestial body around itself for the current frame [in radians]
+	travelledSpinAngle += spinAngularFreq * deltaTime;
 
 	// Rotate the body (non-constant over time) around axis normal to orbital plane to reproduce its spin
 	modelMatrix = glm::rotate(modelMatrix, travelledSpinAngle, GLMConstants::upVector);
@@ -82,12 +82,12 @@ void CelestialBodyEntity::ComputeModelMatrixVUniform(const float elapsedTime)
 	modelMatrix = glm::rotate(modelMatrix, GLMConstants::halfPi, GLMConstants::rightVector);
 }
 
-void CelestialBodyEntity::ComputeCartesianPosition(const float elapsedTime, const CelestialBodyEntity* satelliteParentBody)
+void CelestialBodyEntity::ComputeCartesianPosition(const float deltaTime, const CelestialBodyEntity* satelliteParentBody)
 {
 	position = glm::vec3(0.0f);
 
 	// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
-	const float travelledOrbitAngle = orbitAngularFreq * elapsedTime;
+	travelledOrbitAngle += orbitAngularFreq * deltaTime;
 	if (isMoon == false || satelliteParentBody == nullptr)
 	{
 		travelledAngle = travelledOrbitAngle;
@@ -112,9 +112,9 @@ void CelestialBodyEntity::ComputeCartesianPosition(const float elapsedTime, cons
 		bodyData.distanceToParent * glm::cos(travelledOrbitAngle));
 }
 
-void CelestialBodyEntity::Render(const float elapsedTime)
+void CelestialBodyEntity::Render(const float deltaTime)
 {
-	ComputeModelMatrixVUniform(elapsedTime);
+	ComputeModelMatrixVUniform(deltaTime);
 
 	const Shader& shader = material.GetShader();
 	shader.Enable();

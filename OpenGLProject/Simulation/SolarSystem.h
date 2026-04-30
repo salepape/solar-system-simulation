@@ -20,7 +20,7 @@ class SolarSystem : public Scene
 public:
 	SolarSystem();
 
-	void Update() override;
+	void Update(const float deltaTime) override;
 
 	const std::vector<BodySystem>& GetBodySystems() const { return bodySystems; }
 	const std::vector<BeltEntity>& GetBelts() const { return belts; }

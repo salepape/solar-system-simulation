@@ -34,7 +34,7 @@ private:
 
 	BlinnPhongMaterial InitialiseMaterial();
 
-	void ComputeModelMatrixVUniform(const float /*elapsedTime*/) override {};
+	void ComputeModelMatrixVUniform(const float /*deltaTime*/) override {};
 	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight);
 
 	// Sum up all the glyph advance values, as per FreeType convention (i.e. the width needed each glyph to be rendered, inclusive of horizontal spacing)

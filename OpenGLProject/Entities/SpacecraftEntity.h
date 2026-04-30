@@ -22,7 +22,7 @@ public:
 private:
 	PerspectiveCameraController cameraController;
 
-	void ComputeModelMatrixVUniform(const float /*elapsedTime*/) override {};
+	void ComputeModelMatrixVUniform(const float /*deltaTime*/) override {};
 };
 
 

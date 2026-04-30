@@ -35,7 +35,7 @@ private:
 
 	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& inTexturePath);
 
-	void ComputeModelMatrixVUniform(const float /*elapsedTime*/) override {};
+	void ComputeModelMatrixVUniform(const float /*deltaTime*/) override {};
 	void ComputeModelMatrixVUniform(const glm::vec3& bodyPosition);
 };
 

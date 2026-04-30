@@ -25,5 +25,5 @@ void SolarSystemSimulation::SetUp()
 
 void SolarSystemSimulation::Refresh()
 {
-	solarSystemScene->Update();
+	solarSystemScene->Update(deltaTime);
 }

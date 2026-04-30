@@ -34,12 +34,14 @@ void PerspectiveCameraController::ProcessUserInput(const float deltaTime)
 		Application::GetInstance().Close();
 	}
 
-	// Speed up/Slow down the simulation
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_UP))
+	// Speed up/Slow down the simulation (only if it has not reached thresholds and simulation has not been paused)
+	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_UP) &&
+		Application::GetInstance().IsPaused() == false && Application::GetInstance().IsMaxSpeed() == false)
 	{
 		Application::GetInstance().UpdateSpeed(2.0f);
 	}
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_DOWN))
+	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_DOWN) &&
+		Application::GetInstance().IsPaused() == false && Application::GetInstance().IsMinSpeed() == false)
 	{
 		Application::GetInstance().UpdateSpeed(0.5f);
 	}
@@ -192,17 +194,17 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 			return cameraController;
 		};
 
-		const auto& IsReleaseActionRegistered = [&GetCameraController](const double pressTime) -> bool
+		const auto& IsReleaseActionRegistered = [&GetCameraController](const float pressTime) -> bool
 		{
 			const PerspectiveCameraController* const cameraController = GetCameraController();
-			return Application::GetInstance().GetElapsedTime() - pressTime > cameraController->timeBeforeReleaseRegistered;
+			return Application::GetInstance().GetElapsedTime() - pressTime > cameraController->keyReleaseSensitivity;
 		};
 
 		PerspectiveCameraController* const cameraController = GetCameraController();
 
 		if (key == GLFW_KEY_SPACE)
 		{
-			if (action == GLFW_PRESS && cameraController->pauseStartTime == 0.0)
+			if (action == GLFW_PRESS && cameraController->pauseStartTime == 0.0f)
 			{
 				Application::GetInstance().Pause(true);
 				cameraController->pauseStartTime = Application::GetInstance().GetElapsedTime();
@@ -211,12 +213,12 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 			if (action == GLFW_RELEASE && IsReleaseActionRegistered(cameraController->pauseStartTime))
 			{
 				Application::GetInstance().Pause(false);
-				cameraController->pauseStartTime = 0.0;
+				cameraController->pauseStartTime = 0.0f;
 			}
 		}
 		else if (key == GLFW_KEY_TAB)
 		{
-			if (action == GLFW_PRESS && cameraController->cursorModeStartTime == 0.0)
+			if (action == GLFW_PRESS && cameraController->cursorModeStartTime == 0.0f)
 			{
 				window->SetCursorMode(GLFW_CURSOR_NORMAL);
 				cameraController->cursorModeStartTime = Application::GetInstance().GetElapsedTime();
@@ -225,12 +227,12 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 			if (action == GLFW_RELEASE && IsReleaseActionRegistered(cameraController->cursorModeStartTime))
 			{
 				window->SetCursorMode(GLFW_CURSOR_DISABLED);
-				cameraController->cursorModeStartTime = 0.0;
+				cameraController->cursorModeStartTime = 0.0f;
 			}
 		}
 		else if (key == GLFW_KEY_L)
 		{
-			if (action == GLFW_PRESS && cameraController->displayLegendStartTime == 0.0)
+			if (action == GLFW_PRESS && cameraController->displayLegendStartTime == 0.0f)
 			{
 				Application::GetInstance().DisplayLegend(true);
 				cameraController->displayLegendStartTime = Application::GetInstance().GetElapsedTime();
@@ -239,12 +241,12 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 			if (action == GLFW_RELEASE && IsReleaseActionRegistered(cameraController->displayLegendStartTime))
 			{
 				Application::GetInstance().DisplayLegend(false);
-				cameraController->displayLegendStartTime = 0.0;
+				cameraController->displayLegendStartTime = 0.0f;
 			}
 		}
 		else if (key == GLFW_KEY_H)
 		{
-			cameraController->GetHeadlamp().UpdateHeadlightState(cameraController->timeBeforeReleaseRegistered, action);
+			cameraController->GetHeadlamp().UpdateHeadlightState(cameraController->keyReleaseSensitivity, action);
 		}
 	});
 }

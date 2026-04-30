@@ -26,9 +26,9 @@ void BodySystem::SetBodyRings(RingsData&& inRingsData)
 	celestialBodyRings = std::make_shared<BodyRingsEntity, RingsData&&>(std::move(inRingsData));
 }
 
-void BodySystem::Render(const bool isBillboard, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float elapsedTime)
+void BodySystem::Render(const bool isBillboard, PerspectiveCamera& camera, const glm::vec3& parentPosition, const float deltaTime)
 {
-	celestialBody.Render(elapsedTime);
+	celestialBody.Render(deltaTime);
 
 	orbit.Render(parentPosition);
 

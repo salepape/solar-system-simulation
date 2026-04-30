@@ -33,8 +33,8 @@ private:
 
 	std::string bodyName;
 
-	void ComputeModelMatrixVUniform(const float /*elapsedTime*/) override {};
-	void ComputeModelMatrixVUniform(const glm::mat4& modelMatrix, const float elapsedTime = 0.0f);
+	void ComputeModelMatrixVUniform(const float /*deltaTime*/) override {};
+	void ComputeModelMatrixVUniform(const glm::mat4& modelMatrix);
 };
 
 

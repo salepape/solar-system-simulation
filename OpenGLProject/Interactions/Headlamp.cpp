@@ -21,18 +21,18 @@ void Headlamp::SetHeadlightState(const bool isActive)
 
 void Headlamp::UpdateHeadlight(const Camera& camera)
 {
-	if (headlightStartTime > 0.0)
+	if (headlightStartTime > 0.0f)
 	{
 		headlight.SetLightPositionFUniform(camera.GetPosition());
 		headlight.SetLightDirectionFUniform(camera.GetForward());
 	}
 }
 
-void Headlamp::UpdateHeadlightState(double timeBeforeReleaseRegistered, int32_t action)
+void Headlamp::UpdateHeadlightState(const float keyReleaseSensitivity, const int32_t action)
 {
-	const bool isReleaseActionRegistered = Application::GetInstance().GetElapsedTime() - headlightStartTime > timeBeforeReleaseRegistered;
+	const bool isReleaseActionRegistered = Application::GetInstance().GetElapsedTime() - headlightStartTime > keyReleaseSensitivity;
 
-	if (action == GLFW_PRESS && headlightStartTime == 0.0)
+	if (action == GLFW_PRESS && headlightStartTime == 0.0f)
 	{
 		SetHeadlightState(true);
 		headlightStartTime = Application::GetInstance().GetElapsedTime();

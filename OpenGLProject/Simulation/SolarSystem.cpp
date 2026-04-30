@@ -34,9 +34,8 @@ SolarSystem::SolarSystem() :
 		glm::vec3(0.0f, -25.0f, 90.0f));
 }
 
-
 // @todo - Do SPIKE for going full ECS instead of only Entity-Component Composition relationships
-void SolarSystem::Update()
+void SolarSystem::Update(const float deltaTime)
 {
 	Renderer::Clear();
 
@@ -44,7 +43,7 @@ void SolarSystem::Update()
 	const Window& runningWindow = runningApp.GetWindow();
 
 	PerspectiveCameraController& cameraController = spacecraft.GetCameraController();
-	cameraController.ProcessUserInput(runningApp.deltaTime);
+	cameraController.ProcessUserInput(deltaTime);
 
 	PerspectiveCamera& camera = cameraController.GetCamera();
 	camera.SetProjectionViewVUniform(ViewMode::FiniteLookAt, runningWindow.GetAspectRatio());
@@ -58,7 +57,7 @@ void SolarSystem::Update()
 	for (BodySystem& bodySystem : bodySystems)
 	{
 		const CelestialBodyEntity* parentBody = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? &GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody() : nullptr;
-		bodySystem.GetCelestialBody().ComputeCartesianPosition(runningApp.GetElapsedTime() * runningApp.speedFactor, parentBody);
+		bodySystem.GetCelestialBody().ComputeCartesianPosition(deltaTime * runningApp.GetSpeedFactor(), parentBody);
 
 		bodiesSortedByDistance.emplace(
 			glm::distance(cameraPosition, bodySystem.GetCelestialBody().GetPosition()),
@@ -71,7 +70,7 @@ void SolarSystem::Update()
 		// Draw celestial bodies, and animate them accordingly over time
 		BodySystem& bodySystem = bodyIt->second;
 		const glm::vec3& parentPosition = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody().GetPosition() : glm::vec3(0.0f);
-		bodySystem.Render(runningApp.IsLegendDisplayed(), camera, parentPosition, runningApp.GetElapsedTime() * runningApp.speedFactor);
+		bodySystem.Render(runningApp.IsLegendDisplayed(), camera, parentPosition, deltaTime * runningApp.GetSpeedFactor());
 	}
 
 	// Draw the 2 main belts of the Solar System

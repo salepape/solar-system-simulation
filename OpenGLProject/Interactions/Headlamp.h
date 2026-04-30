@@ -20,12 +20,12 @@ public:
 	void UpdateHeadlight(const Camera& camera);
 
 	// Call corresponding GLFW callback functions
-	void UpdateHeadlightState(double timeBeforeReleaseRegistered, int32_t action);
+	void UpdateHeadlightState(const float keyReleaseSensitivity, const int32_t action);
 
 private:
 	SpotLightComponent headlight;
 
-	double headlightStartTime{ 0.0 };
+	float headlightStartTime{ 0.0f };
 
 	// Turn on/off reflection params rather than creating/deleting a heap-allocated SpotLight instance
 	void SetHeadlightState(const bool isActive);

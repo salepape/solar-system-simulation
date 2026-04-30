@@ -54,10 +54,10 @@ public:
 	const BodyData& GetBodyData() const { return bodyData; }
 
 	// Compute body position in Cartesian coordinates from Spherical ones
-	void ComputeCartesianPosition(const float elapsedTime, const CelestialBodyEntity* satelliteParentBody = nullptr);
+	void ComputeCartesianPosition(const float deltaTime, const CelestialBodyEntity* satelliteParentBody = nullptr);
 	const glm::vec3& GetPosition() const { return position; }
 
-	void Render(const float elapsedTime = 0.0f);
+	void Render(const float deltaTime = 0.0f);
 
 private:
 	BodyData bodyData;
@@ -76,9 +76,11 @@ private:
 
 	// Angular frequency for orbital motion [in radians/Earth days]
 	float orbitAngularFreq{ 0.0f };
+	float travelledOrbitAngle{ 0.0f };
 
 	// Angular frequency for spin motion [in radians/Earth days]
 	float spinAngularFreq{ 0.0f };
+	float travelledSpinAngle{ 0.0f };
 
 	// Obliquity converted [in radians]
 	float obliquityInRad{ 0.0f };
@@ -88,7 +90,7 @@ private:
 
 	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName);
 
-	void ComputeModelMatrixVUniform(const float elapsedTime = 1.0f) override;
+	void ComputeModelMatrixVUniform(const float deltaTime = 1.0f) override;
 };
 
 
