@@ -7,6 +7,7 @@
 #include <cassert>
 #include <iostream>
 
+#include "Rendering/Renderer.h"
 #include "Rendering/ShaderLoader.h"
 #include "Rendering/GlyphLoader.h"
 #include "Window.h"
@@ -84,6 +85,11 @@ void Application::Tick()
 
 	window->SwapFrontAndBackBuffers();
 	window->ProcessPendingEvents();
+}
+
+void Application::Refresh()
+{
+	Renderer::ClearBufferTargets();
 }
 
 bool Application::IsClosed() const

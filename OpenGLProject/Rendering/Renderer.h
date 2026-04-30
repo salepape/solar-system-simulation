@@ -14,8 +14,8 @@ class Renderer
 public:
 	static bool IsOpenGLContextActive();
 
-	// Clear the depth buffer
-	static void Clear();
+	// Clear all OpenGL buffer targets used
+	static void ClearBufferTargets();
 
 	static void EnableDepthTesting();
 	static void DisableDepthTesting();

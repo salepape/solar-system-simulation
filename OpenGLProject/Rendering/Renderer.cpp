@@ -22,7 +22,7 @@ bool Renderer::IsOpenGLContextActive()
 	return isOpenGLContextActive;
 }
 
-void Renderer::Clear()
+void Renderer::ClearBufferTargets()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

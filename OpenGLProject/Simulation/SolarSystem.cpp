@@ -17,7 +17,6 @@
 #include "Entities/BodyRingsEntity.h"
 #include "Entities/CelestialBodyEntity.h"
 #include "Interactions/PerspectiveCameraController.h"
-#include "Rendering/Renderer.h"
 #include "Rendering/ShaderLoader.h"
 #include "Utils/Helpers.h"
 
@@ -34,11 +33,8 @@ SolarSystem::SolarSystem() :
 		glm::vec3(0.0f, -25.0f, 90.0f));
 }
 
-// @todo - Do SPIKE for going full ECS instead of only Entity-Component Composition relationships
 void SolarSystem::Update(const float deltaTime)
 {
-	Renderer::Clear();
-
 	const Application& runningApp = Application::GetInstance();
 	const Window& runningWindow = runningApp.GetWindow();
 
