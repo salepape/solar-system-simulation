@@ -88,7 +88,7 @@ void Application::Tick()
 
 bool Application::IsClosed() const
 {
-	return glfwWindowShouldClose(window->GLFWWindow) != 0;
+	return glfwWindowShouldClose(window->GLFWWindow) == true;
 }
 
 void Application::Close() const

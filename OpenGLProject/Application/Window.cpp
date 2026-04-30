@@ -18,7 +18,7 @@ Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::strin
 {
 	// Initialise GLFW library before any GLFW function calls
 	const int isGlfwInitialised = glfwInit();
-	if (isGlfwInitialised == GLFW_FALSE)
+	if (isGlfwInitialised == false)
 	{
 		std::cout << "ERROR::GLFW - Failed to initialise GLFW3 library properly: closing the application..." << std::endl;
 		assert(false);
