@@ -4,7 +4,7 @@
 
 
 // @todo - Do SPIKE for going full ECS instead of only Entity-Component Composition relationships
-// @todo - Find a way to keep a list of all SceneEntities and other renderables in this class instead of its children
+// @todo - Find a way to keep a list of all SceneEntities and other renderables in this class instead of its children. Update() should be defined in this class
 // Contain entities that model the simulation. Be careful: shaders need to be all loaded first!
 class Scene
 {

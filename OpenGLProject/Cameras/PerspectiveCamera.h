@@ -9,7 +9,7 @@
 
 
 
-// Camera computing	a perspective projection-view matrix each frame from the update loop
+// Scene camera computing a perspective projection-view matrix each frame from the update loop
 class PerspectiveCamera : public Camera
 {
 public:

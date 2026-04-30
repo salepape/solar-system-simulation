@@ -15,6 +15,7 @@
 
 
 
+// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun -> farthest celestial body'
 class SolarSystem : public Scene
 {
 public:
@@ -28,7 +29,7 @@ public:
 	BodySystem& GetBodySystem(const std::string& inBodyName);
 
 private:
-	// Render the whole scene as long as the user is in the sphere of center 'Sun position' and radius 'distance Sun -> farthest celestial body'
+	// Background which can never be reached (based off a Skybox)
 	MilkyWayEntity milkyWay;
 	SpacecraftEntity spacecraft;
 
