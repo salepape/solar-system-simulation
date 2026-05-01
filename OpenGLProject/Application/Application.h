@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 
+class Scene;
 class Window;
 
 
@@ -16,7 +17,7 @@ public:
 	Application(const std::filesystem::path& inExecutablePath);
 
 	// Virtual destructor (needed to handle any custom polymorphic deletion in child classes)
-	virtual ~Application() = default;
+	virtual ~Application();
 
 	virtual void Run();
 
@@ -49,24 +50,18 @@ protected:
 	// Time [in seconds] between the last frame and the current one (used to reduce processing power differences between computers)
 	float deltaTime{ 0.0f };
 
-	virtual void SetUp() = 0;
+	std::unique_ptr<Window> window;
+	std::unique_ptr<Scene> scene;
+
+	virtual void SetUp();
 	virtual void Tick();
-	virtual void Refresh() = 0;
+	virtual void Refresh();
 
 private:
 	std::filesystem::path executablePath;
 
 	// Unique Singleton instance defined in source file
 	static Application* instance;
-
-	// As Window destructor is called by unique_ptr at some point in Solar Application source file, 
-	// and Window type is incomplete at this point (forward-declared), we have to implement a custom destructor
-	struct WindowDeleter
-	{
-		void operator()(Window* ptr);
-	};
-
-	std::unique_ptr<Window, WindowDeleter> window;
 
 	// Time [in seconds] elapsed in Play mode since the GLFW Window associated to the application has been created
 	float elapsedPlayTime{ 0.0f };

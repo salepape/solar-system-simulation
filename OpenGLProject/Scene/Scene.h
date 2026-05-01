@@ -12,11 +12,9 @@ public:
 	Scene();
 
 	// Virtual destructor (needed to handle any custom polymorphic deletion in child classes)
-	virtual ~Scene() = default;
+	virtual ~Scene();
 
-protected:
-	virtual void Update(const float deltaTime) = 0;
-	void Clear() const;
+	virtual void Update(const float /*deltaTime*/) {};
 };
 
 

@@ -10,14 +10,10 @@
 #include "Rendering/Renderer.h"
 #include "Rendering/ShaderLoader.h"
 #include "Rendering/GlyphLoader.h"
+#include "Scene/Scene.h"
 #include "Window.h"
 
 Application* Application::instance = nullptr;
-
-void Application::WindowDeleter::operator()(Window* ptr)
-{
-	delete ptr;
-}
 
 Application& Application::GetInstance()
 {
@@ -36,7 +32,7 @@ Application::Application(const std::filesystem::path& inExecutablePath) :
 	executablePath(inExecutablePath)
 {
 	// Create the main Window from which we will render the Application and set up an OpenGL Context for it
-	window = std::unique_ptr<Window, WindowDeleter>(new Window(1000, 1000, "Solar System Simulation"));
+	window = std::make_unique<Window>(1000, 1000, "Solar System Simulation");
 
 	// Load all OpenGL function pointers locations using GLAD, after an OpenGL Context has been set up for the current GLFW Window
 	if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
@@ -52,6 +48,12 @@ void Application::SetUp()
 {
 	ShaderLoader::BuildShaders();
 	GlyphLoader::LoadASCIICharacters();
+}
+
+Application::~Application()
+{
+	// This destructor, even if empty, ensures it will call the custom deleter of all std::unique_ptrs from this point in this source file at compile time.
+	// All hold types will be fully-defined by then (while only forward-declared in header), which is a requirement of std::unique_ptr class (unlike std::shared_ptr)
 }
 
 void Application::Run()
@@ -90,6 +92,8 @@ void Application::Tick()
 void Application::Refresh()
 {
 	Renderer::ClearBufferTargets();
+
+	scene->Update(deltaTime);
 }
 
 bool Application::IsClosed() const

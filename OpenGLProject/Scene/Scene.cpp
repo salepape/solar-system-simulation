@@ -12,7 +12,7 @@ Scene::Scene()
 	//Renderer::EnableFaceCulling();
 }
 
-void Scene::Clear() const
+Scene::~Scene()
 {
 	//Renderer::DisableFaceCulling();
 	Renderer::DisableBlending();

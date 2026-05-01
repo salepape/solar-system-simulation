@@ -2,11 +2,8 @@
 #define SOLAR_SYSTEM_SIMULATION_H
 
 #include <filesystem>
-#include <memory>
 
 #include "Application/Application.h"
-
-class SolarSystem;
 
 
 
@@ -17,17 +14,7 @@ public:
 	SolarSystemSimulation(const std::filesystem::path& inExecutablePath);
 
 private:
-	// As Solar System destructor is called by unique_ptr at some point in Solar System Simulation source file, 
-	// and Solar System type is incomplete at this point (forward-declared), we have to implement a custom destructor
-	struct SolarSystemDeleter
-	{
-		void operator()(SolarSystem* ptr);
-	};
-
-	std::unique_ptr<SolarSystem, SolarSystemDeleter> solarSystemScene;
-
 	void SetUp() override;
-	void Refresh() override;
 };
 
 
