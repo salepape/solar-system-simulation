@@ -4,6 +4,7 @@
 #include <glm/trigonometric.hpp>
 
 #include "Application/Application.h"
+#include "Application/ApplicationControls.h"
 #include "Cameras/Camera.h"
 
 
@@ -28,9 +29,9 @@ void Headlamp::UpdateHeadlight(const Camera& camera)
 	}
 }
 
-void Headlamp::UpdateHeadlightState(const float keyReleaseSensitivity, const int32_t action)
+void Headlamp::UpdateHeadlightState(const int32_t action)
 {
-	const bool isReleaseActionRegistered = Application::GetInstance().GetElapsedTime() - headlightStartTime > keyReleaseSensitivity;
+	const bool isReleaseActionRegistered = Application::GetInstance().GetElapsedTime() - headlightStartTime > ApplicationControls::KEY_RELEASE_SENSITIVITY;
 
 	if (action == GLFW_PRESS && headlightStartTime == 0.0f)
 	{

@@ -1,6 +1,8 @@
-#include "Simulation/SolarSystemSimulation.h"
+#include "Application/Application.h"
+#include "Simulation/SolarSystem.h"
 
 #include <filesystem>
+#include <memory>
 #include <iostream>
 
 
@@ -11,6 +13,9 @@ int main(int /*argc*/, char** argv)
 
 	std::cout << "Executable path: " << executablePath.string() << std::endl;
 
-	SolarSystemSimulation app(executablePath);
-	app.Run();
+	// 1 second corresponds to 1 Earth day in the simulation
+	Application solarSystemSimulation(executablePath, "Solar System Simulation");
+	solarSystemSimulation.AddScene(std::make_unique<SolarSystem>());
+
+	solarSystemSimulation.Run();
 }

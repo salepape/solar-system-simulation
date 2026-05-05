@@ -6,12 +6,20 @@
 #include <algorithm>	// for std::min and std::max
 #include <cassert>
 #include <iostream>
+#include <utility>
 
+#include "Application/ApplicationControls.h"
 #include "Rendering/Renderer.h"
 #include "Rendering/ShaderLoader.h"
 #include "Rendering/GlyphLoader.h"
 #include "Scene/Scene.h"
 #include "Window.h"
+
+namespace
+{
+	constexpr uint32_t WINDOW_DEFAULT_WIDTH = 1000;
+	constexpr uint32_t WINDOW_DEFAULT_HEIGHT = 1000;
+}
 
 Application* Application::instance = nullptr;
 
@@ -28,11 +36,14 @@ Application& Application::GetInstance()
 
 
 
-Application::Application(const std::filesystem::path& inExecutablePath) :
+Application::Application(const std::filesystem::path& inExecutablePath, const std::string& inTitle) :
 	executablePath(inExecutablePath)
 {
+	// Singleton instance set up here
+	instance = this;
+
 	// Create the main Window from which we will render the Application and set up an OpenGL Context for it
-	window = std::make_unique<Window>(1000, 1000, "Solar System Simulation");
+	window = std::make_unique<Window>(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT, inTitle);
 
 	// Load all OpenGL function pointers locations using GLAD, after an OpenGL Context has been set up for the current GLFW Window
 	if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
@@ -41,11 +52,6 @@ Application::Application(const std::filesystem::path& inExecutablePath) :
 		assert(false);
 	}
 
-	instance = this;
-}
-
-void Application::SetUp()
-{
 	ShaderLoader::BuildShaders();
 	GlyphLoader::LoadASCIICharacters();
 }
@@ -58,9 +64,6 @@ Application::~Application()
 
 void Application::Run()
 {
-	SetUp();
-
-	// Main loop (run every frame)
 	while (IsClosed() == false)
 	{
 		Tick();
@@ -69,7 +72,7 @@ void Application::Run()
 
 void Application::Tick()
 {
-	// Delta time should always be computed, regardless of simulation pause state
+	// Delta time should always be computed, regardless of pause state
 	if (IsPaused() == false)
 	{
 		elapsedPlayTime = GetElapsedTime() - elapsedPauseTime;
@@ -84,21 +87,26 @@ void Application::Tick()
 	}
 
 	Refresh();
-
-	window->SwapFrontAndBackBuffers();
-	window->ProcessPendingEvents();
 }
 
 void Application::Refresh()
 {
 	Renderer::ClearBufferTargets();
 
-	scene->Update(deltaTime);
+	ApplicationControls::ProcessUserInput();
+
+	if (scene != nullptr)
+	{
+		scene->Update(deltaTime);
+	}
+
+	window->SwapFrontAndBackBuffers();
+	window->ProcessPendingEvents();
 }
 
 bool Application::IsClosed() const
 {
-	return glfwWindowShouldClose(window->GLFWWindow) == true;
+	return glfwWindowShouldClose(window->GLFWWindow);
 }
 
 void Application::Close() const
@@ -131,4 +139,9 @@ void Application::UpdateSpeed(const float inSpeedFactor)
 
 	speedFactor = std::max(SPEED_MIN_THRESHOLD, speedFactor);
 	speedFactor = std::min(SPEED_MAX_THRESHOLD, speedFactor);
+}
+
+void Application::AddScene(std::unique_ptr<Scene> inScene)
+{
+	scene = std::move(inScene);
 }

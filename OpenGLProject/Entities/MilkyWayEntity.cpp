@@ -5,6 +5,7 @@
 #include <utility>
 #include <vector>
 
+#include "Utils/Helpers.h"
 #include "Rendering/Renderer.h"
 #include "Rendering/Shader.h"
 #include "Rendering/ShaderLoader.h"
@@ -12,9 +13,9 @@
 
 
 
-MilkyWayEntity::MilkyWayEntity(const std::filesystem::path& inTexturePath) :
+MilkyWayEntity::MilkyWayEntity() :
 	SceneEntity("MilkyWay"),
-	material(InitialiseMaterial(inTexturePath))
+	material(InitialiseMaterial(FileHelper::GetSolutionAbsolutePath() + "/Textures/MilkyWay/stars.dds"))
 {
 
 }

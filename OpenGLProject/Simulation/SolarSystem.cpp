@@ -22,8 +22,7 @@
 
 
 
-SolarSystem::SolarSystem() :
-	milkyWay(FileHelper::GetSolutionAbsolutePath() + "/Textures/MilkyWay/stars.dds")
+SolarSystem::SolarSystem()
 {
 	BuildBodySystems();
 	BuildBelts();

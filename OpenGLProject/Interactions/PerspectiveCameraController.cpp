@@ -6,9 +6,10 @@
 #include <cassert>
 #include <iostream>
 
-#include "InputHandler.h"
 #include "Application/Application.h"
+#include "Application/ApplicationControls.h"
 #include "Application/Window.h"
+#include "InputHandler.h"
 #include "Utils/Helpers.h"
 
 
@@ -18,7 +19,7 @@ PerspectiveCameraController::PerspectiveCameraController(const glm::vec3& inPosi
 	headlamp(inPosition),
 	zoomMaxLevel(inZoomMaxLevel)
 {
-	zoomLeft = inZoomMaxLevel;
+	zoomLevelLeft = inZoomMaxLevel;
 	mouseSensitivity = mouseMaxSensitivity;
 
 	SetMouseInputGLFWCallback();
@@ -28,24 +29,7 @@ PerspectiveCameraController::PerspectiveCameraController(const glm::vec3& inPosi
 
 void PerspectiveCameraController::ProcessUserInput(const float deltaTime)
 {
-	// Quit the simulation
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_ESCAPE))
-	{
-		Application::GetInstance().Close();
-	}
-
-	// Speed up/Slow down the simulation (only if it has not reached thresholds and simulation has not been paused)
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_UP) &&
-		Application::GetInstance().IsPaused() == false && Application::GetInstance().IsMaxSpeed() == false)
-	{
-		Application::GetInstance().UpdateSpeed(2.0f);
-	}
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_DOWN) &&
-		Application::GetInstance().IsPaused() == false && Application::GetInstance().IsMinSpeed() == false)
-	{
-		Application::GetInstance().UpdateSpeed(0.5f);
-	}
-
+	// Reset user's position in Scene
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_R))
 	{
 		camera.ResetTransform();
@@ -77,6 +61,8 @@ void PerspectiveCameraController::ProcessUserInput(const float deltaTime)
 	{
 		camera.UpdateUpPosition(-distance);
 	}
+
+	// Update lighting projected by headlight
 	if (const auto& inputHandler = InputHandler::GetInstance();
 		inputHandler.IsKeyPressed(GLFW_KEY_W) ||
 		inputHandler.IsKeyPressed(GLFW_KEY_S) ||
@@ -88,12 +74,14 @@ void PerspectiveCameraController::ProcessUserInput(const float deltaTime)
 		GetHeadlamp().UpdateHeadlight(camera);
 	}
 
-	// Modify speed
-	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_LEFT_SHIFT))
+	// Modify user speed
+	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_LEFT_SHIFT) ||
+		InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_RIGHT_SHIFT))
 	{
 		IncreaseTravelSpeed(2.5f);
 	}
-	if (InputHandler::GetInstance().IsKeyReleased(GLFW_KEY_LEFT_SHIFT))
+	if (InputHandler::GetInstance().IsKeyReleased(GLFW_KEY_LEFT_SHIFT) ||
+		InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_RIGHT_SHIFT))
 	{
 		DecreaseTravelSpeed(2.5f);
 	}
@@ -102,13 +90,13 @@ void PerspectiveCameraController::ProcessUserInput(const float deltaTime)
 void PerspectiveCameraController::UpdateZoomLeft(const float yOffset)
 {
 	constexpr float zoomMinLevel = 1.0f;
-	if (zoomLeft >= zoomMinLevel && zoomLeft <= zoomMaxLevel)
+	if (zoomLevelLeft >= zoomMinLevel && zoomLevelLeft <= zoomMaxLevel)
 	{
-		zoomLeft -= yOffset;
+		zoomLevelLeft -= yOffset;
 		mouseSensitivity -= yOffset * 1.0f / 1000;
 	}
 
-	zoomLeft = glm::clamp(zoomLeft, zoomMinLevel, zoomMaxLevel);
+	zoomLevelLeft = glm::clamp(zoomLevelLeft, zoomMinLevel, zoomMaxLevel);
 	mouseSensitivity = glm::clamp(mouseSensitivity, mouseMaxSensitivity * 1.0f / 10, mouseMaxSensitivity);
 }
 
@@ -137,6 +125,12 @@ void PerspectiveCameraController::SetMouseInputGLFWCallback()
 	glfwSetCursorPosCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, const double xPosition, const double yPosition)
 	{
 		Window* const window = GLFWHelper::GetGLFWWindowPointerToUserData(GLFWWindow);
+		if (window == nullptr)
+		{
+			std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - No window found..." << std::endl;
+			assert(false);
+		}
+
 		PerspectiveCameraController* const cameraController = window->cameraController;
 		if (cameraController == nullptr)
 		{
@@ -158,6 +152,12 @@ void PerspectiveCameraController::SetMouseWheelInputGLFWCallback()
 	glfwSetScrollCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, double /*xOffset*/, double yOffset)
 	{
 		const Window* const window = GLFWHelper::GetGLFWWindowPointerToUserData(GLFWWindow);
+		if (window == nullptr)
+		{
+			std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - No window found..." << std::endl;
+			assert(false);
+		}
+
 		PerspectiveCameraController* const cameraController = window->cameraController;
 		if (cameraController == nullptr)
 		{
@@ -166,42 +166,35 @@ void PerspectiveCameraController::SetMouseWheelInputGLFWCallback()
 		}
 
 		cameraController->UpdateZoomLeft(static_cast<float>(yOffset));
-		cameraController->GetCamera().SetFovY(cameraController->zoomLeft);
+		cameraController->GetCamera().SetFovY(cameraController->zoomLevelLeft);
 	});
 }
 
 void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 {
+	// Warning: any further call to this GLFW function will overwrite any existing lambda callback parameter previously set!
 	glfwSetKeyCallback(Application::GetInstance().GetWindow().GLFWWindow, [](GLFWwindow* GLFWWindow, const int32_t key, const int32_t /*scanCode*/, const int32_t action, const int32_t /*mods*/)
 	{
 		Window* const window = GLFWHelper::GetGLFWWindowPointerToUserData(GLFWWindow);
-
-		const auto& GetCameraController = [&window]() -> PerspectiveCameraController*
+		if (window == nullptr)
 		{
-			if (window == nullptr)
-			{
-				std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - No window found..." << std::endl;
-				assert(false);
-			}
+			std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - No window found..." << std::endl;
+			assert(false);
+		}
 
-			PerspectiveCameraController* const cameraController = window->cameraController;
-			if (cameraController == nullptr)
-			{
-				std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - No controller attached to the window..." << std::endl;
-				assert(false);
-			}
+		PerspectiveCameraController* const cameraController = window->cameraController;
+		if (cameraController == nullptr)
+		{
+			std::cout << "ERROR::PERSPECTIVE_CAMERA_CONTROLLER - No controller attached to the window..." << std::endl;
+			assert(false);
+		}
 
-			return cameraController;
+		const auto& IsReleaseActionRegistered = [](const float pressTime) -> bool
+		{
+			return Application::GetInstance().GetElapsedTime() - pressTime > ApplicationControls::KEY_RELEASE_SENSITIVITY;
 		};
 
-		const auto& IsReleaseActionRegistered = [&GetCameraController](const float pressTime) -> bool
-		{
-			const PerspectiveCameraController* const cameraController = GetCameraController();
-			return Application::GetInstance().GetElapsedTime() - pressTime > cameraController->keyReleaseSensitivity;
-		};
-
-		PerspectiveCameraController* const cameraController = GetCameraController();
-
+		// Pause simulation
 		if (key == GLFW_KEY_SPACE)
 		{
 			if (action == GLFW_PRESS && cameraController->pauseStartTime == 0.0f)
@@ -216,6 +209,7 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 				cameraController->pauseStartTime = 0.0f;
 			}
 		}
+		// Switch application cursor mode
 		else if (key == GLFW_KEY_TAB)
 		{
 			if (action == GLFW_PRESS && cameraController->cursorModeStartTime == 0.0f)
@@ -230,6 +224,7 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 				cameraController->cursorModeStartTime = 0.0f;
 			}
 		}
+		// Display legend on each celestial body of the simulation
 		else if (key == GLFW_KEY_L)
 		{
 			if (action == GLFW_PRESS && cameraController->displayLegendStartTime == 0.0f)
@@ -244,9 +239,10 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 				cameraController->displayLegendStartTime = 0.0f;
 			}
 		}
+		// @todo - Spot Light does not disappear at second 'H' key press
 		else if (key == GLFW_KEY_H)
 		{
-			cameraController->GetHeadlamp().UpdateHeadlightState(cameraController->keyReleaseSensitivity, action);
+			cameraController->GetHeadlamp().UpdateHeadlightState(action);
 		}
 	});
 }

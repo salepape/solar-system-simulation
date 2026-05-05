@@ -14,12 +14,12 @@ class Window;
 class Application
 {
 public:
-	Application(const std::filesystem::path& inExecutablePath);
+	Application(const std::filesystem::path& inExecutablePath, const std::string& inTitle);
 
-	// Virtual destructor (needed to handle any custom polymorphic deletion in child classes)
-	virtual ~Application();
+	~Application();
 
-	virtual void Run();
+	// Main Render Loop (run every frame)
+	void Run();
 
 	static Application& GetInstance();
 	Window& GetWindow() const { return *window; }
@@ -41,10 +41,12 @@ public:
 	bool IsMinSpeed() const { return speedFactor <= SPEED_MIN_THRESHOLD; }
 	bool IsMaxSpeed() const { return speedFactor >= SPEED_MAX_THRESHOLD; }
 
-	// See what the simulation looks like when celestial bodies move slower/faster (won't be of any effect when simulation has been paused)
+	// See what the simulation run by the Application looks like when celestial bodies move slower/faster (won't be of any effect when paused)
 	void UpdateSpeed(const float inSpeedFactor);
 
 	const std::filesystem::path& GetExecutablePath() const { return executablePath; }
+
+	void AddScene(std::unique_ptr<Scene> inScene);
 
 protected:
 	// Time [in seconds] between the last frame and the current one (used to reduce processing power differences between computers)
@@ -53,9 +55,8 @@ protected:
 	std::unique_ptr<Window> window;
 	std::unique_ptr<Scene> scene;
 
-	virtual void SetUp();
-	virtual void Tick();
-	virtual void Refresh();
+	void Tick();
+	void Refresh();
 
 private:
 	std::filesystem::path executablePath;

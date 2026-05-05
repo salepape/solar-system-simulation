@@ -193,6 +193,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application/Application.h" />
+	<ClInclude Include="Application/ApplicationControls.h" />
     <ClInclude Include="Application/Window.h" />
     <ClInclude Include="Buffers/DataBuffer.h" />
     <ClInclude Include="Buffers/IndexBuffer.h" />
@@ -235,12 +236,12 @@
     <ClInclude Include="Rendering/Texture.h" />
     <ClInclude Include="Scene/Scene.h" />
     <ClInclude Include="Simulation/SolarSystem.h" />
-    <ClInclude Include="Simulation/SolarSystemSimulation.h" />
     <ClInclude Include="Utils/Constants.h" />
     <ClInclude Include="Utils/Helpers.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application/Application.cpp" />
+	<ClCompile Include="Application/ApplicationControls.cpp" />
     <ClCompile Include="Application/Window.cpp" />
     <ClCompile Include="Buffers/DataBuffer.cpp" />
     <ClCompile Include="Buffers/IndexBuffer.cpp" />
@@ -284,7 +285,6 @@
     <ClCompile Include="Rendering/Texture.cpp" />
     <ClCompile Include="Scene/Scene.cpp" />
     <ClCompile Include="Simulation/SolarSystem.cpp" />
-    <ClCompile Include="Simulation/SolarSystemSimulation.cpp" />
     <ClCompile Include="Utils/Helpers.cpp" />
   </ItemGroup>
   <ItemGroup>

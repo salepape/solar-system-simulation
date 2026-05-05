@@ -1,8 +1,6 @@
 #ifndef MILKY_WAY_H
 #define MILKY_WAY_H
 
-#include <filesystem>
-
 #include "Components/Meshes/SkyboxMeshComponent.h"
 #include "Rendering/BlinnPhongMaterial.h"
 #include "SceneEntity.h"
@@ -12,7 +10,7 @@
 class MilkyWayEntity : public SceneEntity
 {
 public:
-	MilkyWayEntity(const std::filesystem::path& inTexturePath);
+	MilkyWayEntity();
 
 	void Render();
 

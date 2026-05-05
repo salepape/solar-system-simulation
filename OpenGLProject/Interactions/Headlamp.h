@@ -20,7 +20,7 @@ public:
 	void UpdateHeadlight(const Camera& camera);
 
 	// Call corresponding GLFW callback functions
-	void UpdateHeadlightState(const float keyReleaseSensitivity, const int32_t action);
+	void UpdateHeadlightState(const int32_t action);
 
 private:
 	SpotLightComponent headlight;

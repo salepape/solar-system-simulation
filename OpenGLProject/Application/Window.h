@@ -16,7 +16,7 @@ struct GLFWwindow;
 class Window
 {
 public:
-	Window(const uint32_t inWidth, const uint32_t inHeight, const std::string& inTitle);
+	Window(const uint32_t inWidthInScreenCoord, const uint32_t inHeightInScreenCoord, const std::string& inTitle);
 	~Window();
 
 	GLFWwindow* GLFWWindow{ nullptr };
