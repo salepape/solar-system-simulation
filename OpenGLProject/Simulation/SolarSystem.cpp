@@ -69,10 +69,7 @@ void SolarSystem::Update(const float deltaTime)
 	}
 
 	// Draw the 2 main belts of the Solar System
-	for (BeltEntity& belt : belts)
-	{
-		belt.Render();
-	}
+	Scene::Update(deltaTime);
 
 	// Draw Milky Way skybox
 	camera.SetProjectionViewVUniform(ViewMode::InifinteLookAt, runningWindow.GetAspectRatio());
@@ -180,7 +177,7 @@ void SolarSystem::BuildBelts()
 	FileHelper::ListModelPaths(currentSolutionPath + "/Models/Belts/", beltPaths);
 
 	ResourceCSVParser beltCSVParser(currentSolutionPath + "/Data/BeltData.csv");
-	belts.reserve(beltCSVParser.GetCSVLinesCount());
+	Scene::AllocateMemory(beltCSVParser.GetCSVLinesCount());
 
 	// Process each CSV line and create a Belt instance out of it
 	for (const std::vector<std::string>& beltParams : beltCSVParser.GetParsedCSV())
@@ -213,10 +210,10 @@ void SolarSystem::BuildBelts()
 		}
 		const float flatnessFactor = std::stof(beltParams[7]);
 
-		belts.emplace_back(
+		Scene::AddEntity(std::make_unique<BeltEntity>(
 			beltName,
 			InstanceParams{ modelPath, instanceCount, sizeRangeLowerBound, sizeRangeSpan },
-			TorusParams{ majorRadius, minorRadius, flatnessFactor });
+			TorusParams{ majorRadius, minorRadius, flatnessFactor }));
 	}
 }
 

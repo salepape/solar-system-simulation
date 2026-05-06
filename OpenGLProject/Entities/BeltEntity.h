@@ -39,12 +39,12 @@ struct TorusParams
 	float flatnessFactor{ 0.0f };
 };
 
-class BeltEntity : public SceneEntity
+class BeltEntity : public SceneEntity, public IRenderable 
 {
 public:
 	BeltEntity(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams);
 
-	void Render();
+	void Render() override;
 
 private:
 	InstanceParams instanceParams;

@@ -24,8 +24,6 @@ public:
 	void Update(const float deltaTime) override;
 
 	const std::vector<BodySystem>& GetBodySystems() const { return bodySystems; }
-	const std::vector<BeltEntity>& GetBelts() const { return belts; }
-
 	BodySystem& GetBodySystem(const std::string& inBodyName);
 
 private:
@@ -34,7 +32,6 @@ private:
 	SpacecraftEntity spacecraft;
 
 	std::vector<BodySystem> bodySystems;
-	std::vector<BeltEntity> belts;
 
 	// @todo - Think about using a Builder Design Pattern to construct such class instances out of CSV files
 	// Instantiate "spherical" celestial bodies/ring systems/belt systems, after loading data from .csv files,

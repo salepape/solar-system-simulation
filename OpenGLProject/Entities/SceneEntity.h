@@ -8,7 +8,16 @@
 
 
 
-// Represent a 'Game Object', i.e. a name and a Transform for now
+// Should be "implemented" by all Scene Entity child classes that can be drawable/renderable on screen
+class IRenderable
+{
+public:
+	virtual void Render() = 0;
+};
+
+
+
+// Abstract representation of a 'Game Object', i.e. a name and a Transform for now
 class SceneEntity
 {
 public:
