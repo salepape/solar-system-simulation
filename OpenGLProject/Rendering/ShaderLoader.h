@@ -13,7 +13,7 @@ class Shader;
 // To be used to refer to any Shader instead of relying on raw strings (layer of security over the existence of LookUpIDs when instantiating or look-up functions)
 namespace ShaderLookUpID
 {
-	static const size_t Num = 5;
+	static constexpr size_t Num = 5;
 
 	// Enum elements do not correspond to GLSL Shader names but on which Scene Entity/Object Mesh they are applied to
 	enum Enum
@@ -26,10 +26,9 @@ namespace ShaderLookUpID
 		BELT,
 	};
 
-	static const std::array<Enum, Num> All = { DEFAULT, SUN, BILLBOARD, BELT, MILKY_WAY, };
+	static constexpr std::array<Enum, Num> All = { DEFAULT, SUN, BILLBOARD, BELT, MILKY_WAY, };
 
-	// [[maybe_unused]] only used here to silence a Clang warning!
-	[[maybe_unused]] static Enum Get(const int index) { return All[index]; }
+	static constexpr Enum Get(const int index) { return All[index]; }
 };
 
 // GLSL Uniforms shared across Vertex/Fragment Shaders
@@ -42,7 +41,7 @@ namespace GLSLUniform
 		LINE_OF_SIGHT
 	};
 
-	static const std::array<Enum, 2> All = { PROJECTION_VIEW, LINE_OF_SIGHT, };
+	static constexpr std::array<Enum, 2> All = { PROJECTION_VIEW, LINE_OF_SIGHT, };
 };
 
 // Util static class giving a global access point to all Shaders applied on Scene Entity/Objects of the simulation

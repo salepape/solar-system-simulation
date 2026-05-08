@@ -22,7 +22,7 @@ void SkyboxMeshComponent::ComputeVertices()
 	constexpr int32_t VERTEX_COORDINATE_COUNT = Vertex::POSITION_TYPE_DIMENSION * VERTEX_COUNT;
 
 	// 6 faces of the cube defined
-	std::array<float, static_cast<size_t>(VERTEX_COORDINATE_COUNT)> vertexCoor =
+	constexpr std::array<float, static_cast<size_t>(VERTEX_COORDINATE_COUNT)> vertexCoor =
 	{
 		-1.0f,  1.0f, -1.0f,
 		-1.0f, -1.0f, -1.0f,
