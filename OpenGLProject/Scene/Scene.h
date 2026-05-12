@@ -10,7 +10,6 @@ class SceneEntity;
 
 
 // @todo - Do SPIKE for going full ECS instead of only Entity-Component Composition relationships
-// @todo - Find a way to keep a list of all SceneEntities and other renderables in this class instead of its children. Update() should be defined in this class
 // Contain entities that model the simulation. Be careful: shaders need to be all loaded first!
 class Scene
 {
@@ -29,6 +28,11 @@ protected:
 	void AddEntity(std::unique_ptr<SceneEntity> inEntity);
 
 private:
+
+
+	// @todo - Replace it by map sorted by handle keys. Handle = bits concatenation determining draw order (distance-based)
+	// List of ptrs owning lifetime & memory management of Scene Entity instances.
+	// Warning: ownership should not be moved away from this vector.
 	std::vector<std::unique_ptr<SceneEntity>> sceneEntities;
 };
 

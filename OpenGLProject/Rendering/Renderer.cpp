@@ -11,7 +11,7 @@
 bool Renderer::IsOpenGLContextActive()
 {
 	const GLFWwindow* const windowWithCurrentOpenGLContext = glfwGetCurrentContext();
-	const bool isOpenGLContextActive = windowWithCurrentOpenGLContext == nullptr;
+	const bool isOpenGLContextActive = (windowWithCurrentOpenGLContext == nullptr);
 
 	if (isOpenGLContextActive == false)
 	{
