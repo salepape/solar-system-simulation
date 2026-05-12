@@ -11,13 +11,12 @@ Scene::Scene()
 {
 	Renderer::EnableDepthTesting();
 	Renderer::EnableBlending();
-	// @todo - Optimise rendering by activating face culling only when the controller is outside spheres
-	//Renderer::EnableFaceCulling();
+	Renderer::EnableBackFaceCulling();
 }
 
 Scene::~Scene()
 {
-	//Renderer::DisableFaceCulling();
+	Renderer::DisableBackFaceCulling();
 	Renderer::DisableBlending();
 	Renderer::DisableDepthTesting();
 }

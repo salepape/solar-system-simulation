@@ -32,12 +32,14 @@ void Renderer::EnableDepthTesting()
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Renderer::EnableFaceCulling()
+void Renderer::EnableBackFaceCulling()
 {
 	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
 }
 
-void Renderer::DisableFaceCulling()
+void Renderer::DisableBackFaceCulling()
 {
 	glDisable(GL_CULL_FACE);
 }

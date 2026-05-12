@@ -20,9 +20,10 @@ public:
 	static void EnableDepthTesting();
 	static void DisableDepthTesting();
 
-	// Be sure all meshes are defined in a counter-clockwise fashion
-	static void EnableFaceCulling();
-	static void DisableFaceCulling();
+	// Discard every draw call for any geometry no visible from the user's point of view
+	// Warning: all vertices need to be written in a counter-clockwise fashion
+	static void EnableBackFaceCulling();
+	static void DisableBackFaceCulling();
 
 	// Enable OpenGL states for blending to make texts rendered correctly
 	static void EnableBlending();
