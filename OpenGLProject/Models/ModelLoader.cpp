@@ -138,7 +138,7 @@ void ModelLoader::ProcessMaterial(Model& model, const aiMesh& mesh, const aiScen
 		aiColor3D diffuseColour;
 		material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColour);
 
-		const DiffuseProperties& diffuseProperties = { glm::vec3(diffuseColour.r, diffuseColour.g, diffuseColour.b) };
+		const DiffuseProperties diffuseProperties{ glm::vec3(diffuseColour.r, diffuseColour.g, diffuseColour.b) };
 
 		// Read 'Ks' factor in .mtl file
 		aiColor3D specularColour;
@@ -148,7 +148,7 @@ void ModelLoader::ProcessMaterial(Model& model, const aiMesh& mesh, const aiScen
 		ai_real shininess;
 		material->Get(AI_MATKEY_SHININESS, shininess);
 
-		const SpecularProperties& specularProperties = { glm::vec3(specularColour.r, specularColour.g, specularColour.b), shininess };
+		const SpecularProperties specularProperties{ glm::vec3(specularColour.r, specularColour.g, specularColour.b), shininess };
 
 		// Read 'd' factor in .mtl file
 		ai_real transparency;

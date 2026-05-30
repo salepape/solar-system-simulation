@@ -15,7 +15,7 @@ SkyboxMeshComponent::SkyboxMeshComponent()
 {
 	ComputeVertices();
 	StoreVertices();
-};
+}
 
 void SkyboxMeshComponent::ComputeVertices()
 {
