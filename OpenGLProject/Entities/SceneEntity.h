@@ -2,9 +2,15 @@
 #define SCENE_ENTITY_H
 
 #include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
 
 #include <cstdint>
+//#include <filesystem>
+#include <functional>
+#include <optional>
 #include <string>
+
+//#include "Rendering/BlinnPhongMaterial.h"
 
 
 
@@ -12,7 +18,15 @@
 class IRenderable
 {
 public:
+	//virtual BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath) = 0;
 	virtual void Render() = 0;
+};
+
+class ITransformable
+{
+public:
+	virtual void ComputeModelMatrixVUniform(const float deltaTime, const class Camera& camera, std::optional<std::reference_wrapper<const class SceneEntity>> parentEntity = std::nullopt) = 0;
+	//virtual void Attach() = 0;
 };
 
 
@@ -38,20 +52,22 @@ public:
 	// Virtual destructor (needed, as class is not final)
 	virtual ~SceneEntity() = default;
 
-	[[maybe_unused]] int32_t GetID() const { return ID; }
+	uint32_t GetID() const { return ID; }
 	const std::string& GetName() const { return name; }
 
 	const glm::mat4& GetModelMatrix() const { return modelMatrix; }
+	void SetModelMatrix(const glm::mat4& inModelMatrix) { modelMatrix = inModelMatrix; }
+
+	glm::vec3 GetPosition() const { return glm::vec3(modelMatrix[3]); }
+
+	uint32_t parentID{ 0 };
 
 protected:
-	int32_t ID{ -1 };
+	uint32_t ID{ 0 };
 	std::string name;
 
-	// Correspond to the Scene Transform (position, rotation, scale) of the Entity
+	// Correspond to the Scene Transform (position, rotation, scale) of the Scene Entity
 	glm::mat4 modelMatrix{ 1.0f };
-
-	// @todo - Empty body in several child classes, and implementation with different params. Should be moved to interface?
-	virtual void ComputeModelMatrixVUniform(const float /*deltaTime*/ = 0.0f) = 0;
 
 private:
 	static uint32_t entityIDCounter;

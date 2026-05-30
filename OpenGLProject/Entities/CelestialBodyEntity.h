@@ -4,13 +4,16 @@
 #include <glm/vec3.hpp>
 
 #include <filesystem>
+#include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "Components/Meshes/SphereMeshComponent.h"
 #include "Rendering/BlinnPhongMaterial.h"
 #include "SceneEntity.h"
 
+class Camera;
 class LightSourceComponent;
 
 
@@ -26,21 +29,19 @@ struct BodyData
 	float orbitalPeriod{ 0.0f };			// Time (sideral) the planet (resp. moon) takes to do one revolution around the sun (resp. its planet) [in Earth days]
 	float spinPeriod{ 0.0f };				// Time (sideral) the planet takes to do a rotation on itself [in Earth days]	
 	float orbitalInclination{ 0.0f };		// Or "orbital tilt": angle between planet (resp. moon) orbit and the ecliptic [in degrees]
-
-	std::string parentName;					// Name of the celestial body parent, if any
 };
 
 // Represent a spherical mesh body, e.g. a planet, a dwarf planet or a moon
-class CelestialBodyEntity : public SceneEntity
+class CelestialBodyEntity : public SceneEntity, public ITransformable, public IRenderable
 {
 public:
 	// Default constructor (not needed)
 	CelestialBodyEntity() = delete;
 
 	// User-defined constructor (to be used when building a CelestialBody in-place from initialisation-list)
-	CelestialBodyEntity(BodyData&& inBodyData);
+	CelestialBodyEntity(const BodyData& inBodyData);
 
-	// Copy constructor (needed when we call GetCelestialBody() from BodySystem, as it gets a shallow copy of an instance of this class)
+	// Copy constructor (needed when we call GetCelestialBody(), as it gets a shallow copy of an instance of this class)
 	CelestialBodyEntity(const CelestialBodyEntity& inCelestialBody) = default;
 	CelestialBodyEntity& operator = (const CelestialBodyEntity& inCelestialBody) = delete;
 
@@ -54,10 +55,13 @@ public:
 	const BodyData& GetBodyData() const { return bodyData; }
 
 	// Compute body position in Cartesian coordinates from Spherical ones
-	void ComputeCartesianPosition(const float deltaTime, const CelestialBodyEntity* satelliteParentBody = nullptr);
+	void ComputeCartesianPosition(const float deltaTime, std::optional<std::reference_wrapper<const SceneEntity>> satelliteParentBody = std::nullopt);
 	const glm::vec3& GetPosition() const { return position; }
 
-	void Render(const float deltaTime = 0.0f);
+	// IRenderable implementation
+	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath, const std::string& bodyName) /*override*/;
+	void Render() override;
+	// IRenderable implementation
 
 private:
 	BodyData bodyData;
@@ -66,8 +70,6 @@ private:
 	BlinnPhongMaterial material;
 
 	std::shared_ptr<LightSourceComponent> lightSource;
-
-	bool isMoon{ false };
 
 	glm::vec3 position{ 0.0f };
 
@@ -88,9 +90,9 @@ private:
 	float distCosOrbInclination{ 0.0f };
 	float distSinOrbInclination{ 0.0f };
 
-	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName);
-
-	void ComputeModelMatrixVUniform(const float deltaTime = 1.0f) override;
+	// ITransformable implementation
+	void ComputeModelMatrixVUniform(const float deltaTime, const Camera& /*camera*/, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity = std::nullopt) override;
+	// ITransformable implementation
 };
 
 

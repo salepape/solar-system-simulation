@@ -17,10 +17,12 @@ public:
 	// Clear all OpenGL buffer targets used
 	static void ClearBufferTargets();
 
+	// @todo - Same as depth culling?
 	static void EnableDepthTesting();
 	static void DisableDepthTesting();
 
-	// Discard every draw call for any geometry no visible from the user's point of view
+	// @todo - Add Collision Component to all celestial bodies, as back (= inner) face culling active
+	// Discard every draw call for any geometry (e.g. inner part of spheres) not visible from the user's point of view
 	// Warning: all vertices need to be written in a counter-clockwise fashion
 	static void EnableBackFaceCulling();
 	static void DisableBackFaceCulling();
@@ -28,6 +30,8 @@ public:
 	// Enable OpenGL states for blending to make texts rendered correctly
 	static void EnableBlending();
 	static void DisableBlending();
+
+	// @todo - Frustrum culling
 
 	// Set the function that will be used to compare each pixel depth value with the one stored in buffer
 	static void SetDepthFctToEqual();

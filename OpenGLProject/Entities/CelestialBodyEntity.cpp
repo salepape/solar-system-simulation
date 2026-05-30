@@ -8,9 +8,10 @@
 #include <utility>
 #include <vector>
 
+#include "Application/Application.h"
+#include "Cameras/Camera.h"
 #include "Components/Lights/LightSourceComponent.h"
 #include "Components/Lights/PointLightComponent.h"
-#include "Entities/Groups/BodySystem.h"
 #include "Rendering/Renderer.h"
 #include "Rendering/Shader.h"
 #include "Rendering/ShaderLoader.h"
@@ -19,7 +20,7 @@
 
 
 
-CelestialBodyEntity::CelestialBodyEntity(BodyData&& inBodyData) :
+CelestialBodyEntity::CelestialBodyEntity(const BodyData& inBodyData) :
 	SceneEntity(inBodyData.name),
 	bodyData(std::move(inBodyData)),
 	sphere(bodyData.radius),
@@ -33,8 +34,6 @@ CelestialBodyEntity::CelestialBodyEntity(BodyData&& inBodyData) :
 			AttenuationParams{ 1.0f, 0.00045f, 0.00000075f });
 	}
 
-	isMoon = bodyData.parentName.length() != 0 ? true : false;
-
 	orbitAngularFreq = bodyData.orbitalPeriod == 0.0f ? 0.0f : GLMConstants::doublePi * 1.0f / bodyData.orbitalPeriod;
 	spinAngularFreq = bodyData.spinPeriod == 0.0f ? 0.0f : GLMConstants::doublePi * 1.0f / bodyData.spinPeriod;
 
@@ -45,12 +44,12 @@ CelestialBodyEntity::CelestialBodyEntity(BodyData&& inBodyData) :
 	distSinOrbInclination = bodyData.distanceToParent * glm::sin(orbitalInclinationInRad);
 }
 
-BlinnPhongMaterial CelestialBodyEntity::InitialiseMaterial(const std::filesystem::path& inBodyTexturePath, const std::string& inBodyName)
+BlinnPhongMaterial CelestialBodyEntity::InitialiseMaterial(const std::filesystem::path& texturePath, const std::string& bodyName)
 {
-	Texture texture(inBodyTexturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
+	Texture texture(texturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadDDS();
 
-	if (inBodyName == "Sun")
+	if (bodyName == "Sun")
 	{
 		// Allow the Sun texture to be rendered with higher intensity than a simple white light - give volcanic visual effect)
 		constexpr float oversaturatingFactor = 1.5f;
@@ -62,18 +61,22 @@ BlinnPhongMaterial CelestialBodyEntity::InitialiseMaterial(const std::filesystem
 	}
 }
 
-void CelestialBodyEntity::ComputeModelMatrixVUniform(const float deltaTime)
+void CelestialBodyEntity::ComputeModelMatrixVUniform(const float deltaTime, const Camera& /*camera*/, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity)
 {
+	// @todo - Can we avoid redoing the computation all time from scratch and just add delta transform?
 	modelMatrix = glm::mat4(1.0f);
 
-	// Move the body (non-constant over time) according to the circular translations computed previously
+	const float alteredDeltaTime = deltaTime * Application::GetInstance().GetSpeedFactor();
+
+	ComputeCartesianPosition(alteredDeltaTime, parentEntity);
+
 	modelMatrix = glm::translate(modelMatrix, position);
 
 	// Rotate the body (constant over time) around an axis colinear to orbit direction to reproduce its axial tilt
 	modelMatrix = glm::rotate(modelMatrix, obliquityInRad, GLMConstants::forwardVector);
 
 	// Angle travelled by the celestial body around itself for the current frame [in radians]
-	travelledSpinAngle += spinAngularFreq * deltaTime;
+	travelledSpinAngle += spinAngularFreq * alteredDeltaTime;
 
 	// Rotate the body (non-constant over time) around axis normal to orbital plane to reproduce its spin
 	modelMatrix = glm::rotate(modelMatrix, travelledSpinAngle, GLMConstants::upVector);
@@ -82,25 +85,28 @@ void CelestialBodyEntity::ComputeModelMatrixVUniform(const float deltaTime)
 	modelMatrix = glm::rotate(modelMatrix, GLMConstants::halfPi, GLMConstants::rightVector);
 }
 
-void CelestialBodyEntity::ComputeCartesianPosition(const float deltaTime, const CelestialBodyEntity* satelliteParentBody)
+void CelestialBodyEntity::ComputeCartesianPosition(const float deltaTime, std::optional<std::reference_wrapper<const SceneEntity>> satelliteParentBody)
 {
 	position = glm::vec3(0.0f);
 
 	// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
 	travelledOrbitAngle += orbitAngularFreq * deltaTime;
-	if (isMoon == false || satelliteParentBody == nullptr)
+	if (parentID == 0 || satelliteParentBody.has_value() == false)
 	{
 		travelledAngle = travelledOrbitAngle;
 	}
 	// Circular translation of satellite around corresponding planet, taking into account satellite "orbital tilt"
 	else
 	{
-		const float sinTravelledAngleParent = glm::sin(satelliteParentBody->travelledAngle);
+		// Warning: assumes body pointer is valid!
+		const CelestialBodyEntity& satelliteParentBodyRef = *dynamic_cast<const CelestialBodyEntity*>(&satelliteParentBody.value().get());
+
+		const float sinTravelledAngleParent = glm::sin(satelliteParentBodyRef.travelledAngle);
 
 		position += glm::vec3(
-			satelliteParentBody->distCosOrbInclination * sinTravelledAngleParent,
-			satelliteParentBody->distSinOrbInclination * sinTravelledAngleParent,
-			satelliteParentBody->bodyData.distanceToParent * glm::cos(satelliteParentBody->travelledAngle));
+			satelliteParentBodyRef.distCosOrbInclination * sinTravelledAngleParent,
+			satelliteParentBodyRef.distSinOrbInclination * sinTravelledAngleParent,
+			satelliteParentBodyRef.bodyData.distanceToParent * glm::cos(satelliteParentBodyRef.travelledAngle));
 	}
 
 	// Circular translation of body around Sun, taking into account body "orbital tilt"
@@ -112,10 +118,8 @@ void CelestialBodyEntity::ComputeCartesianPosition(const float deltaTime, const 
 		bodyData.distanceToParent * glm::cos(travelledOrbitAngle));
 }
 
-void CelestialBodyEntity::Render(const float deltaTime)
+void CelestialBodyEntity::Render()
 {
-	ComputeModelMatrixVUniform(deltaTime);
-
 	const Shader& shader = material.GetShader();
 	shader.Enable();
 

@@ -193,7 +193,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application/Application.h" />
-	<ClInclude Include="Application/ApplicationControls.h" />
+    <ClInclude Include="Application/ApplicationControls.h" />
     <ClInclude Include="Application/Window.h" />
     <ClInclude Include="Buffers/DataBuffer.h" />
     <ClInclude Include="Buffers/IndexBuffer.h" />
@@ -216,11 +216,9 @@
     <ClInclude Include="Entities/BillboardEntity.h" />
     <ClInclude Include="Entities/BodyRingsEntity.h" />
     <ClInclude Include="Entities/CelestialBodyEntity.h" />
-    <ClInclude Include="Entities/Groups/BodySystem.h" />
     <ClInclude Include="Entities/MilkyWayEntity.h" />
     <ClInclude Include="Entities/OrbitEntity.h" />
     <ClInclude Include="Entities/SceneEntity.h" />
-    <ClInclude Include="Entities/SpacecraftEntity.h" />
     <ClInclude Include="Interactions/Headlamp.h" />
     <ClInclude Include="Interactions/InputHandler.h" />
     <ClInclude Include="Interactions/PerspectiveCameraController.h" />
@@ -241,7 +239,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application/Application.cpp" />
-	<ClCompile Include="Application/ApplicationControls.cpp" />
+    <ClCompile Include="Application/ApplicationControls.cpp" />
     <ClCompile Include="Application/Window.cpp" />
     <ClCompile Include="Buffers/DataBuffer.cpp" />
     <ClCompile Include="Buffers/IndexBuffer.cpp" />
@@ -263,11 +261,9 @@
     <ClCompile Include="Entities/BillboardEntity.cpp" />
     <ClCompile Include="Entities/BodyRingsEntity.cpp" />
     <ClCompile Include="Entities/CelestialBodyEntity.cpp" />
-    <ClCompile Include="Entities/Groups/BodySystem.cpp" />
     <ClCompile Include="Entities/MilkyWayEntity.cpp" />
     <ClCompile Include="Entities/OrbitEntity.cpp" />
     <ClCompile Include="Entities/SceneEntity.cpp" />
-    <ClCompile Include="Entities/SpacecraftEntity.cpp" />
     <ClCompile Include="External Dependencies/Glad/glad.c" />
     <ClCompile Include="Interactions/Headlamp.cpp" />
     <ClCompile Include="Interactions/InputHandler.cpp" />

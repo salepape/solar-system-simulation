@@ -4,13 +4,10 @@
 #include <glm/vec3.hpp>
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
-#include "Entities/BeltEntity.h"
-#include "Entities/MilkyWayEntity.h"
-#include "Entities/SpacecraftEntity.h"
-#include "Entities/Groups/BodySystem.h"
 #include "Scene/Scene.h"
 
 
@@ -21,24 +18,18 @@ class SolarSystem : public Scene
 public:
 	SolarSystem();
 
-	void Update(const float deltaTime) override;
-
-	const std::vector<BodySystem>& GetBodySystems() const { return bodySystems; }
-	BodySystem& GetBodySystem(const std::string& inBodyName);
+	void Update(const float deltaTime, const std::optional<SceneEntityHandle> /*handle*/) override;
 
 private:
-	// Background which can never be reached (based off a Skybox)
-	MilkyWayEntity milkyWay;
-	SpacecraftEntity spacecraft;
-
-	std::vector<BodySystem> bodySystems;
-
 	// @todo - Think about using a Builder Design Pattern to construct such class instances out of CSV files
 	// Instantiate "spherical" celestial bodies/ring systems/belt systems, after loading data from .csv files,
 	// and re-scaling it so we can visualise the whole Solar System without having to travel for too long
+	void BuildBackground();
 	void BuildBodySystems();
 	void BuildBodyRings();
 	void BuildBelts();
+
+	class CelestialBodyEntity& GetBody(const std::string& bodyName) const;
 };
 
 

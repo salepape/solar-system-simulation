@@ -67,7 +67,7 @@ void Camera::SetProjectionViewVUniform(const ViewMode viewMode, const float wind
 		projectionView *= ComputeView();
 		break;
 	}
-	case ViewMode::InifinteLookAt:
+	case ViewMode::InfiniteLookAt:
 	{
 		projectionView *= ComputeInfiniteView();
 		break;

@@ -61,12 +61,6 @@
     <Filter Include="Source Files\Entities">
       <UniqueIdentifier>{5c670c94-8ee1-4eef-8b95-30fc846919c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Entities\Groups">
-      <UniqueIdentifier>{43daa992-089b-42be-a2bc-3e6389e37cf2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Entities\Groups">
-      <UniqueIdentifier>{555914cf-a0de-41d0-8cf3-e4830b6de545}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Interactions">
       <UniqueIdentifier>{1b71018e-a757-47a6-aa94-b0ef7aafbe0e}</UniqueIdentifier>
     </Filter>
@@ -111,7 +105,7 @@
     <ClInclude Include="Application/Application.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-	<ClInclude Include="Application/ApplicationControls.h">
+    <ClInclude Include="Application/ApplicationControls.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="Application/Window.h">
@@ -189,12 +183,6 @@
     <ClInclude Include="Entities/SceneEntity.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Entities/SpacecraftEntity.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Entities/Groups/BodySystem.h">
-      <Filter>Header Files\Entities\Groups</Filter>
-    </ClInclude>
     <ClInclude Include="Interactions/InputHandler.h">
       <Filter>Header Files\Interactions</Filter>
     </ClInclude>
@@ -248,7 +236,7 @@
     <ClCompile Include="Application/Application.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-	<ClCompile Include="Application/ApplicationControls.cpp">
+    <ClCompile Include="Application/ApplicationControls.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="Application/Window.cpp">
@@ -322,12 +310,6 @@
     </ClCompile>
     <ClCompile Include="Entities/SceneEntity.cpp">
       <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Entities/SpacecraftEntity.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Entities/Groups/BodySystem.cpp">
-      <Filter>Source Files\Entities\Groups</Filter>
     </ClCompile>
     <ClCompile Include="External Dependencies/Glad/glad.c">
       <Filter>Source Files\External Dependencies\Glad</Filter>

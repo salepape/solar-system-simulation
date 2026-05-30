@@ -42,7 +42,7 @@ public:
 	// User-defined constructor (used when parsing a pre-made 3D model, i.e. a mesh with textures applied on it, and transferring Mesh info to this class) 
 	MeshComponent(const std::vector<Vertex>& inVertices, const std::vector<uint32_t>& inIndices = {});
 
-	// Copy constructor (needed when defining a Sphere in CelestialBody when object passed as const ref to instantiate Orbit/Billboard in BodySystem)
+	// Copy constructor (needed when defining a Sphere in CelestialBody when object passed as const ref to instantiate Orbit/Billboard)
 	MeshComponent(const MeshComponent& inMesh) = default;
 	const MeshComponent& operator = (const MeshComponent& inMesh) = delete;
 

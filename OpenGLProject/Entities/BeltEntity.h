@@ -44,7 +44,10 @@ class BeltEntity : public SceneEntity, public IRenderable
 public:
 	BeltEntity(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams);
 
+	// IRenderable implementation
+	//BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath) override { /* already baked in model */ return; }
 	void Render() override;
+	// IRenderable implementation
 
 private:
 	InstanceParams instanceParams;
@@ -54,7 +57,6 @@ private:
 	// Model used to represent a Belt "Rock" for instancing (contains the Mesh + the Material definition, as opposed to traditional SceneEntities)
 	Model model;
 
-	void ComputeModelMatrixVUniform(const float /*deltaTime*/) override {};
 	void ComputeInstanceModelMatrices();
 	void StoreInstanceModelMatrices() const;
 };

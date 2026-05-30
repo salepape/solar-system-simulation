@@ -1,79 +1,75 @@
 #include "SolarSystem.h"
 
-#include <glm/geometric.hpp>
 #include <glm/vec3.hpp>
 
-#include <algorithm>
-#include <cassert>
 #include <cstdint>
-#include <iostream>
-#include <map>
 #include <unordered_map>
 
 #include "Application/Application.h"
 #include "Application/Window.h"
 #include "Cameras/PerspectiveCamera.h"
+#include "Entities/BeltEntity.h"
 #include "Entities/BillboardEntity.h"
 #include "Entities/BodyRingsEntity.h"
 #include "Entities/CelestialBodyEntity.h"
-#include "Interactions/PerspectiveCameraController.h"
-#include "Rendering/ShaderLoader.h"
+#include "Entities/MilkyWayEntity.h"
+#include "Entities/OrbitEntity.h"
 #include "Utils/Helpers.h"
 
 
 
 SolarSystem::SolarSystem()
 {
+	BuildBackground();
 	BuildBodySystems();
 	BuildBelts();
 
-	spacecraft.SetInitialTransform(
-		glm::vec3(0.0f, GetBodySystem("Sun").GetCelestialBody().GetBodyData().radius * 1.75f, -25.0f),
+	Scene::SetSceneViewerTransformStart(
+		glm::vec3(0.0f, GetBody("Sun").GetBodyData().radius * 1.75f, -25.0f),
 		glm::vec3(0.0f, -25.0f, 90.0f));
 }
 
-void SolarSystem::Update(const float deltaTime)
+// @todo - Should all be migrated to Scene class
+void SolarSystem::Update(const float deltaTime, const std::optional<SceneEntityHandle> /*handle*/)
 {
 	const Application& runningApp = Application::GetInstance();
 	const Window& runningWindow = runningApp.GetWindow();
 
-	PerspectiveCameraController& cameraController = spacecraft.GetCameraController();
-	cameraController.ProcessUserInput(deltaTime);
+	sceneViewer.ProcessUserInput(deltaTime);
 
-	PerspectiveCamera& camera = cameraController.GetCamera();
+	PerspectiveCamera& camera = sceneViewer.GetCamera();
+
+	////////// 1 - DRAW OPAQUE ENTITIES //////////
+
+	// @todo - To be store as command in render queue?
+	camera.SetProjectionViewVUniform(ViewMode::InfiniteLookAt, runningWindow.GetAspectRatio());
+
+	// MILKY WAY (not part of Scene Entities hash map, member variable of SS class)	
+	Scene::Update(deltaTime, SceneEntityHandle::BACKGROUND);
+
+	// @todo - To be store as command in render queue?
 	camera.SetProjectionViewVUniform(ViewMode::FiniteLookAt, runningWindow.GetAspectRatio());
 	camera.SetPositionFUniform();
 
-	const glm::vec3& cameraPosition = camera.GetPosition();
+	// CELESTIAL BODIES, ORBITS, BILLBOARDS & BELTS (part of Scene Entities hash map)
+	Scene::Update(deltaTime, SceneEntityHandle::OPAQUE_ENTITY);
 
-	// Compute celestial body positions and sort them from farthest to closest according to the camera, 
-	// because it is needed to make blending work for multiple objects with transparency, like body names and Saturn Rings
-	std::map<float, BodySystem&> bodiesSortedByDistance;
-	for (BodySystem& bodySystem : bodySystems)
-	{
-		const CelestialBodyEntity* parentBody = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? &GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody() : nullptr;
-		bodySystem.GetCelestialBody().ComputeCartesianPosition(deltaTime * runningApp.GetSpeedFactor(), parentBody);
+	////////// 2 - DRAW ENTITIES WITH LEVEL OF TRANSPARENCY //////////
 
-		bodiesSortedByDistance.emplace(
-			glm::distance(cameraPosition, bodySystem.GetCelestialBody().GetPosition()),
-			bodySystem);
-	}
+	// ORDER PER DIST TO CAM
+	Scene::OrderForTransparencyPass(camera.GetPosition());
 
-	// Draw all the body systems of the Solar System
-	for (auto bodyIt = bodiesSortedByDistance.rbegin(); bodyIt != bodiesSortedByDistance.rend(); ++bodyIt)
-	{
-		// Draw celestial bodies, and animate them accordingly over time
-		BodySystem& bodySystem = bodyIt->second;
-		const glm::vec3& parentPosition = bodySystem.GetCelestialBody().GetBodyData().parentName.empty() == false ? GetBodySystem(bodySystem.GetCelestialBody().GetBodyData().parentName).GetCelestialBody().GetPosition() : glm::vec3(0.0f);
-		bodySystem.Render(runningApp.IsLegendDisplayed(), camera, parentPosition, deltaTime * runningApp.GetSpeedFactor());
-	}
+	// BODY RINGS (part of Scene Entities hash map)
+	Scene::Update(deltaTime, SceneEntityHandle::TRANSPARENT_ENTITY);
+}
 
-	// Draw the 2 main belts of the Solar System
-	Scene::Update(deltaTime);
-
-	// Draw Milky Way skybox
-	camera.SetProjectionViewVUniform(ViewMode::InifinteLookAt, runningWindow.GetAspectRatio());
-	milkyWay.Render();
+void SolarSystem::BuildBackground()
+{
+	// Background which can never be reached (based off a Skybox)
+	Scene::AddEntity(
+		SceneEntityHandle::BACKGROUND,
+		std::make_unique<MilkyWayEntity>()
+	);
 }
 
 void SolarSystem::BuildBodySystems()
@@ -88,7 +84,7 @@ void SolarSystem::BuildBodySystems()
 	FileHelper::ListModelPaths(currentSolutionPath + "/Textures/CelestialBodies/", bodyPaths);
 
 	ResourceCSVParser bodyCSVParser(currentSolutionPath + "/Data/CelestialBodyData.csv");
-	bodySystems.reserve(bodyCSVParser.GetCSVLinesCount());
+	Scene::AllocateMemory(bodyCSVParser.GetCSVLinesCount());
 
 	// Required to scale radius and distance to Sun of each celestial body for end user experience convenience
 	const std::vector<std::string>& EarthLine = bodyCSVParser.GetParsedCSVLine("Earth");
@@ -113,14 +109,14 @@ void SolarSystem::BuildBodySystems()
 			constexpr float earthRadiusScaleFactor = 1000.0f;
 
 			const float scaledTravelDistance = distanceToParent / sunEarthDistance * earthRadiusScaleFactor;
-			scaledDistanceToParent = GetBodySystem(celestialBodyParentName).GetCelestialBody().GetBodyData().radius + scaledTravelDistance;
+			scaledDistanceToParent = GetBody(celestialBodyParentName).GetBodyData().radius + scaledTravelDistance;
 		}
 		// "Planet" and "Dwarf Planet" types
 		else
 		{
 			constexpr float sunEarthDistanceScaleFactor = 10.0f;
 
-			const BodyData& celestialBodyData = GetBodySystem(celestialBodyNameCache).GetCelestialBody().GetBodyData();
+			const BodyData& celestialBodyData = GetBody(celestialBodyNameCache).GetBodyData();
 			const float scaledTravelDistance = distanceToParent / sunEarthDistance * sunEarthDistanceScaleFactor;
 			if (celestialBodyName == "Mercury")
 			{
@@ -135,11 +131,43 @@ void SolarSystem::BuildBodySystems()
 		const std::filesystem::path& texturePath(bodyPaths[celestialBodyName]);
 		const float scaledRadius = std::stof(celestialBodyParams[2]) / earthRadius * (celestialBodyType == "Star" ? 0.5f : 1.0f);
 		const float obliquity = std::stof(celestialBodyParams[4]);
-		const float scaledOrbitalPeriod = std::stof(celestialBodyParams[5]) * (celestialBodyType == "DwarfPlanet" ? GetBodySystem("Earth").GetCelestialBody().GetBodyData().orbitalPeriod : 1.0f);
+		const float scaledOrbitalPeriod = std::stof(celestialBodyParams[5]) * (celestialBodyType == "DwarfPlanet" ? GetBody("Earth").GetBodyData().orbitalPeriod : 1.0f);
 		const float spinPeriod = std::stof(celestialBodyParams[6]);
 		const float orbitalInclination = std::stof(celestialBodyParams[7]);
 
-		bodySystems.emplace_back(BodyData{ texturePath, celestialBodyName, scaledRadius, scaledDistanceToParent, obliquity, scaledOrbitalPeriod, spinPeriod, orbitalInclination, celestialBodyParentName });
+		const BodyData bodyData({ texturePath, celestialBodyName, scaledRadius, scaledDistanceToParent, obliquity, scaledOrbitalPeriod, spinPeriod, orbitalInclination });
+
+		const uint32_t addedBodyID = Scene::AddEntity(
+			SceneEntityHandle::OPAQUE_ENTITY,
+			std::make_unique<CelestialBodyEntity>(bodyData)
+		);
+
+		const bool isEntityMoonRelated = celestialBodyParentName.length() != 0;
+
+		// Make Moon Transform the one of the parent Planet, not the Sun!
+		if (isEntityMoonRelated)
+		{
+			Scene::TagEntityAsAttached(Scene::GetEntity(celestialBodyParentName)->GetID(), addedBodyID);
+		}
+
+		const uint32_t addedOrbitID = Scene::AddEntity(
+			SceneEntityHandle::TRANSPARENT_ENTITY,
+			std::make_unique<OrbitEntity>(bodyData)
+		);
+
+		// Make Moon Orbit Transform the one of the parent Planet, not the Moon itself!
+		if (isEntityMoonRelated)
+		{
+			Scene::TagEntityAsAttached(Scene::GetEntity(celestialBodyParentName)->GetID(), addedOrbitID);
+		}
+
+		const uint32_t addedBillboardID = Scene::AddEntity(
+			SceneEntityHandle::TRANSPARENT_ENTITY,
+			std::make_unique<BillboardEntity>(bodyData)
+		);
+
+		// Make Billboard Transform the one of the planet/moon
+		Scene::TagEntityAsAttached(addedBodyID, addedBillboardID);
 
 		celestialBodyNameCache = celestialBodyName;
 	}
@@ -155,17 +183,22 @@ void SolarSystem::BuildBodyRings()
 	FileHelper::ListModelPaths(currentSolutionPath + "/Models/Rings/", ringPaths);
 
 	ResourceCSVParser ringCSVParser(currentSolutionPath + "/Data/RingData.csv");
+	Scene::AllocateMemory(ringCSVParser.GetCSVLinesCount());
 
 	// Process each CSV line and create a Rings instance out of it
 	for (const std::vector<std::string>& ringParams : ringCSVParser.GetParsedCSV())
 	{
-		const std::string bodyName(ringParams[0]);
+		const std::string bodyParent(ringParams[0]);
 		const std::filesystem::path modelPath(ringPaths[ringParams[1]]);
 		const float radius = std::stof(ringParams[2]);
 
-		// Add the Rings to each parent Body once initialised
-		BodySystem& parentBodySystem = GetBodySystem(bodyName);
-		parentBodySystem.SetBodyRings(RingsData{ modelPath, bodyName, radius });
+		// Create Rings Scene Entity and store it as transparent in IRenderable map, NOT in Body System
+		const uint32_t addedBodyRingsID = Scene::AddEntity(
+			SceneEntityHandle::TRANSPARENT_ENTITY,
+			std::make_unique<BodyRingsEntity>(RingsData{ modelPath, bodyParent, radius })
+		);
+
+		Scene::TagEntityAsAttached(Scene::GetConstEntity(bodyParent)->GetID(), addedBodyRingsID);
 	}
 }
 
@@ -187,8 +220,8 @@ void SolarSystem::BuildBelts()
 		const uint32_t instanceCount = std::stoi(beltParams[2]);
 		const float sizeRangeLowerBound = std::stof(beltParams[3]);
 		const uint32_t sizeRangeSpan = std::stoi(beltParams[4]);
-		const float outerBound = GetBodySystem(beltParams[5]).GetCelestialBody().GetBodyData().distanceToParent;
-		const float innerBound = GetBodySystem(beltParams[6]).GetCelestialBody().GetBodyData().distanceToParent;
+		const float outerBound = GetBody(beltParams[5]).GetBodyData().distanceToParent;
+		const float innerBound = GetBody(beltParams[6]).GetBodyData().distanceToParent;
 
 		float majorRadius = 0.0f;
 		if (beltName == "AsteroidBelt")
@@ -210,25 +243,18 @@ void SolarSystem::BuildBelts()
 		}
 		const float flatnessFactor = std::stof(beltParams[7]);
 
-		Scene::AddEntity(std::make_unique<BeltEntity>(
-			beltName,
-			InstanceParams{ modelPath, instanceCount, sizeRangeLowerBound, sizeRangeSpan },
-			TorusParams{ majorRadius, minorRadius, flatnessFactor }));
+		Scene::AddEntity(SceneEntityHandle::OPAQUE_ENTITY,
+			std::make_unique<BeltEntity>(
+				beltName,
+				InstanceParams{ modelPath, instanceCount, sizeRangeLowerBound, sizeRangeSpan },
+				TorusParams{ majorRadius, minorRadius, flatnessFactor }
+			)
+		);
 	}
 }
 
-BodySystem& SolarSystem::GetBodySystem(const std::string& inBodyName)
+CelestialBodyEntity& SolarSystem::GetBody(const std::string& bodyName) const
 {
-	const auto& bodyIt = std::find_if(bodySystems.begin(), bodySystems.end(), [&inBodyName](const BodySystem& inBodySystem)
-	{
-		return inBodySystem.GetCelestialBody().GetName() == inBodyName;
-	});
-
-	if (bodyIt == bodySystems.end())
-	{
-		std::cout << "ERROR::SOLAR_SYSTEM - Celestial body " << inBodyName << " has not been found. Therefore, the iterator is pointing to nullptr, and accessing its content is provoking the crash." << std::endl;
-		assert(false);
-	}
-
-	return *bodyIt;
+	// Warning: assumes body pointer is valid!
+	return *dynamic_cast<CelestialBodyEntity*>(Scene::GetEntity(bodyName));
 }

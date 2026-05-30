@@ -13,7 +13,7 @@
 enum class ViewMode
 {
 	FiniteLookAt = 0,
-	InifinteLookAt,
+	InfiniteLookAt,
 };
 
 // Base class that contain all getters/setters needed for all types of Cameras
@@ -24,6 +24,7 @@ public:
 
 	const glm::vec3& GetPosition() const { return position; }
 	const glm::vec3& GetUp() const { return up; }
+	[[maybe_unused]] const glm::vec3& GetRight() const { return right; }
 	const glm::vec3& GetForward() const { return forward; }
 
 	void SetInitialTransform(const glm::vec3& inPosition, const glm::vec3& inRotation);

@@ -1,6 +1,6 @@
 #include "SceneEntity.h"
 
-uint32_t SceneEntity::entityIDCounter = 0;
+uint32_t SceneEntity::entityIDCounter = 1;
 
 
 
