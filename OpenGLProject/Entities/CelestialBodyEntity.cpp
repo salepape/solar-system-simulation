@@ -1,9 +1,7 @@
 #include "CelestialBodyEntity.h"
 
 #include <glad/glad.h>
-#include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
-#include <glm/mat4x4.hpp>
 
 #include <utility>
 #include <vector>
@@ -61,28 +59,28 @@ BlinnPhongMaterial CelestialBodyEntity::InitialiseMaterial(const std::filesystem
 	}
 }
 
-void CelestialBodyEntity::ComputeModelMatrixVUniform(const float deltaTime, const Camera& /*camera*/, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity)
+void CelestialBodyEntity::ComputeTransformVUniform(const float deltaTime, const Camera& /*camera*/, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity)
 {
 	// @todo - Can we avoid redoing the computation all time from scratch and just add delta transform?
-	modelMatrix = glm::mat4(1.0f);
+	transform.Reset();
 
 	const float alteredDeltaTime = deltaTime * Application::GetInstance().GetSpeedFactor();
 
 	ComputeCartesianPosition(alteredDeltaTime, parentEntity);
 
-	modelMatrix = glm::translate(modelMatrix, position);
+	transform.Translate(position);
 
 	// Rotate the body (constant over time) around an axis colinear to orbit direction to reproduce its axial tilt
-	modelMatrix = glm::rotate(modelMatrix, obliquityInRad, GLMConstants::forwardVector);
+	transform.Rotate(obliquityInRad, GLMConstants::forwardVector);
 
 	// Angle travelled by the celestial body around itself for the current frame [in radians]
 	travelledSpinAngle += spinAngularFreq * alteredDeltaTime;
 
 	// Rotate the body (non-constant over time) around axis normal to orbital plane to reproduce its spin
-	modelMatrix = glm::rotate(modelMatrix, travelledSpinAngle, GLMConstants::upVector);
+	transform.Rotate(travelledSpinAngle, GLMConstants::upVector);
 
 	// Rotate the body (constant over time) around axis collinear to orbital plane so its poles appear vertically
-	modelMatrix = glm::rotate(modelMatrix, GLMConstants::halfPi, GLMConstants::rightVector);
+	transform.Rotate(GLMConstants::halfPi, GLMConstants::rightVector);
 }
 
 void CelestialBodyEntity::ComputeCartesianPosition(const float deltaTime, std::optional<std::reference_wrapper<const SceneEntity>> satelliteParentBody)
@@ -123,7 +121,7 @@ void CelestialBodyEntity::Render()
 	const Shader& shader = material.GetShader();
 	shader.Enable();
 
-	Renderer::SetModelMatrixVUniform(shader, modelMatrix);
+	Renderer::SetTransformVUniform(shader, transform);
 
 	material.EnableTextures();
 	sphere.Render();

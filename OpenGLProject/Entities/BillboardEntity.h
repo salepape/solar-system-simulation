@@ -37,7 +37,7 @@ private:
 	BlinnPhongMaterial material;
 
 	// ITransformable implementation
-	void ComputeModelMatrixVUniform(const float deltaTime, const Camera& camera, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity = std::nullopt) override;
+	void ComputeTransformVUniform(const float deltaTime, const Camera& camera, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity = std::nullopt) override;
 	// ITransformable implementation
 
 	// Sum up all the glyph advance values, as per FreeType convention (i.e. the width needed each glyph to be rendered, inclusive of horizontal spacing)

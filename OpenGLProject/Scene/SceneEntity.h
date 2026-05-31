@@ -1,9 +1,6 @@
 #ifndef SCENE_ENTITY_H
 #define SCENE_ENTITY_H
 
-#include <glm/mat4x4.hpp>
-#include <glm/vec3.hpp>
-
 #include <cstdint>
 //#include <filesystem>
 #include <functional>
@@ -11,6 +8,7 @@
 #include <string>
 
 //#include "Rendering/BlinnPhongMaterial.h"
+#include "Transform.h"
 
 
 
@@ -25,7 +23,7 @@ public:
 class ITransformable
 {
 public:
-	virtual void ComputeModelMatrixVUniform(const float deltaTime, const class Camera& camera, std::optional<std::reference_wrapper<const class SceneEntity>> parentEntity = std::nullopt) = 0;
+	virtual void ComputeTransformVUniform(const float deltaTime, const class Camera& camera, std::optional<std::reference_wrapper<const class SceneEntity>> parentEntity = std::nullopt) = 0;
 	//virtual void Attach() = 0;
 };
 
@@ -54,20 +52,14 @@ public:
 
 	uint32_t GetID() const { return ID; }
 	const std::string& GetName() const { return name; }
-
-	const glm::mat4& GetModelMatrix() const { return modelMatrix; }
-	void SetModelMatrix(const glm::mat4& inModelMatrix) { modelMatrix = inModelMatrix; }
-
-	glm::vec3 GetPosition() const { return glm::vec3(modelMatrix[3]); }
+	const Transform& GetTransform() const { return transform; }
 
 	uint32_t parentID{ 0 };
 
 protected:
 	uint32_t ID{ 0 };
 	std::string name;
-
-	// Correspond to the Scene Transform (position, rotation, scale) of the Scene Entity
-	glm::mat4 modelMatrix{ 1.0f };
+	Transform transform;
 
 private:
 	static uint32_t entityIDCounter;

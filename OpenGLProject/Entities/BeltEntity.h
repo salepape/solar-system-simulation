@@ -1,8 +1,6 @@
 #ifndef BELT_H
 #define BELT_H
 
-#include <glm/mat4x4.hpp>
-
 #include <cstdint>
 #include <filesystem>
 #include <string>
@@ -13,6 +11,8 @@
 #include "Scene/SceneEntity.h"
 
 
+
+class Transform;
 
 // Instance is an asteroid for a belt
 struct InstanceParams
@@ -52,13 +52,13 @@ public:
 private:
 	InstanceParams instanceParams;
 	TorusParams torusParams;
-	std::vector<glm::mat4> modelMatrices;
+	std::vector<Transform> transforms;
 
 	// Model used to represent a Belt "Rock" for instancing (contains the Mesh + the Material definition, as opposed to traditional SceneEntities)
 	Model model;
 
-	void ComputeInstanceModelMatrices();
-	void StoreInstanceModelMatrices() const;
+	void ComputeInstanceTransforms();
+	void StoreInstanceTransforms() const;
 };
 
 

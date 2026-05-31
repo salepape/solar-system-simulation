@@ -51,6 +51,7 @@ protected:
 	const SceneEntity* GetConstEntity(const uint32_t entityID) const;
 	const SceneEntity* GetConstEntity(const std::string& entityName) const;
 
+	// @todo - To be done only for entities in FOV
 	// Sort scene entities with level of transparency from farthest to closest according to camera, to render overlapping non-opaque objects correctly per frame
 	void OrderForTransparencyPass(const glm::vec3& cameraPosition);
 

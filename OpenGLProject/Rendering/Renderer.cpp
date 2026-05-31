@@ -4,6 +4,7 @@
 #include <glfw/glfw3.h>
 #include <iostream>
 
+#include "Scene/Transform.h"
 #include "Shader.h"
 
 
@@ -70,9 +71,9 @@ void Renderer::SetDepthFctToLess()
 	glDepthFunc(GL_LESS);
 }
 
-void Renderer::SetModelMatrixVUniform(const Shader& shader, const glm::mat4& modelMatrix)
+void Renderer::SetTransformVUniform(const Shader& shader, const Transform& transform)
 {
-	shader.SetUniformMat4("vu_Model", modelMatrix);
+	shader.SetUniformMat4("vu_Model", transform.Get());
 }
 
 void Renderer::Draw(const unsigned int mode, const int32_t startIndex, const int32_t count)

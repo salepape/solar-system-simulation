@@ -36,7 +36,7 @@ private:
 	float orbInclinationInRad{ 0.0f };
 
 	// ITransformable implementation
-	void ComputeModelMatrixVUniform(const float deltaTime, const Camera& camera, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity = std::nullopt) override;
+	void ComputeTransformVUniform(const float deltaTime, const Camera& camera, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity = std::nullopt) override;
 	// ITransformable implementation
 };
 

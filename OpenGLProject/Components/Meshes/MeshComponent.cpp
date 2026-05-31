@@ -53,7 +53,7 @@ void MeshComponent::StoreVertices()
 	}
 }
 
-void MeshComponent::StoreInstanceModelMatrices() const
+void MeshComponent::StoreInstanceTransforms() const
 {
 	VertexBufferLayout vbl;
 	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, Vertex::INSTANCE_MATRIX_TYPE_DIMENSION);

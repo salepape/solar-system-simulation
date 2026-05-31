@@ -11,6 +11,7 @@
 #include "Application/Window.h"
 #include "Rendering/Renderer.h"
 #include "SceneEntity.h"
+#include "Transform.h"
 
 
 
@@ -55,7 +56,7 @@ void Scene::Update(const float deltaTime, const std::optional<SceneEntityHandle>
 			if (const SceneEntity* parentEntity = Scene::GetConstEntity(sceneEntity->parentID);
 				parentEntity != nullptr)
 			{
-				transformable->ComputeModelMatrixVUniform(
+				transformable->ComputeTransformVUniform(
 					deltaTime,
 					sceneViewer.GetCamera(),
 					*parentEntity
@@ -63,7 +64,7 @@ void Scene::Update(const float deltaTime, const std::optional<SceneEntityHandle>
 			}
 			else
 			{
-				transformable->ComputeModelMatrixVUniform(
+				transformable->ComputeTransformVUniform(
 					deltaTime,
 					sceneViewer.GetCamera()
 				);
@@ -184,16 +185,11 @@ const SceneEntity* Scene::GetConstEntity(const std::string& entityName) const
 
 void Scene::OrderForTransparencyPass(const glm::vec3& cameraPosition)
 {
-	// TO BE DONE ONLY FOR ENTITIES IN FOV I ASSUME?
-
 	// Custom std::vector comparator so we order the closest body to the camera at the end
 	std::sort(sceneEntities[SceneEntityHandle::TRANSPARENT_ENTITY].begin(), sceneEntities[SceneEntityHandle::TRANSPARENT_ENTITY].end(),
 		[&cameraPosition](const std::unique_ptr<SceneEntity>& e1, const std::unique_ptr<SceneEntity>& e2)
 		{
-			//std::cout << "dist cam -> e1 pos = " << e1->GetModelMatrix()[3].x << std::endl;
-			//std::cout << "dist cam -> e2 pos = " << e2->GetModelMatrix()[3].x << std::endl;
-
-			return glm::distance(cameraPosition, e1->GetPosition()) < glm::distance(cameraPosition, e2->GetPosition());
+			return glm::distance(cameraPosition, e1->GetTransform().GetPosition()) < glm::distance(cameraPosition, e2->GetTransform().GetPosition());
 		});
 }
 

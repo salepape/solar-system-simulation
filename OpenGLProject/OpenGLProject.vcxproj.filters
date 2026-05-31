@@ -220,8 +220,11 @@
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene/SceneEntity.h">
-	  <Filter>Header Files\Scene</Filter>
-	</ClInclude>
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+	<ClInclude Include="Scene/Transform.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="Simulation/SolarSystem.h">
       <Filter>Header Files\Simulation</Filter>
     </ClInclude>
@@ -359,9 +362,12 @@
     <ClCompile Include="Scene/Scene.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
-	<ClCompile Include="Scene/SceneEntity.cpp">
-	  <Filter>Source Files\Scene</Filter>
-	</ClCompile>
+    <ClCompile Include="Scene/SceneEntity.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+	<ClCompile Include="Scene/Transform.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="Simulation/SolarSystem.cpp">
       <Filter>Source Files\Simulation</Filter>
     </ClCompile>

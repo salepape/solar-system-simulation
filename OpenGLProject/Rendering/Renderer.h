@@ -5,6 +5,7 @@
 #include <glm/mat4x4.hpp>
 
 class Shader;
+class Transform;
 
 
 
@@ -40,7 +41,7 @@ public:
 	// @todo - Create a Movement Component and move this method out of it
 	// Called on a per-frame basis to update the Transform.
 	// Shader should already be enabled in each Scene Entity child Render() method prior to call this one. Uniform to be updated in child classes
-	static void SetModelMatrixVUniform(const Shader& shader, const glm::mat4& modelMatrix);
+	static void SetTransformVUniform(const Shader& shader, const Transform& transform);
 
 	// Render a primitive without indices (e.g. for Orbit, Skybox and 2D Quad instance) - Warning: VAO must be bound prior to this call, and unbound afterwards
 	static void Draw(const unsigned int mode, const int32_t startIndex, const int32_t count);

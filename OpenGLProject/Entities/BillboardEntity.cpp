@@ -1,7 +1,6 @@
 #include "BillboardEntity.h"
 
 #include <glm/geometric.hpp>
-#include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
 #include <glm/vec3.hpp>
 
@@ -18,6 +17,7 @@
 #include "Rendering/ShaderLoader.h"
 #include "Rendering/GlyphLoader.h"
 #include "Rendering/Texture.h"
+#include "Scene/Transform.h"
 #include "Utils/Constants.h"
 
 namespace
@@ -50,24 +50,24 @@ BlinnPhongMaterial BillboardEntity::InitialiseMaterial(const std::filesystem::pa
 	return BlinnPhongMaterial(ShaderLookUpID::Enum::BILLBOARD, std::vector<Texture>{ /* texturesLoadedFromTheGlyphLoader */ }, DiffuseProperties{ GLMConstants::whiteColour });
 }
 
-void BillboardEntity::ComputeModelMatrixVUniform(const float /*deltaTime*/, const Camera& camera, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity)
+void BillboardEntity::ComputeTransformVUniform(const float /*deltaTime*/, const Camera& camera, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity)
 {
 	if (Application::GetInstance().IsLegendDisplayed() == false)
 	{
 		return;
 	}
 
-	modelMatrix = glm::mat4(1.0f);
+	transform.Reset();
 
-	// Orient text billboards so the correct side (i.e. with the glyphs rendered in the correct direction) always faces the camera
-	const glm::vec3& forward = glm::normalize(camera.GetPosition() - parentEntity.value().get().GetPosition());
-	const glm::vec3& right = glm::cross(camera.GetUp(), forward);
-	const glm::vec3& up = cross(forward, right);
+	const glm::vec3 parentEntityPosition(parentEntity.value().get().GetTransform().GetPosition());
 
-	modelMatrix[0] = glm::vec4(right, 0.0f);
-	modelMatrix[1] = glm::vec4(up, 0.0f);
-	modelMatrix[2] = glm::vec4(forward, 0.0f);
-	modelMatrix[3] = parentEntity.value().get().GetModelMatrix()[3];	// Position
+	// Orient text billboards so the correct side (i.e. with the glyphs rendered in the correct direction) always faces the camera (~ look at)
+	const glm::vec3& billboardForward = glm::normalize(camera.GetPosition() - parentEntityPosition);
+	const glm::vec3& billboardRight = glm::cross(camera.GetUp(), billboardForward);
+	const glm::vec3& billboardUp = glm::cross(billboardForward, billboardRight);
+
+	transform.SetPosition(parentEntityPosition);
+	transform.SetRotation(Rotation{ billboardRight, billboardUp, billboardForward });
 }
 
 std::vector<QuadParams> BillboardEntity::ComputeQuadParams(const float billboardXStart, const float billboardYStart)
@@ -132,7 +132,7 @@ void BillboardEntity::Render()
 	const Shader& shader = material.GetShader();
 	shader.Enable();
 
-	Renderer::SetModelMatrixVUniform(shader, modelMatrix);
+	Renderer::SetTransformVUniform(shader, transform);
 
 	quads.RenderGlyphs(legend, textureUnit);
 

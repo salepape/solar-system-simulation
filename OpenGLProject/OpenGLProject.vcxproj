@@ -233,6 +233,7 @@
     <ClInclude Include="Rendering/Texture.h" />
     <ClInclude Include="Scene/Scene.h" />
     <ClInclude Include="Scene/SceneEntity.h" />
+	<ClInclude Include="Scene/Transform.h" />
     <ClInclude Include="Simulation/SolarSystem.h" />
     <ClInclude Include="Utils/Constants.h" />
     <ClInclude Include="Utils/Helpers.h" />
@@ -280,6 +281,7 @@
     <ClCompile Include="Rendering/Texture.cpp" />
     <ClCompile Include="Scene/Scene.cpp" />
     <ClCompile Include="Scene/SceneEntity.cpp" />
+	<ClCompile Include="Scene/Transform.cpp" />
     <ClCompile Include="Simulation/SolarSystem.cpp" />
     <ClCompile Include="Utils/Helpers.cpp" />
   </ItemGroup>

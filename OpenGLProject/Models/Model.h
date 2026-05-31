@@ -3,7 +3,6 @@
 
 #include <glm/mat4x4.hpp>
 
-#include <cstddef> // std::size_t
 #include <cstdint>
 #include <filesystem>
 #include <vector>
@@ -15,13 +14,15 @@
 
 
 
+class Transform;
+
 // Set of Meshes with Materials already applied from a 3D Software (e.g. Blender, Maya, etc.)
 class Model
 {
 public:
 	Model(const std::filesystem::path& inPath, const ShaderLookUpID::Enum inShaderLookUpID, const bool inGammaCorrection = false);
 
-	void StoreInstanceModelMatrices(const std::vector<glm::mat4>& modelMatrices, const std::size_t sizeInBytes) const;
+	void StoreInstanceTransforms(const std::vector<Transform>& transforms) const;
 
 	void Render() const;
 	void RenderInstances(const uint32_t instanceCount) const;

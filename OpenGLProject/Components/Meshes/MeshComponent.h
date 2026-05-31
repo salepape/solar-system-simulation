@@ -53,7 +53,7 @@ public:
 	// Virtual destructor (needed, as class is not final)
 	virtual ~MeshComponent() = default;
 
-	void StoreInstanceModelMatrices() const;
+	void StoreInstanceTransforms() const;
 
 	// Call the appropriate OpenGL draw function according to the emptiness of the indices vector
 	virtual void Render(const unsigned int mode = GL_TRIANGLES) const;
