@@ -2,14 +2,14 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Rendering/ShaderLoader.h"
 #include "Utils/Constants.h"
 
 
 
 SpotLightComponent::SpotLightComponent(const glm::vec3& inPosition, const glm::vec3& inDirection, const ReflectionParams& inReflectionParams, const AttenuationParams& inAttenuationParams, const SpotParams& inSpotParams, const bool inIsBlinn) :
 	GLSLParams({ inPosition, inDirection, inReflectionParams, inAttenuationParams, inSpotParams, inIsBlinn, false }),
-	fubo("fubo_SpotLight",
-		GLSLUniform::LINE_OF_SIGHT)
+	fubo("fubo_SpotLight", GLSLUniform::LINE_OF_SIGHT)
 {
 	SetFUniforms();
 }

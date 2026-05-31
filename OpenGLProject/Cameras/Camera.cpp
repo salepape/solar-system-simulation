@@ -4,6 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
+#include "Rendering/ShaderLoader.h"
 #include "Utils/Constants.h"
 
 

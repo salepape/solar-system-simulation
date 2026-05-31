@@ -2,6 +2,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Rendering/ShaderLoader.h"
 #include "Utils/Constants.h"
 
 
