@@ -218,7 +218,6 @@
     <ClInclude Include="Entities/CelestialBodyEntity.h" />
     <ClInclude Include="Entities/MilkyWayEntity.h" />
     <ClInclude Include="Entities/OrbitEntity.h" />
-    <ClInclude Include="Entities/SceneEntity.h" />
     <ClInclude Include="Interactions/Headlamp.h" />
     <ClInclude Include="Interactions/InputHandler.h" />
     <ClInclude Include="Interactions/PerspectiveCameraController.h" />
@@ -233,6 +232,7 @@
     <ClInclude Include="Rendering/GlyphLoader.h" />
     <ClInclude Include="Rendering/Texture.h" />
     <ClInclude Include="Scene/Scene.h" />
+    <ClInclude Include="Scene/SceneEntity.h" />
     <ClInclude Include="Simulation/SolarSystem.h" />
     <ClInclude Include="Utils/Constants.h" />
     <ClInclude Include="Utils/Helpers.h" />
@@ -263,7 +263,6 @@
     <ClCompile Include="Entities/CelestialBodyEntity.cpp" />
     <ClCompile Include="Entities/MilkyWayEntity.cpp" />
     <ClCompile Include="Entities/OrbitEntity.cpp" />
-    <ClCompile Include="Entities/SceneEntity.cpp" />
     <ClCompile Include="External Dependencies/Glad/glad.c" />
     <ClCompile Include="Interactions/Headlamp.cpp" />
     <ClCompile Include="Interactions/InputHandler.cpp" />
@@ -280,6 +279,7 @@
     <ClCompile Include="Rendering/GlyphLoader.cpp" />
     <ClCompile Include="Rendering/Texture.cpp" />
     <ClCompile Include="Scene/Scene.cpp" />
+    <ClCompile Include="Scene/SceneEntity.cpp" />
     <ClCompile Include="Simulation/SolarSystem.cpp" />
     <ClCompile Include="Utils/Helpers.cpp" />
   </ItemGroup>

@@ -8,7 +8,7 @@
 
 #include "Components/Meshes/QuadMeshComponent.h"
 #include "Rendering/BlinnPhongMaterial.h"
-#include "SceneEntity.h"
+#include "Scene/SceneEntity.h"
 
 struct BodyData;
 class Camera;

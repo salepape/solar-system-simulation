@@ -9,8 +9,8 @@
 
 #include "Application/Application.h"
 #include "Application/Window.h"
-#include "Entities/SceneEntity.h"
 #include "Rendering/Renderer.h"
+#include "SceneEntity.h"
 
 
 

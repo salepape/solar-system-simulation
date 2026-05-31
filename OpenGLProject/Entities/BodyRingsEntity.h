@@ -7,7 +7,7 @@
 #include <string>
 
 #include "Models/Model.h"
-#include "SceneEntity.h"
+#include "Scene/SceneEntity.h"
 
 
 
