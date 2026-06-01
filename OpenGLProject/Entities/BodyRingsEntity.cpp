@@ -27,7 +27,7 @@ void BodyRingsEntity::ComputeTransformVUniform(const float /*deltaTime*/, const 
 	// @todo - Make this model scaling work after it has been set in 3D modeling software
 	// transform.Scale(glm::vec3(ringsData.radius));
 
-	// Rotate back (constant over time) around axis colinear to orbital plane and normal to orbital trajectory
+	// Rotate (constant over time) around axis colinear to orbital plane and normal to orbital trajectory
 	transform.Rotate(-GLMConstants::halfPi, WorldSpace::XUnitVector);
 }
 

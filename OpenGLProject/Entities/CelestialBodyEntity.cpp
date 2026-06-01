@@ -70,7 +70,7 @@ void CelestialBodyEntity::ComputeTransformVUniform(const float deltaTime, const 
 
 	transform.Translate(position);
 
-	// Rotate the body (constant over time) around an axis colinear to orbital plane + tangent to orbital trajectory tilt to reproduce its axial tilt
+	// Rotate the body (constant over time) around an axis colinear to orbital plane and tangent to orbital trajectory to reproduce its axial tilt
 	transform.Rotate(obliquityInRad, WorldSpace::ZUnitVector);
 
 	// Angle travelled by the celestial body around itself for the current frame [in radians]
