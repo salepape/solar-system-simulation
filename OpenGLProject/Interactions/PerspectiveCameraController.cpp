@@ -2,6 +2,7 @@
 
 #include <glfw/glfw3.h>
 #include <glm/common.hpp>
+#include <glm/trigonometric.hpp>
 
 #include <cassert>
 #include <iostream>
@@ -14,7 +15,7 @@
 
 
 
-PerspectiveCameraController::PerspectiveCameraController(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inZoomMaxLevel, const float inFarPlane) :
+PerspectiveCameraController::PerspectiveCameraController(const glm::vec3& inPosition, const EulerAngles& inRotation, const float inZoomMaxLevel, const float inFarPlane) :
 	camera(inPosition, inRotation, inZoomMaxLevel, inFarPlane),
 	headlamp(inPosition),
 	zoomMaxLevel(inZoomMaxLevel)
@@ -36,30 +37,30 @@ void PerspectiveCameraController::ProcessUserInput(const float deltaTime)
 	}
 
 	// Designed for AZERTY keyboards with corresponding QWERTY GLFW_KEYs
-	const float distance = travelSpeed * deltaTime;
+	const float deltaDistance = travelSpeed * deltaTime;
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_W))
 	{
-		camera.UpdateForwardPosition(distance);
+		camera.UpdateCameraForwardPosition(deltaDistance);
 	}
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_S))
 	{
-		camera.UpdateForwardPosition(-distance);
+		camera.UpdateCameraForwardPosition(-deltaDistance);
 	}
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_A))
 	{
-		camera.UpdateRightPosition(-distance);
+		camera.UpdateCameraRightPosition(-deltaDistance);
 	}
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_D))
 	{
-		camera.UpdateRightPosition(distance);
+		camera.UpdateCameraRightPosition(deltaDistance);
 	}
 	if (InputHandler::GetInstance().IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
 	{
-		camera.UpdateUpPosition(distance);
+		camera.UpdateCameraUpPosition(deltaDistance);
 	}
 	if (InputHandler::GetInstance().IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT))
 	{
-		camera.UpdateUpPosition(-distance);
+		camera.UpdateCameraUpPosition(-deltaDistance);
 	}
 
 	// Update lighting projected by headlight
@@ -141,7 +142,7 @@ void PerspectiveCameraController::SetMouseInputGLFWCallback()
 		PerspectiveCamera& camera = cameraController->GetCamera();
 
 		const glm::vec2& offset = window->ComputeCursorOffset(static_cast<float>(xPosition), static_cast<float>(yPosition));
-		camera.UpdateRotation(offset * cameraController->mouseSensitivity);
+		camera.UpdateRotation(EulerAngles{ 0.0f, glm::radians(offset.x * cameraController->mouseSensitivity), glm::radians(offset.y * cameraController->mouseSensitivity) });
 
 		cameraController->GetHeadlamp().UpdateHeadlight(camera);
 	});

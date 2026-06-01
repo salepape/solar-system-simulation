@@ -9,13 +9,12 @@
 
 
 
-Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane) :
+Camera::Camera(const glm::vec3& inPosition, const EulerAngles& inRotation, const float inFovY, const float inFarPlane) :
 	initialPosition(inPosition),
 	initialRotation(inRotation),
 	position(inPosition),
-	roll(inRotation.x),
-	pitch(inRotation.y),
-	yaw(inRotation.z), fovY(inFovY),
+	rotation(inRotation),
+	fovY(inFovY),
 	farPlane(inFarPlane),
 	vuboProjectionView("vubo_ProjectionView", GLSLUniform::PROJECTION_VIEW),
 	fuboCameraPosition("fubo_CameraPosition", GLSLUniform::LINE_OF_SIGHT)
@@ -29,7 +28,7 @@ Camera::Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const f
 	fuboCameraPosition.SetData(static_cast<const void*>(glm::value_ptr(glm::vec4(0.0f))), GLSLConstants::vec4SizeInBytes);
 }
 
-void Camera::SetInitialTransform(const glm::vec3& inPosition, const glm::vec3& inRotation)
+void Camera::SetInitialTransform(const glm::vec3& inPosition, const EulerAngles& inRotation)
 {
 	SetTransform(inPosition, inRotation);
 
@@ -37,20 +36,17 @@ void Camera::SetInitialTransform(const glm::vec3& inPosition, const glm::vec3& i
 	initialRotation = inRotation;
 }
 
-void Camera::SetTransform(const glm::vec3& inPosition, const glm::vec3& inRotation)
+void Camera::SetTransform(const glm::vec3& inPosition, const EulerAngles& inRotation)
 {
 	position = inPosition;
-
-	roll = inRotation.x;
-	pitch = inRotation.y;
-	yaw = inRotation.z;
+	rotation = inRotation;
 
 	UpdateCameraVectors();
 }
 
 void Camera::ResetTransform()
 {
-	SetTransform(initialPosition, glm::vec3(initialRotation.x, initialRotation.y, initialRotation.z));
+	SetTransform(initialPosition, initialRotation);
 }
 
 glm::mat4 Camera::ComputeInfiniteView() const

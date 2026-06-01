@@ -16,12 +16,13 @@ Transform::Transform(const glm::mat4& inModel) : model(inModel)
 
 }
 
-Transform::Transform(const glm::vec3& inPosition, const RotationAngles& inRotation)
+Transform::Transform(const glm::vec3& inPosition, const EulerAngles& inRotation)
 {
-	Rotate(inRotation.yawInRad, GLMConstants::upVector);
-	Rotate(inRotation.pitchInRad, GLMConstants::rightVector);
-	Rotate(inRotation.rollInRad, -GLMConstants::forwardVector);
 	Translate(inPosition);
+
+	Rotate(inRotation.rollInRad, WorldSpace::XUnitVector);
+	Rotate(inRotation.yawInRad, WorldSpace::YUnitVector);
+	Rotate(inRotation.pitchInRad, -WorldSpace::ZUnitVector);
 }
 
 void Transform::Reset()

@@ -16,7 +16,7 @@
 
 
 Scene::Scene() :
-	sceneViewer(glm::vec3(0.0f), glm::vec3(0.0f), 45.0f, 1.0e8f)
+	sceneViewer(glm::vec3(0.0f), EulerAngles{}, 45.0f, 1.0e8f)
 {
 	// @todo - Flaw in engine code where we need to cache controller in window (until event system implemented)
 	Window& currentWindow = Application::GetInstance().GetWindow();
@@ -193,7 +193,7 @@ void Scene::OrderForTransparencyPass(const glm::vec3& cameraPosition)
 		});
 }
 
-void Scene::SetSceneViewerTransformStart(const glm::vec3& inPosition, const glm::vec3& inRotation)
+void Scene::SetSceneViewerTransformStart(const glm::vec3& inPosition, const EulerAngles& inRotation)
 {
 	sceneViewer.GetCamera().SetInitialTransform(inPosition, inRotation);
 }

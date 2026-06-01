@@ -55,7 +55,7 @@ protected:
 	// Sort scene entities with level of transparency from farthest to closest according to camera, to render overlapping non-opaque objects correctly per frame
 	void OrderForTransparencyPass(const glm::vec3& cameraPosition);
 
-	void SetSceneViewerTransformStart(const glm::vec3& inPosition, const glm::vec3& inRotation);
+	void SetSceneViewerTransformStart(const glm::vec3& inPosition, const EulerAngles& inRotation);
 
 	// Count as "in-editor" camera rather than a Scene Entity that would be instantiated from the Application layer
 	PerspectiveCameraController sceneViewer;

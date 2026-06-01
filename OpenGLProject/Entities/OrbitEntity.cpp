@@ -45,8 +45,8 @@ void OrbitEntity::ComputeTransformVUniform(const float /*deltaTime*/, const Came
 		transform.Translate(parentEntity.value().get().GetTransform().GetPosition());
 	}
 
-	// Rotate the orbit (constant over time) around axis colinear to orbit direction to reproduce the orbital plane
-	transform.Rotate(orbInclinationInRad, GLMConstants::forwardVector);
+	// Rotate the orbit (constant over time) around axis colinear to orbital plane + tangent to orbital trajectory to reproduce its axial tilt?
+	transform.Rotate(orbInclinationInRad, WorldSpace::ZUnitVector);
 }
 
 void OrbitEntity::Render()

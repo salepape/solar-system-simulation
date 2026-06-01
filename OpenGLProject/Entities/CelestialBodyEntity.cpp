@@ -70,17 +70,17 @@ void CelestialBodyEntity::ComputeTransformVUniform(const float deltaTime, const 
 
 	transform.Translate(position);
 
-	// Rotate the body (constant over time) around an axis colinear to orbit direction to reproduce its axial tilt
-	transform.Rotate(obliquityInRad, GLMConstants::forwardVector);
+	// Rotate the body (constant over time) around an axis colinear to orbital plane + tangent to orbital trajectory tilt to reproduce its axial tilt
+	transform.Rotate(obliquityInRad, WorldSpace::ZUnitVector);
 
 	// Angle travelled by the celestial body around itself for the current frame [in radians]
 	travelledSpinAngle += spinAngularFreq * alteredDeltaTime;
 
 	// Rotate the body (non-constant over time) around axis normal to orbital plane to reproduce its spin
-	transform.Rotate(travelledSpinAngle, GLMConstants::upVector);
+	transform.Rotate(travelledSpinAngle, WorldSpace::YUnitVector);
 
-	// Rotate the body (constant over time) around axis collinear to orbital plane so its poles appear vertically
-	transform.Rotate(GLMConstants::halfPi, GLMConstants::rightVector);
+	// Rotate the body (constant over time) around axis colinear to orbital plane and normal to orbital trajectory so its poles appear vertically
+	transform.Rotate(GLMConstants::halfPi, WorldSpace::XUnitVector);
 }
 
 void CelestialBodyEntity::ComputeCartesianPosition(const float deltaTime, std::optional<std::reference_wrapper<const SceneEntity>> satelliteParentBody)

@@ -6,6 +6,7 @@
 #include <glm/vec3.hpp>
 
 #include "Buffers/UniformBuffer.h"
+#include "Scene/Transform.h"
 
 
 
@@ -20,21 +21,21 @@ enum class ViewMode
 class Camera
 {
 public:
-	Camera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane);
+	Camera(const glm::vec3& inPosition, const EulerAngles& inRotation, const float inFovY, const float inFarPlane);
 
 	const glm::vec3& GetPosition() const { return position; }
-	const glm::vec3& GetUp() const { return up; }
-	[[maybe_unused]] const glm::vec3& GetRight() const { return right; }
-	const glm::vec3& GetForward() const { return forward; }
+	const glm::vec3& GetCameraUp() const { return cameraUp; }
+	[[maybe_unused]] const glm::vec3& GetCameraRight() const { return cameraRight; }
+	const glm::vec3& GetCameraForward() const { return cameraForward; }
 
-	void SetInitialTransform(const glm::vec3& inPosition, const glm::vec3& inRotation);
-	void SetTransform(const glm::vec3& inPosition, const glm::vec3& inRotation);
+	void SetInitialTransform(const glm::vec3& inPosition, const EulerAngles& inRotation);
+	void SetTransform(const glm::vec3& inPosition, const EulerAngles& inRotation);
 	void ResetTransform();
 
-	virtual void UpdateForwardPosition(const float distance) = 0;
-	virtual void UpdateUpPosition(const float distance) = 0;
-	virtual void UpdateRightPosition(const float distance) = 0;
-	virtual void UpdateRotation(const glm::vec2& offset) = 0;
+	virtual void UpdateCameraForwardPosition(const float deltaDistance) = 0;
+	virtual void UpdateCameraUpPosition(const float deltaDistance) = 0;
+	virtual void UpdateCameraRightPosition(const float deltaDistance) = 0;
+	virtual void UpdateRotation(const EulerAngles& deltaRotation) = 0;
 
 	void SetFovY(const float zoomLeft) { fovY = zoomLeft; }
 
@@ -47,31 +48,23 @@ public:
 
 protected:
 	glm::vec3 initialPosition{ 0.0f };
-	glm::vec3 initialRotation{ 0.0f };
+	EulerAngles initialRotation{ 0.0f };
 
 	glm::vec3 position{ 0.0f };
-
-	// Rotation angle around the Forward vector [in degrees]
-	float roll{ 0.0f };
-
-	// Rotation angle around the Right vector [in degrees]
-	float pitch{ 0.0f };
-
-	// Rotation angle around the Up vector [in degrees]
-	float yaw{ 0.0f };
+	EulerAngles rotation;
 
 	// Field of view along the y-axis [in degrees]
 	float fovY{ 0.0f };
 	float farPlane{ 0.0f };
 
-	glm::vec3 up{ 1.0f, 0.0f, 0.0f };
-	glm::vec3 right{ 0.0f, 1.0f, 0.0f };
-	glm::vec3 forward{ 0.0f, 0.0f, -1.0f };
-
 	UniformBuffer vuboProjectionView;
 	UniformBuffer fuboCameraPosition;
 
-	// Compute new Forward, Right and Up vectors from new Euler Angles
+	glm::vec3 cameraUp{ 1.0f, 0.0f, 0.0f };
+	glm::vec3 cameraRight{ 0.0f, 1.0f, 0.0f };
+	glm::vec3 cameraForward{ 0.0f, 0.0f, -1.0f };
+
+	// Compute new Camera Forward, Right and Up vectors from new Euler Angles
 	virtual void UpdateCameraVectors() = 0;
 };
 

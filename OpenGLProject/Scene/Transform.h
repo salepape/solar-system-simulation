@@ -8,12 +8,25 @@
 
 
 
-// Gather classic rotation angles [in Radians] into a single struct
-struct RotationAngles
+// Unit Vectors in World Space
+namespace WorldSpace
 {
-	float yawInRad{ 0.0f };
-	float pitchInRad{ 0.0f };
+	static const glm::vec3 XUnitVector(1.0f, 0.0f, 0.0f);
+	static const glm::vec3 YUnitVector(0.0f, 1.0f, 0.0f);
+	static const glm::vec3 ZUnitVector(0.0f, 0.0f, 1.0f);
+};
+
+// Gather classic rotation angles [in Radians] into a single struct
+struct EulerAngles
+{
+	// Rotation angle [in radians] around the World X vector
 	float rollInRad{ 0.0f };
+
+	// Rotation angle [in radians] around the World Y vector
+	float yawInRad{ 0.0f };
+
+	// Rotation angle [in radians] around the World Z vector
+	float pitchInRad{ 0.0f };
 };
 
 struct Rotation
@@ -33,7 +46,7 @@ public:
 	Transform() = default;
 	Transform(const float inValue);
 	Transform(const glm::mat4& inModel);
-	[[maybe_unused]] Transform(const glm::vec3& inPosition, const RotationAngles& inRotationAngles);
+	[[maybe_unused]] Transform(const glm::vec3& inPosition, const EulerAngles& inRotation);
 
 	~Transform() = default;
 

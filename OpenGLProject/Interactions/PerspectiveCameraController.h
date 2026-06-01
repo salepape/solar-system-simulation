@@ -5,6 +5,7 @@
 
 #include "Cameras/PerspectiveCamera.h"
 #include "Headlamp.h"
+#include "Scene/Transform.h"
 
 
 
@@ -12,7 +13,7 @@
 class PerspectiveCameraController
 {
 public:
-	PerspectiveCameraController(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inZoomMaxLevel, const float inFarPlane);
+	PerspectiveCameraController(const glm::vec3& inPosition, const EulerAngles& inRotation, const float inZoomMaxLevel, const float inFarPlane);
 
 	// Detect input where second keyboard key press switch back to default state
 	void ProcessUserInput(const float deltaTime);

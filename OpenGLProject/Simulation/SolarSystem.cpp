@@ -1,6 +1,7 @@
 #include "SolarSystem.h"
 
 #include <glm/vec3.hpp>
+#include <glm/trigonometric.hpp>
 
 #include <cstdint>
 #include <unordered_map>
@@ -26,7 +27,7 @@ SolarSystem::SolarSystem()
 
 	Scene::SetSceneViewerTransformStart(
 		glm::vec3(0.0f, GetBody("Sun").GetBodyData().radius * 1.75f, -25.0f),
-		glm::vec3(0.0f, -25.0f, 90.0f));
+		EulerAngles{ 0.0f, glm::radians(90.0f), glm::radians(-25.0f) });
 }
 
 // @todo - Should all be migrated to Scene class

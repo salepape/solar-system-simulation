@@ -13,14 +13,14 @@
 class PerspectiveCamera : public Camera
 {
 public:
-	PerspectiveCamera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane);
+	PerspectiveCamera(const glm::vec3& inPosition, const EulerAngles& inRotation, const float inFovY, const float inFarPlane);
 
-	void UpdateForwardPosition(const float distance) override;
-	void UpdateUpPosition(const float distance) override;
-	void UpdateRightPosition(const float distance) override;
+	void UpdateCameraForwardPosition(const float deltaDistance) override;
+	void UpdateCameraUpPosition(const float deltaDistance) override;
+	void UpdateCameraRightPosition(const float deltaDistance) override;
 
-	// Update pitch and yaw values only, and not roll
-	void UpdateRotation(const glm::vec2& offset) override;
+	// Update raw and pitch values only, not roll (rotation around normal to screen)
+	void UpdateRotation(const EulerAngles& deltaRotation) override;
 
 	glm::mat4 ComputeProjection(const float windowAspectRatio) const override;
 	glm::mat4 ComputeView() const override;
