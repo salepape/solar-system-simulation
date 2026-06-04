@@ -14,7 +14,7 @@
 PerspectiveCamera::PerspectiveCamera(const glm::vec3& inPosition, const EulerAngles& inRotation, const float inFovY, const float inFarPlane) :
 	Camera(inPosition, inRotation, inFovY, inFarPlane)
 {
-	UpdateCameraVectors();
+
 }
 
 glm::mat4 PerspectiveCamera::ComputeProjection(const float windowAspectRatio) const
