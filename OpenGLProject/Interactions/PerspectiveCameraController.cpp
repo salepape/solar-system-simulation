@@ -40,27 +40,27 @@ void PerspectiveCameraController::ProcessUserInput(const float deltaTime)
 	const float deltaDistance = travelSpeed * deltaTime;
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_W))
 	{
-		camera.UpdateCameraForwardPosition(deltaDistance);
+		camera.Translate(deltaDistance, camera.GetCameraForward());
 	}
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_S))
 	{
-		camera.UpdateCameraForwardPosition(-deltaDistance);
+		camera.Translate(deltaDistance, -camera.GetCameraForward());
 	}
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_A))
 	{
-		camera.UpdateCameraRightPosition(-deltaDistance);
+		camera.Translate(deltaDistance, -camera.GetCameraRight());
 	}
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_D))
 	{
-		camera.UpdateCameraRightPosition(deltaDistance);
+		camera.Translate(deltaDistance, camera.GetCameraRight());
 	}
 	if (InputHandler::GetInstance().IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
 	{
-		camera.UpdateCameraUpPosition(deltaDistance);
+		camera.Translate(deltaDistance, camera.GetCameraUp());
 	}
 	if (InputHandler::GetInstance().IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT))
 	{
-		camera.UpdateCameraUpPosition(-deltaDistance);
+		camera.Translate(deltaDistance, -camera.GetCameraUp());
 	}
 
 	// Update lighting projected by headlight

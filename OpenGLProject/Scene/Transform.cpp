@@ -35,9 +35,9 @@ void Transform::Translate(const glm::vec3& newPosition)
 	model = glm::translate(model, newPosition);
 }
 
-void Transform::Rotate(const float angleInRad, const glm::vec3& rotationVector)
+void Transform::Rotate(const float angleInRad, const glm::vec3& rotationAxis)
 {
-	model = glm::rotate(model, angleInRad, rotationVector);
+	model = glm::rotate(model, angleInRad, rotationAxis);
 }
 
 void Transform::Scale(const glm::vec3& newScale)

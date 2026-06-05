@@ -72,8 +72,13 @@ public:
 
 	// @todo - To be moved to Movement Component or similar?
 	void Reset();
+
+	// Translate model by distance travelled (do not overwrite existing model matrix)
 	void Translate(const glm::vec3& newPosition);
-	void Rotate(const float angleInRad, const glm::vec3& rotationVector);
+
+	// Rotate model by angle travelled around axis (do not overwrite existing model matrix)
+	void Rotate(const float angleInRad, const glm::vec3& rotationAxis);
+
 	void Scale(const glm::vec3& newScale);
 
 private:

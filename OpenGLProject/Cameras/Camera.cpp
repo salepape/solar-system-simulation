@@ -10,15 +10,15 @@
 
 
 Camera::Camera(const glm::vec3& inPosition, const EulerAngles& inRotation, const float inFovY, const float inFarPlane) :
-	initialPosition(inPosition),
 	initialRotation(inRotation),
-	position(inPosition),
 	rotation(inRotation),
 	fovY(inFovY),
 	farPlane(inFarPlane),
 	vuboProjectionView("vubo_ProjectionView", GLSLUniform::PROJECTION_VIEW),
 	fuboCameraPosition("fubo_CameraPosition", GLSLUniform::LINE_OF_SIGHT)
 {
+	transformAtStart.SetPosition(inPosition);
+
 	// Stored in a GLSL struct (containing a single Uniform field) with in Fragment Shader
 	UniformGLSLStruct vuboProjectionViewStruct;
 	vuboProjectionViewStruct.AddUniformField(static_cast<const void*>(glm::value_ptr(glm::mat4(0.0f))), GLSLConstants::mat4v4SizeInBytes);
@@ -32,13 +32,13 @@ void Camera::SetInitialTransform(const glm::vec3& inPosition, const EulerAngles&
 {
 	SetTransform(inPosition, inRotation);
 
-	initialPosition = inPosition;
+	transformAtStart.SetPosition(inPosition);
 	initialRotation = inRotation;
 }
 
 void Camera::SetTransform(const glm::vec3& inPosition, const EulerAngles& inRotation)
 {
-	position = inPosition;
+	transform.SetPosition(inPosition);
 	rotation = inRotation;
 
 	UpdateCameraVectors();
@@ -46,7 +46,7 @@ void Camera::SetTransform(const glm::vec3& inPosition, const EulerAngles& inRota
 
 void Camera::ResetTransform()
 {
-	SetTransform(initialPosition, initialRotation);
+	SetTransform(transformAtStart.GetPosition(), initialRotation);
 }
 
 glm::mat4 Camera::ComputeInfiniteView() const
@@ -81,6 +81,6 @@ void Camera::SetProjectionViewVUniform(const ViewMode viewMode, const float wind
 
 void Camera::SetPositionFUniform() const
 {
-	const glm::vec4& position = glm::vec4(GetPosition(), 0.0f);
-	fuboCameraPosition.SetSubData(static_cast<const void*>(glm::value_ptr(position)), GLSLConstants::vec4SizeInBytes, 0);
+	const glm::vec4& cameraPosition = glm::vec4(GetPosition(), 0.0f);
+	fuboCameraPosition.SetSubData(static_cast<const void*>(glm::value_ptr(cameraPosition)), GLSLConstants::vec4SizeInBytes, 0);
 }

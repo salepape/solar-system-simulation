@@ -24,22 +24,13 @@ glm::mat4 PerspectiveCamera::ComputeProjection(const float windowAspectRatio) co
 
 glm::mat4 PerspectiveCamera::ComputeView() const
 {
-	return glm::lookAt(position, position + cameraForward, cameraUp);
+	const glm::vec3& cameraPosition = transform.GetPosition();
+	return glm::lookAt(cameraPosition, cameraPosition + cameraForward, cameraUp);
 }
 
-void PerspectiveCamera::UpdateCameraForwardPosition(const float deltaDistance)
+void PerspectiveCamera::Translate(const float deltaPosition, const glm::vec3& direction)
 {
-	position += deltaDistance * cameraForward;
-}
-
-void PerspectiveCamera::UpdateCameraUpPosition(const float deltaDistance)
-{
-	position += deltaDistance * cameraUp;
-}
-
-void PerspectiveCamera::UpdateCameraRightPosition(const float deltaDistance)
-{
-	position += deltaDistance * cameraRight;
+	transform.Translate(deltaPosition * direction);
 }
 
 void PerspectiveCamera::UpdateRotation(const EulerAngles& deltaRotation)

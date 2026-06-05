@@ -15,9 +15,9 @@ class PerspectiveCamera : public Camera
 public:
 	PerspectiveCamera(const glm::vec3& inPosition, const EulerAngles& inRotation, const float inFovY, const float inFarPlane);
 
-	void UpdateCameraForwardPosition(const float deltaDistance) override;
-	void UpdateCameraUpPosition(const float deltaDistance) override;
-	void UpdateCameraRightPosition(const float deltaDistance) override;
+	// @todo - Check if position interpolation (movement) managed by glm::translate()
+	// Update position of camera by delta
+	void Translate(const float deltaPosition, const glm::vec3& direction) override;
 
 	// Update raw and pitch values only, not roll (rotation around normal to screen)
 	void UpdateRotation(const EulerAngles& deltaRotation) override;
