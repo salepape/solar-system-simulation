@@ -25,7 +25,7 @@ void Headlamp::UpdateHeadlight(const Camera& camera)
 	if (headlightStartTime > 0.0f)
 	{
 		headlight.SetLightPositionFUniform(camera.GetPosition());
-		headlight.SetLightDirectionFUniform(camera.GetCameraForward());
+		headlight.SetLightDirectionFUniform(camera.GetTransform().GetForwardVector());
 	}
 }
 

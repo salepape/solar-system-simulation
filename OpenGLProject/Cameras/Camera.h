@@ -2,7 +2,6 @@
 #define CAMERA_H
 
 #include <glm/mat4x4.hpp>
-#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
 #include "Buffers/UniformBuffer.h"
@@ -24,16 +23,19 @@ public:
 	Camera(const glm::vec3& inPosition, const EulerAngles& inRotation, const float inFovY, const float inFarPlane);
 
 	glm::vec3 GetPosition() const { return transform.GetPosition(); }
-	const glm::vec3& GetCameraUp() const { return cameraUp; }
-	[[maybe_unused]] const glm::vec3& GetCameraRight() const { return cameraRight; }
-	const glm::vec3& GetCameraForward() const { return cameraForward; }
 
+	const Transform& GetTransform() const { return transform; }
 	void SetInitialTransform(const glm::vec3& inPosition, const EulerAngles& inRotation);
 	void SetTransform(const glm::vec3& inPosition, const EulerAngles& inRotation);
-	void ResetTransform();
+	void SetTransformToStart();
 
+	// @todo - Check if position interpolation (movement) managed by glm::translate()
+	// Update position of camera by delta distance
 	virtual void Translate(const float deltaPosition, const glm::vec3& direction) = 0;
-	virtual void UpdateRotation(const EulerAngles& deltaRotation) = 0;
+
+	// Update rotation by new yaw/pitch Euler Angles around new Up/Right camera vectors
+	// (no rotation by roll around Forward camera vector, as we do not want rotation around normal to screen)
+	virtual void Rotate(const EulerAngles& deltaRotation) = 0;
 
 	void SetFovY(const float zoomLeft) { fovY = zoomLeft; }
 
@@ -45,8 +47,6 @@ public:
 	void SetPositionFUniform() const;
 
 protected:
-	EulerAngles initialRotation{ 0.0f };
-	EulerAngles rotation;
 	Transform transformAtStart;
 	Transform transform;
 
@@ -56,13 +56,6 @@ protected:
 
 	UniformBuffer vuboProjectionView;
 	UniformBuffer fuboCameraPosition;
-
-	glm::vec3 cameraUp{ 1.0f, 0.0f, 0.0f };
-	glm::vec3 cameraRight{ 0.0f, 1.0f, 0.0f };
-	glm::vec3 cameraForward{ 0.0f, 0.0f, -1.0f };
-
-	// Compute new Camera Forward, Right and Up vectors from new Euler Angles
-	virtual void UpdateCameraVectors() = 0;
 };
 
 

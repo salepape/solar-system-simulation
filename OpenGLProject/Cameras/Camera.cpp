@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 #include <glm/mat3x3.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/type_ptr.hpp>			// glm::value_ptr()
 #include <iostream>
 
 #include "Rendering/ShaderLoader.h"
@@ -10,15 +10,13 @@
 
 
 Camera::Camera(const glm::vec3& inPosition, const EulerAngles& inRotation, const float inFovY, const float inFarPlane) :
-	initialRotation(inRotation),
-	rotation(inRotation),
+	transformAtStart(inPosition, inRotation),
+	transform(inPosition, inRotation),
 	fovY(inFovY),
 	farPlane(inFarPlane),
 	vuboProjectionView("vubo_ProjectionView", GLSLUniform::PROJECTION_VIEW),
 	fuboCameraPosition("fubo_CameraPosition", GLSLUniform::LINE_OF_SIGHT)
 {
-	transformAtStart.SetPosition(inPosition);
-
 	// Stored in a GLSL struct (containing a single Uniform field) with in Fragment Shader
 	UniformGLSLStruct vuboProjectionViewStruct;
 	vuboProjectionViewStruct.AddUniformField(static_cast<const void*>(glm::value_ptr(glm::mat4(0.0f))), GLSLConstants::mat4v4SizeInBytes);
@@ -33,20 +31,19 @@ void Camera::SetInitialTransform(const glm::vec3& inPosition, const EulerAngles&
 	SetTransform(inPosition, inRotation);
 
 	transformAtStart.SetPosition(inPosition);
-	initialRotation = inRotation;
+	transformAtStart.SetRotation(inRotation);
 }
 
 void Camera::SetTransform(const glm::vec3& inPosition, const EulerAngles& inRotation)
 {
 	transform.SetPosition(inPosition);
-	rotation = inRotation;
-
-	UpdateCameraVectors();
+	transform.SetRotation(inRotation);
 }
 
-void Camera::ResetTransform()
+void Camera::SetTransformToStart()
 {
-	SetTransform(transformAtStart.GetPosition(), initialRotation);
+	transform.Reset();
+	SetTransform(transformAtStart.GetPosition(), transformAtStart.GetRotation());
 }
 
 glm::mat4 Camera::ComputeInfiniteView() const

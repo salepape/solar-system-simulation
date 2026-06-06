@@ -6,6 +6,10 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
+#include <cstddef>		// std::size_t
+#include <functional>	// std::reference_wrapper
+#include <optional>
+
 
 
 // Unit Vectors in World Space
@@ -29,14 +33,17 @@ struct EulerAngles
 	float pitchInRad{ 0.0f };
 };
 
-struct Rotation
+struct RotationMatrix
 {
-	//RotationAngles anglesInRad;
 	glm::mat3 matrix;
 
-	Rotation(const glm::vec3& firstColumn, const glm::vec3& secondColumn, const glm::vec3& thirdColumn) :
-		matrix(firstColumn, secondColumn, thirdColumn) {
+	RotationMatrix(const glm::vec3& rightVector, const glm::vec3& upVector, const glm::vec3& forwardVector) :
+		matrix(rightVector, upVector, forwardVector) {
 	}
+
+	const glm::vec3 GetRightVector() const { return matrix[0]; }
+	const glm::vec3 GetUpVector() const { return matrix[1]; }
+	const glm::vec3 GetForwardVector() const { return matrix[2]; }
 };
 
 // Correspond to the Scene Transform (position, rotation, scale) of the Scene Entity
@@ -44,34 +51,32 @@ class Transform
 {
 public:
 	Transform() = default;
-	Transform(const float inValue);
-	Transform(const glm::mat4& inModel);
-	[[maybe_unused]] Transform(const glm::vec3& inPosition, const EulerAngles& inRotation);
-
-	~Transform() = default;
+	Transform(const glm::vec3& position, const EulerAngles& rotation);
 
 	const glm::mat4& Get() const { return model; }
 	void Set(const glm::mat4& inModel) { model = inModel; }
 
-	glm::vec3 GetPosition() const
-	{
-		return glm::vec3(model[3]);
-	}
+	// Get position out of Model matrix
+	glm::vec3 GetPosition() const;
 
-	void SetPosition(const glm::vec3& inPosition)
-	{
-		model[3] = glm::vec4(inPosition, 1.0f);
-	}
+	// Store position directly in Model matrix
+	void SetPosition(const glm::vec3& inPosition);
 
-	void SetRotation(const Rotation& rotation)
-	{
-		model[0] = glm::vec4(rotation.matrix[0], 0.0f);
-		model[1] = glm::vec4(rotation.matrix[1], 0.0f);
-		model[2] = glm::vec4(rotation.matrix[2], 0.0f);
-	}
+	// Get rotation info out of local cache
+	const EulerAngles& GetRotation() const { return rotation; }
 
-	// @todo - To be moved to Movement Component or similar?
+	// Store rotation direcly in Model matrix (per column) and update Euler Angles by deduction
+	void SetRotation(const RotationMatrix& inRotation);
+
+	// Overwrite Euler Angles and update LookAt vectors accordingly
+	void SetRotation(const EulerAngles& inRotationInRad);
+
+	// Increment Euler Angles and update LookAt vectors accordingly
+	void UpdateRotation(const EulerAngles& newAngles);
+
 	void Reset();
+
+	// @todo - Methods below to be moved to Movement Component or similar?
 
 	// Translate model by distance travelled (do not overwrite existing model matrix)
 	void Translate(const glm::vec3& newPosition);
@@ -81,9 +86,29 @@ public:
 
 	void Scale(const glm::vec3& newScale);
 
+	static constexpr size_t GetMatrixSizeInBytes() { return sizeof(model); }
+	static constexpr size_t GetColumnSizeInBytes() { return static_cast<size_t>(sizeof(model) * 0.25f); }
+
+	const glm::vec3& GetUpVector() const { return upVector; }
+	const glm::vec3& GetRightVector() const { return rightVector; }
+	const glm::vec3& GetForwardVector() const { return forwardVector; }
+
 private:
 	// Warning: ensure this is the only member variable, so we guarantee Transform data/size is always the same from Vertex buffers POV
 	glm::mat4 model{ 1.0f };
+
+	// Euler angles [in radians] for embedded LookAt vectors (simpler to keep track as is, and save expensive computations per frame)
+	EulerAngles rotation;
+
+	glm::vec3 forwardVector{ 0.0f, 0.0f, -1.0f };
+	glm::vec3 rightVector{ 0.0f, 1.0f, 0.0f };
+	glm::vec3 upVector{ 1.0f, 0.0f, 0.0f };
+
+	// Compute new LookAt vectors Forward, Right, Up, before updating Model matrix
+	void UpdateLookAtVectors();
+
+	// Update Model matrix on a per-column basis (i.e. by LookAt vectors, provided or not)
+	void UpdateModelMatrix(std::optional<std::reference_wrapper<const RotationMatrix>> inRotation = std::nullopt);
 };
 
 

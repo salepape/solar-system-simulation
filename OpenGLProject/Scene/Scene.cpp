@@ -193,7 +193,7 @@ void Scene::OrderForTransparencyPass(const glm::vec3& cameraPosition)
 		});
 }
 
-void Scene::SetSceneViewerTransformStart(const glm::vec3& inPosition, const EulerAngles& inRotation)
+void Scene::SetSceneViewerTransformStart(const glm::vec3& inPosition, const EulerAngles& inRotationInRad)
 {
-	sceneViewer.GetCamera().SetInitialTransform(inPosition, inRotation);
+	sceneViewer.GetCamera().SetInitialTransform(inPosition, inRotationInRad);
 }

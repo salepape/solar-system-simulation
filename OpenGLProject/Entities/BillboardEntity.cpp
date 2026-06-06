@@ -63,11 +63,11 @@ void BillboardEntity::ComputeTransformVUniform(const float /*deltaTime*/, const 
 
 	// Orient text billboards so the correct side (i.e. with the glyphs rendered in the correct direction) always faces the camera (~ look at)
 	const glm::vec3& billboardForward = glm::normalize(camera.GetPosition() - parentEntityPosition);
-	const glm::vec3& billboardRight = glm::cross(camera.GetCameraUp(), billboardForward);
+	const glm::vec3& billboardRight = glm::cross(camera.GetTransform().GetUpVector(), billboardForward);
 	const glm::vec3& billboardUp = glm::cross(billboardForward, billboardRight);
 
 	transform.SetPosition(parentEntityPosition);
-	transform.SetRotation(Rotation{ billboardRight, billboardUp, billboardForward });
+	transform.SetRotation(RotationMatrix{ billboardRight, billboardUp, billboardForward });
 }
 
 std::vector<QuadParams> BillboardEntity::ComputeQuadParams(const float billboardXStart, const float billboardYStart)

@@ -25,6 +25,8 @@ SolarSystem::SolarSystem()
 	BuildBodySystems();
 	BuildBelts();
 
+	// Need to override Camera Transform start, now that Solar System data objects have been initialised
+	// rotation = (does nothing, around orbital plane normal, around orbital plane tangent)
 	Scene::SetSceneViewerTransformStart(
 		glm::vec3(0.0f, GetBody("Sun").GetBodyData().radius * 1.75f, -25.0f),
 		EulerAngles{ 0.0f, glm::radians(90.0f), glm::radians(-25.0f) });

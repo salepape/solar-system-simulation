@@ -29,7 +29,7 @@ struct Vertex
 	static constexpr uint32_t TANGENT_TYPE_DIMENSION = 3;
 	static constexpr uint32_t BITANGENT_TYPE_DIMENSION = 3;
 
-	static constexpr uint32_t INSTANCE_MATRIX_TYPE_DIMENSION = 4;
+	static constexpr uint32_t INSTANCE_MATRIX_COL_TYPE_DIMENSION = 4;
 };
 
 // 3D Geometry and its associated buffer objects

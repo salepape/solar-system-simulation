@@ -56,10 +56,10 @@ void MeshComponent::StoreVertices()
 void MeshComponent::StoreInstanceTransforms() const
 {
 	VertexBufferLayout vbl;
-	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, Vertex::INSTANCE_MATRIX_TYPE_DIMENSION);
-	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol2, GL_FLOAT, Vertex::INSTANCE_MATRIX_TYPE_DIMENSION);
-	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol3, GL_FLOAT, Vertex::INSTANCE_MATRIX_TYPE_DIMENSION);
-	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol4, GL_FLOAT, Vertex::INSTANCE_MATRIX_TYPE_DIMENSION);
+	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol1, GL_FLOAT, Vertex::INSTANCE_MATRIX_COL_TYPE_DIMENSION);
+	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol2, GL_FLOAT, Vertex::INSTANCE_MATRIX_COL_TYPE_DIMENSION);
+	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol3, GL_FLOAT, Vertex::INSTANCE_MATRIX_COL_TYPE_DIMENSION);
+	vbl.AddAttributeLayout(VertexAttributeLocation::InstancedMatrixCol4, GL_FLOAT, Vertex::INSTANCE_MATRIX_COL_TYPE_DIMENSION);
 	vao->RegisterInstancingVertexBufferLayout(std::move(vbl));
 }
 

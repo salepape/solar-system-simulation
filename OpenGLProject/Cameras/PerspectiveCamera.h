@@ -4,8 +4,9 @@
 #include "Camera.h"
 
 #include <glm/mat4x4.hpp>
-#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
+
+#include "Scene/Transform.h"
 
 
 
@@ -15,19 +16,11 @@ class PerspectiveCamera : public Camera
 public:
 	PerspectiveCamera(const glm::vec3& inPosition, const EulerAngles& inRotation, const float inFovY, const float inFarPlane);
 
-	// @todo - Check if position interpolation (movement) managed by glm::translate()
-	// Update position of camera by delta
 	void Translate(const float deltaPosition, const glm::vec3& direction) override;
-
-	// Update raw and pitch values only, not roll (rotation around normal to screen)
-	void UpdateRotation(const EulerAngles& deltaRotation) override;
+	void Rotate(const EulerAngles& deltaRotation) override;
 
 	glm::mat4 ComputeProjection(const float windowAspectRatio) const override;
 	glm::mat4 ComputeView() const override;
-
-protected:
-	// Compute new Forward, Right and Up vectors from new Euler Angles
-	void UpdateCameraVectors() override;
 };
 
 

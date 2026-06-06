@@ -30,37 +30,37 @@ PerspectiveCameraController::PerspectiveCameraController(const glm::vec3& inPosi
 
 void PerspectiveCameraController::ProcessUserInput(const float deltaTime)
 {
-	// Reset user's position in Scene
+	// Reset user's camera transform in Scene to start
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_R))
 	{
-		camera.ResetTransform();
+		camera.SetTransformToStart();
 	}
 
 	// Designed for AZERTY keyboards with corresponding QWERTY GLFW_KEYs
 	const float deltaDistance = travelSpeed * deltaTime;
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_W))
 	{
-		camera.Translate(deltaDistance, camera.GetCameraForward());
+		camera.Translate(deltaDistance, WorldSpace::ZUnitVector);
 	}
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_S))
 	{
-		camera.Translate(deltaDistance, -camera.GetCameraForward());
+		camera.Translate(deltaDistance, -WorldSpace::ZUnitVector);
 	}
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_A))
 	{
-		camera.Translate(deltaDistance, -camera.GetCameraRight());
+		camera.Translate(deltaDistance, -WorldSpace::XUnitVector);
 	}
 	if (InputHandler::GetInstance().IsKeyPressed(GLFW_KEY_D))
 	{
-		camera.Translate(deltaDistance, camera.GetCameraRight());
+		camera.Translate(deltaDistance, WorldSpace::XUnitVector);
 	}
 	if (InputHandler::GetInstance().IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
 	{
-		camera.Translate(deltaDistance, camera.GetCameraUp());
+		camera.Translate(deltaDistance, WorldSpace::YUnitVector);
 	}
 	if (InputHandler::GetInstance().IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT))
 	{
-		camera.Translate(deltaDistance, -camera.GetCameraUp());
+		camera.Translate(deltaDistance, -WorldSpace::YUnitVector);
 	}
 
 	// Update lighting projected by headlight
@@ -141,8 +141,12 @@ void PerspectiveCameraController::SetMouseInputGLFWCallback()
 
 		PerspectiveCamera& camera = cameraController->GetCamera();
 
-		const glm::vec2& offset = window->ComputeCursorOffset(static_cast<float>(xPosition), static_cast<float>(yPosition));
-		camera.UpdateRotation(EulerAngles{ 0.0f, glm::radians(offset.x * cameraController->mouseSensitivity), glm::radians(offset.y * cameraController->mouseSensitivity) });
+		// Cursor offset is interpreted as delta yaw/roll angles [in degrees] around camera Up/Right axes
+		const glm::vec2& approximateEulerAngles = window->ComputeCursorOffset(static_cast<float>(xPosition), static_cast<float>(yPosition));
+		camera.Rotate(EulerAngles{ 0.0f,
+			glm::radians(approximateEulerAngles.x * cameraController->mouseSensitivity),
+			glm::radians(approximateEulerAngles.y * cameraController->mouseSensitivity) }
+		);
 
 		cameraController->GetHeadlamp().UpdateHeadlight(camera);
 	});
