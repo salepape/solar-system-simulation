@@ -5,6 +5,8 @@
 #include <memory>
 #include <string>
 
+#include "Rendering/RenderQueue.h"
+
 class Scene;
 class Window;
 
@@ -46,6 +48,8 @@ public:
 
 	const std::filesystem::path& GetExecutablePath() const { return executablePath; }
 
+	RenderQueue& GetRenderQueue() { return renderQueue; }
+
 	void AddScene(std::unique_ptr<Scene> inScene);
 
 protected:
@@ -63,6 +67,8 @@ private:
 
 	// Unique Singleton instance defined in source file
 	static Application* instance;
+
+	RenderQueue renderQueue;
 
 	// Time [in seconds] elapsed in Play mode since the GLFW Window associated to the application has been created
 	float elapsedPlayTime{ 0.0f };

@@ -15,6 +15,7 @@
 #include "Entities/CelestialBodyEntity.h"
 #include "Entities/MilkyWayEntity.h"
 #include "Entities/OrbitEntity.h"
+#include "Rendering/RenderQueue.h"
 #include "Utils/Helpers.h"
 
 
@@ -32,45 +33,11 @@ SolarSystem::SolarSystem()
 		EulerAngles{ 0.0f, glm::radians(90.0f), glm::radians(-25.0f) });
 }
 
-// @todo - Should all be migrated to Scene class
-void SolarSystem::Update(const float deltaTime, const std::optional<SceneEntityHandle> /*handle*/)
-{
-	const Application& runningApp = Application::GetInstance();
-	const Window& runningWindow = runningApp.GetWindow();
-
-	sceneViewer.ProcessUserInput(deltaTime);
-
-	PerspectiveCamera& camera = sceneViewer.GetCamera();
-
-	////////// 1 - DRAW OPAQUE ENTITIES //////////
-
-	// @todo - To be store as command in render queue?
-	camera.SetProjectionViewVUniform(ViewMode::InfiniteLookAt, runningWindow.GetAspectRatio());
-
-	// MILKY WAY (not part of Scene Entities hash map, member variable of SS class)	
-	Scene::Update(deltaTime, SceneEntityHandle::BACKGROUND);
-
-	// @todo - To be store as command in render queue?
-	camera.SetProjectionViewVUniform(ViewMode::FiniteLookAt, runningWindow.GetAspectRatio());
-	camera.SetPositionFUniform();
-
-	// CELESTIAL BODIES, ORBITS, BILLBOARDS & BELTS (part of Scene Entities hash map)
-	Scene::Update(deltaTime, SceneEntityHandle::OPAQUE_ENTITY);
-
-	////////// 2 - DRAW ENTITIES WITH LEVEL OF TRANSPARENCY //////////
-
-	// ORDER PER DIST TO CAM
-	Scene::OrderForTransparencyPass(camera.GetPosition());
-
-	// BODY RINGS (part of Scene Entities hash map)
-	Scene::Update(deltaTime, SceneEntityHandle::TRANSPARENT_ENTITY);
-}
-
 void SolarSystem::BuildBackground()
 {
 	// Background which can never be reached (based off a Skybox)
 	Scene::AddEntity(
-		SceneEntityHandle::BACKGROUND,
+		RenderType::BACKGROUND,
 		std::make_unique<MilkyWayEntity>()
 	);
 }
@@ -141,7 +108,7 @@ void SolarSystem::BuildBodySystems()
 		const BodyData bodyData{ texturePath, celestialBodyName, scaledRadius, scaledDistanceToParent, obliquity, scaledOrbitalPeriod, spinPeriod, orbitalInclination };
 
 		const uint32_t addedBodyID = Scene::AddEntity(
-			SceneEntityHandle::OPAQUE_ENTITY,
+			RenderType::OPAQUE_ENTITY,
 			std::make_unique<CelestialBodyEntity>(bodyData)
 		);
 
@@ -154,7 +121,7 @@ void SolarSystem::BuildBodySystems()
 		}
 
 		const uint32_t addedOrbitID = Scene::AddEntity(
-			SceneEntityHandle::TRANSPARENT_ENTITY,
+			RenderType::TRANSPARENT_ENTITY,
 			std::make_unique<OrbitEntity>(bodyData)
 		);
 
@@ -165,7 +132,7 @@ void SolarSystem::BuildBodySystems()
 		}
 
 		const uint32_t addedBillboardID = Scene::AddEntity(
-			SceneEntityHandle::TRANSPARENT_ENTITY,
+			RenderType::TRANSPARENT_ENTITY,
 			std::make_unique<BillboardEntity>(bodyData)
 		);
 
@@ -197,7 +164,7 @@ void SolarSystem::BuildBodyRings()
 
 		// Create Rings Scene Entity and store it as transparent in IRenderable map, NOT in Body System
 		const uint32_t addedBodyRingsID = Scene::AddEntity(
-			SceneEntityHandle::TRANSPARENT_ENTITY,
+			RenderType::TRANSPARENT_ENTITY,
 			std::make_unique<BodyRingsEntity>(RingsData{ modelPath, bodyParent, radius })
 		);
 
@@ -246,7 +213,7 @@ void SolarSystem::BuildBelts()
 		}
 		const float flatnessFactor = std::stof(beltParams[7]);
 
-		Scene::AddEntity(SceneEntityHandle::OPAQUE_ENTITY,
+		Scene::AddEntity(RenderType::OPAQUE_ENTITY,
 			std::make_unique<BeltEntity>(
 				beltName,
 				InstanceParams{ modelPath, instanceCount, sizeRangeLowerBound, sizeRangeSpan },

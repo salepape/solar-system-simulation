@@ -21,61 +21,67 @@ Scene::Scene() :
 	// @todo - Flaw in engine code where we need to cache controller in window (until event system implemented)
 	Window& currentWindow = Application::GetInstance().GetWindow();
 	currentWindow.cameraController = &sceneViewer;
-
-	Renderer::EnableDepthTesting();
-	Renderer::EnableBlending();
-	//Renderer::EnableBackFaceCulling();
 }
 
 Scene::~Scene()
 {
-	//Renderer::DisableBackFaceCulling();
-	Renderer::DisableBlending();
-	Renderer::DisableDepthTesting();
+
 }
 
-void Scene::Update(const float deltaTime, const std::optional<SceneEntityHandle> handle)
+void Scene::Update(const float deltaTime)
 {
+	sceneViewer.ProcessUserInput(deltaTime);
+
 	// Handle: packed ID composed of several bytes of info giving priority of which to render first (distance-based)
 	// Render command: list of OpenGL bindings ("to submit to GPU") to activate alongside handle 
 	// Render queue: go through map, where each packed ID corresponds to batch of IRenderables which needs same Shader/UBO bindings
 
-	if (handle.has_value() == false || sceneEntities.find(handle.value()) == sceneEntities.end())
-	{
-		std::cout << "SCENE::UPDATE - Handle for Scene Entity update has not been found!" << std::endl;
-		assert(false);
-	}
+	// RENDER QUEUE ORDER: 1) BACKGROUND 2) OPAQUE ENTITIES 3) NON-OPAQUE ENTITIES
+	// RENDER COMMAND: CHAIN OF GL FUNCTIONS ASSOCIATED WITH GROUP OF ENTITIES TO RENDER
 
-	for (const std::unique_ptr<SceneEntity>& sceneEntity : sceneEntities[handle.value()])
+	for (const RenderCommand& renderCommand : Application::GetInstance().GetRenderQueue().queue)
 	{
-		// If current Scene Entity implements ITransformable interface
-		if (ITransformable* const transformable = dynamic_cast<ITransformable*>(sceneEntity.get());
-			transformable != nullptr)
+		renderCommand.Queue();
+
+		if (sceneEntities.find(renderCommand.renderType) == sceneEntities.end())
 		{
-			// @todo - Fix code inelegance (due to management of reference or nullopt not supported by ternary operator
-			if (const SceneEntity* parentEntity = Scene::GetConstEntity(sceneEntity->parentID);
-				parentEntity != nullptr)
-			{
-				transformable->ComputeTransformVUniform(
-					deltaTime,
-					sceneViewer.GetCamera(),
-					*parentEntity
-				);
-			}
-			else
-			{
-				transformable->ComputeTransformVUniform(
-					deltaTime,
-					sceneViewer.GetCamera()
-				);
-			}
+			/*std::cout << "SCENE::UPDATE - Handle for Scene Entity update has not been found!" << std::endl;
+			assert(false);*/
+
+			continue;
 		}
 
-		// If current Scene Entity implements IRenderable interface
-		if (IRenderable* const renderable = dynamic_cast<IRenderable*>(sceneEntity.get());
-			renderable != nullptr)
+		for (const std::unique_ptr<SceneEntity>& sceneEntity : sceneEntities[renderCommand.renderType])
 		{
-			renderable->Render();
+			// If current Scene Entity implements ITransformable interface
+			if (ITransformable* const transformable = dynamic_cast<ITransformable*>(sceneEntity.get());
+				transformable != nullptr)
+			{
+				// @todo - Fix code inelegance (due to management of reference or nullopt not supported by ternary operator
+				if (const SceneEntity* parentEntity = Scene::GetConstEntity(sceneEntity->parentID);
+					parentEntity != nullptr)
+				{
+					transformable->ComputeTransformVUniform(
+						deltaTime,
+						sceneViewer.GetCamera(),
+						*parentEntity
+					);
+				}
+				else
+				{
+					transformable->ComputeTransformVUniform(
+						deltaTime,
+						sceneViewer.GetCamera()
+					);
+				}
+			}
+
+			// If current Scene Entity implements IRenderable interface
+			if (IRenderable* const renderable = dynamic_cast<IRenderable*>(sceneEntity.get());
+				renderable != nullptr)
+			{
+				renderable->Render();
+			}
 		}
 	}
 }
@@ -91,7 +97,76 @@ void Scene::TagEntityAsAttached(const uint32_t entityIDBase, const uint32_t enti
 	eChild->parentID = entityIDBase;
 }
 
-uint32_t Scene::AddEntity(const SceneEntityHandle handle, std::unique_ptr<SceneEntity> inEntity)
+void Scene::QueueRenderCommands()
+{
+	RenderQueue& renderQueue = Application::GetInstance().GetRenderQueue();
+
+	renderQueue.Push(
+		RenderCommand{
+			RenderType::ALL,
+			[]()
+			{
+				Renderer::EnableDepthTesting();
+				Renderer::EnableBlending();
+				//Renderer::EnableBackFaceCulling();
+			},
+			[]()
+			{
+			//Renderer::DisableBackFaceCulling();
+			Renderer::DisableBlending();
+			Renderer::DisableDepthTesting();
+		}
+		}
+	);
+
+	// MILKY WAY (not part of Scene Entities hash map, member variable of SS class)	
+	renderQueue.Push(
+		RenderCommand{
+			RenderType::BACKGROUND,
+			[&]()
+			{
+				sceneViewer.GetCamera().SetProjectionViewVUniform(ViewMode::InfiniteLookAt, Application::GetInstance().GetWindow().GetAspectRatio());
+			}
+		}
+	);
+
+	// CELESTIAL BODIES, ORBITS, BILLBOARDS & BELTS (part of Scene Entities hash map)
+	renderQueue.Push(
+		RenderCommand{
+			RenderType::OPAQUE_ENTITY,
+			[&]()
+			{
+				sceneViewer.GetCamera().SetProjectionViewVUniform(ViewMode::FiniteLookAt, Application::GetInstance().GetWindow().GetAspectRatio());
+				sceneViewer.GetCamera().SetPositionFUniform();
+			}
+		}
+	);
+
+	// BODY RINGS (part of Scene Entities hash map)
+	renderQueue.Push(
+		RenderCommand{
+			RenderType::TRANSPARENT_ENTITY,
+			[&]()
+			{
+				Scene::OrderForTransparencyPass(sceneViewer.GetCamera().GetPosition());
+			}
+		}
+	);
+}
+
+void Scene::UnqueueRenderCommands()
+{
+	RenderQueue& renderQueue = Application::GetInstance().GetRenderQueue();
+
+	for (const RenderCommand& renderCommand : renderQueue.queue)
+	{
+		renderCommand.Unqueue();
+	}
+
+	renderQueue.PopAll();
+}
+
+uint32_t Scene::AddEntity(const RenderType handle, std::unique_ptr<SceneEntity> inEntity)
 {
 	const uint32_t addedEntityID = inEntity->GetID();
 	sceneEntities[handle].push_back(std::move(inEntity));
@@ -186,7 +261,7 @@ const SceneEntity* Scene::GetConstEntity(const std::string& entityName) const
 void Scene::OrderForTransparencyPass(const glm::vec3& cameraPosition)
 {
 	// Custom std::vector comparator so we order the closest body to the camera at the end
-	std::sort(sceneEntities[SceneEntityHandle::TRANSPARENT_ENTITY].begin(), sceneEntities[SceneEntityHandle::TRANSPARENT_ENTITY].end(),
+	std::sort(sceneEntities[RenderType::TRANSPARENT_ENTITY].begin(), sceneEntities[RenderType::TRANSPARENT_ENTITY].end(),
 		[&cameraPosition](const std::unique_ptr<SceneEntity>& e1, const std::unique_ptr<SceneEntity>& e2)
 		{
 			return glm::distance(cameraPosition, e1->GetTransform().GetPosition()) < glm::distance(cameraPosition, e2->GetTransform().GetPosition());

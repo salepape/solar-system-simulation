@@ -60,10 +60,20 @@ Application::~Application()
 {
 	// This destructor, even if empty, ensures it will call the custom deleter of all std::unique_ptrs from this point in this source file at compile time.
 	// All hold types will be fully-defined by then (while only forward-declared in header), which is a requirement of std::unique_ptr class (unlike std::shared_ptr)
+
+	if (scene != nullptr)
+	{
+		scene->UnqueueRenderCommands();
+	}
 }
 
 void Application::Run()
 {
+	if (scene != nullptr)
+	{
+		scene->QueueRenderCommands();
+	}
+
 	while (IsClosed() == false)
 	{
 		Tick();

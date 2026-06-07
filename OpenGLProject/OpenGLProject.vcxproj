@@ -230,10 +230,11 @@
     <ClInclude Include="Rendering/Shader.h" />
     <ClInclude Include="Rendering/ShaderLoader.h" />
     <ClInclude Include="Rendering/GlyphLoader.h" />
+    <ClInclude Include="Rendering/RenderQueue.h" />
     <ClInclude Include="Rendering/Texture.h" />
     <ClInclude Include="Scene/Scene.h" />
     <ClInclude Include="Scene/SceneEntity.h" />
-	<ClInclude Include="Scene/Transform.h" />
+    <ClInclude Include="Scene/Transform.h" />
     <ClInclude Include="Simulation/SolarSystem.h" />
     <ClInclude Include="Utils/Constants.h" />
     <ClInclude Include="Utils/Helpers.h" />
@@ -278,10 +279,11 @@
     <ClCompile Include="Rendering/Shader.cpp" />
     <ClCompile Include="Rendering/ShaderLoader.cpp" />
     <ClCompile Include="Rendering/GlyphLoader.cpp" />
+    <ClInclude Include="Rendering/RenderQueue.cpp" />
     <ClCompile Include="Rendering/Texture.cpp" />
     <ClCompile Include="Scene/Scene.cpp" />
     <ClCompile Include="Scene/SceneEntity.cpp" />
-	<ClCompile Include="Scene/Transform.cpp" />
+    <ClCompile Include="Scene/Transform.cpp" />
     <ClCompile Include="Simulation/SolarSystem.cpp" />
     <ClCompile Include="Utils/Helpers.cpp" />
   </ItemGroup>

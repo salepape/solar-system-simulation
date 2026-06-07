@@ -38,7 +38,6 @@ public:
 	static void SetDepthFctToEqual();
 	static void SetDepthFctToLess();
 
-	// @todo - Create a Movement Component and move this method out of it
 	// Called on a per-frame basis to update the Transform.
 	// Shader should already be enabled in each Scene Entity child Render() method prior to call this one. Uniform to be updated in child classes
 	static void SetTransformVUniform(const Shader& shader, const Transform& transform);

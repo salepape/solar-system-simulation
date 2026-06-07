@@ -18,8 +18,6 @@ class SolarSystem : public Scene
 public:
 	SolarSystem();
 
-	void Update(const float deltaTime, const std::optional<SceneEntityHandle> /*handle*/) override;
-
 private:
 	// @todo - Think about using a Builder Design Pattern to construct such class instances out of CSV files
 	// Instantiate "spherical" celestial bodies/ring systems/belt systems, after loading data from .csv files,
