@@ -29,7 +29,7 @@ CelestialBodyEntity::CelestialBodyEntity(BodyData&& inBodyData) :
 	{
 		// Set up the lighting for all Scene Entities according to Sun position/light emission parameters
 		lightSource = std::make_unique<PointLightComponent>(GetPosition(),
-			ReflectionParams{ glm::vec3(0.25f), glm::vec3(0.95f), glm::vec3(1.0f) },
+			ReflectionParams{ glm::vec3(0.25f), glm::vec3(0.95f), glm::vec3(0.0f) },
 			AttenuationParams{ 1.0f, 0.00045f, 0.00000075f });
 	}
 
