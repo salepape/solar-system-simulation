@@ -91,7 +91,7 @@ void Scene::AllocateMemory(const size_t numOfBytes)
 	sceneEntities.reserve(sceneEntities.size() + numOfBytes);
 }
 
-void Scene::TagEntityAsAttached(const uint32_t entityIDBase, const uint32_t entityIDChild)
+void Scene::TagEntityAsAttached(const uint32_t entityIDBase, const uint32_t entityIDChild) const
 {
 	SceneEntity* const eChild = GetEntity(entityIDChild);
 	eChild->parentID = entityIDBase;
@@ -183,7 +183,7 @@ SceneEntity* Scene::GetEntity(const uint32_t entityID) const
 
 	for (const auto& entityPair : sceneEntities)
 	{
-		for (const auto& entityPtr : entityPair.second)
+		for (const std::unique_ptr<SceneEntity>& entityPtr : entityPair.second)
 		{
 			if (entityPtr->GetID() == entityID)
 			{
@@ -204,7 +204,7 @@ SceneEntity* Scene::GetEntity(const std::string& entityName) const
 
 	for (const auto& entityPair : sceneEntities)
 	{
-		for (const auto& entityPtr : entityPair.second)
+		for (const std::unique_ptr<SceneEntity>& entityPtr : entityPair.second)
 		{
 			if (entityPtr->GetName() == entityName)
 			{
@@ -218,44 +218,12 @@ SceneEntity* Scene::GetEntity(const std::string& entityName) const
 
 const SceneEntity* Scene::GetConstEntity(const uint32_t entityID) const
 {
-	if (entityID == 0)
-	{
-		return nullptr;
-	}
-
-	for (const auto& entityPair : sceneEntities)
-	{
-		for (const auto& entityPtr : entityPair.second)
-		{
-			if (entityPtr->GetID() == entityID)
-			{
-				return entityPtr.get();
-			}
-		}
-	}
-
-	return nullptr;
+	return GetEntity(entityID);
 }
 
 const SceneEntity* Scene::GetConstEntity(const std::string& entityName) const
 {
-	if (entityName.length() == 0)
-	{
-		return nullptr;
-	}
-
-	for (const auto& entityPair : sceneEntities)
-	{
-		for (const auto& entityPtr : entityPair.second)
-		{
-			if (entityPtr->GetName() == entityName)
-			{
-				return entityPtr.get();
-			}
-		}
-	}
-
-	return nullptr;
+	return GetEntity(entityName);
 }
 
 void Scene::OrderForTransparencyPass(const glm::vec3& cameraPosition)

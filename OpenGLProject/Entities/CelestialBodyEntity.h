@@ -41,15 +41,15 @@ public:
 	// User-defined constructor (to be used when building a CelestialBody in-place from initialisation-list)
 	CelestialBodyEntity(const BodyData& inBodyData);
 
-	// Copy constructor (needed when we call GetCelestialBody(), as it gets a shallow copy of an instance of this class)
-	CelestialBodyEntity(const CelestialBodyEntity& inCelestialBody) = default;
+	// Copy constructor (not needed - SCENE ENTITY GETTER RETURN NON-OWNING RAW PTR, HENCE NOT NEEDED)
+	CelestialBodyEntity(const CelestialBodyEntity& inCelestialBody) = delete;
 	CelestialBodyEntity& operator = (const CelestialBodyEntity& inCelestialBody) = delete;
 
-	// Move constructor (needed when building a CelestialBody in-place from initialisation-list)
-	CelestialBodyEntity(CelestialBodyEntity&& inCelestialBody) = default;
+	// Move constructor (not needed - SCENE ENTITY GETTER RETURN NON-OWNING RAW PTR, HENCE NOT NEEDED)
+	CelestialBodyEntity(CelestialBodyEntity&& inCelestialBody) = delete;
 	CelestialBodyEntity& operator = (CelestialBodyEntity&& inCelestialBody) = delete;
 
-	// Destructor (not virtual needed, until child classes exist)
+	// Destructor (not virtual needed, as there are no class child classes)
 	~CelestialBodyEntity() = default;
 
 	const BodyData& GetBodyData() const { return bodyData; }

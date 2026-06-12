@@ -39,12 +39,12 @@ public:
 	// User-defined constructor (needed to be defined explictly in the constructor of each child class)
 	SceneEntity(const std::string& inName);
 
-	// Copy constructor (needed when a copy constructor of any child class is called)
-	SceneEntity(const SceneEntity& inSceneEntity) = default;
+	// Copy constructor (not needed - SCENE ENTITY GETTER RETURN NON-OWNING RAW PTR, HENCE NOT NEEDED)
+	SceneEntity(const SceneEntity& inSceneEntity) = delete;
 	SceneEntity& operator = (const SceneEntity& inSceneEntity) = delete;
 
-	// Move constructor (needed when a move constructor of any child class is called)
-	SceneEntity(SceneEntity&& inSceneEntity) = default;
+	// Move constructor (not needed - SCENE ENTITY GETTER RETURN NON-OWNING RAW PTR, HENCE NOT NEEDED)
+	SceneEntity(SceneEntity&& inSceneEntity) = delete;
 	SceneEntity&& operator = (SceneEntity&& inSceneEntity) = delete;
 
 	// Virtual destructor (needed, as class is not final)

@@ -36,15 +36,21 @@ public:
 	void AllocateMemory(const size_t numOfBytes);
 
 	// Make Scene Entity model matrix (i.e. transform) inherit the one from its parent provided as argument (called "attachment" or anchoring)
-	void TagEntityAsAttached(const uint32_t entityIDBase, const uint32_t entityIDChild);
+	void TagEntityAsAttached(const uint32_t entityIDBase, const uint32_t entityIDChild) const;
 
 protected:
 	uint32_t AddEntity(const RenderType handle, std::unique_ptr<SceneEntity> inEntity);
 
-	// Return a non-owning reference of a Scene Entity referred to by its ID or name
+	// Return a non-owning reference of a Scene Entity referred to by its ID
 	SceneEntity* GetEntity(const uint32_t entityID) const;
+
+	// Return a non-owning reference of a Scene Entity referred to by its name
 	SceneEntity* GetEntity(const std::string& entityName) const;
+
+	// Return a non-owning reference of a const Scene Entity referred to by its ID
 	const SceneEntity* GetConstEntity(const uint32_t entityID) const;
+
+	// Return a non-owning reference of a const Scene Entity referred to by its name
 	const SceneEntity* GetConstEntity(const std::string& entityName) const;
 
 	// @todo - To be done only for entities in FOV

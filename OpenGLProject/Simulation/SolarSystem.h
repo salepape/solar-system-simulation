@@ -27,7 +27,7 @@ private:
 	void BuildBodyRings();
 	void BuildBelts();
 
-	class CelestialBodyEntity& GetBody(const std::string& bodyName) const;
+	const class BodyData& GetBody(const std::string& bodyName) const;
 };
 
 
