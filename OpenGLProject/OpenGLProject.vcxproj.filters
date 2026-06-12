@@ -52,7 +52,7 @@
     <Filter Include="Source Files\External Dependencies">
       <UniqueIdentifier>{a31fb1f6-95d9-4ef0-862d-e11859d2ee76}</UniqueIdentifier>
     </Filter>
-	<Filter Include="Source Files\External Dependencies\Glad">
+    <Filter Include="Source Files\External Dependencies\Glad">
       <UniqueIdentifier>{86720e9e-cbad-4f8f-9afd-7a197c56176b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Entities">
@@ -60,12 +60,6 @@
     </Filter>
     <Filter Include="Source Files\Entities">
       <UniqueIdentifier>{5c670c94-8ee1-4eef-8b95-30fc846919c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Entities\Groups">
-      <UniqueIdentifier>{43daa992-089b-42be-a2bc-3e6389e37cf2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Entities\Groups">
-      <UniqueIdentifier>{555914cf-a0de-41d0-8cf3-e4830b6de545}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Interactions">
       <UniqueIdentifier>{1b71018e-a757-47a6-aa94-b0ef7aafbe0e}</UniqueIdentifier>
@@ -109,6 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application/Application.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Application/ApplicationControls.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="Application/Window.h">
@@ -183,15 +180,6 @@
     <ClInclude Include="Entities/OrbitEntity.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Entities/SceneEntity.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Entities/SpacecraftEntity.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Entities/Groups/BodySystem.h">
-      <Filter>Header Files\Entities\Groups</Filter>
-    </ClInclude>
     <ClInclude Include="Interactions/InputHandler.h">
       <Filter>Header Files\Interactions</Filter>
     </ClInclude>
@@ -225,16 +213,22 @@
     <ClInclude Include="Rendering/GlyphLoader.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Rendering/RenderQueue.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
     <ClInclude Include="Rendering/Texture.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Scene/Scene.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Simulation/SolarSystem.h">
-      <Filter>Header Files\Simulation</Filter>
+    <ClInclude Include="Scene/SceneEntity.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Simulation/SolarSystemSimulation.h">
+    <ClInclude Include="Scene/Transform.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation/SolarSystem.h">
       <Filter>Header Files\Simulation</Filter>
     </ClInclude>
     <ClInclude Include="Utils/Helpers.h">
@@ -243,9 +237,15 @@
     <ClInclude Include="Utils/Constants.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="CoreEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application/Application.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Application/ApplicationControls.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="Application/Window.cpp">
@@ -317,16 +317,7 @@
     <ClCompile Include="Entities/OrbitEntity.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Entities/SceneEntity.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Entities/SpacecraftEntity.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Entities/Groups/BodySystem.cpp">
-      <Filter>Source Files\Entities\Groups</Filter>
-    </ClCompile>
-	<ClCompile Include="External Dependencies/Glad/glad.c">
+    <ClCompile Include="External Dependencies/Glad/glad.c">
       <Filter>Source Files\External Dependencies\Glad</Filter>
     </ClCompile>
     <ClCompile Include="Interactions/Headlamp.cpp">
@@ -371,20 +362,29 @@
     <ClCompile Include="Rendering/GlyphLoader.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
+    <ClInclude Include="Rendering/RenderQueue.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClInclude>
     <ClCompile Include="Rendering/Texture.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Scene/Scene.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Simulation/SolarSystem.cpp">
-      <Filter>Source Files\Simulation</Filter>
+    <ClCompile Include="Scene/SceneEntity.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Simulation/SolarSystemSimulation.cpp">
+    <ClCompile Include="Scene/Transform.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation/SolarSystem.cpp">
       <Filter>Source Files\Simulation</Filter>
     </ClCompile>
     <ClCompile Include="Utils/Helpers.cpp">
       <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="CoreEngine.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

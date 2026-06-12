@@ -4,7 +4,9 @@
 #include <glm/trigonometric.hpp>
 
 #include "Application/Application.h"
+#include "Application/ApplicationControls.h"
 #include "Cameras/Camera.h"
+#include "CoreEngine.h"
 
 
 
@@ -21,21 +23,21 @@ void Headlamp::SetHeadlightState(const bool isActive)
 
 void Headlamp::UpdateHeadlight(const Camera& camera)
 {
-	if (headlightStartTime > 0.0)
+	if (headlightStartTime > 0.0f)
 	{
 		headlight.SetLightPositionFUniform(camera.GetPosition());
-		headlight.SetLightDirectionFUniform(camera.GetForward());
+		headlight.SetLightDirectionFUniform(camera.GetTransform().GetForwardVector());
 	}
 }
 
-void Headlamp::UpdateHeadlightState(double timeBeforeReleaseRegistered, int32_t action)
+void Headlamp::UpdateHeadlightState(const int32_t action)
 {
-	const bool isReleaseActionRegistered = Application::GetInstance().GetTime() - headlightStartTime > timeBeforeReleaseRegistered;
+	const bool isReleaseActionRegistered = CoreEngine::GetInstance().GetElapsedTime() - headlightStartTime > ApplicationControls::KEY_RELEASE_SENSITIVITY;
 
-	if (action == GLFW_PRESS && headlightStartTime == 0.0)
+	if (action == GLFW_PRESS && headlightStartTime == 0.0f)
 	{
 		SetHeadlightState(true);
-		headlightStartTime = Application::GetInstance().GetTime();
+		headlightStartTime = CoreEngine::GetInstance().GetElapsedTime();
 	}
 
 	if (action == GLFW_RELEASE && isReleaseActionRegistered)

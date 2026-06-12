@@ -1,6 +1,6 @@
 #include "BeltEntity.h"
 
-#include <glm/ext/matrix_transform.hpp>
+#include <glm/mat4x4.hpp>
 #include <glm/trigonometric.hpp>
 #include <glm/vec3.hpp>
 
@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "Application/Application.h"
+#include "CoreEngine.h"
 #include "Rendering/Renderer.h"
 #include "Rendering/Shader.h"
 #include "Rendering/ShaderLoader.h"
@@ -21,11 +22,11 @@ BeltEntity::BeltEntity(const std::string& inName, InstanceParams&& inInstancePar
 	torusParams(inTorusParams),
 	model(inInstanceParams.modelPath, ShaderLookUpID::Enum::BELT)
 {
-	ComputeInstanceModelMatrices();
-	StoreInstanceModelMatrices();
+	ComputeInstanceTransforms();
+	StoreInstanceTransforms();
 }
 
-void BeltEntity::ComputeInstanceModelMatrices()
+void BeltEntity::ComputeInstanceTransforms()
 {
 	const float angleValue = 1.0f / instanceParams.count * 360.0f;
 
@@ -34,12 +35,12 @@ void BeltEntity::ComputeInstanceModelMatrices()
 	const int32_t rangeSpanOffset = static_cast<int32_t>(upperBoundOffset - lowerBoundOffset);
 
 	// Initialise random seed
-	std::srand(static_cast<uint32_t>(Application::GetInstance().GetTime()));
+	std::srand(static_cast<uint32_t>(CoreEngine::GetInstance().GetElapsedTime()));
 
-	modelMatrices.reserve(instanceParams.count);
+	transforms.reserve(instanceParams.count);
 	for (uint32_t i = 0; i < instanceParams.count; ++i)
 	{
-		glm::mat4 modelMatrix(1.0f);
+		Transform transform;
 
 		const float angle = i * angleValue;
 
@@ -55,27 +56,27 @@ void BeltEntity::ComputeInstanceModelMatrices()
 
 		// Move instance along circle of radius majorRadius in [-minorRadius, minorRadius]
 		// (added the range lower bound to the random number modulo by the range span to get a random value in range [lowerBound, lowerBound + rangeSpan])
-		modelMatrix = glm::translate(modelMatrix, glm::vec3(x, y, z));
+		transform.Translate(glm::vec3(x, y, z));
 
 		// Resize instance in range [sizeRangeLowerBound, "sizeRangeLowerBound + 0.sizeRangeSpan"]
 		const float scale = instanceParams.sizeRangeLowerBound + 0.01f * static_cast<float>(std::rand() % instanceParams.sizeRangeSpan);
-		modelMatrix = glm::scale(modelMatrix, glm::vec3(scale));
+		transform.Scale(glm::vec3(scale));
 
 		// Rotate instance by num degrees in range [0, 360] around a pre-determined axis
 		const float rotAngle = static_cast<float>(std::rand() % 361);
-		modelMatrix = glm::rotate(modelMatrix, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
+		transform.Rotate(rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
 
 		// Add current model matrix to the list
-		modelMatrices.push_back(std::move(modelMatrix));
+		transforms.push_back(std::move(transform));
 	}
 }
 
-void BeltEntity::StoreInstanceModelMatrices() const
+void BeltEntity::StoreInstanceTransforms() const
 {
-	model.StoreInstanceModelMatrices(modelMatrices, static_cast<std::size_t>(instanceParams.count) * sizeof(glm::mat4));
+	model.StoreInstanceTransforms(transforms);
 }
 
-void BeltEntity::Render(const float /*elapsedTime*/)
+void BeltEntity::Render()
 {
 	const Material& modelMaterial = model.GetMaterials()[0];
 	const Shader& shader = modelMaterial.GetShader();

@@ -1,8 +1,6 @@
 #ifndef BELT_H
 #define BELT_H
 
-#include <glm/mat4x4.hpp>
-
 #include <cstdint>
 #include <filesystem>
 #include <string>
@@ -10,9 +8,11 @@
 
 #include "Models/Model.h"
 #include "Rendering/BlinnPhongMaterial.h"
-#include "SceneEntity.h"
+#include "Scene/SceneEntity.h"
 
 
+
+class Transform;
 
 // Instance is an asteroid for a belt
 struct InstanceParams
@@ -39,24 +39,26 @@ struct TorusParams
 	float flatnessFactor{ 0.0f };
 };
 
-class BeltEntity : public SceneEntity
+class BeltEntity : public SceneEntity, public IRenderable
 {
 public:
 	BeltEntity(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams);
 
-	void Render(const float elapsedTime = 0.0f);
+	// IRenderable implementation
+	//BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath) override { /* already baked in model */ return; }
+	void Render() override;
+	// IRenderable implementation
 
 private:
 	InstanceParams instanceParams;
 	TorusParams torusParams;
-	std::vector<glm::mat4> modelMatrices;
+	std::vector<Transform> transforms;
 
 	// Model used to represent a Belt "Rock" for instancing (contains the Mesh + the Material definition, as opposed to traditional SceneEntities)
 	Model model;
 
-	void ComputeModelMatrixVUniform(const float /*elapsedTime*/) override {};
-	void ComputeInstanceModelMatrices();
-	void StoreInstanceModelMatrices() const;
+	void ComputeInstanceTransforms();
+	void StoreInstanceTransforms() const;
 };
 
 

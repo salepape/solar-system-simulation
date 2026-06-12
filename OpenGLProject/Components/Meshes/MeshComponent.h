@@ -29,7 +29,7 @@ struct Vertex
 	static constexpr uint32_t TANGENT_TYPE_DIMENSION = 3;
 	static constexpr uint32_t BITANGENT_TYPE_DIMENSION = 3;
 
-	static constexpr uint32_t INSTANCE_MATRIX_TYPE_DIMENSION = 4;
+	static constexpr uint32_t INSTANCE_MATRIX_COL_TYPE_DIMENSION = 4;
 };
 
 // 3D Geometry and its associated buffer objects
@@ -42,7 +42,7 @@ public:
 	// User-defined constructor (used when parsing a pre-made 3D model, i.e. a mesh with textures applied on it, and transferring Mesh info to this class) 
 	MeshComponent(const std::vector<Vertex>& inVertices, const std::vector<uint32_t>& inIndices = {});
 
-	// Copy constructor (needed when defining a Sphere in CelestialBody when object passed as const ref to instantiate Orbit/Billboard in BodySystem)
+	// Copy constructor (needed when defining a Sphere in CelestialBody when object passed as const ref to instantiate Orbit/Billboard)
 	MeshComponent(const MeshComponent& inMesh) = default;
 	const MeshComponent& operator = (const MeshComponent& inMesh) = delete;
 
@@ -53,7 +53,7 @@ public:
 	// Virtual destructor (needed, as class is not final)
 	virtual ~MeshComponent() = default;
 
-	void StoreInstanceModelMatrices() const;
+	void StoreInstanceTransforms() const;
 
 	// Call the appropriate OpenGL draw function according to the emptiness of the indices vector
 	virtual void Render(const unsigned int mode = GL_TRIANGLES) const;

@@ -1,29 +1,34 @@
 #ifndef BODY_RINGS_H
 #define BODY_RINGS_H
 
-#include <glm/mat4x4.hpp>
-
 #include <filesystem>
+#include <functional>
+#include <optional>
 #include <string>
 
 #include "Models/Model.h"
-#include "SceneEntity.h"
+#include "Scene/SceneEntity.h"
 
 
+
+class Camera;
 
 struct RingsData
 {
 	std::filesystem::path modelPath;
-	std::string bodyName;
+	std::string bodyParent;
 	float radius{ 0.0f };
 };
 
-class BodyRingsEntity : public SceneEntity
+class BodyRingsEntity : public SceneEntity, public ITransformable, public IRenderable
 {
 public:
 	BodyRingsEntity(RingsData&& inRingsData);
 
-	void Render(const glm::mat4& modelMatrix);
+	// IRenderable implementation
+	void Render() override;
+	//BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath) override { /* already baked in model */ return; }
+	// IRenderable implementation
 
 private:
 	RingsData ringsData;
@@ -31,10 +36,11 @@ private:
 	// Model used for the Celestial Body "Ring" (contains the Mesh + the Material definition, as opposed to traditional SceneEntities)
 	Model model;
 
-	std::string bodyName;
+	std::string bodyParent;
 
-	void ComputeModelMatrixVUniform(const float /*elapsedTime*/) override {};
-	void ComputeModelMatrixVUniform(const glm::mat4& modelMatrix, const float elapsedTime = 0.0f);
+	// ITransformable implementation
+	void ComputeTransformVUniform(const float deltaTime, const Camera& camera, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity = std::nullopt) override;
+	// ITransformable implementation
 };
 
 

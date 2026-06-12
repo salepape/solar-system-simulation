@@ -1,19 +1,23 @@
 #include "BillboardEntity.h"
 
-#include <cstdint>
 #include <glm/geometric.hpp>
-#include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
+#include <glm/vec3.hpp>
+
+#include <cstdint>
 #include <iostream>
 #include <utility>
 #include <vector>
 
+#include "Application/Application.h"
+#include "Cameras/Camera.h"
 #include "CelestialBodyEntity.h"
 #include "Rendering/Renderer.h"
 #include "Rendering/Shader.h"
 #include "Rendering/ShaderLoader.h"
 #include "Rendering/GlyphLoader.h"
 #include "Rendering/Texture.h"
+#include "Scene/Transform.h"
 #include "Utils/Constants.h"
 
 namespace
@@ -33,29 +37,37 @@ namespace
 BillboardEntity::BillboardEntity(const BodyData& inBodyData) :
 	SceneEntity(inBodyData.name + "Billboard"),
 	legend(inBodyData.name),
-	isMoon(inBodyData.parentName.length() != 0),
-	glyphTextureScaleFactor(inBodyData.radius * (isMoon ? moonGlyphTextureScaleFactor : bodyGlyphTextureScaleFactor)),
-	quads(ComputeQuadParams(0.0f, inBodyData.radius * (isMoon ? moonBilboardYStartScaleFactor : bodyBilboardYStartScaleFactor))),
-	material(InitialiseMaterial())
+	glyphTextureScaleFactor(inBodyData.radius * (parentID != 0 ? moonGlyphTextureScaleFactor : bodyGlyphTextureScaleFactor)),
+	quads(ComputeQuadParams(0.0f, inBodyData.radius * (parentID != 0 ? moonBilboardYStartScaleFactor : bodyBilboardYStartScaleFactor))),
+	material(InitialiseMaterial(""))
 {
 
 }
 
-BlinnPhongMaterial BillboardEntity::InitialiseMaterial()
+BlinnPhongMaterial BillboardEntity::InitialiseMaterial(const std::filesystem::path& /*texturePath*/)
 {
 	// All Textures2D used by the Billboard are created by the Glyph Loader and globally accessible, so not linked in this Material
 	return BlinnPhongMaterial(ShaderLookUpID::Enum::BILLBOARD, std::vector<Texture>{ /* texturesLoadedFromTheGlyphLoader */ }, DiffuseProperties{ GLMConstants::whiteColour });
 }
 
-void BillboardEntity::ComputeModelMatrixVUniform(const glm::vec3& bodyPosition, const glm::vec3& forward, const glm::vec3& right)
+void BillboardEntity::ComputeTransformVUniform(const float /*deltaTime*/, const Camera& camera, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity)
 {
-	modelMatrix = glm::mat4(1.0f);
+	if (Application::GetInstance().IsLegendDisplayed() == false)
+	{
+		return;
+	}
 
-	const glm::vec3& up = cross(forward, right);
-	modelMatrix[0] = glm::vec4(right, 0.0f);
-	modelMatrix[1] = glm::vec4(up, 0.0f);
-	modelMatrix[2] = glm::vec4(forward, 0.0f);
-	modelMatrix[3] = glm::vec4(bodyPosition, 1.0f);
+	transform.Reset();
+
+	const glm::vec3 parentEntityPosition(parentEntity.value().get().GetTransform().GetPosition());
+
+	// Orient text billboards so the correct side (i.e. with the glyphs rendered in the correct direction) always faces the camera (~ look at)
+	const glm::vec3& billboardForward = glm::normalize(camera.GetPosition() - parentEntityPosition);
+	const glm::vec3& billboardRight = glm::cross(camera.GetTransform().GetUpVector(), billboardForward);
+	const glm::vec3& billboardUp = glm::cross(billboardForward, billboardRight);
+
+	transform.SetPosition(parentEntityPosition);
+	transform.SetRotation(RotationMatrix{ billboardRight, billboardUp, billboardForward });
 }
 
 std::vector<QuadParams> BillboardEntity::ComputeQuadParams(const float billboardXStart, const float billboardYStart)
@@ -110,14 +122,17 @@ float BillboardEntity::GetGlyphAdvance(const GlyphParams& glyphParams) const
 	return (glyphParams.advance >> QuadMeshComponent::QUAD_VERTEX_COUNT) * glyphTextureScaleFactor;
 }
 
-void BillboardEntity::Render(const glm::vec3& bodyPosition, const glm::vec3& cameraForward, const glm::vec3& cameraRight)
+void BillboardEntity::Render()
 {
-	ComputeModelMatrixVUniform(bodyPosition, cameraForward, cameraRight);
+	if (Application::GetInstance().IsLegendDisplayed() == false)
+	{
+		return;
+	}
 
 	const Shader& shader = material.GetShader();
 	shader.Enable();
 
-	Renderer::SetModelMatrixVUniform(shader, modelMatrix);
+	Renderer::SetTransformVUniform(shader, transform);
 
 	quads.RenderGlyphs(legend, textureUnit);
 

@@ -5,6 +5,7 @@
 #include <utility>
 #include <vector>
 
+#include "Utils/Helpers.h"
 #include "Rendering/Renderer.h"
 #include "Rendering/Shader.h"
 #include "Rendering/ShaderLoader.h"
@@ -12,16 +13,16 @@
 
 
 
-MilkyWayEntity::MilkyWayEntity(const std::filesystem::path& inTexturePath) :
+MilkyWayEntity::MilkyWayEntity() :
 	SceneEntity("MilkyWay"),
-	material(InitialiseMaterial(inTexturePath))
+	material(InitialiseMaterial(FileHelper::GetSolutionAbsolutePath() + "/Textures/MilkyWay/stars.dds"))
 {
 
 }
 
-BlinnPhongMaterial MilkyWayEntity::InitialiseMaterial(const std::filesystem::path& inTexturePath)
+BlinnPhongMaterial MilkyWayEntity::InitialiseMaterial(const std::filesystem::path& texturePath)
 {
-	Texture texture(inTexturePath, GL_TEXTURE_CUBE_MAP, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
+	Texture texture(texturePath, GL_TEXTURE_CUBE_MAP, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadCubemapDDS();
 
 	return BlinnPhongMaterial(ShaderLookUpID::Enum::MILKY_WAY, std::vector<Texture>{ std::move(texture) });

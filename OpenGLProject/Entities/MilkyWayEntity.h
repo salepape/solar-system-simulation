@@ -5,24 +5,23 @@
 
 #include "Components/Meshes/SkyboxMeshComponent.h"
 #include "Rendering/BlinnPhongMaterial.h"
-#include "SceneEntity.h"
+#include "Scene/SceneEntity.h"
 
 
 
-class MilkyWayEntity : public SceneEntity
+class MilkyWayEntity : public SceneEntity, public IRenderable
 {
 public:
-	MilkyWayEntity(const std::filesystem::path& inTexturePath);
+	MilkyWayEntity();
 
-	void Render();
+	// IRenderable implementation
+	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath) /*override*/;
+	void Render() override;
+	// IRenderable implementation
 
 private:
 	SkyboxMeshComponent skybox;
 	BlinnPhongMaterial material;
-
-	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& inTexturePath);
-
-	void ComputeModelMatrixVUniform(const float /*elapsedTime*/ = 0.0f) override {};
 };
 
 

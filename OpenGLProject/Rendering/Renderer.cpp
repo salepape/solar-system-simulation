@@ -4,6 +4,7 @@
 #include <glfw/glfw3.h>
 #include <iostream>
 
+#include "Scene/Transform.h"
 #include "Shader.h"
 
 
@@ -11,7 +12,7 @@
 bool Renderer::IsOpenGLContextActive()
 {
 	const GLFWwindow* const windowWithCurrentOpenGLContext = glfwGetCurrentContext();
-	const bool isOpenGLContextActive = windowWithCurrentOpenGLContext == nullptr;
+	const bool isOpenGLContextActive = (windowWithCurrentOpenGLContext == nullptr);
 
 	if (isOpenGLContextActive == false)
 	{
@@ -22,7 +23,7 @@ bool Renderer::IsOpenGLContextActive()
 	return isOpenGLContextActive;
 }
 
-void Renderer::Clear()
+void Renderer::ClearBufferTargets()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -32,12 +33,14 @@ void Renderer::EnableDepthTesting()
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Renderer::EnableFaceCulling()
+void Renderer::EnableBackFaceCulling()
 {
 	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
 }
 
-void Renderer::DisableFaceCulling()
+void Renderer::DisableBackFaceCulling()
 {
 	glDisable(GL_CULL_FACE);
 }
@@ -68,9 +71,9 @@ void Renderer::SetDepthFctToLess()
 	glDepthFunc(GL_LESS);
 }
 
-void Renderer::SetModelMatrixVUniform(const Shader& shader, const glm::mat4& modelMatrix)
+void Renderer::SetTransformVUniform(const Shader& shader, const Transform& transform)
 {
-	shader.SetUniformMat4("vu_Model", modelMatrix);
+	shader.SetUniformMat4("vu_Model", transform.Get());
 }
 
 void Renderer::Draw(const unsigned int mode, const int32_t startIndex, const int32_t count)

@@ -6,6 +6,7 @@
 
 #include <cstddef> // std::size_t
 
+#include "Scene/Transform.h"
 #include "VertexBufferLayout.h"
 
 
@@ -58,8 +59,9 @@ void VertexArray::RegisterInstancingVertexBufferLayout(const VertexBufferLayout&
 {
 	Bind();
 
-	const std::size_t mat4SizeInBytes = sizeof(glm::mat4);
-	const std::size_t vec4sizeInBytes = sizeof(glm::vec4);
+	const std::size_t mat4SizeInBytes = Transform::GetMatrixSizeInBytes();
+	const std::size_t mat4ColSizeInBytes = Transform::GetColumnSizeInBytes();
+
 	std::size_t offset = 0;
 
 	// Iterate through the matrix containing Vertex Attribute layout for instancing
@@ -74,7 +76,7 @@ void VertexArray::RegisterInstancingVertexBufferLayout(const VertexBufferLayout&
 		// Set the rate at which the attribute index advance when rendering multiple instances of primitives in a single draw call
 		glVertexAttribDivisor(attributeLayout.location, 1);
 
-		offset += vec4sizeInBytes;
+		offset += mat4ColSizeInBytes;
 	}
 
 	Unbind();

@@ -193,6 +193,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application/Application.h" />
+    <ClInclude Include="Application/ApplicationControls.h" />
     <ClInclude Include="Application/Window.h" />
     <ClInclude Include="Buffers/DataBuffer.h" />
     <ClInclude Include="Buffers/IndexBuffer.h" />
@@ -211,15 +212,13 @@
     <ClInclude Include="Components/Meshes/QuadMeshComponent.h" />
     <ClInclude Include="Components/Meshes/SkyboxMeshComponent.h" />
     <ClInclude Include="Components/Meshes/SphereMeshComponent.h" />
+    <ClInclude Include="CoreEngine.h" />
     <ClInclude Include="Entities/BeltEntity.h" />
     <ClInclude Include="Entities/BillboardEntity.h" />
     <ClInclude Include="Entities/BodyRingsEntity.h" />
     <ClInclude Include="Entities/CelestialBodyEntity.h" />
-    <ClInclude Include="Entities/Groups/BodySystem.h" />
     <ClInclude Include="Entities/MilkyWayEntity.h" />
     <ClInclude Include="Entities/OrbitEntity.h" />
-    <ClInclude Include="Entities/SceneEntity.h" />
-    <ClInclude Include="Entities/SpacecraftEntity.h" />
     <ClInclude Include="Interactions/Headlamp.h" />
     <ClInclude Include="Interactions/InputHandler.h" />
     <ClInclude Include="Interactions/PerspectiveCameraController.h" />
@@ -227,20 +226,24 @@
     <ClInclude Include="Models/ModelLoader.h" />
     <ClInclude Include="Rendering/BlinnPhongMaterial.h" />
     <ClInclude Include="Rendering/Material.h" />
+    <ClCompile Include="CoreEngine.cpp" />
     <ClCompile Include="Rendering/PBRMaterial.h" />
     <ClInclude Include="Rendering/Renderer.h" />
     <ClInclude Include="Rendering/Shader.h" />
     <ClInclude Include="Rendering/ShaderLoader.h" />
     <ClInclude Include="Rendering/GlyphLoader.h" />
+    <ClInclude Include="Rendering/RenderQueue.h" />
     <ClInclude Include="Rendering/Texture.h" />
     <ClInclude Include="Scene/Scene.h" />
+    <ClInclude Include="Scene/SceneEntity.h" />
+    <ClInclude Include="Scene/Transform.h" />
     <ClInclude Include="Simulation/SolarSystem.h" />
-    <ClInclude Include="Simulation/SolarSystemSimulation.h" />
     <ClInclude Include="Utils/Constants.h" />
     <ClInclude Include="Utils/Helpers.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application/Application.cpp" />
+    <ClCompile Include="Application/ApplicationControls.cpp" />
     <ClCompile Include="Application/Window.cpp" />
     <ClCompile Include="Buffers/DataBuffer.cpp" />
     <ClCompile Include="Buffers/IndexBuffer.cpp" />
@@ -262,11 +265,8 @@
     <ClCompile Include="Entities/BillboardEntity.cpp" />
     <ClCompile Include="Entities/BodyRingsEntity.cpp" />
     <ClCompile Include="Entities/CelestialBodyEntity.cpp" />
-    <ClCompile Include="Entities/Groups/BodySystem.cpp" />
     <ClCompile Include="Entities/MilkyWayEntity.cpp" />
     <ClCompile Include="Entities/OrbitEntity.cpp" />
-    <ClCompile Include="Entities/SceneEntity.cpp" />
-    <ClCompile Include="Entities/SpacecraftEntity.cpp" />
     <ClCompile Include="External Dependencies/Glad/glad.c" />
     <ClCompile Include="Interactions/Headlamp.cpp" />
     <ClCompile Include="Interactions/InputHandler.cpp" />
@@ -281,10 +281,12 @@
     <ClCompile Include="Rendering/Shader.cpp" />
     <ClCompile Include="Rendering/ShaderLoader.cpp" />
     <ClCompile Include="Rendering/GlyphLoader.cpp" />
+    <ClInclude Include="Rendering/RenderQueue.cpp" />
     <ClCompile Include="Rendering/Texture.cpp" />
     <ClCompile Include="Scene/Scene.cpp" />
+    <ClCompile Include="Scene/SceneEntity.cpp" />
+    <ClCompile Include="Scene/Transform.cpp" />
     <ClCompile Include="Simulation/SolarSystem.cpp" />
-    <ClCompile Include="Simulation/SolarSystemSimulation.cpp" />
     <ClCompile Include="Utils/Helpers.cpp" />
   </ItemGroup>
   <ItemGroup>

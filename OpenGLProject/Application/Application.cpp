@@ -3,19 +3,22 @@
 #include <glad/glad.h>	// No OpenGL functions called here, just setting up GLAD
 #include <glfw/glfw3.h>
 
+#include <algorithm>	// for std::min and std::max
 #include <cassert>
+#include <cstdint>
 #include <iostream>
+#include <utility>
 
-#include "Rendering/ShaderLoader.h"
-#include "Rendering/GlyphLoader.h"
+#include "CoreEngine.h"
 #include "Window.h"
 
-Application* Application::instance = nullptr;
-
-void Application::WindowDeleter::operator()(Window* ptr)
+namespace
 {
-	delete ptr;
+	constexpr uint32_t WINDOW_DEFAULT_WIDTH = 1000;
+	constexpr uint32_t WINDOW_DEFAULT_HEIGHT = 1000;
 }
+
+Application* Application::instance = nullptr;
 
 Application& Application::GetInstance()
 {
@@ -30,11 +33,14 @@ Application& Application::GetInstance()
 
 
 
-Application::Application(const std::filesystem::path& inExecutablePath) :
+Application::Application(const std::filesystem::path& inExecutablePath, const std::string& inTitle) :
 	executablePath(inExecutablePath)
 {
+	// Singleton instance set up here
+	instance = this;
+
 	// Create the main Window from which we will render the Application and set up an OpenGL Context for it
-	window = std::unique_ptr<Window, WindowDeleter>(new Window(1000, 1000, "Solar System Simulation"));
+	window = std::make_unique<Window>(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT, inTitle);
 
 	// Load all OpenGL function pointers locations using GLAD, after an OpenGL Context has been set up for the current GLFW Window
 	if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
@@ -43,45 +49,33 @@ Application::Application(const std::filesystem::path& inExecutablePath) :
 		assert(false);
 	}
 
-	instance = this;
+	CoreEngine::GetInstance().SetUp();
 }
 
-void Application::SetUp()
+Application::~Application()
 {
-	ShaderLoader::BuildShaders();
-	GlyphLoader::LoadASCIICharacters();
+	// This destructor, even if empty, ensures it will call the custom deleter of all std::unique_ptrs from this point in this source file at compile time.
+	// All hold types will be fully-defined by then (while only forward-declared in header), which is a requirement of std::unique_ptr class (unlike std::shared_ptr)
+
+	CoreEngine::GetInstance().ClearSceneForRendering();
 }
 
-void Application::Run()
+void Application::Run() const
 {
-	SetUp();
+	CoreEngine::GetInstance().PrepareSceneForRendering();
 
-	// Main loop (run every frame)
 	while (IsClosed() == false)
 	{
-		Tick();
+		CoreEngine::GetInstance().Tick(IsPaused());
+
+		window->SwapFrontAndBackBuffers();
+		window->ProcessPendingEvents();
 	}
-}
-
-void Application::Tick()
-{
-	if (isPaused == false)
-	{
-		elapsedTime = static_cast<float>(GetTime());
-
-		deltaTime = elapsedTime - lastFrameElapsedTime;
-		lastFrameElapsedTime = elapsedTime;
-	}
-
-	Refresh();
-
-	window->SwapFrontAndBackBuffers();
-	window->ProcessPendingEvents();
 }
 
 bool Application::IsClosed() const
 {
-	return glfwWindowShouldClose(window->GLFWWindow) != 0;
+	return glfwWindowShouldClose(window->GLFWWindow);
 }
 
 void Application::Close() const
@@ -91,19 +85,27 @@ void Application::Close() const
 
 void Application::Pause(const bool inIsPaused)
 {
-	isPaused = inIsPaused;
-	if (isPaused == false)
+	if (inIsPaused)
 	{
-		glfwSetTime(static_cast<double>(lastFrameElapsedTime));
+		cachedSpeedFactor = speedFactor;
+		speedFactor = 0.0f;
 	}
-}
-
-double Application::GetTime() const
-{
-	return glfwGetTime();
+	else
+	{
+		speedFactor = cachedSpeedFactor;
+		cachedSpeedFactor = 0.0f;
+	}
 }
 
 void Application::UpdateSpeed(const float inSpeedFactor)
 {
 	speedFactor *= inSpeedFactor;
+
+	speedFactor = std::max(SPEED_MIN_THRESHOLD, speedFactor);
+	speedFactor = std::min(SPEED_MAX_THRESHOLD, speedFactor);
+}
+
+void Application::SetScene(std::unique_ptr<Scene> scene)
+{
+	CoreEngine::GetInstance().SetScene(std::move(scene));
 }

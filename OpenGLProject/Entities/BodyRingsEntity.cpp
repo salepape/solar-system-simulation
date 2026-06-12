@@ -1,8 +1,8 @@
 #include "BodyRingsEntity.h"
 
-#include <glm/ext/matrix_transform.hpp>
-#include <glm/vec3.hpp>
+//#include <glm/vec3.hpp>
 
+#include "Cameras/Camera.h"
 #include "Rendering/BlinnPhongMaterial.h"
 #include "Rendering/Renderer.h"
 #include "Rendering/Shader.h"
@@ -12,34 +12,32 @@
 
 
 BodyRingsEntity::BodyRingsEntity(RingsData&& inRingsData) :
-	SceneEntity(inRingsData.bodyName + "Rings"),
+	SceneEntity(inRingsData.bodyParent + "Rings"),
 	ringsData(inRingsData),
 	model(ringsData.modelPath, ShaderLookUpID::Enum::DEFAULT),
-	bodyName(ringsData.bodyName)
+	bodyParent(ringsData.bodyParent)
 {
 
 }
 
-void BodyRingsEntity::ComputeModelMatrixVUniform(const glm::mat4& inModelMatrix, const float /*elapsedTime*/)
+void BodyRingsEntity::ComputeTransformVUniform(const float /*deltaTime*/, const Camera& /*camera*/, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity)
 {
-	modelMatrix = inModelMatrix;
+	transform.Set(parentEntity.value().get().GetTransform().Get());
 
-	// @todo - Make this model scaling work if possible
-	// modelMatrix = glm::scale(modelMatrix, glm::vec3(ringsData.radius));
+	// @todo - Make this model scaling work after it has been set in 3D modeling software
+	// transform.Scale(glm::vec3(ringsData.radius));
 
-	// Rotate back (constant over time) around axis normal to orbital plane
-	modelMatrix = glm::rotate(modelMatrix, -GLMConstants::halfPi, GLMConstants::rightVector);
+	// Rotate (constant over time) around axis colinear to orbital plane and normal to orbital trajectory
+	transform.Rotate(-GLMConstants::halfPi, WorldSpace::XUnitVector);
 }
 
-void BodyRingsEntity::Render(const glm::mat4& inModelMatrix)
+void BodyRingsEntity::Render()
 {
-	ComputeModelMatrixVUniform(inModelMatrix);
-
 	const BlinnPhongMaterial& modelMaterial = model.GetMaterials()[0];
 	const Shader& shader = modelMaterial.GetShader();
 	shader.Enable();
 
-	Renderer::SetModelMatrixVUniform(shader, modelMatrix);
+	Renderer::SetTransformVUniform(shader, transform);
 
 	modelMaterial.EnableTextures();
 	model.Render();

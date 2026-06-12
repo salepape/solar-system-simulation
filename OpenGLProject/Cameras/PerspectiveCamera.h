@@ -4,30 +4,23 @@
 #include "Camera.h"
 
 #include <glm/mat4x4.hpp>
-#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
+#include "Scene/Transform.h"
 
 
-// Camera computing	a perspective projection-view matrix each frame from the update loop
+
+// Scene camera computing a perspective projection-view matrix each frame from the update loop
 class PerspectiveCamera : public Camera
 {
 public:
-	PerspectiveCamera(const glm::vec3& inPosition, const glm::vec3& inRotation, const float inFovY, const float inFarPlane);
+	PerspectiveCamera(const glm::vec3& inPosition, const EulerAngles& inRotation, const float inFovY, const float inFarPlane);
 
-	void UpdateForwardPosition(const float distance) override;
-	void UpdateUpPosition(const float distance) override;
-	void UpdateRightPosition(const float distance) override;
-
-	// Update pitch and yaw values only, and not roll
-	void UpdateRotation(const glm::vec2& offset) override;
+	void Translate(const float deltaPosition, const glm::vec3& direction) override;
+	void Rotate(const EulerAngles& deltaRotation) override;
 
 	glm::mat4 ComputeProjection(const float windowAspectRatio) const override;
 	glm::mat4 ComputeView() const override;
-
-protected:
-	// Compute new Forward, Right and Up vectors from new Euler Angles
-	void UpdateCameraVectors() override;
 };
 
 

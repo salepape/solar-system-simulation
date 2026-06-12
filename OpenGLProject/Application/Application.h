@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 
+class Scene;
 class Window;
 
 
@@ -13,46 +14,37 @@ class Window;
 class Application
 {
 public:
-	Application(const std::filesystem::path& inExecutablePath);
-
-	// Virtual destructor (needed to handle any custom polymorphic deletion in child classes)
-	virtual ~Application() = default;
-
-	virtual void Run();
-
-	float elapsedTime{ 0.0f };
-
-	// Factor which consistently increases/decreases the angle values travelled by the celestial bodies since the simulation started
-	float speedFactor{ 1.0f };
-
-	// Compute delta time between last frame and current one in order to reduce differences between computer processing powers
-	float deltaTime{ 0.0f };
+	Application(const std::filesystem::path& inExecutablePath, const std::string& inTitle);
+	~Application();
 
 	static Application& GetInstance();
 	Window& GetWindow() const { return *window; }
+
+	void Run() const;
 
 	// Check if GLFW window has been instructed to close
 	bool IsClosed() const;
 	void Close() const;
 
-	bool IsPaused() const { return isPaused; }
 	void Pause(const bool inIsPaused);
 
 	bool IsLegendDisplayed() const { return isLegendDisplayed; }
 	void DisplayLegend(const bool inIsLegendDisplayed) { isLegendDisplayed = inIsLegendDisplayed; }
 
-	double GetTime() const;
+	float GetSpeedFactor() const { return speedFactor; }
+	bool IsPaused() const { return speedFactor == 0.0f; }
+	bool IsMinSpeed() const { return speedFactor <= SPEED_MIN_THRESHOLD; }
+	bool IsMaxSpeed() const { return speedFactor >= SPEED_MAX_THRESHOLD; }
 
-	// @todo - Jumps in the simulation are due to the Model matrix of each body being computed from elapsed time and not delta time. Worth solving it? Seems complex...
-	// See what the simulation looks like with celestial body slower/faster movements (does not keep body positions between different speed simulations)
+	// See what the simulation run by the Application looks like when celestial bodies move slower/faster (won't be of any effect when paused)
 	void UpdateSpeed(const float inSpeedFactor);
 
 	const std::filesystem::path& GetExecutablePath() const { return executablePath; }
 
+	void SetScene(std::unique_ptr<Scene> scene);
+
 protected:
-	virtual void SetUp() = 0;
-	virtual void Tick();
-	virtual void Refresh() = 0;
+	std::unique_ptr<Window> window;
 
 private:
 	std::filesystem::path executablePath;
@@ -60,19 +52,15 @@ private:
 	// Unique Singleton instance defined in source file
 	static Application* instance;
 
-	// As Window destructor is called by unique_ptr at some point in Solar Application source file, 
-	// and Window type is incomplete at this point (forward-declared), we have to implement a custom destructor
-	struct WindowDeleter
-	{
-		void operator()(Window* ptr);
-	};
+	// Factor which consistently increases/decreases the angle values travelled by each celestial body
+	float speedFactor{ 1.0f };
+	float cachedSpeedFactor{ 0.0f };
+	constexpr static float SPEED_MIN_THRESHOLD = 0.125f;
+	constexpr static float SPEED_MAX_THRESHOLD = 512.0f;
 
-	std::unique_ptr<Window, WindowDeleter> window;
-
-	// Time elapsed since GLFW initialisation [in seconds]
-	float lastFrameElapsedTime{ 0.0f };
-	bool isPaused{ false };
 	bool isLegendDisplayed{ false };
 };
+
+
 
 #endif // APPLICATION_H

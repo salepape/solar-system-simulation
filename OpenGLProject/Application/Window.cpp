@@ -9,16 +9,16 @@
 
 
 
-Window::Window(const uint32_t inWidth, const uint32_t inHeight, const std::string& inTitle) :
-	width(inWidth),
-	height(inHeight),
+Window::Window(const uint32_t inWidthInScreenCoord, const uint32_t inHeightInScreenCoord, const std::string& inTitle) :
+	width(inWidthInScreenCoord),
+	height(inHeightInScreenCoord),
 	title(inTitle),
 	aspectRatio(width * 1.0f / height),
 	lastCursorPosition(glm::vec2(0.5f * width, 0.5f * height))
 {
 	// Initialise GLFW library before any GLFW function calls
 	const int isGlfwInitialised = glfwInit();
-	if (isGlfwInitialised == GLFW_FALSE)
+	if (isGlfwInitialised == false)
 	{
 		std::cout << "ERROR::GLFW - Failed to initialise GLFW3 library properly: closing the application..." << std::endl;
 		assert(false);
