@@ -151,23 +151,13 @@ void CoreEngine::Render(const float deltaTime)
 			if (ITransformable* const transformable = dynamic_cast<ITransformable*>(sceneEntity.get());
 				transformable != nullptr)
 			{
-				// @todo - Fix code inelegance (due to management of reference or nullopt not supported by ternary operator
-				if (const SceneEntity* parentEntity = scene->GetConstEntity(sceneEntity->parentID);
-					parentEntity != nullptr)
-				{
-					transformable->ComputeTransformVUniform(
-						deltaTime,
-						scene->sceneViewer.GetCamera(),
-						*parentEntity
-					);
-				}
-				else
-				{
-					transformable->ComputeTransformVUniform(
-						deltaTime,
-						scene->sceneViewer.GetCamera()
-					);
-				}
+				const SceneEntity* parentEntity = scene->GetConstEntity(sceneEntity->parentID);
+
+				transformable->ComputeTransformVUniform(
+					deltaTime,
+					scene->sceneViewer.GetCamera(),
+					*parentEntity
+				);
 			}
 
 			// If current Scene Entity implements IRenderable interface
