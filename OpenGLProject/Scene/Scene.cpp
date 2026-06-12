@@ -43,7 +43,7 @@ void Scene::TagEntityAsAttached(const uint32_t entityIDBase, const uint32_t enti
 	eChild->parentID = entityIDBase;
 }
 
-uint32_t Scene::AddEntity(const RenderType handle, std::unique_ptr<SceneEntity> inEntity)
+uint32_t Scene::AddEntity(const RenderableType handle, std::unique_ptr<SceneEntity> inEntity)
 {
 	const uint32_t addedEntityID = inEntity->GetID();
 	sceneEntities[handle].push_back(std::move(inEntity));

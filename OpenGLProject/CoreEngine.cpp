@@ -55,9 +55,10 @@ void CoreEngine::ClearSceneForRendering()
 
 void CoreEngine::QueueRenderCommands()
 {
+	// Rendering layer - Apply by default on all IRenderables
 	renderQueue.Push(
 		RenderCommand{
-			RenderType::ALL,
+			RenderableType::ALL,
 			[]()
 			{
 				Renderer::EnableDepthTesting();
@@ -73,10 +74,10 @@ void CoreEngine::QueueRenderCommands()
 		}
 	);
 
-	// MILKY WAY (not part of Scene Entities hash map, member variable of SS class)	
+	// Rendering layer 2 - Opaque background
 	renderQueue.Push(
 		RenderCommand{
-			RenderType::BACKGROUND,
+			RenderableType::BACKGROUND,
 			[&]()
 			{
 				scene->sceneViewer.GetCamera().SetProjectionViewVUniform(ViewMode::InfiniteLookAt, Application::GetInstance().GetWindow().GetAspectRatio());
@@ -84,10 +85,10 @@ void CoreEngine::QueueRenderCommands()
 		}
 	);
 
-	// CELESTIAL BODIES, ORBITS, BILLBOARDS & BELTS (part of Scene Entities hash map)
+	// Rendering layer 3 - Opaque IRenderables
 	renderQueue.Push(
 		RenderCommand{
-			RenderType::OPAQUE_ENTITY,
+			RenderableType::OPAQUE_ENTITY,
 			[&]()
 			{
 				scene->sceneViewer.GetCamera().SetProjectionViewVUniform(ViewMode::FiniteLookAt, Application::GetInstance().GetWindow().GetAspectRatio());
@@ -96,10 +97,10 @@ void CoreEngine::QueueRenderCommands()
 		}
 	);
 
-	// BODY RINGS (part of Scene Entities hash map)
+	// Rendering layer 4 - Non-opaque IRenderables
 	renderQueue.Push(
 		RenderCommand{
-			RenderType::TRANSPARENT_ENTITY,
+			RenderableType::TRANSPARENT_ENTITY,
 			[&]()
 			{
 				OrderForTransparencyPass(scene->sceneViewer.GetCamera().GetPosition());
@@ -121,7 +122,7 @@ void CoreEngine::UnqueueRenderCommands()
 void CoreEngine::OrderForTransparencyPass(const glm::vec3& cameraPosition)
 {
 	// Custom std::vector comparator so we order the closest body to the camera at the end
-	std::sort(scene->sceneEntities[RenderType::TRANSPARENT_ENTITY].begin(), scene->sceneEntities[RenderType::TRANSPARENT_ENTITY].end(),
+	std::sort(scene->sceneEntities[RenderableType::TRANSPARENT_ENTITY].begin(), scene->sceneEntities[RenderableType::TRANSPARENT_ENTITY].end(),
 		[&cameraPosition](const std::unique_ptr<SceneEntity>& e1, const std::unique_ptr<SceneEntity>& e2)
 		{
 			return glm::distance(cameraPosition, e1->GetTransform().GetPosition()) < glm::distance(cameraPosition, e2->GetTransform().GetPosition());
@@ -131,13 +132,6 @@ void CoreEngine::OrderForTransparencyPass(const glm::vec3& cameraPosition)
 void CoreEngine::Render(const float deltaTime)
 {
 	scene->sceneViewer.ProcessUserInput(deltaTime);
-
-	// Handle: packed ID composed of several bytes of info giving priority of which to render first (distance-based)
-	// Render command: list of OpenGL bindings ("to submit to GPU") to activate alongside handle 
-	// Render queue: go through map, where each packed ID corresponds to batch of IRenderables which needs same Shader/UBO bindings
-
-	// RENDER QUEUE ORDER: 1) BACKGROUND 2) OPAQUE ENTITIES 3) NON-OPAQUE ENTITIES
-	// RENDER COMMAND: CHAIN OF GL FUNCTIONS ASSOCIATED WITH GROUP OF ENTITIES TO RENDER
 
 	for (const RenderCommand& renderCommand : renderQueue.queue)
 	{

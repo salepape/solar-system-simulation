@@ -12,6 +12,7 @@ class Scene;
 
 
 
+// @todo - Do SPIKE for going full ECS instead of only Entity-Component Composition relationships
 class CoreEngine
 {
 public:

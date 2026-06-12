@@ -38,7 +38,7 @@ void SolarSystem::BuildBackground()
 {
 	// Background which can never be reached (based off a Skybox)
 	Scene::AddEntity(
-		RenderType::BACKGROUND,
+		RenderableType::BACKGROUND,
 		std::make_unique<MilkyWayEntity>()
 	);
 }
@@ -109,7 +109,7 @@ void SolarSystem::BuildBodySystems()
 		const BodyData bodyData{ texturePath, celestialBodyName, scaledRadius, scaledDistanceToParent, obliquity, scaledOrbitalPeriod, spinPeriod, orbitalInclination };
 
 		const uint32_t addedBodyID = Scene::AddEntity(
-			RenderType::OPAQUE_ENTITY,
+			RenderableType::OPAQUE_ENTITY,
 			std::make_unique<CelestialBodyEntity>(bodyData)
 		);
 
@@ -122,7 +122,7 @@ void SolarSystem::BuildBodySystems()
 		}
 
 		const uint32_t addedOrbitID = Scene::AddEntity(
-			RenderType::TRANSPARENT_ENTITY,
+			RenderableType::TRANSPARENT_ENTITY,
 			std::make_unique<OrbitEntity>(bodyData)
 		);
 
@@ -133,7 +133,7 @@ void SolarSystem::BuildBodySystems()
 		}
 
 		const uint32_t addedBillboardID = Scene::AddEntity(
-			RenderType::TRANSPARENT_ENTITY,
+			RenderableType::TRANSPARENT_ENTITY,
 			std::make_unique<BillboardEntity>(bodyData)
 		);
 
@@ -165,7 +165,7 @@ void SolarSystem::BuildBodyRings()
 
 		// Create Rings Scene Entity and store it as transparent in IRenderable map, NOT in Body System
 		const uint32_t addedBodyRingsID = Scene::AddEntity(
-			RenderType::TRANSPARENT_ENTITY,
+			RenderableType::TRANSPARENT_ENTITY,
 			std::make_unique<BodyRingsEntity>(RingsData{ modelPath, bodyParent, radius })
 		);
 
@@ -214,7 +214,7 @@ void SolarSystem::BuildBelts()
 		}
 		const float flatnessFactor = std::stof(beltParams[7]);
 
-		Scene::AddEntity(RenderType::OPAQUE_ENTITY,
+		Scene::AddEntity(RenderableType::OPAQUE_ENTITY,
 			std::make_unique<BeltEntity>(
 				beltName,
 				InstanceParams{ modelPath, instanceCount, sizeRangeLowerBound, sizeRangeSpan },
