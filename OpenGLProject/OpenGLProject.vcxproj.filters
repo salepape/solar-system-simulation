@@ -237,6 +237,9 @@
     <ClInclude Include="Utils/Constants.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="CoreEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application/Application.cpp">
@@ -359,7 +362,7 @@
     <ClCompile Include="Rendering/GlyphLoader.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-	<ClInclude Include="Rendering/RenderQueue.cpp">
+    <ClInclude Include="Rendering/RenderQueue.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClInclude>
     <ClCompile Include="Rendering/Texture.cpp">
@@ -379,6 +382,9 @@
     </ClCompile>
     <ClCompile Include="Utils/Helpers.cpp">
       <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="CoreEngine.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

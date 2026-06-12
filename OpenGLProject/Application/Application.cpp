@@ -5,14 +5,11 @@
 
 #include <algorithm>	// for std::min and std::max
 #include <cassert>
+#include <cstdint>
 #include <iostream>
 #include <utility>
 
-#include "Application/ApplicationControls.h"
-#include "Rendering/Renderer.h"
-#include "Rendering/ShaderLoader.h"
-#include "Rendering/GlyphLoader.h"
-#include "Scene/Scene.h"
+#include "CoreEngine.h"
 #include "Window.h"
 
 namespace
@@ -52,8 +49,7 @@ Application::Application(const std::filesystem::path& inExecutablePath, const st
 		assert(false);
 	}
 
-	ShaderLoader::BuildShaders();
-	GlyphLoader::LoadASCIICharacters();
+	CoreEngine::GetInstance().SetUp();
 }
 
 Application::~Application()
@@ -61,57 +57,20 @@ Application::~Application()
 	// This destructor, even if empty, ensures it will call the custom deleter of all std::unique_ptrs from this point in this source file at compile time.
 	// All hold types will be fully-defined by then (while only forward-declared in header), which is a requirement of std::unique_ptr class (unlike std::shared_ptr)
 
-	if (scene != nullptr)
-	{
-		scene->UnqueueRenderCommands();
-	}
+	CoreEngine::GetInstance().ClearSceneForRendering();
 }
 
-void Application::Run()
+void Application::Run() const
 {
-	if (scene != nullptr)
-	{
-		scene->QueueRenderCommands();
-	}
+	CoreEngine::GetInstance().PrepareSceneForRendering();
 
 	while (IsClosed() == false)
 	{
-		Tick();
+		CoreEngine::GetInstance().Tick(IsPaused());
+
+		window->SwapFrontAndBackBuffers();
+		window->ProcessPendingEvents();
 	}
-}
-
-void Application::Tick()
-{
-	// Delta time should always be computed, regardless of pause state
-	if (IsPaused() == false)
-	{
-		elapsedPlayTime = GetElapsedTime() - elapsedPauseTime;
-		deltaTime = elapsedPlayTime - lastFrameElapsedPlayTime;
-		lastFrameElapsedPlayTime = elapsedPlayTime;
-	}
-	else
-	{
-		elapsedPauseTime = GetElapsedTime() - elapsedPlayTime;
-		deltaTime = elapsedPauseTime - lastFrameElapsedPauseTime;
-		lastFrameElapsedPauseTime = elapsedPauseTime;
-	}
-
-	Refresh();
-}
-
-void Application::Refresh()
-{
-	Renderer::ClearBufferTargets();
-
-	ApplicationControls::ProcessUserInput();
-
-	if (scene != nullptr)
-	{
-		scene->Update(deltaTime);
-	}
-
-	window->SwapFrontAndBackBuffers();
-	window->ProcessPendingEvents();
 }
 
 bool Application::IsClosed() const
@@ -122,11 +81,6 @@ bool Application::IsClosed() const
 void Application::Close() const
 {
 	glfwSetWindowShouldClose(window->GLFWWindow, true);
-}
-
-float Application::GetElapsedTime() const
-{
-	return static_cast<float>(glfwGetTime());
 }
 
 void Application::Pause(const bool inIsPaused)
@@ -151,7 +105,7 @@ void Application::UpdateSpeed(const float inSpeedFactor)
 	speedFactor = std::min(SPEED_MAX_THRESHOLD, speedFactor);
 }
 
-void Application::AddScene(std::unique_ptr<Scene> inScene)
+void Application::SetScene(std::unique_ptr<Scene> scene)
 {
-	scene = std::move(inScene);
+	CoreEngine::GetInstance().SetScene(std::move(scene));
 }

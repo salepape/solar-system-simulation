@@ -1,4 +1,5 @@
 #include "Application/Application.h"
+#include "CoreEngine.h"
 #include "Simulation/SolarSystem.h"
 
 #include <filesystem>
@@ -15,7 +16,7 @@ int main(int /*argc*/, char** argv)
 
 	// 1 second corresponds to 1 Earth day in the simulation
 	Application solarSystemSimulation(executablePath, "Solar System Simulation");
-	solarSystemSimulation.AddScene(std::make_unique<SolarSystem>());
+	solarSystemSimulation.SetScene(std::make_unique<SolarSystem>());
 
 	solarSystemSimulation.Run();
 }

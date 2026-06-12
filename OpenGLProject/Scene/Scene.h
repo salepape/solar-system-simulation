@@ -13,6 +13,7 @@
 #include "Interactions/PerspectiveCameraController.h"
 #include "Rendering/RenderQueue.h"
 
+struct EulerAngles;
 class SceneEntity;
 
 
@@ -27,19 +28,15 @@ public:
 	// Virtual destructor (needed to handle any custom polymorphic deletion in child classes)
 	virtual ~Scene();
 
+	// @todo - Replace it by map sorted by handle keys. Handle = bits concatenation determining draw order (distance-based)
+	// Hash map of ptrs owning all Entities of the Scene.
+	// Warning: ownership should never be transferred!
+	std::unordered_map<RenderType, std::vector<std::unique_ptr<SceneEntity>>> sceneEntities;
+
+	// Count as "in-editor" camera rather than a Scene Entity that would be instantiated from the Application layer
+	PerspectiveCameraController sceneViewer;
+
 	virtual void Update(const float deltaTime);
-
-	void QueueRenderCommands();
-	void UnqueueRenderCommands();
-
-	// Re-allocate the total number of bytes needed for the vector after adding the provided capacity
-	void AllocateMemory(const size_t numOfBytes);
-
-	// Make Scene Entity model matrix (i.e. transform) inherit the one from its parent provided as argument (called "attachment" or anchoring)
-	void TagEntityAsAttached(const uint32_t entityIDBase, const uint32_t entityIDChild) const;
-
-protected:
-	uint32_t AddEntity(const RenderType handle, std::unique_ptr<SceneEntity> inEntity);
 
 	// Return a non-owning reference of a Scene Entity referred to by its ID
 	SceneEntity* GetEntity(const uint32_t entityID) const;
@@ -53,19 +50,16 @@ protected:
 	// Return a non-owning reference of a const Scene Entity referred to by its name
 	const SceneEntity* GetConstEntity(const std::string& entityName) const;
 
-	// @todo - To be done only for entities in FOV
-	// Sort scene entities with level of transparency from farthest to closest according to camera, to render overlapping non-opaque objects correctly per frame
-	void OrderForTransparencyPass(const glm::vec3& cameraPosition);
+protected:
+	// Re-allocate the total number of bytes needed for the vector after adding the provided capacity
+	void AllocateMemory(const size_t numOfBytes);
+
+	// Make Scene Entity model matrix (i.e. transform) inherit the one from its parent provided as argument (called "attachment" or anchoring)
+	void TagEntityAsAttached(const uint32_t entityIDBase, const uint32_t entityIDChild) const;
+
+	uint32_t AddEntity(const RenderType handle, std::unique_ptr<SceneEntity> inEntity);
 
 	void SetSceneViewerTransformStart(const glm::vec3& inPosition, const EulerAngles& inRotation);
-
-	// Count as "in-editor" camera rather than a Scene Entity that would be instantiated from the Application layer
-	PerspectiveCameraController sceneViewer;
-
-	// @todo - Replace it by map sorted by handle keys. Handle = bits concatenation determining draw order (distance-based)
-	// Hash map of ptrs owning all Entities of the Scene.
-	// Warning: ownership should never be transferred!
-	std::unordered_map<RenderType, std::vector<std::unique_ptr<SceneEntity>>> sceneEntities;
 };
 
 

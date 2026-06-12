@@ -212,6 +212,7 @@
     <ClInclude Include="Components/Meshes/QuadMeshComponent.h" />
     <ClInclude Include="Components/Meshes/SkyboxMeshComponent.h" />
     <ClInclude Include="Components/Meshes/SphereMeshComponent.h" />
+    <ClInclude Include="CoreEngine.h" />
     <ClInclude Include="Entities/BeltEntity.h" />
     <ClInclude Include="Entities/BillboardEntity.h" />
     <ClInclude Include="Entities/BodyRingsEntity.h" />
@@ -225,6 +226,7 @@
     <ClInclude Include="Models/ModelLoader.h" />
     <ClInclude Include="Rendering/BlinnPhongMaterial.h" />
     <ClInclude Include="Rendering/Material.h" />
+    <ClCompile Include="CoreEngine.cpp" />
     <ClCompile Include="Rendering/PBRMaterial.h" />
     <ClInclude Include="Rendering/Renderer.h" />
     <ClInclude Include="Rendering/Shader.h" />

@@ -10,6 +10,7 @@
 #include "Application/Application.h"
 #include "Application/ApplicationControls.h"
 #include "Application/Window.h"
+#include "CoreEngine.h"
 #include "InputHandler.h"
 #include "Utils/Helpers.h"
 
@@ -196,7 +197,7 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 
 		const auto& IsReleaseActionRegistered = [](const float pressTime) -> bool
 		{
-			return Application::GetInstance().GetElapsedTime() - pressTime > ApplicationControls::KEY_RELEASE_SENSITIVITY;
+			return CoreEngine::GetInstance().GetElapsedTime() - pressTime > ApplicationControls::KEY_RELEASE_SENSITIVITY;
 		};
 
 		// Pause simulation
@@ -205,7 +206,7 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 			if (action == GLFW_PRESS && cameraController->pauseStartTime == 0.0f)
 			{
 				Application::GetInstance().Pause(true);
-				cameraController->pauseStartTime = Application::GetInstance().GetElapsedTime();
+				cameraController->pauseStartTime = CoreEngine::GetInstance().GetElapsedTime();
 			}
 
 			if (action == GLFW_RELEASE && IsReleaseActionRegistered(cameraController->pauseStartTime))
@@ -220,7 +221,7 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 			if (action == GLFW_PRESS && cameraController->cursorModeStartTime == 0.0f)
 			{
 				window->SetCursorMode(GLFW_CURSOR_NORMAL);
-				cameraController->cursorModeStartTime = Application::GetInstance().GetElapsedTime();
+				cameraController->cursorModeStartTime = CoreEngine::GetInstance().GetElapsedTime();
 			}
 
 			if (action == GLFW_RELEASE && IsReleaseActionRegistered(cameraController->cursorModeStartTime))
@@ -235,7 +236,7 @@ void PerspectiveCameraController::SetKeyboardInputGLFWCallback()
 			if (action == GLFW_PRESS && cameraController->displayLegendStartTime == 0.0f)
 			{
 				Application::GetInstance().DisplayLegend(true);
-				cameraController->displayLegendStartTime = Application::GetInstance().GetElapsedTime();
+				cameraController->displayLegendStartTime = CoreEngine::GetInstance().GetElapsedTime();
 			}
 
 			if (action == GLFW_RELEASE && IsReleaseActionRegistered(cameraController->displayLegendStartTime))

@@ -6,6 +6,7 @@
 #include "Application/Application.h"
 #include "Application/ApplicationControls.h"
 #include "Cameras/Camera.h"
+#include "CoreEngine.h"
 
 
 
@@ -31,12 +32,12 @@ void Headlamp::UpdateHeadlight(const Camera& camera)
 
 void Headlamp::UpdateHeadlightState(const int32_t action)
 {
-	const bool isReleaseActionRegistered = Application::GetInstance().GetElapsedTime() - headlightStartTime > ApplicationControls::KEY_RELEASE_SENSITIVITY;
+	const bool isReleaseActionRegistered = CoreEngine::GetInstance().GetElapsedTime() - headlightStartTime > ApplicationControls::KEY_RELEASE_SENSITIVITY;
 
 	if (action == GLFW_PRESS && headlightStartTime == 0.0f)
 	{
 		SetHeadlightState(true);
-		headlightStartTime = Application::GetInstance().GetElapsedTime();
+		headlightStartTime = CoreEngine::GetInstance().GetElapsedTime();
 	}
 
 	if (action == GLFW_RELEASE && isReleaseActionRegistered)

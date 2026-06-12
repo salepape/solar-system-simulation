@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "Application/Application.h"
+#include "CoreEngine.h"
 #include "Rendering/Renderer.h"
 #include "Rendering/Shader.h"
 #include "Rendering/ShaderLoader.h"
@@ -34,7 +35,7 @@ void BeltEntity::ComputeInstanceTransforms()
 	const int32_t rangeSpanOffset = static_cast<int32_t>(upperBoundOffset - lowerBoundOffset);
 
 	// Initialise random seed
-	std::srand(static_cast<uint32_t>(Application::GetInstance().GetElapsedTime()));
+	std::srand(static_cast<uint32_t>(CoreEngine::GetInstance().GetElapsedTime()));
 
 	transforms.reserve(instanceParams.count);
 	for (uint32_t i = 0; i < instanceParams.count; ++i)
