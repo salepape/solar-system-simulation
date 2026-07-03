@@ -36,7 +36,7 @@ namespace ShaderLookUpID
 };
 
 // Global access point to all Shaders that can be applied on Scene Entity/Objects of the simulation
-class ShaderLibrary
+class ShaderLibrary final
 {
 public:
 	// Instantiate Shaders for all Scene Entity/Objects of the simulation based on GLSL Vertex/Fragment Shaders, and common Uniform variables

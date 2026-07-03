@@ -32,7 +32,7 @@ struct GlyphParams
 };
 
 // Globally accessible FreeType glyph loader of a partial ASCII table that stores its params in a structure and instantiate a Texture for each
-class GlyphLibrary
+class GlyphLibrary final
 {
 public:
 	static void LoadASCIICharacters();
