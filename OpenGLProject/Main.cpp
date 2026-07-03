@@ -14,9 +14,9 @@ int main(int /*argc*/, char** argv)
 
 	std::cout << "Executable path: " << executablePath.string() << std::endl;
 
-	// 1 second corresponds to 1 Earth day in the simulation
-	Application solarSystemSimulation(executablePath, "Solar System Simulation");
-	solarSystemSimulation.SetScene(std::make_unique<SolarSystem>());
+	// 1 second corresponds to 1 Earth day in the Solar System simulation
+	Application::GetInstance().SetParameters(executablePath, "Solar System Simulation");
+	Application::GetInstance().SetScene(std::make_unique<SolarSystem>());
 
-	solarSystemSimulation.Run();
+	Application::GetInstance().Run();
 }

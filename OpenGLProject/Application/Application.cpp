@@ -24,8 +24,7 @@ Application& Application::GetInstance()
 {
 	if (instance == nullptr)
 	{
-		std::cout << "ERROR::APPLICATION - A class attempts to get a reference to the Application singleton while it has not been initialised!" << std::endl;
-		assert(false);
+		instance = new Application();
 	}
 
 	return *instance;
@@ -33,11 +32,9 @@ Application& Application::GetInstance()
 
 
 
-Application::Application(const std::filesystem::path& inExecutablePath, const std::string& inTitle) :
-	executablePath(inExecutablePath)
+void Application::SetParameters(const std::filesystem::path& inExecutablePath, const std::string& inTitle)
 {
-	// Singleton instance set up here
-	instance = this;
+	executablePath = inExecutablePath;
 
 	// Create the main Window from which we will render the Application and set up an OpenGL Context for it
 	window = std::make_unique<Window>(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT, inTitle);

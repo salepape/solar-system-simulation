@@ -14,7 +14,7 @@ class Window;
 class Application
 {
 public:
-	Application(const std::filesystem::path& inExecutablePath, const std::string& inTitle);
+	void SetParameters(const std::filesystem::path& inExecutablePath, const std::string& inTitle);
 	~Application();
 
 	static Application& GetInstance();
