@@ -10,7 +10,6 @@
 
 
 
-// @todo - Name it differently: other Star-based systems will not have Milky Way as background
 class GalaxyBackgroundEntity : public SceneEntity, public IRenderable
 {
 public:

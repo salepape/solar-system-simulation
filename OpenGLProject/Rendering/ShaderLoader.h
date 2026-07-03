@@ -8,8 +8,6 @@ class Shader;
 
 
 
-// @todo - Re-arrange so code is independant from the simulation ("Engine" code)
-
 // To be used to refer to any Shader instead of relying on raw strings (layer of security over the existence of LookUpIDs when instantiating or look-up functions)
 namespace ShaderLookUpID
 {
