@@ -1,10 +1,32 @@
 #include "UniformBuffer.h"
 
 #include <glad/glad.h>
+#include <iostream>
 
 #include "Rendering/Shader.h"
 
 uint32_t UniformBuffer::globalBlockBindingPoint = 0;
+
+std::unordered_map<GLSLUniform::Enum, std::vector<ShaderLookUpID::Enum>> UniformBuffer::uniformGroups
+{
+	{
+		GLSLUniform::PROJECTION_VIEW,
+		{
+			ShaderLookUpID::Enum::DEFAULT,
+			ShaderLookUpID::Enum::STAR,
+			ShaderLookUpID::Enum::BILLBOARD,
+			ShaderLookUpID::Enum::BELT,
+			ShaderLookUpID::Enum::GALAXY_BACKGROUND,
+		}
+	},
+	{
+		GLSLUniform::LINE_OF_SIGHT,
+		{
+			ShaderLookUpID::Enum::DEFAULT,
+			ShaderLookUpID::Enum::BELT,
+		}
+	}
+};
 
 
 
@@ -14,7 +36,7 @@ UniformBuffer::UniformBuffer(const std::string& inGLSLUniformName, const GLSLUni
 
 	blockBindingPoint = globalBlockBindingPoint++;
 
-	for (const ShaderLookUpID::Enum shaderLookUpID : ShaderLibrary::GetShaderGroup(inGLSLUniform))
+	for (const ShaderLookUpID::Enum shaderLookUpID : GetShaderGroup(inGLSLUniform))
 	{
 		const Shader& shader = ShaderLibrary::GetShader(shaderLookUpID);
 		const uint32_t shaderID = shader.GetRendererID();
@@ -58,4 +80,15 @@ void UniformBuffer::SetData(const UniformGLSLStruct& inStruct)
 	SetSubData(inStruct.GetUniformFields());
 
 	Unbind();
+}
+
+std::vector<ShaderLookUpID::Enum>& UniformBuffer::GetShaderGroup(const GLSLUniform::Enum inGLSLUniform)
+{
+	if (uniformGroups.find(inGLSLUniform) == uniformGroups.end())
+	{
+		std::cout << "ERROR::UNIFORM_BUFFER - Uniform " << GLSLUniform::All[inGLSLUniform] << " has not been found!" << std::endl;
+		assert(false);
+	}
+
+	return uniformGroups[inGLSLUniform];
 }

@@ -5,9 +5,11 @@
 #include <cstddef> // std::size_t
 #include <cstdint>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "DataBuffer.h"
+#include "Rendering/ShaderLoader.h"
 
 
 
@@ -63,6 +65,9 @@ public:
 private:
 	uint32_t blockBindingPoint{ 0 };
 	static uint32_t globalBlockBindingPoint;
+
+	static std::unordered_map<GLSLUniform::Enum, std::vector<ShaderLookUpID::Enum>> uniformGroups;
+	static std::vector<ShaderLookUpID::Enum>& GetShaderGroup(const GLSLUniform::Enum inGLSLUniform);
 };
 
 

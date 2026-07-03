@@ -2,11 +2,7 @@
 #define SHADER_LOADER_H
 
 #include <array>
-#include <string>
-#include <unordered_map>
 #include <vector>
-
-#include "Buffers/UniformBuffer.h"
 
 class Shader;
 
@@ -39,15 +35,13 @@ namespace ShaderLookUpID
 class ShaderLibrary final
 {
 public:
-	// Instantiate Shaders for all Scene Entity/Objects of the simulation based on GLSL Vertex/Fragment Shaders, and common Uniform variables
-	static void BuildShaders();
+	// Instantiate default Shaders for all Scene Entity/Objects of the simulation based on GLSL Vertex/Fragment Shaders, and common Uniform variables
+	static void BuildDefaultShaders();
 
 	static Shader& GetShader(const ShaderLookUpID::Enum inShaderName);
-	static std::vector<ShaderLookUpID::Enum>& GetShaderGroup(const GLSLUniform::Enum inGLSLUniform);
 
 private:
 	static std::vector<Shader> shaders;
-	static std::unordered_map<GLSLUniform::Enum, std::vector<ShaderLookUpID::Enum>> uniformGroups;
 };
 
 

@@ -4,36 +4,16 @@
 #include <cassert>
 #include <cstdint>
 #include <iostream>
+#include <string>
 
 #include "Shader.h"
 #include "Utils/Helpers.h"
 
 std::vector<Shader> ShaderLibrary::shaders;
 
-std::unordered_map<GLSLUniform::Enum, std::vector<ShaderLookUpID::Enum>> ShaderLibrary::uniformGroups
-{
-	{
-		GLSLUniform::PROJECTION_VIEW,
-		{
-			ShaderLookUpID::Enum::DEFAULT,
-			ShaderLookUpID::Enum::STAR,
-			ShaderLookUpID::Enum::BILLBOARD,
-			ShaderLookUpID::Enum::BELT,
-			ShaderLookUpID::Enum::GALAXY_BACKGROUND,
-		}
-	},
-	{
-		GLSLUniform::LINE_OF_SIGHT,
-		{
-			ShaderLookUpID::Enum::DEFAULT,
-			ShaderLookUpID::Enum::BELT,
-		}
-	}
-};
 
 
-
-void ShaderLibrary::BuildShaders()
+void ShaderLibrary::BuildDefaultShaders()
 {
 	shaders.reserve(ShaderLookUpID::Num);
 
@@ -66,15 +46,4 @@ Shader& ShaderLibrary::GetShader(const ShaderLookUpID::Enum inShaderLookUpID)
 	}
 
 	return *shaderIt;
-}
-
-std::vector<ShaderLookUpID::Enum>& ShaderLibrary::GetShaderGroup(const GLSLUniform::Enum inGLSLUniform)
-{
-	if (uniformGroups.find(inGLSLUniform) == uniformGroups.end())
-	{
-		std::cout << "ERROR::SHADER_LOADER - Uniform " << GLSLUniform::All[inGLSLUniform] << " has not been found!" << std::endl;
-		assert(false);
-	}
-
-	return uniformGroups[inGLSLUniform];
 }

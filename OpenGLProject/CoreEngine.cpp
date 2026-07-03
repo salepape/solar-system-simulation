@@ -36,7 +36,7 @@ CoreEngine& CoreEngine::GetInstance()
 
 void CoreEngine::SetUp()
 {
-	ShaderLibrary::BuildShaders();
+	ShaderLibrary::BuildDefaultShaders();
 	GlyphLibrary::LoadASCIICharacters();
 }
 
