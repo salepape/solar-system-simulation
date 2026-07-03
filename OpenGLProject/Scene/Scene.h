@@ -37,16 +37,12 @@ public:
 	virtual void Update(const float deltaTime);
 
 	// Return a non-owning reference of a Scene Entity referred to by its ID
-	SceneEntity* GetEntity(const uint32_t entityID) const;
+	template<typename EntityType = const SceneEntity>
+	EntityType* GetEntity(const uint32_t entityID) const;
 
 	// Return a non-owning reference of a Scene Entity referred to by its name
-	SceneEntity* GetEntity(const std::string& entityName) const;
-
-	// Return a non-owning reference of a const Scene Entity referred to by its ID
-	const SceneEntity* GetConstEntity(const uint32_t entityID) const;
-
-	// Return a non-owning reference of a const Scene Entity referred to by its name
-	const SceneEntity* GetConstEntity(const std::string& entityName) const;
+	template<typename EntityType = const SceneEntity>
+	EntityType* GetEntity(const std::string& entityName) const;
 
 protected:
 	// Re-allocate the total number of bytes needed for the vector after adding the provided capacity

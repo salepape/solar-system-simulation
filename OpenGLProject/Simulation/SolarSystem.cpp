@@ -30,7 +30,7 @@ SolarSystem::SolarSystem()
 	// Need to override Camera Transform start, now that Solar System data objects have been initialised
 	// rotation = (does nothing, around orbital plane normal, around orbital plane tangent)
 	Scene::SetSceneViewerTransformStart(
-		glm::vec3(0.0f, GetBody("Sun").radius * 1.75f, -25.0f),
+		glm::vec3(0.0f, Scene::GetEntity<const CelestialBodyEntity>("Sun")->GetBodyData().radius * 1.75f, -25.0f),
 		EulerAngles{ 0.0f, glm::radians(90.0f), glm::radians(-25.0f) });
 }
 
@@ -80,14 +80,14 @@ void SolarSystem::BuildCelestialBodySystems()
 			constexpr float earthRadiusScaleFactor = 1000.0f;
 
 			const float scaledTravelDistance = distanceToParent / sunEarthDistance * earthRadiusScaleFactor;
-			scaledDistanceToParent = GetBody(celestialBodyParentName).radius + scaledTravelDistance;
+			scaledDistanceToParent = Scene::GetEntity<const CelestialBodyEntity>(celestialBodyParentName)->GetBodyData().radius + scaledTravelDistance;
 		}
 		// "Planet" and "Dwarf Planet" types
 		else
 		{
 			constexpr float sunEarthDistanceScaleFactor = 10.0f;
 
-			const BodyData& celestialBodyData = GetBody(celestialBodyNameCache);
+			const BodyData& celestialBodyData = Scene::GetEntity<const CelestialBodyEntity>(celestialBodyNameCache)->GetBodyData();
 			const float scaledTravelDistance = distanceToParent / sunEarthDistance * sunEarthDistanceScaleFactor;
 			if (celestialBodyName == "Mercury")
 			{
@@ -102,7 +102,7 @@ void SolarSystem::BuildCelestialBodySystems()
 		const std::filesystem::path& texturePath(bodyPaths[celestialBodyName]);
 		const float scaledRadius = std::stof(celestialBodyParams[2]) / earthRadius * (celestialBodyType == "Star" ? 0.5f : 1.0f);
 		const float obliquity = std::stof(celestialBodyParams[4]);
-		const float scaledOrbitalPeriod = std::stof(celestialBodyParams[5]) * (celestialBodyType == "DwarfPlanet" ? GetBody("Earth").orbitalPeriod : 1.0f);
+		const float scaledOrbitalPeriod = std::stof(celestialBodyParams[5]) * (celestialBodyType == "DwarfPlanet" ? Scene::GetEntity<const CelestialBodyEntity>("Earth")->GetBodyData().orbitalPeriod : 1.0f);
 		const float spinPeriod = std::stof(celestialBodyParams[6]);
 		const float orbitalInclination = std::stof(celestialBodyParams[7]);
 
@@ -169,7 +169,7 @@ void SolarSystem::BuildBodyRings()
 			std::make_unique<BodyRingsEntity>(RingsData{ modelPath, bodyParent, radius })
 		);
 
-		Scene::TagEntityAsAttached(Scene::GetConstEntity(bodyParent)->GetID(), addedBodyRingsID);
+		Scene::TagEntityAsAttached(Scene::GetEntity(bodyParent)->GetID(), addedBodyRingsID);
 	}
 }
 
@@ -191,8 +191,8 @@ void SolarSystem::BuildBelts()
 		const uint32_t instanceCount = std::stoi(beltParams[2]);
 		const float sizeRangeLowerBound = std::stof(beltParams[3]);
 		const uint32_t sizeRangeSpan = std::stoi(beltParams[4]);
-		const float outerBound = GetBody(beltParams[5]).distanceToParent;
-		const float innerBound = GetBody(beltParams[6]).distanceToParent;
+		const float outerBound = Scene::GetEntity<const CelestialBodyEntity>(beltParams[5])->GetBodyData().distanceToParent;
+		const float innerBound = Scene::GetEntity<const CelestialBodyEntity>(beltParams[6])->GetBodyData().distanceToParent;
 
 		float majorRadius = 0.0f;
 		if (beltName == "MainAsteroidBelt")
@@ -222,17 +222,4 @@ void SolarSystem::BuildBelts()
 			)
 		);
 	}
-}
-
-const BodyData& SolarSystem::GetBody(const std::string& bodyName) const
-{
-	// Warning: assumes body pointer is valid!
-	const CelestialBodyEntity* const bodyEntity = dynamic_cast<CelestialBodyEntity*>(Scene::GetEntity(bodyName));
-	if (bodyEntity == nullptr)
-	{
-		std::cout << "ERROR::SOLAR_SYSTEM - Scene Entity has failed being downcasted" << std::endl;
-		assert(false);
-	}
-
-	return bodyEntity->GetBodyData();
 }

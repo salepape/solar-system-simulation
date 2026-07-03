@@ -2,6 +2,7 @@
 
 #include <glm/geometric.hpp>
 
+#include <iostream>
 #include <unordered_map>
 #include <utility>
 
@@ -9,6 +10,7 @@
 #include "Application/Window.h"
 #include "Cameras/Camera.h"
 #include "CoreEngine.h"
+#include "Entities/CelestialBodyEntity.h"
 #include "SceneEntity.h"
 #include "Transform.h"
 
@@ -39,7 +41,7 @@ void Scene::AllocateMemory(const size_t numOfBytes)
 
 void Scene::TagEntityAsAttached(const uint32_t entityIDBase, const uint32_t entityIDChild) const
 {
-	SceneEntity* const eChild = GetEntity(entityIDChild);
+	SceneEntity* const eChild = GetEntity<SceneEntity>(entityIDChild);
 	eChild->parentID = entityIDBase;
 }
 
@@ -51,7 +53,8 @@ uint32_t Scene::AddEntity(const RenderableType handle, std::unique_ptr<SceneEnti
 	return addedEntityID;
 }
 
-SceneEntity* Scene::GetEntity(const uint32_t entityID) const
+template<typename EntityType>
+EntityType* Scene::GetEntity(const uint32_t entityID) const
 {
 	if (entityID == 0)
 	{
@@ -64,7 +67,14 @@ SceneEntity* Scene::GetEntity(const uint32_t entityID) const
 		{
 			if (entityPtr->GetID() == entityID)
 			{
-				return entityPtr.get();
+				EntityType* const downcastedEntity = dynamic_cast<EntityType*>(entityPtr.get());
+				if (downcastedEntity == nullptr)
+				{
+					std::cout << "ERROR::SCENE - Scene Entity has failed being downcasted" << std::endl;
+					assert(false);
+				}
+
+				return downcastedEntity;
 			}
 		}
 	}
@@ -72,7 +82,16 @@ SceneEntity* Scene::GetEntity(const uint32_t entityID) const
 	return nullptr;
 }
 
-SceneEntity* Scene::GetEntity(const std::string& entityName) const
+// Specialisation prototypes needed here in the source file, so function definition above doesn't have to be included in the header file
+template SceneEntity* Scene::GetEntity<SceneEntity>(const uint32_t entityID) const;
+template const SceneEntity* Scene::GetEntity<const SceneEntity>(const uint32_t entityID) const;
+template ITransformable* Scene::GetEntity<ITransformable>(const uint32_t entityID) const;
+template const ITransformable* Scene::GetEntity<const ITransformable>(const uint32_t entityID) const;
+template CelestialBodyEntity* Scene::GetEntity<CelestialBodyEntity>(const uint32_t entityID) const;
+template const CelestialBodyEntity* Scene::GetEntity<const CelestialBodyEntity>(const uint32_t entityID) const;
+
+template<typename EntityType>
+EntityType* Scene::GetEntity(const std::string& entityName) const
 {
 	if (entityName.length() == 0)
 	{
@@ -85,7 +104,14 @@ SceneEntity* Scene::GetEntity(const std::string& entityName) const
 		{
 			if (entityPtr->GetName() == entityName)
 			{
-				return entityPtr.get();
+				EntityType* const downcastedEntity = dynamic_cast<EntityType*>(entityPtr.get());
+				if (downcastedEntity == nullptr)
+				{
+					std::cout << "ERROR::SCENE - Scene Entity has failed being downcasted" << std::endl;
+					assert(false);
+				}
+
+				return downcastedEntity;
 			}
 		}
 	}
@@ -93,15 +119,13 @@ SceneEntity* Scene::GetEntity(const std::string& entityName) const
 	return nullptr;
 }
 
-const SceneEntity* Scene::GetConstEntity(const uint32_t entityID) const
-{
-	return GetEntity(entityID);
-}
-
-const SceneEntity* Scene::GetConstEntity(const std::string& entityName) const
-{
-	return GetEntity(entityName);
-}
+// Specialisation prototypes needed here in the source file, so function definition above doesn't have to be included in the header file
+template SceneEntity* Scene::GetEntity<SceneEntity>(const std::string& entityName) const;
+template const SceneEntity* Scene::GetEntity<const SceneEntity>(const std::string& entityName) const;
+template ITransformable* Scene::GetEntity<ITransformable>(const std::string& entityName) const;
+template const ITransformable* Scene::GetEntity<const ITransformable>(const std::string& entityName) const;
+template CelestialBodyEntity* Scene::GetEntity<CelestialBodyEntity>(const std::string& entityName) const;
+template const CelestialBodyEntity* Scene::GetEntity<const CelestialBodyEntity>(const std::string& entityName) const;
 
 void Scene::SetSceneViewerTransformStart(const glm::vec3& inPosition, const EulerAngles& inRotationInRad)
 {

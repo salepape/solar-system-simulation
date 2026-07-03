@@ -162,12 +162,10 @@ void CoreEngine::Render(const float deltaTime)
 			if (ITransformable* const transformable = dynamic_cast<ITransformable*>(sceneEntity.get());
 				transformable != nullptr)
 			{
-				const SceneEntity* parentEntity = scene->GetConstEntity(sceneEntity->parentID);
-
 				transformable->ComputeTransformVUniform(
 					deltaTime,
 					scene->sceneViewer.GetCamera(),
-					*dynamic_cast<const ITransformable*>(parentEntity)
+					*scene->GetEntity<const ITransformable>(sceneEntity->parentID)
 				);
 			}
 
