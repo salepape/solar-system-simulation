@@ -21,13 +21,15 @@ class LightSourceComponent;
 struct BodyData
 {
 	std::filesystem::path texturePath;		// DDS texture path
-	std::string name;						// Name of the celestial body
 
-	float radius{ 0.0f };					// Planet or moon (only those > pluto radius in length) radius divided by earth's radius [in kms]
-	float distanceToParent{ 0.0f };			// Distance between planet (resp. moon) and sun (resp. the planet around which they gravitate) divided by sun-earth distance (= 1AU) [in kms]
+	std::string name;						// Name of the celestial body
+	std::string type;						// Body type (e.g. a star, a planet, etc.)
+
+	float radius{ 0.0f };					// Planet or moon (only those > pluto radius in length) radius divided by Main Planet's radius [in kms]
+	float distanceToParent{ 0.0f };			// Distance between planet (resp. moon) and star (resp. the planet around which they gravitate) divided by star-main planet distance (= 1AU) [in kms]
 	float obliquity{ 0.0f };				// Or axial tilt: angle between planet/moon axis rotation and the normal of its orbital plane [in degrees]
-	float orbitalPeriod{ 0.0f };			// Time (sideral) the planet (resp. moon) takes to do one revolution around the sun (resp. its planet) [in Earth days]
-	float spinPeriod{ 0.0f };				// Time (sideral) the planet takes to do a rotation on itself [in Earth days]	
+	float orbitalPeriod{ 0.0f };			// Time (sideral) the planet (resp. moon) takes to do one revolution around the star (resp. its planet) [in Main Planet days]
+	float spinPeriod{ 0.0f };				// Time (sideral) the planet takes to do a rotation on itself [in Main Planet days]	
 	float orbitalInclination{ 0.0f };		// Or "orbital tilt": angle between planet (resp. moon) orbit and the ecliptic [in degrees]
 };
 
@@ -73,14 +75,14 @@ private:
 
 	glm::vec3 position{ 0.0f };
 
-	// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
+	// Angle travelled by the planet (resp. moon) around the star (resp. planet) since the simulation started [in radians]
 	float travelledAngle{ 0.0f };
 
-	// Angular frequency for orbital motion [in radians/Earth days]
+	// Angular frequency for orbital motion [in radians/Main Planet days]
 	float orbitAngularFreq{ 0.0f };
 	float travelledOrbitAngle{ 0.0f };
 
-	// Angular frequency for spin motion [in radians/Earth days]
+	// Angular frequency for spin motion [in radians/Main Planet days]
 	float spinAngularFreq{ 0.0f };
 	float travelledSpinAngle{ 0.0f };
 

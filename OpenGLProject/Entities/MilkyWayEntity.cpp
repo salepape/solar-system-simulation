@@ -25,7 +25,7 @@ BlinnPhongMaterial MilkyWayEntity::InitialiseMaterial(const std::filesystem::pat
 	Texture texture(texturePath, GL_TEXTURE_CUBE_MAP, { GL_CLAMP_TO_EDGE }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadCubemapDDS();
 
-	return BlinnPhongMaterial(ShaderLookUpID::Enum::MILKY_WAY, std::vector<Texture>{ std::move(texture) });
+	return BlinnPhongMaterial(ShaderLookUpID::Enum::BACKGROUND, std::vector<Texture>{ std::move(texture) });
 }
 
 void MilkyWayEntity::Render()

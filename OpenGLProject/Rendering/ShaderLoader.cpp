@@ -16,10 +16,10 @@ std::unordered_map<GLSLUniform::Enum, std::vector<ShaderLookUpID::Enum>> ShaderL
 		GLSLUniform::PROJECTION_VIEW,
 		{
 			ShaderLookUpID::Enum::DEFAULT,
-			ShaderLookUpID::Enum::SUN,
+			ShaderLookUpID::Enum::STAR,
 			ShaderLookUpID::Enum::BILLBOARD,
 			ShaderLookUpID::Enum::BELT,
-			ShaderLookUpID::Enum::MILKY_WAY,
+			ShaderLookUpID::Enum::BACKGROUND,
 		}
 	},
 	{
@@ -40,10 +40,10 @@ void ShaderLibrary::BuildShaders()
 	const std::string currentProjectPath(FileHelper::GetProjectAbsolutePath() + '/');
 
 	shaders.emplace_back(ShaderLookUpID::Enum::DEFAULT, currentProjectPath + "Rendering/GLSL/DefaultShader.vs", currentProjectPath + "Rendering/GLSL/DefaultShader.fs");
-	shaders.emplace_back(ShaderLookUpID::Enum::SUN, currentProjectPath + "Rendering/GLSL/DefaultShader.vs", currentProjectPath + "Rendering/GLSL/SunShader.fs");
+	shaders.emplace_back(ShaderLookUpID::Enum::STAR, currentProjectPath + "Rendering/GLSL/DefaultShader.vs", currentProjectPath + "Rendering/GLSL/SunShader.fs");
 	shaders.emplace_back(ShaderLookUpID::Enum::BILLBOARD, currentProjectPath + "Rendering/GLSL/BillboardShader.vs", currentProjectPath + "Rendering/GLSL/BillboardShader.fs");
 	shaders.emplace_back(ShaderLookUpID::Enum::BELT, currentProjectPath + "Rendering/GLSL/InstancedModelShader.vs", currentProjectPath + "Rendering/GLSL/DefaultShader.fs");
-	shaders.emplace_back(ShaderLookUpID::Enum::MILKY_WAY, currentProjectPath + "Rendering/GLSL/SkyboxShader.vs", currentProjectPath + "Rendering/GLSL/SkyboxShader.fs");
+	shaders.emplace_back(ShaderLookUpID::Enum::BACKGROUND, currentProjectPath + "Rendering/GLSL/SkyboxShader.vs", currentProjectPath + "Rendering/GLSL/SkyboxShader.fs");
 
 	if (shaders.size() != ShaderLookUpID::Num)
 	{

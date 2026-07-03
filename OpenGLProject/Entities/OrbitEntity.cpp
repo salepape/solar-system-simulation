@@ -39,7 +39,7 @@ void OrbitEntity::ComputeTransformVUniform(const float /*deltaTime*/, const Came
 	transform.Reset();
 
 	// Center the orbit (non-constant over time) around the parent planet for satellites
-	// Only moons have their parent position (= Planet) moving, whereas planets have their parent position (= Sun) constant
+	// Only moons have their parent position (= Planet) moving, whereas planets have their parent position (= Star) constant
 	if (parentID != 0)
 	{
 		transform.Translate(parentEntity.value().get().GetTransform().GetPosition());

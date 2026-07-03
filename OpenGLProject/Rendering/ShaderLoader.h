@@ -24,13 +24,13 @@ namespace ShaderLookUpID
 	{
 		UNDEFINED = 0,
 		DEFAULT,
-		SUN,
+		STAR,
 		BILLBOARD,
-		MILKY_WAY,
+		BACKGROUND,
 		BELT,
 	};
 
-	constexpr std::array<Enum, Num> All = { DEFAULT, SUN, BILLBOARD, BELT, MILKY_WAY, };
+	constexpr std::array<Enum, Num> All = { DEFAULT, STAR, BILLBOARD, BELT, BACKGROUND, };
 
 	constexpr Enum Get(const int index) { return All[index]; }
 };

@@ -106,7 +106,7 @@ void SolarSystem::BuildBodySystems()
 		const float spinPeriod = std::stof(celestialBodyParams[6]);
 		const float orbitalInclination = std::stof(celestialBodyParams[7]);
 
-		const BodyData bodyData{ texturePath, celestialBodyName, scaledRadius, scaledDistanceToParent, obliquity, scaledOrbitalPeriod, spinPeriod, orbitalInclination };
+		const BodyData bodyData{ texturePath, celestialBodyName, celestialBodyType, scaledRadius, scaledDistanceToParent, obliquity, scaledOrbitalPeriod, spinPeriod, orbitalInclination };
 
 		const uint32_t addedBodyID = Scene::AddEntity(
 			RenderableType::OPAQUE_ENTITY,

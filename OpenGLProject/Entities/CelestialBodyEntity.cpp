@@ -22,11 +22,11 @@ CelestialBodyEntity::CelestialBodyEntity(const BodyData& inBodyData) :
 	SceneEntity(inBodyData.name),
 	bodyData(std::move(inBodyData)),
 	sphere(bodyData.radius),
-	material(InitialiseMaterial(bodyData.texturePath, bodyData.name))
+	material(InitialiseMaterial(bodyData.texturePath))
 {
-	if (bodyData.name == "Sun")
+	if (bodyData.type == "Star")
 	{
-		// Set up the lighting for all Scene Entities according to Sun position/light emission parameters
+		// Set up the lighting for all Scene Entities according to Star position/light emission parameters
 		lightSource = std::make_unique<PointLightComponent>(GetPosition(),
 			ReflectionParams{ glm::vec3(0.25f), glm::vec3(0.95f), glm::vec3(0.0f) },
 			AttenuationParams{ 1.0f, 0.00045f, 0.00000075f });
@@ -42,16 +42,16 @@ CelestialBodyEntity::CelestialBodyEntity(const BodyData& inBodyData) :
 	distSinOrbInclination = bodyData.distanceToParent * glm::sin(orbitalInclinationInRad);
 }
 
-BlinnPhongMaterial CelestialBodyEntity::InitialiseMaterial(const std::filesystem::path& texturePath, const std::string& bodyName)
+BlinnPhongMaterial CelestialBodyEntity::InitialiseMaterial(const std::filesystem::path& texturePath)
 {
 	Texture texture(texturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadDDS();
 
-	if (bodyName == "Sun")
+	if (bodyData.type == "Star")
 	{
-		// Allow the Sun texture to be rendered with higher intensity than a simple white light - give volcanic visual effect)
+		// Allow the Star texture to be rendered with higher intensity than a simple white light - give volcanic visual effect)
 		constexpr float oversaturatingFactor = 1.5f;
-		return BlinnPhongMaterial(ShaderLookUpID::Enum::SUN, std::vector<Texture>{ std::move(texture) }, DiffuseProperties{ GLMConstants::whiteColour * oversaturatingFactor });
+		return BlinnPhongMaterial(ShaderLookUpID::Enum::STAR, std::vector<Texture>{ std::move(texture) }, DiffuseProperties{ GLMConstants::whiteColour * oversaturatingFactor });
 	}
 	else
 	{
@@ -87,7 +87,7 @@ void CelestialBodyEntity::ComputeCartesianPosition(const float deltaTime, std::o
 {
 	position = glm::vec3(0.0f);
 
-	// Angle travelled by the planet (resp. moon) around the sun (resp. planet) since the simulation started [in radians]
+	// Angle travelled by Planet (resp. Moon) around Star (resp. Planet) since the simulation started [in radians]
 	travelledOrbitAngle += orbitAngularFreq * deltaTime;
 	if (parentID == 0 || satelliteParentBody.has_value() == false)
 	{
@@ -107,7 +107,7 @@ void CelestialBodyEntity::ComputeCartesianPosition(const float deltaTime, std::o
 			satelliteParentBodyRef.bodyData.distanceToParent * glm::cos(satelliteParentBodyRef.travelledAngle));
 	}
 
-	// Circular translation of body around Sun, taking into account body "orbital tilt"
+	// Circular translation of body around Star, taking into account body "orbital tilt"
 	const float sinTravelledAngle = glm::sin(travelledOrbitAngle);
 
 	position += glm::vec3(
