@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "Models/Model.h"
-#include "Rendering/BlinnPhongMaterial.h"
 #include "Scene/SceneEntity.h"
 
 
@@ -45,7 +44,6 @@ public:
 	BeltEntity(const std::string& inName, InstanceParams&& inInstanceParams, TorusParams&& inTorusParams);
 
 	// IRenderable implementation
-	//BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath) override { /* already baked in model */ return; }
 	void Render() override;
 	// IRenderable implementation
 
@@ -54,7 +52,7 @@ private:
 	TorusParams torusParams;
 	std::vector<Transform> transforms;
 
-	// Model used to represent a Belt "Rock" for instancing (contains the Mesh + the Material definition, as opposed to traditional SceneEntities)
+	// Model used to represent a Belt "Rock" for instancing (contains the Mesh + the baked-in Material definition, as opposed to traditional SceneEntities)
 	Model model;
 
 	void ComputeInstanceTransforms();

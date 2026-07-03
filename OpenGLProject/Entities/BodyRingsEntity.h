@@ -27,13 +27,12 @@ public:
 
 	// IRenderable implementation
 	void Render() override;
-	//BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath) override { /* already baked in model */ return; }
 	// IRenderable implementation
 
 private:
 	RingsData ringsData;
 
-	// Model used for the Celestial Body "Ring" (contains the Mesh + the Material definition, as opposed to traditional SceneEntities)
+	// Model used for the Celestial Body "Ring" (contains the Mesh + the baked-in Material definition, as opposed to traditional SceneEntities)
 	Model model;
 
 	std::string bodyParent;

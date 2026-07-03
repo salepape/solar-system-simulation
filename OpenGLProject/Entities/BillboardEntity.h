@@ -23,7 +23,6 @@ public:
 	BillboardEntity(const BodyData& inBodyData);
 
 	// IRenderable implementation
-	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath) /*override*/;
 	void Render() override;
 	// IRenderable implementation
 
@@ -34,7 +33,9 @@ private:
 	float glyphTextureScaleFactor{ 1.0f };
 
 	QuadMeshComponent quads;
+
 	BlinnPhongMaterial material;
+	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath);
 
 	// ITransformable implementation
 	void ComputeTransformVUniform(const float deltaTime, const Camera& camera, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity = std::nullopt) override;

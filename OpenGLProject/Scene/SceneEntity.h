@@ -2,12 +2,10 @@
 #define SCENE_ENTITY_H
 
 #include <cstdint>
-//#include <filesystem>
 #include <functional>
 #include <optional>
 #include <string>
 
-//#include "Rendering/BlinnPhongMaterial.h"
 #include "Transform.h"
 
 
@@ -16,7 +14,7 @@
 class IRenderable
 {
 public:
-	//virtual BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath) = 0;
+	// Constain OpenGL functiosns that draw meshes with materials applied on them to the screen in a certain order
 	virtual void Render() = 0;
 };
 
@@ -59,6 +57,8 @@ public:
 protected:
 	uint32_t ID{ 0 };
 	std::string name;
+
+	// @todo - Not supposed to be there, if child classes implement ITransformable
 	Transform transform;
 
 private:

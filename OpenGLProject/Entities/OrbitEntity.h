@@ -21,14 +21,15 @@ public:
 	OrbitEntity(const BodyData& inBodyData);
 
 	// IRenderable implementation
-	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath) /*override*/;
 	void Render() override;
 	// IRenderable implementation
 
 private:
 	// @todo - Implement ellipse for a more realistic simulation (circular orbits with eccentricities close to 0 for now)
 	CircleMeshComponent circle;
+
 	BlinnPhongMaterial material;
+	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath);
 
 	std::string bodyName;
 

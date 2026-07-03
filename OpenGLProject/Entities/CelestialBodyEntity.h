@@ -61,7 +61,6 @@ public:
 	const glm::vec3& GetPosition() const { return position; }
 
 	// IRenderable implementation
-	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath, const std::string& bodyName) /*override*/;
 	void Render() override;
 	// IRenderable implementation
 
@@ -69,7 +68,9 @@ private:
 	BodyData bodyData;
 
 	SphereMeshComponent sphere;
+
 	BlinnPhongMaterial material;
+	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath);
 
 	std::shared_ptr<LightSourceComponent> lightSource;
 

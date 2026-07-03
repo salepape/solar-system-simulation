@@ -16,13 +16,14 @@ public:
 	MilkyWayEntity();
 
 	// IRenderable implementation
-	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath) /*override*/;
 	void Render() override;
 	// IRenderable implementation
 
 private:
 	SkyboxMeshComponent skybox;
+
 	BlinnPhongMaterial material;
+	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath);
 };
 
 
