@@ -11,7 +11,7 @@
 
 
 
-// Instance is an asteroid for a belt
+// E.g. instance for a belt is an Asteroid Model
 struct InstanceParams
 {
 	std::filesystem::path modelPath;

@@ -195,7 +195,7 @@ void SolarSystem::BuildBelts()
 		const float innerBound = GetBody(beltParams[6]).distanceToParent;
 
 		float majorRadius = 0.0f;
-		if (beltName == "AsteroidBelt")
+		if (beltName == "MainAsteroidBelt")
 		{
 			majorRadius = innerBound * 1.05f + 0.5f * (outerBound * 0.9f - innerBound * 1.05f);
 		}
@@ -204,7 +204,7 @@ void SolarSystem::BuildBelts()
 			majorRadius = innerBound + 0.5f * (outerBound - innerBound);
 		}
 		float minorRadius = 0.0f;
-		if (beltName == "AsteroidBelt")
+		if (beltName == "MainAsteroidBelt")
 		{
 			minorRadius = 0.5f * (outerBound * 0.9f - innerBound * 1.05f);
 		}
