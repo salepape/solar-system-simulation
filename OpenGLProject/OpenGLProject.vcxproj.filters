@@ -174,7 +174,7 @@
     <ClInclude Include="Entities/CelestialBodyEntity.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Entities/MilkyWayEntity.h">
+    <ClInclude Include="Entities/GalaxyBackgroundEntity.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Entities/OrbitEntity.h">
@@ -311,7 +311,7 @@
     <ClCompile Include="Entities/CelestialBodyEntity.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Entities/MilkyWayEntity.cpp">
+    <ClCompile Include="Entities/GalaxyBackgroundEntity.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
     <ClCompile Include="Entities/OrbitEntity.cpp">

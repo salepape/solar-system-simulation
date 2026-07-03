@@ -1,4 +1,4 @@
-#include "MilkyWayEntity.h"
+#include "GalaxyBackgroundEntity.h"
 
 #include <glad/glad.h>
 

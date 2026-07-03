@@ -14,7 +14,7 @@
 #include "Entities/BillboardEntity.h"
 #include "Entities/BodyRingsEntity.h"
 #include "Entities/CelestialBodyEntity.h"
-#include "Entities/MilkyWayEntity.h"
+#include "Entities/GalaxyBackgroundEntity.h"
 #include "Entities/OrbitEntity.h"
 #include "Rendering/RenderQueue.h"
 #include "Utils/Helpers.h"
