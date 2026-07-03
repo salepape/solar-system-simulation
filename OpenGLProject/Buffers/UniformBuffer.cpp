@@ -14,9 +14,9 @@ UniformBuffer::UniformBuffer(const std::string& inGLSLUniformName, const GLSLUni
 
 	blockBindingPoint = globalBlockBindingPoint++;
 
-	for (const ShaderLookUpID::Enum shaderLookUpID : ShaderLoader::GetShaderGroup(inGLSLUniform))
+	for (const ShaderLookUpID::Enum shaderLookUpID : ShaderLibrary::GetShaderGroup(inGLSLUniform))
 	{
-		const Shader& shader = ShaderLoader::GetShader(shaderLookUpID);
+		const Shader& shader = ShaderLibrary::GetShader(shaderLookUpID);
 		const uint32_t shaderID = shader.GetRendererID();
 
 		// @todo - uniformBlockIndex = 6 for BELT Fragment Shader whereas it equals 7 for all other ones in LINE_OF_SIGHT group for camera position Uniform!

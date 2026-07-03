@@ -40,7 +40,7 @@ public:
 	void EnableTextures() const;
 	void DisableTextures() const;
 
-	Shader& GetShader() const { return ShaderLoader::GetShader(shaderLookUpID); }
+	Shader& GetShader() const { return ShaderLibrary::GetShader(shaderLookUpID); }
 
 	const std::vector<Texture>& GetTextures() const { return textures; }
 

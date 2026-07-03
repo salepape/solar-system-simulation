@@ -15,9 +15,9 @@
 // Unit Vectors in World Space
 namespace WorldSpace
 {
-	static const glm::vec3 XUnitVector(1.0f, 0.0f, 0.0f);
-	static const glm::vec3 YUnitVector(0.0f, 1.0f, 0.0f);
-	static const glm::vec3 ZUnitVector(0.0f, 0.0f, 1.0f);
+	const glm::vec3 XUnitVector(1.0f, 0.0f, 0.0f);
+	const glm::vec3 YUnitVector(0.0f, 1.0f, 0.0f);
+	const glm::vec3 ZUnitVector(0.0f, 0.0f, 1.0f);
 };
 
 // Gather classic rotation angles [in Radians] into a single struct

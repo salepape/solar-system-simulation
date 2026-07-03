@@ -4,7 +4,6 @@
 #include <glm/gtc/type_ptr.hpp>			// glm::value_ptr()
 #include <iostream>
 
-#include "Rendering/ShaderLoader.h"
 #include "Utils/Constants.h"
 
 

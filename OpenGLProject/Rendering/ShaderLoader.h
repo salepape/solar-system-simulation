@@ -6,14 +6,18 @@
 #include <unordered_map>
 #include <vector>
 
+#include "Buffers/UniformBuffer.h"
+
 class Shader;
+
+
 
 // @todo - Re-arrange so code is independant from the simulation ("Engine" code)
 
 // To be used to refer to any Shader instead of relying on raw strings (layer of security over the existence of LookUpIDs when instantiating or look-up functions)
 namespace ShaderLookUpID
 {
-	static constexpr size_t Num = 5;
+	constexpr size_t Num = 5;
 
 	// Enum elements do not correspond to GLSL Shader names but on which Scene Entity/Object Mesh they are applied to
 	enum Enum
@@ -26,26 +30,13 @@ namespace ShaderLookUpID
 		BELT,
 	};
 
-	static constexpr std::array<Enum, Num> All = { DEFAULT, SUN, BILLBOARD, BELT, MILKY_WAY, };
+	constexpr std::array<Enum, Num> All = { DEFAULT, SUN, BILLBOARD, BELT, MILKY_WAY, };
 
-	static constexpr Enum Get(const int index) { return All[index]; }
+	constexpr Enum Get(const int index) { return All[index]; }
 };
 
-// GLSL Uniforms shared across Vertex/Fragment Shaders
-namespace GLSLUniform
-{
-	// All Shaders applied on Scene Entities/Objects affected by Uniform in real-time
-	enum Enum
-	{
-		PROJECTION_VIEW = 0,
-		LINE_OF_SIGHT
-	};
-
-	static constexpr std::array<Enum, 2> All = { PROJECTION_VIEW, LINE_OF_SIGHT, };
-};
-
-// Util static class giving a global access point to all Shaders applied on Scene Entity/Objects of the simulation
-class ShaderLoader
+// Global access point to all Shaders that can be applied on Scene Entity/Objects of the simulation
+class ShaderLibrary
 {
 public:
 	// Instantiate Shaders for all Scene Entity/Objects of the simulation based on GLSL Vertex/Fragment Shaders, and common Uniform variables

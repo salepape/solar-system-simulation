@@ -8,9 +8,9 @@
 #include "Shader.h"
 #include "Utils/Helpers.h"
 
-std::vector<Shader> ShaderLoader::shaders;
+std::vector<Shader> ShaderLibrary::shaders;
 
-std::unordered_map<GLSLUniform::Enum, std::vector<ShaderLookUpID::Enum>> ShaderLoader::uniformGroups
+std::unordered_map<GLSLUniform::Enum, std::vector<ShaderLookUpID::Enum>> ShaderLibrary::uniformGroups
 {
 	{
 		GLSLUniform::PROJECTION_VIEW,
@@ -33,7 +33,7 @@ std::unordered_map<GLSLUniform::Enum, std::vector<ShaderLookUpID::Enum>> ShaderL
 
 
 
-void ShaderLoader::BuildShaders()
+void ShaderLibrary::BuildShaders()
 {
 	shaders.reserve(ShaderLookUpID::Num);
 
@@ -52,7 +52,7 @@ void ShaderLoader::BuildShaders()
 	}
 }
 
-Shader& ShaderLoader::GetShader(const ShaderLookUpID::Enum inShaderLookUpID)
+Shader& ShaderLibrary::GetShader(const ShaderLookUpID::Enum inShaderLookUpID)
 {
 	const auto& shaderIt = std::find_if(shaders.begin(), shaders.end(), [&inShaderLookUpID](const Shader& inShader)
 	{
@@ -68,7 +68,7 @@ Shader& ShaderLoader::GetShader(const ShaderLookUpID::Enum inShaderLookUpID)
 	return *shaderIt;
 }
 
-std::vector<ShaderLookUpID::Enum>& ShaderLoader::GetShaderGroup(const GLSLUniform::Enum inGLSLUniform)
+std::vector<ShaderLookUpID::Enum>& ShaderLibrary::GetShaderGroup(const GLSLUniform::Enum inGLSLUniform)
 {
 	if (uniformGroups.find(inGLSLUniform) == uniformGroups.end())
 	{

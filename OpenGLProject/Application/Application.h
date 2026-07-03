@@ -49,6 +49,7 @@ protected:
 private:
 	std::filesystem::path executablePath;
 
+	// @todo - Revise pattern used here. Define several apps from Engine should be authorised while being able to easily get constants from this file
 	// Unique Singleton instance defined in source file
 	static Application* instance;
 

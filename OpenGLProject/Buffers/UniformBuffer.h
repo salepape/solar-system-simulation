@@ -1,15 +1,28 @@
 #ifndef UNIFORM_BUFFER_H
 #define UNIFORM_BUFFER_H
 
+#include <array>
 #include <cstddef> // std::size_t
 #include <cstdint>
 #include <string>
 #include <vector>
 
 #include "DataBuffer.h"
-#include "Rendering/ShaderLoader.h"
 
 
+
+// GLSL Uniforms shared across Vertex/Fragment Shaders
+namespace GLSLUniform
+{
+	// All Shaders applied on Scene Entities/Objects affected by Uniform in real-time
+	enum Enum
+	{
+		PROJECTION_VIEW = 0,
+		LINE_OF_SIGHT
+	};
+
+	constexpr std::array<Enum, 2> All = { PROJECTION_VIEW, LINE_OF_SIGHT, };
+};
 
 // Define a set of fields contained in a GLSL struct (defined via 'layout' keyword) shared across several GLSL Vertex/Fragment Shaders
 class UniformGLSLStruct

@@ -9,13 +9,13 @@
 #include "Components/Meshes/QuadMeshComponent.h"
 #include "Helpers.h"
 
-std::unordered_map<int8_t, GlyphParams> GlyphLoader::ASCIICharacterCache;
+std::unordered_map<int8_t, GlyphParams> GlyphLibrary::ASCIICharacterCache;
 
-std::string GlyphLoader::partialASCIITable = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'";
+std::string GlyphLibrary::partialASCIITable = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'";
 
 
 
-void GlyphLoader::LoadASCIICharacters()
+void GlyphLibrary::LoadASCIICharacters()
 {
 	FT_Library FreeTypeLibrary;
 	LoadFreeTypeLibrary(&FreeTypeLibrary);
@@ -28,7 +28,7 @@ void GlyphLoader::LoadASCIICharacters()
 	ClearFreeTypeResources(FreeTypeLibrary, FreeTypeFontFace);
 }
 
-void GlyphLoader::LoadFreeTypeGlyphs(const FT_Face& inFreeTypeFontFace)
+void GlyphLibrary::LoadFreeTypeGlyphs(const FT_Face& inFreeTypeFontFace)
 {
 	// Warning: any character appearing in rendered text should be listed below
 	for (const char& character : partialASCIITable)
@@ -68,7 +68,7 @@ void GlyphLoader::LoadFreeTypeGlyphs(const FT_Face& inFreeTypeFontFace)
 	}
 }
 
-void GlyphLoader::LoadFreeTypeLibrary(FT_Library* outFreeTypeLibrary)
+void GlyphLibrary::LoadFreeTypeLibrary(FT_Library* outFreeTypeLibrary)
 {
 	const FT_Error FTInitFreeTypeError = FT_Init_FreeType(outFreeTypeLibrary);
 	if (FTInitFreeTypeError != 0)
@@ -78,7 +78,7 @@ void GlyphLoader::LoadFreeTypeLibrary(FT_Library* outFreeTypeLibrary)
 	}
 }
 
-void GlyphLoader::LoadFreeTypeFontFace(FT_Face* outFreeTypeFontFace, const FT_Library& inFreeTypeLibrary, const std::string& inFontPath)
+void GlyphLibrary::LoadFreeTypeFontFace(FT_Face* outFreeTypeFontFace, const FT_Library& inFreeTypeLibrary, const std::string& inFontPath)
 {
 	// Load font as face object (to be used for all glyphs that will be loaded further down the pipe)
 	const FT_Error FTNewFaceError = FT_New_Face(inFreeTypeLibrary, inFontPath.c_str(), 0, outFreeTypeFontFace);
@@ -106,7 +106,7 @@ void GlyphLoader::LoadFreeTypeFontFace(FT_Face* outFreeTypeFontFace, const FT_Li
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
-void GlyphLoader::ClearFreeTypeResources(const FT_Library& inFreeTypeLibrary, const FT_Face& inFreeTypeFontFace)
+void GlyphLibrary::ClearFreeTypeResources(const FT_Library& inFreeTypeLibrary, const FT_Face& inFreeTypeFontFace)
 {
 	const FT_Error FTReleaseFace = FT_Done_Face(inFreeTypeFontFace);
 	if (FTReleaseFace != 0)
@@ -123,7 +123,7 @@ void GlyphLoader::ClearFreeTypeResources(const FT_Library& inFreeTypeLibrary, co
 	}
 }
 
-GlyphParams& GlyphLoader::GetGlyphParams(const int8_t character)
+GlyphParams& GlyphLibrary::GetGlyphParams(const int8_t character)
 {
 	if (ASCIICharacterCache.find(character) == ASCIICharacterCache.end())
 	{

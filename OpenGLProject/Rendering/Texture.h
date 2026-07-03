@@ -30,7 +30,7 @@ namespace TextureType
 		//AO = aiTextureType_AMBIENT_OCCLUSION,
 	};
 
-	static constexpr std::array<Enum, 5> All = { NONE, DIFFUSE, SPECULAR, AMBIENT, EMISSIVE, };
+	constexpr std::array<Enum, 5> All = { NONE, DIFFUSE, SPECULAR, AMBIENT, EMISSIVE, };
 };
 
 struct WrapOptions

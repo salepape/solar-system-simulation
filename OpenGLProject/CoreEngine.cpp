@@ -33,8 +33,8 @@ CoreEngine& CoreEngine::GetInstance()
 
 void CoreEngine::SetUp()
 {
-	ShaderLoader::BuildShaders();
-	GlyphLoader::LoadASCIICharacters();
+	ShaderLibrary::BuildShaders();
+	GlyphLibrary::LoadASCIICharacters();
 }
 
 void CoreEngine::PrepareSceneForRendering()

@@ -82,7 +82,7 @@ std::vector<QuadParams> BillboardEntity::ComputeQuadParams(const float billboard
 	// Instantiate a quad to render each character of the legend
 	for (const char& character : legend)
 	{
-		const GlyphParams& glyphParams = GlyphLoader::GetGlyphParams(static_cast<int8_t>(character));
+		const GlyphParams& glyphParams = GlyphLibrary::GetGlyphParams(static_cast<int8_t>(character));
 		if (glyphParams.textures.size() <= 0)
 		{
 			std::cout << "ERROR::BILLBOARD - No Glyph Texture2D has been generated for character " << character << " - check if it is supported in the ASCII table" << std::endl;
@@ -110,7 +110,7 @@ float BillboardEntity::ComputeBillboardWidth() const
 	float totalAdvance = 0.0f;
 	for (const char& character : legend)
 	{
-		totalAdvance += GetGlyphAdvance(GlyphLoader::GetGlyphParams(static_cast<int8_t>(character)));
+		totalAdvance += GetGlyphAdvance(GlyphLibrary::GetGlyphParams(static_cast<int8_t>(character)));
 	}
 
 	return totalAdvance;
