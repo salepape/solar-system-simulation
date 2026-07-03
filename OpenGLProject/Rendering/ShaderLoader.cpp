@@ -40,7 +40,7 @@ void ShaderLibrary::BuildShaders()
 	const std::string currentProjectPath(FileHelper::GetProjectAbsolutePath() + '/');
 
 	shaders.emplace_back(ShaderLookUpID::Enum::DEFAULT, currentProjectPath + "Rendering/GLSL/DefaultShader.vs", currentProjectPath + "Rendering/GLSL/DefaultShader.fs");
-	shaders.emplace_back(ShaderLookUpID::Enum::STAR, currentProjectPath + "Rendering/GLSL/DefaultShader.vs", currentProjectPath + "Rendering/GLSL/SunShader.fs");
+	shaders.emplace_back(ShaderLookUpID::Enum::STAR, currentProjectPath + "Rendering/GLSL/DefaultShader.vs", currentProjectPath + "Rendering/GLSL/StarShader.fs");
 	shaders.emplace_back(ShaderLookUpID::Enum::BILLBOARD, currentProjectPath + "Rendering/GLSL/BillboardShader.vs", currentProjectPath + "Rendering/GLSL/BillboardShader.fs");
 	shaders.emplace_back(ShaderLookUpID::Enum::BELT, currentProjectPath + "Rendering/GLSL/InstancedModelShader.vs", currentProjectPath + "Rendering/GLSL/DefaultShader.fs");
 	shaders.emplace_back(ShaderLookUpID::Enum::GALAXY_BACKGROUND, currentProjectPath + "Rendering/GLSL/SkyboxShader.vs", currentProjectPath + "Rendering/GLSL/SkyboxShader.fs");

@@ -18,7 +18,7 @@ struct AmbientProperties
 
 struct DiffuseProperties
 {
-	// Colour of a uniformly-intensed light like the Sun (each coordinate should be comprised in [0.0f, 1.0f])
+	// Colour of a uniformly-intensed light like a Star (each coordinate should be comprised in [0.0f, 1.0f])
 	glm::vec3 colour{ 0.0f };
 };
 
