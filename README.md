@@ -67,7 +67,7 @@ The simulation contains the following celestial bodies:
 * 10 dwarf planets
 * 6 ring systems (the ones in the visible/infrared spectrum)
 * 30 moons
-* 2 belts (Asteroid and Kuiper ones) plus the Scattered Disc
+* 2 belts (Main Asteroid and Kuiper ones) plus the Scattered Disc
 * the Milky Way in background.
 
 > [!NOTE]
@@ -75,12 +75,12 @@ The simulation contains the following celestial bodies:
 
 ## :bricks: Features
 
-The actual simulation is decoupled from the object-oriented engine that runs it. Below are its main features:
-* :ringed_planet: Celestial Bodies with their moons, in motion along circular orbits, with adjustable simulation speed
+The actual simulation is decoupled from the object-oriented engine that powers it. Below are its main features:
+* :ringed_planet: Celestial Bodies with their Moons, in motion along circular orbits, with adjustable simulation speed
 * :movie_camera: Perspective Camera Controller & Input System for an intuitive exploration
-* :globe_with_meridians: Meshes computed in code from scratch, or loaded from file for asteroid/ring system 3D Models
+* :globe_with_meridians: Meshes computed in code from scratch, or loaded from file for Asteroid/Ring System 3D Models
 * :mag: Mesh blending taking into account the distance of each Scene Entity to the Perspective Camera
-* :rocket: 3D Mesh Renderer with instanced rendering to draw the belts in a more performant way
+* :rocket: 3D Mesh Renderer with instanced rendering to draw the Belts in a more performant way
 * :page_facing_up: Glyph Loader rendered on 2D quads to display the names of Celestial Bodies
 * :flashlight: Blinn-Phong Illumination model running on GPU via GLSL shaders, with a Point Light for Sun contribution.
 
