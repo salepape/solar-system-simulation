@@ -23,8 +23,8 @@
 
 SolarSystem::SolarSystem()
 {
-	BuildBackground();
-	BuildBodySystems();
+	BuildMilkyWayBackground();
+	BuildCelestialBodySystems();
 	BuildBelts();
 
 	// Need to override Camera Transform start, now that Solar System data objects have been initialised
@@ -34,16 +34,16 @@ SolarSystem::SolarSystem()
 		EulerAngles{ 0.0f, glm::radians(90.0f), glm::radians(-25.0f) });
 }
 
-void SolarSystem::BuildBackground()
+void SolarSystem::BuildMilkyWayBackground()
 {
 	// Background which can never be reached (based off a Skybox)
 	Scene::AddEntity(
 		RenderableType::BACKGROUND,
-		std::make_unique<MilkyWayEntity>()
+		std::make_unique<GalaxyBackgroundEntity>(FileHelper::GetSolutionAbsolutePath() + "/Textures/MilkyWay/stars.dds", "MilkyWay")
 	);
 }
 
-void SolarSystem::BuildBodySystems()
+void SolarSystem::BuildCelestialBodySystems()
 {
 	// Required to scale distance of current celestial body according to the previous one 
 	// (diverging from proper simulation here, for travel end-user convenience)

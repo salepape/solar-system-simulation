@@ -1,7 +1,8 @@
-#ifndef MILKY_WAY_H
-#define MILKY_WAY_H
+#ifndef GALAXY_BACKGROUND_H
+#define GALAXY_BACKGROUND_H
 
 #include <filesystem>
+#include <string>
 
 #include "Components/Meshes/SkyboxMeshComponent.h"
 #include "Rendering/BlinnPhongMaterial.h"
@@ -10,10 +11,10 @@
 
 
 // @todo - Name it differently: other Star-based systems will not have Milky Way as background
-class MilkyWayEntity : public SceneEntity, public IRenderable
+class GalaxyBackgroundEntity : public SceneEntity, public IRenderable
 {
 public:
-	MilkyWayEntity();
+	GalaxyBackgroundEntity(const std::filesystem::path& inTexturePath, const std::string& inName);
 
 	// IRenderable implementation
 	void Render() override;
@@ -28,4 +29,4 @@ private:
 
 
 
-#endif // MILKY_WAY_H
+#endif // GALAXY_BACKGROUND_H

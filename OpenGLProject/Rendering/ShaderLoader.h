@@ -26,11 +26,11 @@ namespace ShaderLookUpID
 		DEFAULT,
 		STAR,
 		BILLBOARD,
-		BACKGROUND,
+		GALAXY_BACKGROUND,
 		BELT,
 	};
 
-	constexpr std::array<Enum, Num> All = { DEFAULT, STAR, BILLBOARD, BELT, BACKGROUND, };
+	constexpr std::array<Enum, Num> All = { DEFAULT, STAR, BILLBOARD, BELT, GALAXY_BACKGROUND, };
 
 	constexpr Enum Get(const int index) { return All[index]; }
 };
