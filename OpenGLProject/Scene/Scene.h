@@ -18,7 +18,8 @@ class SceneEntity;
 
 
 
-// Contain entities that model the simulation. Be careful: shaders need to be all loaded first!
+// Act as an Entity Manager, since there is a single Scene to take care of.
+// Warning: shaders need to be all loaded before instantiating this class!
 class Scene
 {
 public:
