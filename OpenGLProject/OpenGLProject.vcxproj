@@ -297,7 +297,7 @@
     <None Include="Rendering/GLSL/InstancedModelShader.vs" />
     <None Include="Rendering/GLSL/SkyboxShader.fs" />
     <None Include="Rendering/GLSL/SkyboxShader.vs" />
-    <None Include="Rendering/GLSL/SunShader.fs" />
+    <None Include="Rendering/GLSL/StarShader.fs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

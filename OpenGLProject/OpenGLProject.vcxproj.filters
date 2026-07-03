@@ -403,7 +403,7 @@
     <None Include="Rendering/GLSL/InstancedModelShader.vs">
       <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
-    <None Include="Rendering/GLSL/SunShader.fs">
+    <None Include="Rendering/GLSL/StarShader.fs">
       <Filter>Source Files\Rendering\GLSL</Filter>
     </None>
     <None Include="Rendering/GLSL/SkyboxShader.fs">
