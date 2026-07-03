@@ -1,10 +1,9 @@
 #include "Application/Application.h"
-#include "CoreEngine.h"
 #include "Simulation/SolarSystem.h"
 
 #include <filesystem>
-#include <memory>
 #include <iostream>
+#include <string>
 
 
 
