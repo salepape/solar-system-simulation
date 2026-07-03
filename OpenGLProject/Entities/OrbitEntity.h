@@ -9,6 +9,7 @@
 #include "Components/Meshes/CircleMeshComponent.h"
 #include "Rendering/BlinnPhongMaterial.h"
 #include "Scene/SceneEntity.h"
+#include "Scene/Transform.h"
 
 struct BodyData;
 class Camera;
@@ -31,14 +32,16 @@ private:
 	BlinnPhongMaterial material;
 	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath);
 
+	Transform transform;
+	// ITransformable implementation
+	const Transform& GetTransform() const override { return transform; }
+	void ComputeTransformVUniform(const float deltaTime, const Camera& camera, std::optional<std::reference_wrapper<const ITransformable>> parentTransformable = std::nullopt) override;
+	// ITransformable implementation
+
 	std::string bodyName;
 
 	// Orbital Inclination converted [in radians]
 	float orbInclinationInRad{ 0.0f };
-
-	// ITransformable implementation
-	void ComputeTransformVUniform(const float deltaTime, const Camera& camera, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity = std::nullopt) override;
-	// ITransformable implementation
 };
 
 

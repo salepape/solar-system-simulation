@@ -20,9 +20,9 @@ BodyRingsEntity::BodyRingsEntity(RingsData&& inRingsData) :
 
 }
 
-void BodyRingsEntity::ComputeTransformVUniform(const float /*deltaTime*/, const Camera& /*camera*/, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity)
+void BodyRingsEntity::ComputeTransformVUniform(const float /*deltaTime*/, const Camera& /*camera*/, std::optional<std::reference_wrapper<const ITransformable>> parentTransformable)
 {
-	transform.Set(parentEntity.value().get().GetTransform().Get());
+	transform.Set(parentTransformable.value().get().GetTransform().Get());
 
 	// @todo - Make this model scaling work after it has been set in 3D modeling software
 	// transform.Scale(glm::vec3(ringsData.radius));

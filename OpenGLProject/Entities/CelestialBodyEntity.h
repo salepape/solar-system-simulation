@@ -11,6 +11,7 @@
 
 #include "Components/Meshes/SphereMeshComponent.h"
 #include "Rendering/BlinnPhongMaterial.h"
+#include "Scene/Transform.h"
 #include "SceneEntity.h"
 
 class Camera;
@@ -57,7 +58,7 @@ public:
 	const BodyData& GetBodyData() const { return bodyData; }
 
 	// Compute body position in Cartesian coordinates from Spherical ones
-	void ComputeCartesianPosition(const float deltaTime, std::optional<std::reference_wrapper<const SceneEntity>> satelliteParentBody = std::nullopt);
+	void ComputeCartesianPosition(const float deltaTime, std::optional<std::reference_wrapper<const ITransformable>> parentTransformable = std::nullopt);
 	const glm::vec3& GetPosition() const { return position; }
 
 	// IRenderable implementation
@@ -71,6 +72,12 @@ private:
 
 	BlinnPhongMaterial material;
 	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath);
+
+	Transform transform;
+	// ITransformable implementation
+	const Transform& GetTransform() const override { return transform; }
+	void ComputeTransformVUniform(const float deltaTime, const Camera& /*camera*/, std::optional<std::reference_wrapper<const ITransformable>> parentTransformable = std::nullopt) override;
+	// ITransformable implementation
 
 	std::shared_ptr<LightSourceComponent> lightSource;
 
@@ -92,10 +99,6 @@ private:
 
 	float distCosOrbInclination{ 0.0f };
 	float distSinOrbInclination{ 0.0f };
-
-	// ITransformable implementation
-	void ComputeTransformVUniform(const float deltaTime, const Camera& /*camera*/, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity = std::nullopt) override;
-	// ITransformable implementation
 };
 
 

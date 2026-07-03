@@ -8,6 +8,7 @@
 
 #include "Models/Model.h"
 #include "Scene/SceneEntity.h"
+#include "Scene/Transform.h"
 
 
 
@@ -35,11 +36,13 @@ private:
 	// Model used for the Celestial Body "Ring" (contains the Mesh + the baked-in Material definition, as opposed to traditional SceneEntities)
 	Model model;
 
-	std::string bodyParent;
+	Transform transform;
+	// ITransformable implementation
+	const Transform& GetTransform() const override { return transform; }
+	void ComputeTransformVUniform(const float deltaTime, const Camera& camera, std::optional<std::reference_wrapper<const ITransformable>> parentTransformable = std::nullopt) override;
+	// ITransformable implementation
 
-	// ITransformable implementation
-	void ComputeTransformVUniform(const float deltaTime, const Camera& camera, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity = std::nullopt) override;
-	// ITransformable implementation
+	std::string bodyParent;
 };
 
 

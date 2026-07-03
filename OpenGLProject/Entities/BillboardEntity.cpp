@@ -17,7 +17,6 @@
 #include "Rendering/ShaderLoader.h"
 #include "Rendering/GlyphLoader.h"
 #include "Rendering/Texture.h"
-#include "Scene/Transform.h"
 #include "Utils/Constants.h"
 
 namespace
@@ -50,7 +49,7 @@ BlinnPhongMaterial BillboardEntity::InitialiseMaterial(const std::filesystem::pa
 	return BlinnPhongMaterial(ShaderLookUpID::Enum::BILLBOARD, std::vector<Texture>{ /* texturesLoadedFromTheGlyphLoader */ }, DiffuseProperties{ GLMConstants::whiteColour });
 }
 
-void BillboardEntity::ComputeTransformVUniform(const float /*deltaTime*/, const Camera& camera, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity)
+void BillboardEntity::ComputeTransformVUniform(const float /*deltaTime*/, const Camera& camera, std::optional<std::reference_wrapper<const ITransformable>> parentTransformable)
 {
 	if (Application::GetInstance().IsLegendDisplayed() == false)
 	{
@@ -59,7 +58,7 @@ void BillboardEntity::ComputeTransformVUniform(const float /*deltaTime*/, const 
 
 	transform.Reset();
 
-	const glm::vec3 parentEntityPosition(parentEntity.value().get().GetTransform().GetPosition());
+	const glm::vec3 parentEntityPosition(parentTransformable.value().get().GetTransform().GetPosition());
 
 	// Orient text billboards so the correct side (i.e. with the glyphs rendered in the correct direction) always faces the camera (~ look at)
 	const glm::vec3& billboardForward = glm::normalize(camera.GetPosition() - parentEntityPosition);

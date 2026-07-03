@@ -11,8 +11,6 @@
 
 
 
-class Transform;
-
 // Instance is an asteroid for a belt
 struct InstanceParams
 {
@@ -37,6 +35,8 @@ struct TorusParams
 	// Factor reducing y-coordinate value for each instance
 	float flatnessFactor{ 0.0f };
 };
+
+class Transform;
 
 class BeltEntity : public SceneEntity, public IRenderable
 {

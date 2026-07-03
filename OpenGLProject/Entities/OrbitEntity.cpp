@@ -13,7 +13,6 @@
 #include "Rendering/Shader.h"
 #include "Rendering/ShaderLoader.h"
 #include "Rendering/Texture.h"
-#include "Scene/Transform.h"
 #include "Utils/Constants.h"
 
 
@@ -34,7 +33,7 @@ BlinnPhongMaterial OrbitEntity::InitialiseMaterial(const std::filesystem::path& 
 	return BlinnPhongMaterial(ShaderLookUpID::Enum::DEFAULT, std::vector<Texture>{ std::move(texture) });
 }
 
-void OrbitEntity::ComputeTransformVUniform(const float /*deltaTime*/, const Camera& /*camera*/, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity)
+void OrbitEntity::ComputeTransformVUniform(const float /*deltaTime*/, const Camera& /*camera*/, std::optional<std::reference_wrapper<const ITransformable>> parentTransformable)
 {
 	transform.Reset();
 
@@ -42,7 +41,7 @@ void OrbitEntity::ComputeTransformVUniform(const float /*deltaTime*/, const Came
 	// Only moons have their parent position (= Planet) moving, whereas planets have their parent position (= Star) constant
 	if (parentID != 0)
 	{
-		transform.Translate(parentEntity.value().get().GetTransform().GetPosition());
+		transform.Translate(parentTransformable.value().get().GetTransform().GetPosition());
 	}
 
 	// Rotate the orbit (constant over time) around axis colinear to orbital plane and tangent to orbital trajectory to reproduce its axial tilt?

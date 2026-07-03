@@ -6,8 +6,6 @@
 #include <optional>
 #include <string>
 
-#include "Transform.h"
-
 
 
 // Should be "implemented" by all Scene Entity child classes that can be drawable/renderable on screen
@@ -21,7 +19,8 @@ public:
 class ITransformable
 {
 public:
-	virtual void ComputeTransformVUniform(const float deltaTime, const class Camera& camera, std::optional<std::reference_wrapper<const class SceneEntity>> parentEntity = std::nullopt) = 0;
+	virtual const class Transform& GetTransform() const = 0;
+	virtual void ComputeTransformVUniform(const float deltaTime, const class Camera& camera, std::optional<std::reference_wrapper<const ITransformable>> parentTransformable = std::nullopt) = 0;
 	//virtual void Attach() = 0;
 };
 
@@ -50,16 +49,12 @@ public:
 
 	uint32_t GetID() const { return ID; }
 	const std::string& GetName() const { return name; }
-	const Transform& GetTransform() const { return transform; }
 
 	uint32_t parentID{ 0 };
 
 protected:
 	uint32_t ID{ 0 };
 	std::string name;
-
-	// @todo - Not supposed to be there, if child classes implement ITransformable
-	Transform transform;
 
 private:
 	static uint32_t entityIDCounter;

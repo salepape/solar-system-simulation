@@ -59,14 +59,14 @@ BlinnPhongMaterial CelestialBodyEntity::InitialiseMaterial(const std::filesystem
 	}
 }
 
-void CelestialBodyEntity::ComputeTransformVUniform(const float deltaTime, const Camera& /*camera*/, std::optional<std::reference_wrapper<const SceneEntity>> parentEntity)
+void CelestialBodyEntity::ComputeTransformVUniform(const float deltaTime, const Camera& /*camera*/, std::optional<std::reference_wrapper<const ITransformable>> parentTransformable)
 {
 	// @todo - Can we avoid redoing the computation all time from scratch and just add delta transform?
 	transform.Reset();
 
 	const float alteredDeltaTime = deltaTime * Application::GetInstance().GetSpeedFactor();
 
-	ComputeCartesianPosition(alteredDeltaTime, parentEntity);
+	ComputeCartesianPosition(alteredDeltaTime, parentTransformable);
 
 	transform.Translate(position);
 
@@ -83,13 +83,13 @@ void CelestialBodyEntity::ComputeTransformVUniform(const float deltaTime, const 
 	transform.Rotate(GLMConstants::halfPi, WorldSpace::XUnitVector);
 }
 
-void CelestialBodyEntity::ComputeCartesianPosition(const float deltaTime, std::optional<std::reference_wrapper<const SceneEntity>> satelliteParentBody)
+void CelestialBodyEntity::ComputeCartesianPosition(const float deltaTime, std::optional<std::reference_wrapper<const ITransformable>> parentTransformable)
 {
 	position = glm::vec3(0.0f);
 
 	// Angle travelled by Planet (resp. Moon) around Star (resp. Planet) since the simulation started [in radians]
 	travelledOrbitAngle += orbitAngularFreq * deltaTime;
-	if (parentID == 0 || satelliteParentBody.has_value() == false)
+	if (parentID == 0 || parentTransformable.has_value() == false)
 	{
 		travelledAngle = travelledOrbitAngle;
 	}
@@ -97,7 +97,7 @@ void CelestialBodyEntity::ComputeCartesianPosition(const float deltaTime, std::o
 	else
 	{
 		// Warning: assumes body pointer is valid!
-		const CelestialBodyEntity& satelliteParentBodyRef = *dynamic_cast<const CelestialBodyEntity*>(&satelliteParentBody.value().get());
+		const CelestialBodyEntity& satelliteParentBodyRef = *dynamic_cast<const CelestialBodyEntity*>(&parentTransformable.value().get());
 
 		const float sinTravelledAngleParent = glm::sin(satelliteParentBodyRef.travelledAngle);
 

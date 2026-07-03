@@ -4,6 +4,8 @@
 #include <glm/geometric.hpp>
 
 #include <algorithm>
+#include <cassert>
+#include <iostream>
 #include <unordered_map>
 #include <utility>
 
@@ -16,6 +18,7 @@
 #include "Rendering/Renderer.h"
 #include "Rendering/ShaderLoader.h"
 #include "Scene/SceneEntity.h"
+#include "Scene/Transform.h"
 
 CoreEngine* CoreEngine::instance = nullptr;
 
@@ -125,7 +128,15 @@ void CoreEngine::OrderForTransparencyPass(const glm::vec3& cameraPosition)
 	std::sort(scene->sceneEntities[RenderableType::TRANSPARENT_ENTITY].begin(), scene->sceneEntities[RenderableType::TRANSPARENT_ENTITY].end(),
 		[&cameraPosition](const std::unique_ptr<SceneEntity>& e1, const std::unique_ptr<SceneEntity>& e2)
 		{
-			return glm::distance(cameraPosition, e1->GetTransform().GetPosition()) < glm::distance(cameraPosition, e2->GetTransform().GetPosition());
+			ITransformable* const transformable1 = dynamic_cast<ITransformable*>(e1.get());
+			ITransformable* const transformable2 = dynamic_cast<ITransformable*>(e2.get());
+			if (transformable1 == nullptr || transformable2 == nullptr)
+			{
+				std::cout << "ERROR::CORE_ENGINE - Attempt to get transform from a Scene Entity that does not implement ITransformable!" << std::endl;
+				assert(false);
+			}
+
+			return glm::distance(cameraPosition, transformable1->GetTransform().GetPosition()) < glm::distance(cameraPosition, transformable2->GetTransform().GetPosition());
 		});
 }
 
@@ -156,7 +167,7 @@ void CoreEngine::Render(const float deltaTime)
 				transformable->ComputeTransformVUniform(
 					deltaTime,
 					scene->sceneViewer.GetCamera(),
-					*parentEntity
+					*dynamic_cast<const ITransformable*>(parentEntity)
 				);
 			}
 
