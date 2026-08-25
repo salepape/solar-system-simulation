@@ -36,11 +36,11 @@ public:
 	// User-defined constructor (needed to be defined explictly in the constructor of each child class)
 	SceneEntity(const std::string& inName);
 
-	// Copy constructor (not needed - SCENE ENTITY GETTER RETURN NON-OWNING RAW PTR, HENCE NOT NEEDED)
+	// Copy constructor (not needed - Scene Entity getter returns non-owning pointer (raw) for copies/moves)
 	SceneEntity(const SceneEntity& inSceneEntity) = delete;
 	SceneEntity& operator = (const SceneEntity& inSceneEntity) = delete;
 
-	// Move constructor (not needed - SCENE ENTITY GETTER RETURN NON-OWNING RAW PTR, HENCE NOT NEEDED)
+	// Move constructor (not needed - Scene Entity getter returns non-owning pointer (raw) for copies/moves)
 	SceneEntity(SceneEntity&& inSceneEntity) = delete;
 	SceneEntity&& operator = (SceneEntity&& inSceneEntity) = delete;
 

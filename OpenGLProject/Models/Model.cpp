@@ -3,6 +3,7 @@
 #include <glm/mat4x4.hpp>
 
 #include <cstddef> // std::size_t
+#include <utility> // std::forward
 
 #include "Buffers/VertexBuffer.h"
 #include "ModelLoader.h"
@@ -56,7 +57,9 @@ void Model::RenderInstances(const uint32_t instanceCount) const
 
 void Model::AddMesh(MeshComponent&& mesh)
 {
-	meshes.emplace_back(mesh);
+	// Make use of a forward reference so the value type (i.e. rvalue here) is preserved,
+	// calling the move cstr instead of the copy one
+	meshes.emplace_back(std::forward<MeshComponent>(mesh));
 }
 
 void Model::AddMaterial(BlinnPhongMaterial&& material)

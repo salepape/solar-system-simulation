@@ -42,8 +42,8 @@ public:
 	// User-defined constructor (used when parsing a pre-made 3D model, i.e. a mesh with textures applied on it, and transferring Mesh info to this class) 
 	MeshComponent(const std::vector<Vertex>& inVertices, const std::vector<uint32_t>& inIndices = {});
 
-	// Copy constructor (needed when defining a Sphere in CelestialBody when object passed as const ref to instantiate Orbit/Billboard)
-	MeshComponent(const MeshComponent& inMesh) = default;
+	// Copy constructor (not needed - automatically deleted since the class holds a std::unique_ptr)
+	MeshComponent(const MeshComponent& inMesh) = delete;
 	const MeshComponent& operator = (const MeshComponent& inMesh) = delete;
 
 	// Move constructor (used when reading data from model file)
@@ -63,8 +63,21 @@ protected:
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
 
-	std::shared_ptr<VertexArray> vao;
-	std::shared_ptr<IndexBuffer> ibo;
+	// As Vertex Array destructor is called by unique_ptr at some point in Mesh Component source file, 
+	// and Vertex Array type is incomplete at this point (forward-declared), we have to implement a custom destructor
+	struct VertexArrayDeleter
+	{
+		void operator()(VertexArray* ptr) noexcept;
+	};
+	std::unique_ptr<VertexArray, VertexArrayDeleter> vao;
+
+	// As Index Buffer destructor is called by unique_ptr at some point in Mesh Component source file, 
+	// and Index Buffer type is incomplete at this point (forward-declared), we have to implement a custom destructor
+	struct IndexBufferDeleter
+	{
+		void operator()(IndexBuffer* ptr) noexcept;
+	};
+	std::unique_ptr<IndexBuffer, IndexBufferDeleter> ibo;
 
 	// Set vertex buffers and its attribute pointers once we have all required data
 	void StoreVertices();

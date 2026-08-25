@@ -33,6 +33,7 @@ struct Vertex2D
 };
 
 // A chain of 2D Quad Mesh. Not inheriting from Mesh class which is for element layout/VAO management in 3D only
+// Not copyable since it's holding a std::unique_ptr
 class QuadMeshComponent
 {
 public:
@@ -50,7 +51,13 @@ private:
 	// List of Quad vertices (to be read per batch of 6 elements - batch not represented in data)
 	std::vector<Vertex2D> vertices;
 
-	std::shared_ptr<VertexArray> vao;
+	// As Vertex Array destructor is called by unique_ptr at some point in Quad Mesh Component source file, 
+	// and Vertex Array type is incomplete at this point (forward-declared), we have to implement a custom destructor
+	struct VertexArrayDeleter
+	{
+		void operator()(VertexArray* ptr) noexcept;
+	};
+	std::unique_ptr<VertexArray, VertexArrayDeleter> vao;
 
 	void ComputeVertices();
 

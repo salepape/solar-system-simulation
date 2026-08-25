@@ -44,11 +44,11 @@ public:
 	// User-defined constructor (to be used when building a CelestialBody in-place from initialisation-list)
 	CelestialBodyEntity(const BodyData& inBodyData);
 
-	// Copy constructor (not needed - SCENE ENTITY GETTER RETURN NON-OWNING RAW PTR, HENCE NOT NEEDED)
+	// Copy constructor (not needed - Scene Entity getter returns non-owning pointer (raw) for copies/moves)
 	CelestialBodyEntity(const CelestialBodyEntity& inCelestialBody) = delete;
 	CelestialBodyEntity& operator = (const CelestialBodyEntity& inCelestialBody) = delete;
 
-	// Move constructor (not needed - SCENE ENTITY GETTER RETURN NON-OWNING RAW PTR, HENCE NOT NEEDED)
+	// Move constructor (not needed - Scene Entity getter returns non-owning pointer (raw) for copies/moves)
 	CelestialBodyEntity(CelestialBodyEntity&& inCelestialBody) = delete;
 	CelestialBodyEntity& operator = (CelestialBodyEntity&& inCelestialBody) = delete;
 
@@ -79,7 +79,7 @@ private:
 	void ComputeTransformVUniform(const float deltaTime, const Camera& /*camera*/, std::optional<std::reference_wrapper<const ITransformable>> parentTransformable = std::nullopt) override;
 	// ITransformable implementation
 
-	std::shared_ptr<LightSourceComponent> lightSource;
+	std::unique_ptr<LightSourceComponent> lightSource;
 
 	glm::vec3 position{ 0.0f };
 

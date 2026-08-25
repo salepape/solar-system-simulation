@@ -27,11 +27,11 @@ void MeshComponent::StoreVertices()
 		assert(false);
 	}
 
-	vao = std::make_shared<VertexArray>();
+	vao = std::unique_ptr<VertexArray, VertexArrayDeleter>(new VertexArray());
 	VertexBuffer vbo(static_cast<const void*>(vertices.data()), vertices.size() * sizeof(Vertex));
 	if (IsIndicesBuffer())
 	{
-		ibo = std::make_shared<IndexBuffer>(static_cast<const void*>(indices.data()), static_cast<uint32_t>(indices.size()));
+		ibo = std::unique_ptr<IndexBuffer, IndexBufferDeleter>(new IndexBuffer(static_cast<const void*>(indices.data()), static_cast<uint32_t>(indices.size())));
 	}
 
 	VertexBufferLayout vbl;
@@ -91,4 +91,14 @@ void MeshComponent::RenderInstances(const uint32_t instanceCount) const
 	Renderer::DrawInstances(GL_TRIANGLES, 0, ibo->GetCount(), instanceCount);
 
 	vao->Unbind();
+}
+
+void MeshComponent::VertexArrayDeleter::operator()(VertexArray* ptr) noexcept
+{
+	delete ptr;
+}
+
+void MeshComponent::IndexBufferDeleter::operator()(IndexBuffer* ptr) noexcept
+{
+	delete ptr;
 }

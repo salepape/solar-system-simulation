@@ -46,7 +46,7 @@ void QuadMeshComponent::StoreVertices()
 		assert(false);
 	}
 
-	vao = std::make_shared<VertexArray>();
+	vao = std::unique_ptr<VertexArray, VertexArrayDeleter>(new VertexArray());
 	VertexBuffer vbo(static_cast<const void*>(vertices.data()), vertices.size() * sizeof(Vertex2D));
 
 	// For 2D character glyphs, GLSL Vertex attribute definition can be more simply defined, i.e. as a single Vec4 instead of 2 Vec2
@@ -79,4 +79,9 @@ void QuadMeshComponent::RenderGlyphs(const std::string& text, const uint32_t tex
 	}
 
 	vao->Unbind();
+}
+
+void QuadMeshComponent::VertexArrayDeleter::operator()(VertexArray* ptr) noexcept
+{
+	delete ptr;
 }

@@ -51,8 +51,8 @@ void Application::SetParameters(const std::filesystem::path& inExecutablePath, c
 
 Application::~Application()
 {
-	// This destructor, even if empty, ensures it will call the custom deleter of all std::unique_ptrs from this point in this source file at compile time.
-	// All hold types will be fully-defined by then (while only forward-declared in header), which is a requirement of std::unique_ptr class (unlike std::shared_ptr)
+	// This destructor, even if empty, ensures it will call the custom deleter of all std::unique_ptrs in this source file at compile time from this point onwards.
+	// Any hold types will be fully-defined by then (while only forward-declared in header), which is a requirement of std::unique_ptr class (unlike std::shared_ptr)
 
 	CoreEngine::GetInstance().ClearSceneForRendering();
 }
