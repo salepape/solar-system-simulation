@@ -111,9 +111,9 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnablePREfast>true</EnablePREfast>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <TreatWarningAsError>true</TreatWarningAsError>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
@@ -133,8 +133,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <TreatWarningAsError>true</TreatWarningAsError>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
@@ -155,8 +155,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <TreatWarningAsError>true</TreatWarningAsError>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
@@ -179,8 +179,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <TreatWarningAsError>true</TreatWarningAsError>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
