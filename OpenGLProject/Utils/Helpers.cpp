@@ -130,26 +130,26 @@ std::string FileHelper::GetErrorStateFlagMessage(const std::ifstream& fileStream
 	std::ios_base::iostate errorStateFlag = fileStream.rdstate();
 	switch (errorStateFlag)
 	{
-	case std::ios::eofbit:
-	{
-		result = "End-of-File reached on input operation.";
-		break;
-	}
-	case std::ios::failbit:
-	{
-		result = "Logical error on input/output operation.";
-		break;
-	}
-	case std::ios::badbit:
-	{
-		result = "Read/writing error on input/output operation.";
-		break;
-	}
-	default:
-	{
-		result = "No specific error state flag returned by std::fstream().";
-		break;
-	}
+		case std::ios::eofbit:
+		{
+			result = "End-of-File reached on input operation.";
+			break;
+		}
+		case std::ios::failbit:
+		{
+			result = "Logical error on input/output operation.";
+			break;
+		}
+		case std::ios::badbit:
+		{
+			result = "Read/writing error on input/output operation.";
+			break;
+		}
+		default:
+		{
+			result = "No specific error state flag returned by std::fstream().";
+			break;
+		}
 	}
 
 	return result;

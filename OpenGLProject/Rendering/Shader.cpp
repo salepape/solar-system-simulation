@@ -130,57 +130,57 @@ void Shader::CheckValidity(const uint32_t ID, const ShaderProcessStage processSt
 {
 	switch (processStage)
 	{
-	case ShaderProcessStage::COMPILATION:
-	{
-		int32_t compileStatus;
-		glGetShaderiv(ID, GL_COMPILE_STATUS, &compileStatus);
-		if (compileStatus == false)
+		case ShaderProcessStage::COMPILATION:
 		{
-			int32_t logLength = 0;
-			glGetShaderiv(ID, GL_INFO_LOG_LENGTH, &logLength);
-			if (logLength <= 2)
+			int32_t compileStatus;
+			glGetShaderiv(ID, GL_COMPILE_STATUS, &compileStatus);
+			if (compileStatus == false)
 			{
-				std::cout << "ERROR::SHADER for Shader '" << ShaderLookUpID::Get(lookUpID) << "'\nReason: No specific error message returned - Log length too short.\n" << std::endl;
-				assert(false);
+				int32_t logLength = 0;
+				glGetShaderiv(ID, GL_INFO_LOG_LENGTH, &logLength);
+				if (logLength <= 2)
+				{
+					std::cout << "ERROR::SHADER for Shader '" << ShaderLookUpID::Get(lookUpID) << "'\nReason: No specific error message returned - Log length too short.\n" << std::endl;
+					assert(false);
+				}
+
+				// We cannot stack-allocate a char*, and std::array cannot be used anyway since logLength is not constexpr, so we heap-allocate via std::vector, but reserving needed memory at creation time
+				std::vector<char> errorMessage(logLength);
+				glGetShaderInfoLog(ID, logLength, &logLength, errorMessage.data());
+				if (errorMessage.data() == nullptr)
+				{
+					std::cout << "ERROR::SHADER for Shader '" << ShaderLookUpID::Get(lookUpID) << "'\nReason: no specific error message returned by glGetShaderInfoLog().\n" << std::endl;
+					assert(false);
+				}
 			}
 
-			// We cannot stack-allocate a char*, and std::array cannot be used anyway since logLength is not constexpr, so we heap-allocate via std::vector, but reserving needed memory at creation time
-			std::vector<char> errorMessage(logLength);
-			glGetShaderInfoLog(ID, logLength, &logLength, errorMessage.data());
-			if (errorMessage.data() == nullptr)
-			{
-				std::cout << "ERROR::SHADER for Shader '" << ShaderLookUpID::Get(lookUpID) << "'\nReason: no specific error message returned by glGetShaderInfoLog().\n" << std::endl;
-				assert(false);
-			}
+			break;
 		}
-
-		break;
-	}
-	case ShaderProcessStage::LINKING:
-	{
-		int32_t linkStatus;
-		glGetProgramiv(ID, GL_LINK_STATUS, &linkStatus);
-		if (linkStatus == false)
+		case ShaderProcessStage::LINKING:
 		{
-			int32_t logLength = 0;
-			glGetProgramiv(ID, GL_INFO_LOG_LENGTH, &logLength);
-			if (logLength <= 2)
+			int32_t linkStatus;
+			glGetProgramiv(ID, GL_LINK_STATUS, &linkStatus);
+			if (linkStatus == false)
 			{
-				std::cout << "ERROR::PROGRAM for Shader '" << ShaderLookUpID::Get(lookUpID) << "'\nReason: No specific error message returned - Log length too short.\n" << std::endl;
-				assert(false);
+				int32_t logLength = 0;
+				glGetProgramiv(ID, GL_INFO_LOG_LENGTH, &logLength);
+				if (logLength <= 2)
+				{
+					std::cout << "ERROR::SHADER for Shader '" << ShaderLookUpID::Get(lookUpID) << "'\nReason: No specific error message returned - Log length too short.\n" << std::endl;
+					assert(false);
+				}
+
+				// We cannot stack-allocate a char*, and std::array cannot be used anyway since logLength is not constexpr, so we heap-allocate via std::vector, but reserving needed memory at creation time
+				std::vector<char> errorMessage(logLength);
+				glGetProgramInfoLog(ID, logLength, &logLength, errorMessage.data());
+				if (errorMessage.data() == nullptr)
+				{
+					std::cout << "ERROR::SHADER for Shader '" << ShaderLookUpID::Get(lookUpID) << "'\nReason: no specific error message returned by glGetProgramInfoLog().\n" << std::endl;
+					assert(false);
+				}
 			}
 
-			// We cannot stack-allocate a char*, and std::array cannot be used anyway since logLength is not constexpr, so we heap-allocate via std::vector, but reserving needed memory at creation time
-			std::vector<char> errorMessage(logLength);
-			glGetProgramInfoLog(ID, logLength, &logLength, errorMessage.data());
-			if (errorMessage.data() == nullptr)
-			{
-				std::cout << "ERROR::PROGRAM for Shader '" << ShaderLookUpID::Get(lookUpID) << "'\nReason: no specific error message returned by glGetProgramInfoLog().\n" << std::endl;
-				assert(false);
-			}
+			break;
 		}
-
-		break;
-	}
 	}
 }
