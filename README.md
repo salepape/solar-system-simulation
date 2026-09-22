@@ -79,7 +79,7 @@ The actual simulation is decoupled from the object-oriented engine that powers i
 * :ringed_planet: Celestial Bodies with their Moons, in motion along circular orbits, with adjustable simulation speed
 * :movie_camera: Perspective Camera Controller & Input System for an intuitive exploration
 * :globe_with_meridians: Meshes computed in code from scratch, or loaded from file for Asteroid/Ring System 3D Models
-* :mag: Mesh blending taking into account the distance of each Scene Entity to the Perspective Camera
+* :mag: Distance-based alpha blending for correct Scene Entity transparency layering
 * :rocket: 3D Mesh Renderer with instanced rendering to draw the Belts in a more performant way
 * :page_facing_up: Glyph Loader rendered on 2D quads to display the names of Celestial Bodies
 * :flashlight: Blinn-Phong Illumination model running on GPU via GLSL shaders, with a Point Light for Sun contribution.
