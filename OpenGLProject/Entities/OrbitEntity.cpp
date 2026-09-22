@@ -17,20 +17,20 @@
 
 
 
-OrbitEntity::OrbitEntity(const BodyData& inBodyData) :
+OrbitEntity::OrbitEntity(const BodyData& inBodyData, const float inAlpha) :
 	SceneEntity(inBodyData.name + "Orbit"),
 	circle(inBodyData.distanceToParent),
-	material(InitialiseMaterial(inBodyData.texturePath))
+	material(InitialiseMaterial(inBodyData.texturePath, inAlpha))
 {
 	orbInclinationInRad = glm::radians(inBodyData.orbitalInclination);
 }
 
-BlinnPhongMaterial OrbitEntity::InitialiseMaterial(const std::filesystem::path& texturePath)
+BlinnPhongMaterial OrbitEntity::InitialiseMaterial(const std::filesystem::path& texturePath, const float inAlpha)
 {
 	Texture texture(texturePath, GL_TEXTURE_2D, { GL_REPEAT }, { GL_LINEAR }, TextureType::Enum::DIFFUSE);
 	texture.LoadDDS();
 
-	return BlinnPhongMaterial(ShaderLookUpID::Enum::DEFAULT, std::vector<Texture>{ std::move(texture) });
+	return BlinnPhongMaterial(ShaderLookUpID::Enum::DEFAULT, std::vector<Texture>{ std::move(texture) }, DiffuseProperties{}, SpecularProperties{}, inAlpha);
 }
 
 void OrbitEntity::ComputeTransformVUniform(const float /*deltaTime*/, const Camera& /*camera*/, std::optional<std::reference_wrapper<const ITransformable>> parentTransformable)
@@ -54,6 +54,7 @@ void OrbitEntity::Render()
 	shader.Enable();
 
 	Renderer::SetTransformVUniform(shader, transform);
+	Renderer::SetAlphaFUniform(shader, material.GetAlpha());
 
 	material.EnableTextures();
 	circle.Render();

@@ -24,7 +24,7 @@ public:
 	Material() = delete;
 
 	// User-defined constructor (that should be the only one needed at instantiation time)
-	Material(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const float inTransparency);
+	Material(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const float inAlpha);
 
 	// Copy constructor (needed as member variable of type Material is present in SceneEntity class)
 	Material(const Material& inMaterial) = default;
@@ -43,11 +43,12 @@ public:
 	Shader& GetShader() const { return ShaderLibrary::GetShader(shaderLookUpID); }
 
 	const std::vector<Texture>& GetTextures() const { return textures; }
+	float GetAlpha() const { return alpha; }
 
 protected:
 	[[maybe_unused]] EmissiveProperties emissiveProperties;
 
-	ShaderLookUpID::Enum shaderLookUpID;
+	ShaderLookUpID::Enum shaderLookUpID{ ShaderLookUpID::Enum::DEFAULT };
 
 	// DDS Textures2D to be bound to as many Samplers2D in a Shader where this Material is used (only a single Diffuse Texture2D in most cases)
 	std::vector<Texture> textures;
@@ -55,8 +56,8 @@ protected:
 	// Indexes of the Sampler2D slots storing the Texture2Ds of a Shader for look-up operations
 	int numOfTextureUnits{ 0 };
 
-	// Coefficient corresponding to the alpha value in a colour vector
-	float transparency{ 1.0f };
+	// Coefficient corresponding to the alpha value in a colour vector (0: fully transparent; 1: fully opaque)
+	float alpha{ 1.0f };
 
 	void SetFUniforms() const;
 

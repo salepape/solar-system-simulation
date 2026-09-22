@@ -74,11 +74,11 @@ void MeshComponent::Render(const unsigned int mode) const
 			std::cout << "ERROR::MESH - Any call to this method should have a non-null IBO!" << std::endl;
 		}
 
-		Renderer::Draw(mode, indices.size(), nullptr);
+		Renderer::Draw(mode, static_cast<int32_t>(indices.size()), nullptr);
 	}
 	else
 	{
-		Renderer::Draw(mode, 0, vertices.size());
+		Renderer::Draw(mode, 0, static_cast<int32_t>(vertices.size()));
 	}
 
 	vao->Unbind();

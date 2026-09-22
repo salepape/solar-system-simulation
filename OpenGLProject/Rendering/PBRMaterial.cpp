@@ -6,8 +6,8 @@
 
 
 
-PBRMaterial::PBRMaterial(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const float inTransparency) :
-	Material(inShaderLookUpID, inTextures, inTransparency)
+PBRMaterial::PBRMaterial(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const float inAlpha) :
+	Material(inShaderLookUpID, inTextures, inAlpha)
 {
 	// Need as many Texture Units as Samplers2D (i.e. Textures2D) for the GLSL Shader used by this Material
 	numOfTextureUnits = static_cast<int>(textures.size());
@@ -19,7 +19,7 @@ PBRMaterial::PBRMaterial(const ShaderLookUpID::Enum inShaderLookUpID, const std:
 }
 
 PBRMaterial::PBRMaterial(PBRMaterial&& inMaterial) :
-	Material(inMaterial.shaderLookUpID, std::move(inMaterial.textures), inMaterial.transparency)
+	Material(inMaterial.shaderLookUpID, std::move(inMaterial.textures), inMaterial.alpha)
 {
 	// Do not increment Texture Unit count or set Uniforms again!
 }

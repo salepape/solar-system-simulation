@@ -38,14 +38,20 @@ namespace Renderer
 	void SetDepthFctToLess();
 
 	// @todo - Drag to a Movement Component class?
-	// Called on a per-frame basis to update the Transform.
-	// Shader should already be enabled in each Scene Entity child Render() method prior to call this one. Uniform to be updated in child classes
+	// Update the Transform value of a Scene Entity on a per-frame basis, for the provided shader.
+	// Warning: shader needs to be enabled prior to this call, and contain the 'Model' parameter in GLSL code
 	void SetTransformVUniform(const Shader& shader, const Transform& transform);
 
-	// Render a primitive without indices (e.g. for Orbit, Skybox and 2D Quad instance) - Warning: VAO must be bound prior to this call, and unbound afterwards
+	// Update the material alpha parameter value on a per-frame basis, for the provided shader.
+	// Warning: shader needs to be enabled prior to this call, and contain the 'Alpha' material parameter in GLSL code
+	void SetAlphaFUniform(const Shader& shader, const float alpha);
+
+	// Render a primitive without indices (e.g. for Orbit, Skybox and 2D Quad instance).
+	// Warning: VAO must be bound prior to this call, and unbound afterwards
 	void Draw(const unsigned int mode, const int32_t startIndex, const int32_t count);
 
-	// Render a primitive with indices (e.g. for Mesh instance) - Warning: VAO must be bound prior to this call, and unbound afterwards
+	// Render a primitive with indices (e.g. for Mesh instance).
+	// Warning: VAO must be bound prior to this call, and unbound afterwards
 	void Draw(const unsigned int mode, const int32_t count, const void* offsetInBytes);
 
 	// Render primitives without indices using instancing (e.g. for 'Rock' Models in Belt instance) - Warning: VAO must be bound prior to this call, and unbound afterwards

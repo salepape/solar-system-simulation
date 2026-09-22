@@ -84,7 +84,7 @@ std::string FileHelper::GetModelNameFromPath(const std::filesystem::path& inPath
 	}
 
 	std::string modelName(fileNameWithSizeTrimmed.substr(0, lastTrimSymbol));
-	modelName[0] = std::toupper(modelName[0]);
+	modelName[0] = static_cast<int8_t>(std::toupper(static_cast<uint8_t>(modelName[0])));
 
 	return modelName;
 }

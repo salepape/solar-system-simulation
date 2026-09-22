@@ -62,6 +62,9 @@ void SolarSystem::BuildCelestialBodySystems()
 	const float earthRadius = std::stof(EarthLine[2]);
 	const float sunEarthDistance = std::stof(EarthLine[3]);
 
+	// @todo - To be moved in simu config file (alpha here equivalent to Rings .mtl file for dissolve mat param)
+	constexpr float orbitMaterialAlpha = 0.5f;
+
 	// Process each CSV line and create a Body instance out of it
 	for (const std::vector<std::string>& celestialBodyParams : bodyCSVParser.GetParsedCSV())
 	{
@@ -123,7 +126,7 @@ void SolarSystem::BuildCelestialBodySystems()
 
 		const uint32_t addedOrbitID = Scene::AddEntity(
 			RenderableType::TRANSPARENT_ENTITY,
-			std::make_unique<OrbitEntity>(bodyData)
+			std::make_unique<OrbitEntity>(bodyData, orbitMaterialAlpha)
 		);
 
 		// Make Moon Orbit Transform the one of the parent Planet, not the Moon itself!
@@ -133,8 +136,8 @@ void SolarSystem::BuildCelestialBodySystems()
 		}
 
 		const uint32_t addedBillboardID = Scene::AddEntity(
-			RenderableType::TRANSPARENT_ENTITY,
-			std::make_unique<BillboardEntity>(bodyData)
+			RenderableType::OPAQUE_ENTITY,
+			std::make_unique<BillboardEntity>(bodyData, RGBColourPick::white)
 		);
 
 		// Make Billboard Transform the one of the planet/moon

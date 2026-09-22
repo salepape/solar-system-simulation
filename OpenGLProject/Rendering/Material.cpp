@@ -1,5 +1,6 @@
 #include "Material.h"
 
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <utility>
@@ -8,10 +9,10 @@
 
 
 
-Material::Material(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const float inTransparency) :
+Material::Material(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const float inAlpha) :
 	shaderLookUpID(inShaderLookUpID),
 	textures(inTextures),
-	transparency(inTransparency)
+	alpha(std::clamp(inAlpha, 0.0f, 1.0f))
 {
 
 }
@@ -27,10 +28,10 @@ void Material::SetFUniforms() const
 		shader.SetUniformMat4(modelVU, glm::mat4(0.0f));
 	}
 
-	const std::string transparencyFU("material.fu_Transparency");
-	if (shader.IsUniformRequired(transparencyFU.c_str()))
+	const std::string alphaFU("material.fu_Alpha");
+	if (shader.IsUniformRequired(alphaFU.c_str()))
 	{
-		shader.SetUniformFloat(transparencyFU, transparency);
+		shader.SetUniformFloat(alphaFU, alpha);
 	}
 }
 

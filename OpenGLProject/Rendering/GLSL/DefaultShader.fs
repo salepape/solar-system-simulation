@@ -13,7 +13,7 @@ struct Material
     vec3 fu_SpecularColour;
     float fu_Shininess;
 
-    float fu_Transparency;
+    float fu_Alpha;
 };
 uniform Material material;
 
@@ -191,5 +191,5 @@ void main()
         spotLightPhongIllumination = ComputeSpotLightPhongIllumination();
     }
 
-    fo_Colour.xyzw = vec4(pointLightPhongIllumination + spotLightPhongIllumination, material.fu_Transparency);
+    fo_Colour.xyzw = vec4(pointLightPhongIllumination + spotLightPhongIllumination, material.fu_Alpha);
 }

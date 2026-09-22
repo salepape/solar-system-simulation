@@ -120,43 +120,77 @@ std::vector<uint32_t> ModelLoader::ProcessMeshIndices(const aiMesh& mesh)
 void ModelLoader::ProcessMaterial(Model& model, const aiMesh& mesh, const aiScene& scene)
 {
 	const aiMaterial* const material = scene.mMaterials[mesh.mMaterialIndex];
-	if (material == nullptr)
+	if (material == nullptr || material->mNumProperties == 0)
 	{
-		std::cout << "ERROR::ASSIMP - No materials found in array mMaterials index " << mesh.mMaterialIndex << std::endl;
+		std::cout << "ERROR::ASSIMP - No material property found/defined in array mMaterials index " << mesh.mMaterialIndex << "!" << std::endl;
 		assert(false);
 	}
 
-	// Material .mtl file has not been provided with the Model, so it needs to be created from code using GLSL Vertex/Fragment Shaders
-	if (material->mNumProperties == 0)
+	// Material .mtl file is provided with this Model, so use Phong Shading data it contains to create Material
+	aiReturn isMTLConstantDefined;
+
+	// Read 'Kd' constant RGB float values in .mtl file
+	aiColor3D diffuseColour;
+	isMTLConstantDefined = material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColour);
+	if (isMTLConstantDefined == aiReturn_FAILURE)
 	{
-		model.AddMaterial(BlinnPhongMaterial{ ShaderLookUpID::Enum::UNDEFINED, ProcessTextures(model, *material) });
+		std::cout << "ERROR::ASSIMP - Diffuse colour material property has not been defined correctly!" << std::endl;
+		assert(false);
 	}
-	// Material Model is using is provided in a .mtl file, so just process data out of it
-	else
+
+	const DiffuseProperties diffuseProperties{ glm::vec3(diffuseColour.r, diffuseColour.g, diffuseColour.b) };
+
+	// Read 'Ks' constant RGB float values in .mtl file
+	aiColor3D specularColour;
+	isMTLConstantDefined = material->Get(AI_MATKEY_COLOR_SPECULAR, specularColour);
+	if (isMTLConstantDefined == aiReturn_FAILURE)
 	{
-		// Read 'Kd' factor in .mtl file
-		aiColor3D diffuseColour;
-		material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColour);
+		std::cout << "ERROR::ASSIMP - Specular colour material property has not been defined correctly!" << std::endl;
+		assert(false);
+	}
 
-		const DiffuseProperties diffuseProperties{ glm::vec3(diffuseColour.r, diffuseColour.g, diffuseColour.b) };
+	// Read 'Ns' constant float value in .mtl file
+	ai_real shininess;
+	isMTLConstantDefined = material->Get(AI_MATKEY_SHININESS, shininess);
+	if (isMTLConstantDefined == aiReturn_FAILURE)
+	{
+		std::cout << "ERROR::ASSIMP - Shininess material property has not been defined correctly!" << std::endl;
+		assert(false);
+	}
 
-		// Read 'Ks' factor in .mtl file
-		aiColor3D specularColour;
-		material->Get(AI_MATKEY_COLOR_SPECULAR, specularColour);
+	const SpecularProperties specularProperties{ glm::vec3(specularColour.r, specularColour.g, specularColour.b), shininess };
 
-		// Read 'Ns' factor in .mtl file
-		ai_real shininess;
-		material->Get(AI_MATKEY_SHININESS, shininess);
+	// Read 'd' constant float value in .mtl file (AI_MATKEY_TRANSPARENCYFACTOR seems to be deprecated)
+	ai_real alpha;
+	isMTLConstantDefined = material->Get(AI_MATKEY_OPACITY, alpha);
+	if (isMTLConstantDefined == aiReturn_FAILURE)
+	{
+		std::cout << "ERROR::ASSIMP - Alpha material property has not been defined correctly!" << std::endl;
+		assert(false);
+	}
 
-		const SpecularProperties specularProperties{ glm::vec3(specularColour.r, specularColour.g, specularColour.b), shininess };
+	// Read 'illum' constant float value in .mtl file (only 3 first enum elements seem to be supported)
+	ai_int shadingModel;
+	isMTLConstantDefined = material->Get(AI_MATKEY_SHADING_MODEL, shadingModel);
+	if (isMTLConstantDefined == aiReturn_FAILURE)
+	{
+		std::cout << "ERROR::ASSIMP - Shading model material property has not been defined correctly!" << std::endl;
+		assert(false);
+	}
 
-		// Read 'd' factor in .mtl file
-		ai_real transparency;
-		material->Get(AI_MATKEY_COLOR_TRANSPARENT, transparency);
-
-		// @todo - Read 'illum' factor in .mtl file, corresponding to 'IsBlinn' parameter?
-
-		model.AddMaterial(BlinnPhongMaterial{ model.GetShaderLookUpID(), ProcessTextures(model, *material), diffuseProperties, specularProperties, transparency });
+	switch (static_cast<aiShadingMode>(shadingModel))
+	{
+		// Only Phong Shading supported for now
+		case aiShadingMode_Phong:
+		{
+			model.AddMaterial(BlinnPhongMaterial{ model.GetShaderLookUpID(), ProcessTextures(model, *material), diffuseProperties, specularProperties, alpha });
+			break;
+		}
+		default:
+		{
+			std::cout << "ERROR::MODEL_LOADER - Shading model material property can only be Phong for now: early-returning..." << std::endl;
+			assert(false);
+		}
 	}
 }
 

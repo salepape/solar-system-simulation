@@ -41,8 +41,8 @@ public:
 private:
 	static CoreEngine* instance;
 
-	// Time [in seconds] between the last frame and the current one (used to reduce processing power differences between computers)
-	float deltaTime{ 0.0f };
+	// Duration [in seconds] between the last frame and the current one (used to reduce processing power differences between computers)
+	float timeBetweenFrames{ 0.0f };
 
 	RenderQueue renderQueue;
 
@@ -59,11 +59,13 @@ private:
 	// Time cache [in seconds] to be able to compute Pause delta time at next iteration
 	float lastFrameElapsedPauseTime{ 0.0f };
 
-	void Render(const float deltaTime);
+	// Render background, opaque and transparent Scene Entities (in this order) by setting up several passes according to previously defined render commands
+	void Render();
 
-	// @todo - To be done only for entities in FOV
-	// Sort scene entities with level of transparency from farthest to closest according to camera, to render overlapping non-opaque objects correctly per frame
-	void OrderForTransparencyPass(const glm::vec3& cameraPosition);
+	// @todo - To be done only for entities in FOV?
+	// Set up rendering priority order of Scene Entities from farthest to closest according to camera.
+	// Warning: to be used only on Scene Entities with an alpha in ]0.0f, 1.0f[, to render them per layers
+	void SortSceneEntitiesPerProximity(const glm::vec3& cameraPosition);
 };
 
 

@@ -43,7 +43,7 @@ public:
 		const std::vector<Texture>& inTextures,
 		const DiffuseProperties& inDiffuseProperties = { glm::vec3(0.0f) },
 		const SpecularProperties& inSpecularProperties = { glm::vec3(0.0f), 64.0f },
-		const float inTransparency = 1.0f);
+		const float inAlpha = 1.0f);
 
 	// Copy constructor (needed as member variable of type Material is present in SceneEntity class)
 	BlinnPhongMaterial(const BlinnPhongMaterial& inMaterial) = default;

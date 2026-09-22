@@ -34,6 +34,7 @@ namespace ModelLoader
 	std::vector<uint32_t> ProcessMeshIndices(const aiMesh& mesh);
 
 	// Retrieve ASSIMP material data (in .mtl Material companion file) and store Material instances in the associated vector
+	// See https://documentation.help/assimp/materials.html for more information
 	void ProcessMaterial(Model& model, const aiMesh& mesh, const aiScene& scene);
 
 	// Retrieve ASSIMP texture data (in .mtl Material companion file) and build a vector of Texture instances out of it

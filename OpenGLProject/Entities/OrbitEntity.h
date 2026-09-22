@@ -19,7 +19,8 @@ class Camera;
 class OrbitEntity : public SceneEntity, public ITransformable, public IRenderable
 {
 public:
-	OrbitEntity(const BodyData& inBodyData);
+	// Note: we assume the same texture sprite/parameters as the Celestial Body parent ones are used
+	OrbitEntity(const BodyData& inBodyData, const float inAlpha = 1.0f);
 
 	// IRenderable implementation
 	void Render() override;
@@ -30,7 +31,7 @@ private:
 	CircleMeshComponent circle;
 
 	BlinnPhongMaterial material;
-	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath);
+	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath, const float inAlpha);
 
 	Transform transform;
 	// ITransformable implementation

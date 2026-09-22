@@ -106,7 +106,7 @@ void CoreEngine::QueueRenderCommands()
 			RenderableType::TRANSPARENT_ENTITY,
 			[&]()
 			{
-				OrderForTransparencyPass(scene->sceneViewer.GetCamera().GetPosition());
+				SortSceneEntitiesPerProximity(scene->sceneViewer.GetCamera().GetPosition());
 			}
 		}
 	);
@@ -114,39 +114,43 @@ void CoreEngine::QueueRenderCommands()
 
 void CoreEngine::UnqueueRenderCommands()
 {
-	for (const RenderCommand& renderCommand : renderQueue.queue)
+	for (const RenderCommand& renderCommand : renderQueue.commands)
 	{
-		renderCommand.Unqueue();
+		renderCommand.ClearDraw();
 	}
 
 	renderQueue.PopAll();
 }
 
-void CoreEngine::OrderForTransparencyPass(const glm::vec3& cameraPosition)
+void CoreEngine::SortSceneEntitiesPerProximity(const glm::vec3& cameraPosition)
 {
-	// Custom std::vector comparator so we order the closest body to the camera at the end
+	// Custom std::vector ordering comparator so we draw from the farthest body first to the closest one last
 	std::sort(scene->sceneEntities[RenderableType::TRANSPARENT_ENTITY].begin(), scene->sceneEntities[RenderableType::TRANSPARENT_ENTITY].end(),
 		[&cameraPosition](const std::unique_ptr<SceneEntity>& e1, const std::unique_ptr<SceneEntity>& e2)
 		{
-			ITransformable* const transformable1 = dynamic_cast<ITransformable*>(e1.get());
-			ITransformable* const transformable2 = dynamic_cast<ITransformable*>(e2.get());
+			const ITransformable* const transformable1 = dynamic_cast<ITransformable*>(e1.get());
+			const ITransformable* const transformable2 = dynamic_cast<ITransformable*>(e2.get());
 			if (transformable1 == nullptr || transformable2 == nullptr)
 			{
 				std::cout << "ERROR::CORE_ENGINE - Attempt to get transform from a Scene Entity that does not implement ITransformable!" << std::endl;
 				assert(false);
 			}
 
-			return glm::distance(cameraPosition, transformable1->GetTransform().GetPosition()) < glm::distance(cameraPosition, transformable2->GetTransform().GetPosition());
-		});
+			// @todo - Not very accurate, as the distance measure:
+			// - takes into account the inner portion of body/orbit meshes
+			// - does not compute the closest point of a surrounding geometry (in the case of orbits)
+			return glm::distance(cameraPosition, transformable1->GetTransform().GetPosition()) > glm::distance(cameraPosition, transformable2->GetTransform().GetPosition());
+		}
+	);
 }
 
-void CoreEngine::Render(const float deltaTime)
+void CoreEngine::Render()
 {
-	scene->sceneViewer.ProcessUserInput(deltaTime);
+	scene->sceneViewer.ProcessUserInput(timeBetweenFrames);
 
-	for (const RenderCommand& renderCommand : renderQueue.queue)
+	for (const RenderCommand& renderCommand : renderQueue.commands)
 	{
-		renderCommand.Queue();
+		renderCommand.PrepareDrawPerFrame();
 
 		if (scene->sceneEntities.find(renderCommand.renderType) == scene->sceneEntities.end())
 		{
@@ -163,7 +167,7 @@ void CoreEngine::Render(const float deltaTime)
 				transformable != nullptr)
 			{
 				transformable->ComputeTransformVUniform(
-					deltaTime,
+					timeBetweenFrames,
 					scene->sceneViewer.GetCamera(),
 					*scene->GetEntity<const ITransformable>(sceneEntity->parentID)
 				);
@@ -185,13 +189,13 @@ void CoreEngine::Tick(const bool isPaused)
 	if (isPaused == false)
 	{
 		elapsedPlayTime = GetElapsedTime() - elapsedPauseTime;
-		deltaTime = elapsedPlayTime - lastFrameElapsedPlayTime;
+		timeBetweenFrames = elapsedPlayTime - lastFrameElapsedPlayTime;
 		lastFrameElapsedPlayTime = elapsedPlayTime;
 	}
 	else
 	{
 		elapsedPauseTime = GetElapsedTime() - elapsedPlayTime;
-		deltaTime = elapsedPauseTime - lastFrameElapsedPauseTime;
+		timeBetweenFrames = elapsedPauseTime - lastFrameElapsedPauseTime;
 		lastFrameElapsedPauseTime = elapsedPauseTime;
 	}
 
@@ -206,8 +210,8 @@ void CoreEngine::Refresh()
 
 	if (scene != nullptr)
 	{
-		scene->Update(deltaTime);
-		Render(deltaTime);
+		scene->Update(timeBetweenFrames);
+		Render();
 	}
 }
 

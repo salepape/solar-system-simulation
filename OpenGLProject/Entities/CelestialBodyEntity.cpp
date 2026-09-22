@@ -51,7 +51,7 @@ BlinnPhongMaterial CelestialBodyEntity::InitialiseMaterial(const std::filesystem
 	{
 		// Allow the Star texture to be rendered with higher intensity than a simple white light - give volcanic visual effect)
 		constexpr float oversaturatingFactor = 1.5f;
-		return BlinnPhongMaterial(ShaderLookUpID::Enum::STAR, std::vector<Texture>{ std::move(texture) }, DiffuseProperties{ GLMConstants::whiteColour * oversaturatingFactor });
+		return BlinnPhongMaterial(ShaderLookUpID::Enum::STAR, std::vector<Texture>{ std::move(texture) }, DiffuseProperties{ RGBColourPick::white * oversaturatingFactor });
 	}
 	else
 	{
@@ -122,6 +122,10 @@ void CelestialBodyEntity::Render()
 	shader.Enable();
 
 	Renderer::SetTransformVUniform(shader, transform);
+	if (bodyData.type != "Star")
+	{
+		Renderer::SetAlphaFUniform(shader, material.GetAlpha());
+	}
 
 	material.EnableTextures();
 	sphere.Render();

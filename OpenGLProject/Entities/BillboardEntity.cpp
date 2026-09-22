@@ -17,7 +17,6 @@
 #include "Rendering/ShaderLoader.h"
 #include "Rendering/GlyphLoader.h"
 #include "Rendering/Texture.h"
-#include "Utils/Constants.h"
 
 namespace
 {
@@ -33,20 +32,20 @@ namespace
 
 
 
-BillboardEntity::BillboardEntity(const BodyData& inBodyData) :
+BillboardEntity::BillboardEntity(const BodyData& inBodyData, const RGBColourPick::RGBColour inTextColour) :
 	SceneEntity(inBodyData.name + "Billboard"),
 	legend(inBodyData.name),
 	glyphTextureScaleFactor(inBodyData.radius * (parentID != 0 ? moonGlyphTextureScaleFactor : bodyGlyphTextureScaleFactor)),
 	quads(ComputeQuadParams(0.0f, inBodyData.radius * (parentID != 0 ? moonBilboardYStartScaleFactor : bodyBilboardYStartScaleFactor))),
-	material(InitialiseMaterial(""))
+	material(InitialiseMaterial(inTextColour))
 {
 
 }
 
-BlinnPhongMaterial BillboardEntity::InitialiseMaterial(const std::filesystem::path& /*texturePath*/)
+BlinnPhongMaterial BillboardEntity::InitialiseMaterial(RGBColourPick::RGBColour inTextColour)
 {
 	// All Textures2D used by the Billboard are created by the Glyph Loader and globally accessible, so not linked in this Material
-	return BlinnPhongMaterial(ShaderLookUpID::Enum::BILLBOARD, std::vector<Texture>{ /* texturesLoadedFromTheGlyphLoader */ }, DiffuseProperties{ GLMConstants::whiteColour });
+	return BlinnPhongMaterial(ShaderLookUpID::Enum::BILLBOARD, std::vector<Texture>{ /* texturesLoadedFromTheGlyphLoader */ }, DiffuseProperties{ inTextColour });
 }
 
 void BillboardEntity::ComputeTransformVUniform(const float /*deltaTime*/, const Camera& camera, std::optional<std::reference_wrapper<const ITransformable>> parentTransformable)

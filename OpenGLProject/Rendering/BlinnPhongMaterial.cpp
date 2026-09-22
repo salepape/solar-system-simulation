@@ -7,8 +7,8 @@
 
 
 
-BlinnPhongMaterial::BlinnPhongMaterial(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties, const SpecularProperties& inSpecularProperties, const float inTransparency) :
-	Material(inShaderLookUpID, inTextures, inTransparency),
+BlinnPhongMaterial::BlinnPhongMaterial(const ShaderLookUpID::Enum inShaderLookUpID, const std::vector<Texture>& inTextures, const DiffuseProperties& inDiffuseProperties, const SpecularProperties& inSpecularProperties, const float inAlpha) :
+	Material(inShaderLookUpID, inTextures, inAlpha),
 	diffuseProperties(inDiffuseProperties),
 	specularProperties(inSpecularProperties)
 {
@@ -22,7 +22,7 @@ BlinnPhongMaterial::BlinnPhongMaterial(const ShaderLookUpID::Enum inShaderLookUp
 }
 
 BlinnPhongMaterial::BlinnPhongMaterial(BlinnPhongMaterial&& inMaterial) :
-	Material(inMaterial.shaderLookUpID, std::move(inMaterial.textures), inMaterial.transparency),
+	Material(inMaterial.shaderLookUpID, std::move(inMaterial.textures), inMaterial.alpha),
 	diffuseProperties(std::move(inMaterial.diffuseProperties)),
 	specularProperties(std::move(inMaterial.specularProperties))
 {

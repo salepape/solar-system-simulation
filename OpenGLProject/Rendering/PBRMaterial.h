@@ -39,7 +39,7 @@ public:
 	// User-defined constructor (that should be the only one needed at instantiation time)
 	PBRMaterial(const ShaderLookUpID::Enum inShaderLookUpID,
 		const std::vector<Texture>& inTextures,
-		const float inTransparency = 1.0f);
+		const float inAlpha = 1.0f);
 
 	// Copy constructor (needed as member variable of type Material is present in SceneEntity class)
 	PBRMaterial(const PBRMaterial& inMaterial) = default;

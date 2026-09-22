@@ -29,10 +29,10 @@ void Transform::SetRotation(const RotationMatrix& inRotation)
 {
 	UpdateModelMatrix(inRotation);
 
-	// Deduce Euler angles from Model matrix, as user defined its own LookAt vectors
-	rotation.rollInRad = std::atan2<float>(model[2][3], model[3][3]);
-	rotation.yawInRad = std::atan2<float>(-model[1][3], std::sqrt(static_cast<float>(std::pow(model[2][3], 2) + std::pow(model[3][3], 2))));
-	rotation.pitchInRad = std::atan2<float>(model[1][2], model[1][1]);
+	// Compute Euler angles from Model matrix, as user defined its own LookAt vectors
+	rotation.rollInRad = std::atan2f(model[2][3], model[3][3]);
+	rotation.yawInRad = std::atan2f(-model[1][3], std::sqrtf(std::powf(model[2][3], 2) + std::powf(model[3][3], 2)));
+	rotation.pitchInRad = std::atan2f(model[1][2], model[1][1]);
 }
 
 void Transform::UpdateModelMatrix(std::optional<std::reference_wrapper<const RotationMatrix>> inRotation)

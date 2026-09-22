@@ -38,6 +38,7 @@ void BodyRingsEntity::Render()
 	shader.Enable();
 
 	Renderer::SetTransformVUniform(shader, transform);
+	Renderer::SetAlphaFUniform(shader, modelMaterial.GetAlpha());
 
 	modelMaterial.EnableTextures();
 	model.Render();

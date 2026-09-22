@@ -17,13 +17,16 @@ enum class RenderableType
 	BACKGROUND,
 };
 
-// Container of a chain of OpenGL functions to submit draw settings/functions to GPU for a group of IRenderables
+// Set of OpenGL functions to submit draw settings/operations to the GPU for a batch of IRenderables
 struct RenderCommand
 {
 	RenderableType renderType;
 
-	std::function<void()> Queue;
-	std::function<void()> Unqueue = []() {};
+	// Chain of OpenGL functions to be run per frame when overarching struct is queued
+	std::function<void()> PrepareDrawPerFrame;
+
+	// Chain of OpenGL functions to be run once when overarching struct is unqueued
+	std::function<void()> ClearDraw = []() {};
 };
 
 // Data structure to push/pop render commands for OpenGL draw settings/functions

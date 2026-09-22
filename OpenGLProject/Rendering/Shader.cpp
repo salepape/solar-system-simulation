@@ -103,7 +103,7 @@ void Shader::Disable() const
 
 void Shader::SetUniformBool(const std::string& name, const bool value) const
 {
-	glUniform1i(GetUniformLocation(name), static_cast<int32_t>(value));
+	glUniform1i(GetUniformLocation(name), static_cast<int8_t>(value));
 }
 
 void Shader::SetUniformInt(const std::string& name, const int32_t value) const
@@ -119,11 +119,6 @@ void Shader::SetUniformFloat(const std::string& name, const float value) const
 void Shader::SetUniformVec3(const std::string& name, const glm::vec3& value) const
 {
 	glUniform3fv(GetUniformLocation(name), 1, glm::value_ptr(value));
-}
-
-void Shader::SetUniformVec3(const std::string& name, const float x, const float y, const float z) const
-{
-	glUniform3f(GetUniformLocation(name), x, y, z);
 }
 
 void Shader::SetUniformMat4(const std::string& name, const glm::mat4& mat) const

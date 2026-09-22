@@ -33,7 +33,6 @@ public:
 	void SetUniformInt(const std::string& name, const int32_t value) const;
 	void SetUniformFloat(const std::string& name, const float value) const;
 	void SetUniformVec3(const std::string& name, const glm::vec3& value) const;
-	void SetUniformVec3(const std::string& name, const float x, const float y, const float z) const;
 	void SetUniformMat4(const std::string& name, const glm::mat4& mat) const;
 
 	// Return whether the Uniform is required for the Shader and perform caching of its location if so. Should always be called prior to attempt setting a Uniform 

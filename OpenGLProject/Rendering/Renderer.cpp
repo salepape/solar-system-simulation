@@ -76,6 +76,11 @@ void Renderer::SetTransformVUniform(const Shader& shader, const Transform& trans
 	shader.SetUniformMat4("vu_Model", transform.Get());
 }
 
+void Renderer::SetAlphaFUniform(const Shader& shader, const float alpha)
+{
+	shader.SetUniformFloat("material.fu_Alpha", alpha);
+}
+
 void Renderer::Draw(const unsigned int mode, const int32_t startIndex, const int32_t count)
 {
 	glDrawArrays(mode, startIndex, count);

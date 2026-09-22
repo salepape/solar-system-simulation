@@ -10,6 +10,7 @@
 #include "Rendering/BlinnPhongMaterial.h"
 #include "Scene/SceneEntity.h"
 #include "Scene/Transform.h"
+#include "Utils/Constants.h"
 
 struct BodyData;
 class Camera;
@@ -21,7 +22,7 @@ struct GlyphParams;
 class BillboardEntity : public SceneEntity, public ITransformable, public IRenderable
 {
 public:
-	BillboardEntity(const BodyData& inBodyData);
+	BillboardEntity(const BodyData& inBodyData, const RGBColourPick::RGBColour inTextColour);
 
 	// IRenderable implementation
 	void Render() override;
@@ -36,7 +37,7 @@ private:
 	QuadMeshComponent quads;
 
 	BlinnPhongMaterial material;
-	BlinnPhongMaterial InitialiseMaterial(const std::filesystem::path& texturePath);
+	BlinnPhongMaterial InitialiseMaterial(const RGBColourPick::RGBColour inTextColour);
 
 	Transform transform;
 	// ITransformable implementation

@@ -11,7 +11,7 @@ class Shader;
 // To be used to refer to any Shader instead of relying on raw strings (layer of security over the existence of LookUpIDs when instantiating or look-up functions)
 namespace ShaderLookUpID
 {
-	constexpr size_t Num = 5;
+	static constexpr size_t Num = 5;
 
 	// Enum elements do not correspond to GLSL Shader names but on which Scene Entity/Object Mesh they are applied to
 	enum Enum
@@ -24,7 +24,7 @@ namespace ShaderLookUpID
 		BELT,
 	};
 
-	constexpr std::array<Enum, Num> All = { DEFAULT, STAR, BILLBOARD, BELT, GALAXY_BACKGROUND, };
+	static constexpr std::array<Enum, Num> All = { DEFAULT, STAR, BILLBOARD, GALAXY_BACKGROUND, BELT, };
 
 	constexpr Enum Get(const int index) { return All[index]; }
 };

@@ -27,8 +27,13 @@ namespace GLMConstants
 	const float doublePi = 2.0f * unitPi;
 
 	const glm::vec3 zeroVector(0.0f);
+}
 
-	const glm::vec3 whiteColour(1.0f);
+namespace RGBColourPick
+{
+	using RGBColour = glm::vec3;
+
+	const RGBColour white(1.0f);
 }
 
 
