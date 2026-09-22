@@ -34,30 +34,30 @@ struct RenderQueue
 {
 	void Push(RenderCommand&& renderCommand)
 	{
-		queue.emplace_back(std::move(renderCommand));
+		commands.emplace_back(std::forward<RenderCommand>(renderCommand));
 	}
 
 	void Pop()
 	{
-		if (queue.empty())
+		if (commands.empty())
 		{
 			return;
 		}
 
-		queue.pop_front();
+		commands.pop_front();
 	}
 
 	void PopAll()
 	{
-		if (queue.empty())
+		if (commands.empty())
 		{
 			return;
 		}
 
-		queue.clear();
+		commands.clear();
 	}
 
-	std::deque<RenderCommand> queue;
+	std::deque<RenderCommand> commands;
 };
 
 
