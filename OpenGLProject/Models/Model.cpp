@@ -2,7 +2,9 @@
 
 #include <glm/mat4x4.hpp>
 
+#include <cassert>
 #include <cstddef> // std::size_t
+#include <iostream>
 #include <utility> // std::forward
 
 #include "Buffers/VertexBuffer.h"
@@ -17,6 +19,17 @@ Model::Model(const std::filesystem::path& inPath, const ShaderLookUpID::Enum inS
 	gammaCorrection(inGammaCorrection)
 {
 	ModelLoader::LoadModel(*this, inPath);
+
+	if (meshes.size() <= 0)
+	{
+		std::cout << "ERROR::MODEL - No meshes have been stored in Model after loading!" << std::endl;
+		assert(false);
+	}
+	else if (materials.size() <= 0)
+	{
+		std::cout << "ERROR::MODEL - No materials have been stored in Model after loading!" << std::endl;
+		assert(false);
+	}
 }
 
 void Model::StoreInstanceTransforms(const std::vector<Transform>& transforms) const

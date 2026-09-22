@@ -79,7 +79,7 @@ void Window::MakeOpenGLContextCurrent() const
 	const GLFWwindow* const windowWithCurrentOpenGLContext = glfwGetCurrentContext();
 	if (windowWithCurrentOpenGLContext == nullptr)
 	{
-		std::cout << "ERROR::WINDOW - Failed to get current OpenGL Context: OpenGL functions will not work correctly!" << std::endl;
+		std::cout << "ERROR::GLFW - Failed to get current OpenGL Context: OpenGL functions will not work correctly!" << std::endl;
 		assert(false);
 	}
 }

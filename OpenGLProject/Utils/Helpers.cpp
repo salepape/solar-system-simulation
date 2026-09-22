@@ -34,7 +34,7 @@ Window* GLFWHelper::GetGLFWWindowPointerToUserData(GLFWwindow* GLFWWindow)
 	Window* const callbackData = static_cast<Window*>(glfwGetWindowUserPointer(GLFWWindow));
 	if (callbackData == nullptr)
 	{
-		std::cout << "ERROR::UTILS - Failed to cast glfwGetWindowUserPointer() to Window*." << std::endl;
+		std::cout << "ERROR::GLFW - Failed to cast glfwGetWindowUserPointer() to Window*." << std::endl;
 		assert(false);
 	}
 

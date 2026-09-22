@@ -127,7 +127,7 @@ GlyphParams& GlyphLibrary::GetGlyphParams(const int8_t character)
 {
 	if (ASCIICharacterCache.find(character) == ASCIICharacterCache.end())
 	{
-		std::cout << "ERROR::FREETYPE - Cannot access ASCII character at index " << character << " because map length is smaller!" << std::endl;
+		std::cout << "ERROR::GLYPH_LOADER - Cannot access ASCII character at index " << character << " because map length is smaller!" << std::endl;
 		assert(false);
 	}
 
