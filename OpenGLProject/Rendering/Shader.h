@@ -43,7 +43,7 @@ public:
 
 private:
 	uint32_t rendererID{ 0 };
-	ShaderLookUpID::Enum lookUpID;
+	ShaderLookUpID::Enum lookUpID{ ShaderLookUpID::Enum::DEFAULT };
 
 	// Prevent glGetUniformLocation() duplicate calls while also guaranteeing the Uniform is required by the Shader
 	std::unordered_map<std::string, int32_t> uniformLocationCache;

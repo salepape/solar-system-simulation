@@ -41,7 +41,7 @@ private:
 	// List of Materials that applies to each Sub-Mesh of the Model (retrieved from .mtl file), as per ASSIMP convention
 	// Warning: model is supposed to be simple enough, i.e. only contains 1 Mesh, 1 Material definition, 1 Texture
 	std::vector<BlinnPhongMaterial> materials;
-	ShaderLookUpID::Enum shaderLookUpID;
+	ShaderLookUpID::Enum shaderLookUpID{ ShaderLookUpID::Enum::DEFAULT };
 
 	[[maybe_unused]] bool gammaCorrection{ false };
 };
