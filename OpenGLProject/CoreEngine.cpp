@@ -66,14 +66,18 @@ void CoreEngine::QueueRenderCommands()
 			{
 				Renderer::EnableDepthTesting();
 				Renderer::EnableBlending();
+
+				// Enabling back face culling will discard inner-geometry rendering (i.e. celestial bodies)
 				//Renderer::EnableBackFaceCulling();
 			},
 			[]()
 			{
-			//Renderer::DisableBackFaceCulling();
-			Renderer::DisableBlending();
-			Renderer::DisableDepthTesting();
-		}
+				// See comment above
+				//Renderer::DisableBackFaceCulling();
+
+				Renderer::DisableBlending();
+				Renderer::DisableDepthTesting();
+			}
 		}
 	);
 
@@ -154,15 +158,17 @@ void CoreEngine::Render()
 
 		if (scene->sceneEntities.find(renderCommand.renderType) == scene->sceneEntities.end())
 		{
-			//std::cout << "SCENE::UPDATE - Handle for Scene Entity update has not been found!" << std::endl;
+			//std::cout << "ERROR::CORE_ENGINE - Handle for Scene Entity update has not been found!" << std::endl;
 			//assert(false);
+
+			// Only used by Renderable::ALL as falloff case since no Scene Entity is tagged as such
 
 			continue;
 		}
 
 		for (const std::unique_ptr<SceneEntity>& sceneEntity : scene->sceneEntities[renderCommand.renderType])
 		{
-			// If current Scene Entity implements ITransformable interface
+			// If current Scene Entity implements ITransformable interface (i.e. can be moved)
 			if (ITransformable* const transformable = dynamic_cast<ITransformable*>(sceneEntity.get());
 				transformable != nullptr)
 			{
@@ -173,7 +179,7 @@ void CoreEngine::Render()
 				);
 			}
 
-			// If current Scene Entity implements IRenderable interface
+			// If current Scene Entity implements IRenderable interface (i.e. can be drawn)
 			if (IRenderable* const renderable = dynamic_cast<IRenderable*>(sceneEntity.get());
 				renderable != nullptr)
 			{

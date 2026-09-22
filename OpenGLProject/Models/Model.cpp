@@ -77,5 +77,5 @@ void Model::AddMesh(MeshComponent&& mesh)
 
 void Model::AddMaterial(BlinnPhongMaterial&& material)
 {
-	materials.emplace_back(material);
+	materials.emplace_back(std::forward<BlinnPhongMaterial>(material));
 }

@@ -8,10 +8,10 @@
 
 
 // @todo - Implement packed ID as a concatenation of bit info translating which IRenderables to batch, and in which order
-// Group of Scene Entities that can be rendered to screen in a batch
+// Group of Scene Entities that can be rendered to the screen in a batch of coherent ones (rendering properties alike)
 enum class RenderableType
 {
-	ALL = 0,
+	ALL = 0,				// Not meant to be linked to any specific Scene Entity; only to be associated with global render targets
 	OPAQUE_ENTITY,
 	TRANSPARENT_ENTITY,
 	BACKGROUND,

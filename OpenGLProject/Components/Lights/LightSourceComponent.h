@@ -21,6 +21,7 @@ struct AttenuationParams
 	float quadratic{ 0.0f };
 };
 
+// @todo - Really useful: do not contain anything to justify this class as abstract...
 // Source casting rays of lights according to Phong Illumination model
 class LightSourceComponent
 {

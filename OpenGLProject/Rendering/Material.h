@@ -59,6 +59,7 @@ protected:
 	// Coefficient corresponding to the alpha value in a colour vector (0: fully transparent; 1: fully opaque)
 	float alpha{ 1.0f };
 
+	// @todo - Cannot be virtual since it's called in the cstr, but not very elegant right now...
 	void SetFUniforms() const;
 
 	void IncrementTextureUnitCount(int& TextureUnit) const;

@@ -96,6 +96,7 @@ void CelestialBodyEntity::ComputeCartesianPosition(const float deltaTime, std::o
 	// Circular translation of satellite around corresponding planet, taking into account satellite "orbital tilt"
 	else
 	{
+		// @todo - Not secure? Not optimised? Not working?
 		// Warning: assumes body pointer is valid!
 		const CelestialBodyEntity& satelliteParentBodyRef = *dynamic_cast<const CelestialBodyEntity*>(&parentTransformable.value().get());
 

@@ -159,19 +159,19 @@ void SolarSystem::BuildBodyRings()
 	ResourceCSVParser ringCSVParser(currentSolutionPath + "/Data/RingData.csv");
 	Scene::AllocateMemory(ringCSVParser.GetCSVLinesCount());
 
-	// Process each CSV line and create a Rings instance out of it
+	// Process each CSV line (each corresponding to a planet/moon) and create a Rings instance out of it
 	for (const std::vector<std::string>& ringParams : ringCSVParser.GetParsedCSV())
 	{
 		const std::string bodyParent(ringParams[0]);
 		const std::filesystem::path modelPath(ringPaths[ringParams[1]]);
 		const float radius = std::stof(ringParams[2]);
 
-		// Create Rings Scene Entity and store it as transparent in IRenderable map, NOT in Body System
 		const uint32_t addedBodyRingsID = Scene::AddEntity(
 			RenderableType::TRANSPARENT_ENTITY,
 			std::make_unique<BodyRingsEntity>(RingsData{ modelPath, bodyParent, radius })
 		);
 
+		// Make Rings Transform the one of the planet/moon
 		Scene::TagEntityAsAttached(Scene::GetEntity(bodyParent)->GetID(), addedBodyRingsID);
 	}
 }

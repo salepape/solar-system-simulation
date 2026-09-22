@@ -72,12 +72,13 @@ int32_t Shader::GetUniformLocation(const std::string& name) const
 
 bool Shader::IsUniformRequired(const std::string& name)
 {
+	// Optimisation purpose of 'uniformLocationCache'
 	if (uniformLocationCache.find(name) != uniformLocationCache.end())
 	{
 		return true;
 	}
 
-	// Detect whether the Uniform variable name provided as argument is present in any of the GLSL Shader wrapped in this class
+	// Detect whether the Uniform variable name provided as argument is present in the GLSL Vertex/Fragment Shaders wrapped in this class
 	const int32_t uniformLocation = glGetUniformLocation(rendererID, name.c_str());
 	if (uniformLocation != -1)
 	{
@@ -86,7 +87,6 @@ bool Shader::IsUniformRequired(const std::string& name)
 	}
 	else
 	{
-		// Warning: function returning -1 while the Uniform is present in a GLSL Shader contained in this class will result in a rendering error
 		return false;
 	}
 }
